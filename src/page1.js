@@ -4,6 +4,7 @@ import { createStackNavigator } from 'react-navigation';
 
 class HomeScreen extends React.Component {
   render() {
+    console.log('HomeScreen render')
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <Text>Home Screen</Text>
@@ -18,6 +19,7 @@ class HomeScreen extends React.Component {
 
 class DetailsScreen extends React.Component {
   render() {
+    console.log('DetailsScreen render')
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <Text>Details Screen</Text>
