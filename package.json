@@ -9,6 +9,8 @@
     "isomorphic-fetch": "^2.2.1",
     "qs": "^6.7.0",
     "react": "16.8.3",
-    "react-native": "^0.59.4"
+    "react-native": "^0.59.4",
+    "react-native-gesture-handler": "^1.1.0",
+    "react-navigation": "^3.8.1"
   }
 }
