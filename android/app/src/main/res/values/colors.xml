@@ -1,6 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorPrimary">#ffffff</color>
+    <color name="colorPrimaryDark">#888888</color>
+    <color name="colorAccent">#E6463C</color>
+    <color name="colorCommonRed">#e6382d</color>
+    <color name="colorWindow">#f7f8fa</color>
+
+    <color name="white">#ffffff</color>
+
+    <color name="black_overlay">#66000000</color>
+    <!--文字主色-->
+    <color name="text_color_normal">#333333</color>
+    <!--hint文字主色-->
+    <color name="text_color_hint">#ababab</color>
+    <!--title-->
+    <color name="text_color_title">#222222</color>
+
+    <color name="text_color_gray">#888888</color>
+    <color name="color_common_black">#333333</color>
+    <!--分割线颜色-->
+    <color name="line_color_divider">#f5f5f5</color>
+    <!--分割线颜色-->
+    <color name="line_color_divider_eaeaea">#eaeaea</color>
+    <!--边框颜色-->
+    <color name="border_color_task_tag">#dadada</color>
+
+    <!--边框颜色-->
+    <color name="color_fc9993">#fc9993</color>
+    <color name="color_e6382d">#e6382d</color>
+    <color name="color_96382d">#96382d</color>
+    <color name="color_aaaaaa">#aaaaaa</color>
 </resources>

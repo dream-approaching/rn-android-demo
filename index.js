@@ -1,3 +1,4 @@
-import AppRegistry from './tab1'
+import { AppRegistry} from 'react-native';
+import App from './app';
 
-export default AppRegistry
+AppRegistry.registerComponent('MyReactNativeApp', () => App);
