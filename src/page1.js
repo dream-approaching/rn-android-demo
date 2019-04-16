@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, Button } from "react-native";
-import { createStackNavigator } from "react-navigation";
+import { createStackNavigator, createAppContainer } from "react-navigation";
 import * as Animatable from "react-native-animatable";
 import DeviceInfo from "react-native-device-info";
 
@@ -45,7 +45,7 @@ class DetailsScreen extends React.Component {
   }
 }
 
-const RootStack = createStackNavigator(
+const AppNavigator = createStackNavigator(
   {
     Home: HomeScreen,
     Details: DetailsScreen
@@ -55,8 +55,10 @@ const RootStack = createStackNavigator(
   }
 );
 
+const AppContainer = createAppContainer(AppNavigator);
+
 export default class App extends React.Component {
   render() {
-    return <RootStack />;
+    return <AppContainer />;
   }
 }

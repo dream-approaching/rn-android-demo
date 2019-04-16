@@ -14,20 +14,22 @@ import com.facebook.react.common.LifecycleState;
 import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler;
 import com.facebook.react.shell.MainReactPackage;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
+import com.swmansion.gesturehandler.react.RNGestureHandlerEnabledRootView;
+import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 
 import java.util.Arrays;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements DefaultHardwareBackBtnHandler {
     private final int OVERLAY_PERMISSION_REQ_CODE = 1;
-    private ReactRootView mReactRootView;
+    private RNGestureHandlerEnabledRootView mReactRootView;
     private ReactInstanceManager mReactInstanceManager;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mReactRootView = new ReactRootView(this);
+        mReactRootView = new RNGestureHandlerEnabledRootView(this);
         mReactInstanceManager = ReactInstanceManager.builder()
                 .setApplication(getApplication())
                 .setCurrentActivity(this)
@@ -35,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements DefaultHardwareBa
                 .setJSMainModulePath("index")
                 .addPackages(Arrays.<ReactPackage>asList(
                         new MainReactPackage(),
+            new RNGestureHandlerPackage(),
             new RNDeviceInfo()))
                 .setUseDeveloperSupport(BuildConfig.DEBUG)
                 .setInitialLifecycleState(LifecycleState.RESUMED)
