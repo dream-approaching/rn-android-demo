@@ -94,7 +94,7 @@ public class FirstFragment extends BaseV4Fragment implements DefaultHardwareBack
                 .setApplication(getActivity().getApplication())
                 .setCurrentActivity(getActivity())
                 .setBundleAssetName("index.android.bundle")
-                .setJSMainModulePath("index")
+                .setJSMainModulePath("tab1")
                 .addPackages(getPackages())
                 .setUseDeveloperSupport(BuildConfig.DEBUG)
                 .setInitialLifecycleState(LifecycleState.RESUMED)

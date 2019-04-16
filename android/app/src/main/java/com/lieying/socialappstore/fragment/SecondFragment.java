@@ -87,7 +87,7 @@ public class SecondFragment extends BaseV4Fragment implements DefaultHardwareBac
                 .setApplication(getActivity().getApplication())
                 .setCurrentActivity(getActivity())
                 .setBundleAssetName("index.android.bundle")
-                .setJSMainModulePath("index")
+                .setJSMainModulePath("tab2")
                 .addPackages(getPackages())
                 .setUseDeveloperSupport(BuildConfig.DEBUG)
                 .setInitialLifecycleState(LifecycleState.RESUMED)
