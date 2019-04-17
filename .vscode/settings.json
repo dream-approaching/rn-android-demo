@@ -1,4 +1,7 @@
 {
-  "java.configuration.updateBuildConfiguration": "interactive",
-  "editor.formatOnSave": true
+    "editor.formatOnSave": true,
+    "typescript.preferences.quoteStyle": "single",
+    "prettier.singleQuote": true,
+    "prettier.jsxSingleQuote": true,
+    "editor.tabSize": 2
 }

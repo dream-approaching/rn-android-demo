@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
+import com.lieying.socialappstore.CustomToastPackage;
 import com.lieying.socialappstore.utils.ClickEventUtils;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 
@@ -50,7 +51,8 @@ public abstract class BaseV4Fragment extends Fragment implements BaseIViewUI {
         return Arrays.<ReactPackage>asList(
                 new MainReactPackage(),
             new RNGestureHandlerPackage(),
-            new RNDeviceInfo());
+            new RNDeviceInfo(),
+                new CustomToastPackage());
     }
 
     public List<Disposable> getDisposableList() {

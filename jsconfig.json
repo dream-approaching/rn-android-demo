@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "MyReactNativeApp/src/components": ["src/components/*"]
+    }
+  },
+  "exclude": ["node_modules", "dist"]
+}

@@ -8,31 +8,23 @@ import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.facebook.react.ReactInstanceManager;
-import com.facebook.react.ReactPackage;
-import com.facebook.react.ReactRootView;
 import com.facebook.react.common.LifecycleState;
-import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler;
-import com.facebook.react.shell.MainReactPackage;
 import com.lieying.socialappstore.BuildConfig;
-import com.lieying.socialappstore.base.BaseV4Fragment;
 import com.swmansion.gesturehandler.react.RNGestureHandlerEnabledRootView;
 
-import java.util.Arrays;
 
-public class SecondFragment extends BaseV4Fragment implements DefaultHardwareBackBtnHandler {
+public class SecondFragment extends BaseReactFragment{
     private final int OVERLAY_PERMISSION_REQ_CODE = 1;
-    private RNGestureHandlerEnabledRootView mReactRootView;
-    private ReactInstanceManager mReactInstanceManager;
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    public static SecondFragment newInstance(String param1, String param2) {
+    public static SecondFragment newInstance(String param1, String param2 , boolean debug) {
         SecondFragment fragment = new SecondFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putString(ARG_PARAM_JSMAINMODULE_PATH, param1);
+        args.putString(ARG_PARAM_MODULE_NAME, param2);
+        args.putBoolean(ARG_PARAM_MODULE_DEBUG, debug);
         fragment.setArguments(args);
         return fragment;
     }
@@ -49,81 +41,18 @@ public class SecondFragment extends BaseV4Fragment implements DefaultHardwareBac
 
     @Override
     public void initData() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (!Settings.canDrawOverlays(getContext())) {
-                Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                        Uri.parse("package:" + getContext().getPackageName()));
-                startActivityForResult(intent, OVERLAY_PERMISSION_REQ_CODE);
-            }
-        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//            if (!Settings.canDrawOverlays(getContext())) {
+//                Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+//                        Uri.parse("package:" + getContext().getPackageName()));
+//                startActivityForResult(intent, OVERLAY_PERMISSION_REQ_CODE);
+//            }
+//        }
     }
 
     @Override
     public void initListener() {
 
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        if (mReactInstanceManager != null) {
-            mReactInstanceManager.onHostPause(getActivity());
-        }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        if (mReactInstanceManager != null) {
-            mReactInstanceManager.onHostResume(getActivity(), this);
-        }
-    }
-
-    @Override
-    protected View setContentView(LayoutInflater layoutInflater, ViewGroup viewGroup, Bundle bundle) {
-        mReactRootView = new RNGestureHandlerEnabledRootView(getActivity());
-        mReactInstanceManager = ReactInstanceManager.builder()
-                .setApplication(getActivity().getApplication())
-                .setCurrentActivity(getActivity())
-                .setBundleAssetName("index.android.bundle")
-                .setJSMainModulePath("tab2")
-                .addPackages(getPackages())
-                .setUseDeveloperSupport(BuildConfig.DEBUG)
-                .setInitialLifecycleState(LifecycleState.RESUMED)
-                .build();
-        // 注意这里的MyReactNativeApp必须对应“index.js”中的
-        // “AppRegistry.registerComponent()”的第一个参数
-        mReactRootView.startReactApplication(mReactInstanceManager, "MyReactNativeApp", null);
-        return mReactRootView;
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-
-        if (mReactInstanceManager != null) {
-            mReactInstanceManager.onHostDestroy(getActivity());
-        }
-        if (mReactRootView != null) {
-            mReactRootView.unmountReactApplication();
-        }
-    }
-
-    @Override
-    public void invokeDefaultOnBackPressed() {
-
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == OVERLAY_PERMISSION_REQ_CODE) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                if (!Settings.canDrawOverlays(getContext())) {
-                    mReactInstanceManager.onActivityResult( getActivity(), requestCode, resultCode, data );
-                }
-            }
-        }
     }
 
 

@@ -15,9 +15,12 @@
 
 #### 使用说明
 
-1. xxxx
-2. xxxx
-3. xxxx
+1. 安装依赖，推荐使用`yarn`，或者使用`npm install`
+2. 启动项目：
+    * 开启一个模拟器，或者使用usb连接真机设备
+    * 运行：
+      * 方式1：启动服务(`npm run start` / `react-native start` ) + Android Studio `Run app`
+      * 方式2：`react-native run-android --variant CESHIDebug`
 
 #### 参与贡献
 

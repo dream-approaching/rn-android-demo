@@ -12,6 +12,7 @@ import android.support.v4.view.ViewPager;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.common.LifecycleState;
@@ -19,6 +20,8 @@ import com.facebook.react.shell.MainReactPackage;
 import com.lieying.socialappstore.R;
 import com.lieying.socialappstore.base.BaseFragmentActivity;
 import com.lieying.socialappstore.base.BaseV4Fragment;
+import com.lieying.socialappstore.callback.FragmentCallback;
+import com.lieying.socialappstore.fragment.BaseReactFragment;
 import com.lieying.socialappstore.fragment.FirstFragment;
 import com.lieying.socialappstore.fragment.SecondFragment;
 import com.lieying.socialappstore.fragment.ThirdFragment;
@@ -27,19 +30,15 @@ import com.lieying.socialappstore.utils.PermissionUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends BaseFragmentActivity {
+public class MainActivity extends BaseFragmentActivity implements FragmentCallback {
     private BottomNavigationView mNavigation;//底部tab
     private final int WRITE_EXTERNAL_STORAGE_REQ_CODE = 1;
     private ViewPager mViewPager;
     private ViewPagerAdapter mAdapter;
-    private ArrayList<Fragment> fragments = new ArrayList<>();
+    private ArrayList<BaseReactFragment> fragments = new ArrayList<>();
     FirstFragment firstFragment;
     SecondFragment secondFragment;
     ThirdFragment thirdFragment;
-    private List<ReactInstanceManager> reactInstanceManagerList;
-    private ReactInstanceManager mReactInManager_one;
-    private ReactInstanceManager mReactInManager_two;
-    private ReactInstanceManager mReactInManager_three;
     private int position;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -75,15 +74,18 @@ public class MainActivity extends BaseFragmentActivity {
 
     @Override
     public void initView() {
-        firstFragment = FirstFragment.newInstance("" ,"");
-        secondFragment = SecondFragment.newInstance("" ,"");
-        thirdFragment = ThirdFragment.newInstance("" ,"");
+        firstFragment = FirstFragment.newInstance("tab1" ,"MyReactNativeApp" , true);
+        firstFragment.setFragmentCallback(this);
+        secondFragment = SecondFragment.newInstance("tab2" ,"MyReactNativeApptwo" , false);
+        secondFragment.setFragmentCallback(this);
+        thirdFragment = ThirdFragment.newInstance("tab3" ,"MyReactNativeAppthree" , false);
+        thirdFragment.setFragmentCallback(this);
         fragments.add(firstFragment);
         fragments.add(secondFragment);
         fragments.add(thirdFragment);
         mAdapter = new ViewPagerAdapter(getSupportFragmentManager(), fragments);
         mViewPager.setAdapter(mAdapter);
-//        mViewPager.setOffscreenPageLimit(3);
+        mViewPager.setOffscreenPageLimit(3);
     }
 
     @Override
@@ -130,10 +132,25 @@ public class MainActivity extends BaseFragmentActivity {
         }
     }
 
-    private class ViewPagerAdapter extends FragmentPagerAdapter {
-        private ArrayList<Fragment> fragments;
+    @Override
+    public void initReactManager(ReactInstanceManager reactInstanceManager) {
 
-        public ViewPagerAdapter(FragmentManager fm, ArrayList<Fragment> fragments) {
+    }
+    private long mExitTime;
+    @Override
+    public void fragmentBack() {
+        if ((System.currentTimeMillis() - mExitTime) > 2000) {
+            Toast.makeText(MainActivity.this, "再按一次退出", Toast.LENGTH_SHORT).show();
+            mExitTime = System.currentTimeMillis();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    private class ViewPagerAdapter extends FragmentPagerAdapter {
+        private ArrayList<BaseReactFragment> fragments;
+
+        public ViewPagerAdapter(FragmentManager fm, ArrayList<BaseReactFragment> fragments) {
             super(fm);
             this.fragments = fragments;
         }
@@ -151,39 +168,8 @@ public class MainActivity extends BaseFragmentActivity {
 
     @Override
     public void onBackPressed() {
-        switch (position){
-            case 0:
-                if (firstFragment != null && firstFragment.getmReactInstanceManager()!=null) {
-                    firstFragment.getmReactInstanceManager().onBackPressed();
-                } else {
-                    super.onBackPressed();
-                }
-                break;
-            case 1:
-                break;
-            case 2:
-                break;
-            case 3:
-                break;
-        }
-
+        fragments.get(position).getmReactInstanceManager().onBackPressed();
     }
-
-    public void initReactManager(List<String> fgs){
-        for(int i = 0 ; i <fgs.size() ;i++){
-            ReactInstanceManager reactInstanceManager =  ReactInstanceManager.builder()
-                    .setApplication(getApplication())
-                    .setCurrentActivity(this)
-                    .setBundleAssetName(fgs.get(i))
-                    .setJSMainModulePath("index")
-                    .addPackage(new MainReactPackage())
-                    .setUseDeveloperSupport(BuildConfig.DEBUG)
-                    .setInitialLifecycleState(LifecycleState.RESUMED)
-                    .build();
-            reactInstanceManagerList.add(reactInstanceManager);
-        }
-    }
-
 
     @Override
     protected void onResume() {

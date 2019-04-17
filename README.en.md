@@ -14,9 +14,12 @@ Software architecture description
 
 #### Instructions
 
-1. xxxx
-2. xxxx
-3. xxxx
+1. Installation depend on the package, it is recommended to use ` yarn `, or use a ` npm install `
+2. Start the project：
+    * Open an emulator or use usb to connect to the real device
+    * run：
+      * method 1：start the server(`npm run start` / `react-native start` ) + Android Studio `Run app`
+      * method 2：`react-native run-android --variant CESHIDebug`
 
 #### Contribution
 
