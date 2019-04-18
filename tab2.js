@@ -1,7 +1,6 @@
 import { AppRegistry } from 'react-native';
-import ChatTab from './src/navigation/chatStack';
+import ChatTab from '@/navigation/chatStack';
 
-export default AppRegistry.registerComponent(
-  'MyReactNativeApptwo',
-  () => ChatTab
-);
+console.log('tab2 entry');
+
+export default AppRegistry.registerComponent('MyReactNativeApptwo', () => ChatTab);

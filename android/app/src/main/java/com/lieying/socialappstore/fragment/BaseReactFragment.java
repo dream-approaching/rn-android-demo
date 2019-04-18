@@ -21,6 +21,7 @@ public abstract class BaseReactFragment extends BaseV4Fragment implements Defaul
     protected static final String ARG_PARAM_JSMAINMODULE_PATH = "param1";
     protected static final String ARG_PARAM_MODULE_NAME = "param2";
     protected static final String ARG_PARAM_MODULE_DEBUG = "param3";
+    protected static final String ARG_PARAM_MODULE_BUNDLE_NAME = "param4";
     protected RNGestureHandlerEnabledRootView mReactRootView;
 
     public void setFragmentCallback(FragmentCallback fragmentCallback) {
@@ -31,11 +32,11 @@ public abstract class BaseReactFragment extends BaseV4Fragment implements Defaul
         return mReactInstanceManager;
     }
 
-    protected void initReactInstanceManager(String jsPath , String moduleName ,boolean debug){
+    protected void initReactInstanceManager(String jsPath , String moduleName ,boolean debug ,String bundleAssetName){
         mReactInstanceManager = ReactInstanceManager.builder()
                 .setApplication(getActivity().getApplication())
                 .setCurrentActivity(getActivity())
-//                .setBundleAssetName("tab1.bundle")
+                .setBundleAssetName(bundleAssetName)
                 .setJSMainModulePath(jsPath)
                 .addPackages(getPackages())
                 .setUseDeveloperSupport(debug)
@@ -92,7 +93,8 @@ public abstract class BaseReactFragment extends BaseV4Fragment implements Defaul
         String jsPath = (String) args.get(ARG_PARAM_JSMAINMODULE_PATH);
         String moduleName = (String)args.get(ARG_PARAM_MODULE_NAME);
         boolean debug = (boolean)args.get(ARG_PARAM_MODULE_DEBUG);
-        initReactInstanceManager(jsPath , moduleName ,debug);
+        String bundleAssetName = args.getString(ARG_PARAM_MODULE_BUNDLE_NAME);
+        initReactInstanceManager(jsPath , moduleName ,debug , bundleAssetName);
         return mReactRootView;
     }
 

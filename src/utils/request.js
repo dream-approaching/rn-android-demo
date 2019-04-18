@@ -33,6 +33,7 @@ function myFetch(fetchPromise, timeout = 10 * 1000) {
   const abortPromise = new Promise((resolve, reject) => {
     setTimeout(() => {
       const err = new Error('请求超时');
+      // 告诉原生有异常
       reject(err);
     }, timeout);
   });

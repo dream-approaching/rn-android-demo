@@ -1,8 +1,9 @@
 import { Platform } from 'react-native';
 
-export { color, size, layout } from './theme';
+export { themeSize } from './size';
+export { themeColor } from './color';
+export { themeLayout } from './layout';
 
 export { scale } from './scale';
 
-export const isAndroid = Platform.OS === 'android'
-
+export const isAndroid = Platform.OS === 'android';

@@ -1,7 +1,6 @@
 import { AppRegistry } from 'react-native';
-import MineTab from './src/navigation/mineStack';
+import MineTab from '@/navigation/mineStack';
 
-export default AppRegistry.registerComponent(
-  'MyReactNativeAppthree',
-  () => MineTab
-);
+console.log('tab3 entry');
+
+export default AppRegistry.registerComponent('MyReactNativeAppthree', () => MineTab);

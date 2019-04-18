@@ -1,6 +1,7 @@
 import React from 'react';
 import { createStackNavigator, createAppContainer } from 'react-navigation';
 import Chat from '../pages/chat/chat';
+import ErrorBoundary from '../components/ErrorBoundary';
 
 const ChatNavigator = createStackNavigator(
   {
@@ -15,6 +16,10 @@ const ChatContainer = createAppContainer(ChatNavigator);
 
 export default class extends React.Component {
   render() {
-    return <ChatContainer />;
+    return (
+      <ErrorBoundary>
+        <ChatContainer />
+      </ErrorBoundary>
+    );
   }
 }

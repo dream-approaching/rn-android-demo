@@ -1,6 +1,5 @@
-import { Dimensions, StyleSheet } from 'react-native';
-
-const windowPlatform = Dimensions.get('window');
+import { themeSize } from './size';
+import { themeColor } from './color';
 
 function marginPadding(type, arg) {
   let typeObj = {};
@@ -38,37 +37,7 @@ function marginPadding(type, arg) {
   return typeObj;
 }
 
-export const color = {
-  red: '#FF0000',
-  orange: '#FFA500',
-  yellow: '#FFFF00',
-  green: '#00FF00',
-  cyan: '#00FFFF',
-  blue: '#0000FF',
-  purple: '#800080',
-  black: '#000',
-  white: '#FFF',
-  gray: '#808080',
-  transparent: 'transparent',
-
-  themeColor: '#e74c3c', // 主题色
-  textGrayColor: '#989898', // 默认灰色字体颜色
-  textBlockColor: '#262626', // 默认黑色字体颜色
-  bgColor: '#E6E6E6', // 默认背景颜色
-  placeholderColor: '#eee', // 默认placeholder颜色
-  borderColor: '#808080', // borderColor
-  navThemeColor: '#FEFEFE',
-  iconGray: '#989898',
-  iconBlack: '#262626'
-};
-
-export const size = {
-  screenWidth: windowPlatform.width,
-  screenHeight: windowPlatform.height,
-  minBorder: StyleSheet.hairlineWidth
-};
-
-export const layout = {
+export const themeLayout = {
   flex: (direc = 'row', justify = 'center', align = 'center') => {
     return {
       display: 'flex',
@@ -82,5 +51,17 @@ export const layout = {
   },
   padding(...args) {
     return marginPadding('padding', args);
+  },
+  borderSide(
+    side = 'Bottom',
+    color = themeColor.borderColor,
+    width = themeSize.minBorder,
+    borderStyle = 'solid'
+  ) {
+    return {
+      [`border${side}Width`]: width,
+      [`border${side}Color`]: color,
+      borderStyle
+    };
   }
 };

@@ -1,4 +1,5 @@
 import React from 'react';
+import { View, Text } from 'react-native';
 
 export default class ErrorBoundary extends React.Component {
   state = { error: null };
@@ -12,22 +13,21 @@ export default class ErrorBoundary extends React.Component {
     console.log('%cerror:', 'color: #0e93e0;background: #aaefe5;', error.message);
     console.log('%cerrorInfo:', 'color: #0e93e0;background: #aaefe5;', errorInfo.componentStack);
     this.setState({
-      error: error,
-      errorInfo: errorInfo
+      error
     });
+    // 告诉原生有异常
   }
 
   render() {
     const { error } = this.state;
-    console.log('errorBoundary render');
     if (error) {
       return (
-        <div>
-          <h3>程序异常</h3>
-          <details style={{ whiteSpace: 'pre-wrap' }}>
+        <View>
+          <Text>程序异常</Text>
+          <Text style={{ display: 'flex', flexWrap: 'wrap' }}>
             {this.state.error && this.state.error.toString()}
-          </details>
-        </div>
+          </Text>
+        </View>
       );
     }
     return this.props.children;

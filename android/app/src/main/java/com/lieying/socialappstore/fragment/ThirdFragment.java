@@ -26,12 +26,13 @@ public class ThirdFragment extends BaseReactFragment implements DefaultHardwareB
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    public static ThirdFragment newInstance(String param1, String param2 , boolean debug) {
+    public static ThirdFragment newInstance(String param1, String param2 , boolean debug ,String bundle) {
         ThirdFragment fragment = new ThirdFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM_JSMAINMODULE_PATH, param1);
         args.putString(ARG_PARAM_MODULE_NAME, param2);
         args.putBoolean(ARG_PARAM_MODULE_DEBUG, debug);
+        args.putString(ARG_PARAM_MODULE_BUNDLE_NAME , bundle);
         fragment.setArguments(args);
         return fragment;
     }

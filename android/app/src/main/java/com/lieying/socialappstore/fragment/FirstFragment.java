@@ -5,12 +5,13 @@ import android.os.Bundle;
 
 public class FirstFragment extends BaseReactFragment  {
 
-    public static FirstFragment newInstance(String param1, String param2 , boolean debug) {
+    public static FirstFragment newInstance(String param1, String param2 , boolean debug , String bundle) {
         FirstFragment fragment = new FirstFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM_JSMAINMODULE_PATH, param1);
         args.putString(ARG_PARAM_MODULE_NAME, param2);
         args.putBoolean(ARG_PARAM_MODULE_DEBUG, debug);
+        args.putString(ARG_PARAM_MODULE_BUNDLE_NAME , bundle);
         fragment.setArguments(args);
         return fragment;
     }

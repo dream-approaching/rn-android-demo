@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
-    "clean": "watchman watch-del-all && rm -rf yarn.lock && rm -rf node_modules && rm -rf $TMPDIR/metro-* && rm -rf $TMPDIR/haste-map-* && yarn"
+    "clean": " watchman watch-del-all && rm -rf $TMPDIR/react-native-packager-cache-* && rm -rf $TMPDIR/metro-* && rm -rf node_modules/ && rm -rf $TMPDIR/haste-map-* && npm cache clean --force && yarn"
   },
   "dependencies": {
     "react": "16.8.3",
@@ -19,8 +19,15 @@
     }
   },
   "devDependencies": {
+    "@babel/preset-react": "^7.0.0",
     "babel-eslint": "^10.0.1",
+    "babel-plugin-module-resolver": "^3.2.0",
     "eslint": "^5.16.0",
-    "eslint-plugin-react": "^7.12.4"
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-config-prettier": "^4.1.0",
+    "eslint-plugin-import": "^2.17.2",
+    "eslint-plugin-jsx-a11y": "^6.2.1",
+    "eslint-plugin-react": "^7.12.4",
+    "metro-react-native-babel-preset": "^0.53.1"
   }
 }

@@ -1,7 +1,6 @@
 import { AppRegistry } from 'react-native';
-import RecommendTab from './src/navigation/recommendStack';
+import RecommendTab from '@/navigation/recommendStack';
 
-export default AppRegistry.registerComponent(
-  'MyReactNativeApp',
-  () => RecommendTab
-);
+console.log('tab1 entry');
+
+export default AppRegistry.registerComponent('MyReactNativeApp', () => RecommendTab);

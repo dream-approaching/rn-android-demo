@@ -19,12 +19,13 @@ public class SecondFragment extends BaseReactFragment{
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    public static SecondFragment newInstance(String param1, String param2 , boolean debug) {
+    public static SecondFragment newInstance(String param1, String param2 , boolean debug , String bundle) {
         SecondFragment fragment = new SecondFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM_JSMAINMODULE_PATH, param1);
         args.putString(ARG_PARAM_MODULE_NAME, param2);
         args.putBoolean(ARG_PARAM_MODULE_DEBUG, debug);
+        args.putString(ARG_PARAM_MODULE_BUNDLE_NAME , bundle);
         fragment.setArguments(args);
         return fragment;
     }

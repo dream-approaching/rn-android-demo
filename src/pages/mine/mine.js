@@ -1,34 +1,58 @@
 import React from 'react';
-import { View, Text, Button } from 'react-native';
-import DeviceInfo from 'react-native-device-info';
-import { liyi } from '../../components/NativeModules/index';
+import { View, Text } from 'react-native';
+import MenuList from '@/components/MenuList';
+import myImages from '@/utils/images';
 
 export default class Mine extends React.Component {
   static navigationOptions = {
-    title: 'Mine'
-  };
-
-  state = {
-    brand: '123'
+    header: null
   };
 
   componentDidMount() {
-    this.setState({
-      brand: DeviceInfo.getBrand()
-    });
-    console.log('%cliyi:', 'color: #0e93e0;background: #aaefe5;', liyi);
-    throw new Error('I crashed!');
+    console.log('Mine componentDidMount');
+    console.log('15259040632');
   }
 
   render() {
-    console.log('Mine render');
-    const { brand } = this.state;
+    console.log('%cmyImages:', 'color: #0e93e0;background: #aaefe5;', myImages);
+    const menu = [
+      {
+        title: '我要认领应用',
+        leftIcon: myImages.own,
+        navigatePath: ''
+      },
+      {
+        title: '我的通知',
+        leftIcon: myImages.notice,
+        navigatePath: ''
+      },
+      {
+        title: '我的关注',
+        leftIcon: myImages.attention,
+        navigatePath: ''
+      },
+      {
+        title: '我的粉丝',
+        leftIcon: myImages.fans,
+        navigatePath: ''
+      },
+      {
+        title: '设置',
+        leftIcon: myImages.setting,
+        navigatePath: 'Setting'
+      },
+      {
+        title: '反馈意见',
+        leftIcon: myImages.suggest,
+        navigatePath: ''
+      }
+    ];
     return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Text>Mine Screen</Text>
-        <Text>12345_{brand}</Text>
-        <Button title="打开原生界面" onPress={() => liyi.open(liyi.KEY_ONE)} />
-        <Button title="设置2" onPress={() => this.props.navigation.navigate('Setting')} />
+      <View
+        style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#eee' }}
+      >
+        <Text>Mine Screens</Text>
+        <MenuList menu={menu} />
       </View>
     );
   }

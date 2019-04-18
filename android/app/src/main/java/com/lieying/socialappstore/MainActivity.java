@@ -51,7 +51,7 @@ public class MainActivity extends BaseFragmentActivity implements FragmentCallba
                     mViewPager.setCurrentItem(0, true);
                     return true;
                 case R.id.navigation_progress:
-                    mViewPager.setCurrentItem(1, true);
+                    mViewPager.setCurrentItem(1, false);
                     return true;
                 case R.id.navigation_main:
                     mViewPager.setCurrentItem(2, true);
@@ -74,11 +74,11 @@ public class MainActivity extends BaseFragmentActivity implements FragmentCallba
 
     @Override
     public void initView() {
-        firstFragment = FirstFragment.newInstance("tab1" ,"MyReactNativeApp" , true);
+        firstFragment = FirstFragment.newInstance("tab1" ,"MyReactNativeApp" , false ,"tab1.bundle");
         firstFragment.setFragmentCallback(this);
-        secondFragment = SecondFragment.newInstance("tab2" ,"MyReactNativeApptwo" , false);
+        secondFragment = SecondFragment.newInstance("tab2" ,"MyReactNativeApptwo" , false , "tab2.bundle");
         secondFragment.setFragmentCallback(this);
-        thirdFragment = ThirdFragment.newInstance("tab3" ,"MyReactNativeAppthree" , false);
+        thirdFragment = ThirdFragment.newInstance("tab3" ,"MyReactNativeAppthree" , true , "");
         thirdFragment.setFragmentCallback(this);
         fragments.add(firstFragment);
         fragments.add(secondFragment);
