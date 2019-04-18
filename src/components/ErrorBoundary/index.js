@@ -3,18 +3,18 @@ import React from 'react';
 export default class ErrorBoundary extends React.Component {
   state = { error: null };
 
-  static getDerivedStateFromError(error) {
-    console.log('error.componentStack:', error.componentStack);
-    return { error };
-  }
+  // static getDerivedStateFromError(error) {
+  //   console.log('error.componentStack:', error.componentStack);
+  //   return { error };
+  // }
 
   componentDidCatch(error, errorInfo) {
-    // Catch errors in any components below and re-render with error message
+    console.log('%cerror:', 'color: #0e93e0;background: #aaefe5;', error.message);
+    console.log('%cerrorInfo:', 'color: #0e93e0;background: #aaefe5;', errorInfo.componentStack);
     this.setState({
       error: error,
       errorInfo: errorInfo
     });
-    // You can also log error messages to an error reporting service here
   }
 
   render() {

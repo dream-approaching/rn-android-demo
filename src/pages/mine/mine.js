@@ -17,6 +17,7 @@ export default class Mine extends React.Component {
       brand: DeviceInfo.getBrand()
     });
     console.log('%cliyi:', 'color: #0e93e0;background: #aaefe5;', liyi);
+    throw new Error('I crashed!');
   }
 
   render() {
@@ -26,11 +27,8 @@ export default class Mine extends React.Component {
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <Text>Mine Screen</Text>
         <Text>12345_{brand}</Text>
-        <Button title='打开原生界面' onPress={() => liyi.open(liyi.KEY_ONE)} />
-        <Button
-          title='设置'
-          onPress={() => this.props.navigation.navigate('Setting')}
-        />
+        <Button title="打开原生界面" onPress={() => liyi.open(liyi.KEY_ONE)} />
+        <Button title="设置2" onPress={() => this.props.navigation.navigate('Setting')} />
       </View>
     );
   }
