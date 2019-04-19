@@ -1,6 +1,6 @@
 import React from 'react';
 import { View } from 'react-native';
-import MenuItem from './MenuItem';
+import MenuCardItem from './MenuCardItem';
 
 export default class MenuList extends React.PureComponent {
   render() {
@@ -8,7 +8,7 @@ export default class MenuList extends React.PureComponent {
     return (
       <View style={style}>
         {menu.map(item => {
-          return <MenuItem key={item.title} item={item} />;
+          return <MenuCardItem key={item.title} item={item} />;
         })}
       </View>
     );

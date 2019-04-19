@@ -1,7 +1,25 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { ImageBackground, StyleSheet } from 'react-native';
 import MenuList from '@/components/MenuList';
 import myImages from '@/utils/images';
+import { themeColor, scale, themeLayout } from '@/config';
+import { ScrollView } from 'react-native-gesture-handler';
+import MenuCard from './components/MenuCard';
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  menuCon: {
+    backgroundColor: themeColor.white,
+    borderRadius: scale(25),
+    ...themeLayout.padding(0, scale(14)),
+    overflow: 'hidden',
+    width: scale(328)
+  }
+});
 
 export default class Mine extends React.Component {
   static navigationOptions = {
@@ -10,11 +28,9 @@ export default class Mine extends React.Component {
 
   componentDidMount() {
     console.log('Mine componentDidMount');
-    console.log('15259040632');
   }
 
   render() {
-    console.log('%cmyImages:', 'color: #0e93e0;background: #aaefe5;', myImages);
     const menu = [
       {
         title: '我要认领应用',
@@ -39,7 +55,7 @@ export default class Mine extends React.Component {
       {
         title: '设置',
         leftIcon: myImages.setting,
-        navigatePath: 'Setting'
+        navigatePath: ''
       },
       {
         title: '反馈意见',
@@ -48,12 +64,12 @@ export default class Mine extends React.Component {
       }
     ];
     return (
-      <View
-        style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#eee' }}
-      >
-        <Text>Mine Screens</Text>
-        <MenuList menu={menu} />
-      </View>
+      <ScrollView>
+        <ImageBackground resizeMode="stretch" source={myImages.bg} style={styles.container}>
+          <MenuCard style={styles.menuCon} menu={menu} />
+          <MenuList style={styles.menuCon} menu={menu} />
+        </ImageBackground>
+      </ScrollView>
     );
   }
 }
