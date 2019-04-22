@@ -3,7 +3,7 @@ import { Text, StyleSheet } from 'react-native';
 import { themeColor, themeSize } from '@/config';
 
 const styles = StyleSheet.create({
-  commonText: {
+  textStyle: {
     // fontFamily: 'Verdana',
     color: themeColor.font.common,
     fontSize: themeSize.font.common
@@ -13,6 +13,6 @@ const styles = StyleSheet.create({
 export default class extends React.PureComponent {
   render() {
     const { children, style } = this.props;
-    return <Text style={[styles.commonText, style]}>{children}</Text>;
+    return <Text style={[styles.textStyle, style]}>{children}</Text>;
   }
 }

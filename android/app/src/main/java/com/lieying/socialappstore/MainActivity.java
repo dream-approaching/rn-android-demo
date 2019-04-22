@@ -9,36 +9,41 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.SparseArray;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.facebook.react.ReactInstanceManager;
-import com.facebook.react.common.LifecycleState;
-import com.facebook.react.shell.MainReactPackage;
-import com.lieying.socialappstore.R;
+import com.gyf.immersionbar.ImmersionBar;
+import com.lieying.socialappstore.activity.LoginActivity;
 import com.lieying.socialappstore.base.BaseFragmentActivity;
 import com.lieying.socialappstore.base.BaseV4Fragment;
 import com.lieying.socialappstore.callback.FragmentCallback;
 import com.lieying.socialappstore.fragment.BaseReactFragment;
 import com.lieying.socialappstore.fragment.FirstFragment;
+import com.lieying.socialappstore.fragment.IndexFragment;
 import com.lieying.socialappstore.fragment.SecondFragment;
 import com.lieying.socialappstore.fragment.ThirdFragment;
+import com.lieying.socialappstore.manager.StatusBarUtil;
 import com.lieying.socialappstore.utils.PermissionUtil;
 
 import java.util.ArrayList;
-import java.util.List;
+
+import com.lieying.socialappstore.manager.ViewFrameManager;
 
 public class MainActivity extends BaseFragmentActivity implements FragmentCallback {
     private BottomNavigationView mNavigation;//底部tab
     private final int WRITE_EXTERNAL_STORAGE_REQ_CODE = 1;
     private ViewPager mViewPager;
     private ViewPagerAdapter mAdapter;
-    private ArrayList<BaseReactFragment> fragments = new ArrayList<>();
+    private ArrayList<BaseV4Fragment> fragments = new ArrayList<>();
     FirstFragment firstFragment;
     SecondFragment secondFragment;
     ThirdFragment thirdFragment;
+    RelativeLayout mRlToorbar;
     private int position;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -47,14 +52,17 @@ public class MainActivity extends BaseFragmentActivity implements FragmentCallba
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
-                case R.id.navigation_task:
+                case R.id.navigation_index:
                     mViewPager.setCurrentItem(0, true);
                     return true;
+                case R.id.navigation_task:
+                    mViewPager.setCurrentItem(1, true);
+                    return true;
                 case R.id.navigation_progress:
-                    mViewPager.setCurrentItem(1, false);
+                    mViewPager.setCurrentItem(2, false);
                     return true;
                 case R.id.navigation_main:
-                    mViewPager.setCurrentItem(2, true);
+                    mViewPager.setCurrentItem(3, true);
                     return true;
             }
             return false;
@@ -62,18 +70,29 @@ public class MainActivity extends BaseFragmentActivity implements FragmentCallba
     };
     @Override
     protected void setContentView(Bundle bundle) {
-
         setContentView(R.layout.activity_main);
+        ImmersionBar.with(this).init();
     }
 
     @Override
     public void findView() {
         mNavigation = findViewById(R.id.navigation);
         mViewPager = findViewById(R.id.main_viewpager);
+        mRlToorbar = findViewById(R.id.rl_main_activity_top_bar);
     }
 
     @Override
     public void initView() {
+        //这个地方根据配置加载fragment，目前只支持动态再前面添加fragment
+        SparseArray<ViewFrameManager.IndexFgBean> myViewMap =  ViewFrameManager.getInstance().createIndexMap();
+        for (int i = 0; i < myViewMap.size(); i++) {
+            int key = myViewMap.keyAt(i);
+            ViewFrameManager.IndexFgBean user = myViewMap.get(key);
+            if(user.isNative()){
+                createNativeFragment(key);
+            }
+        }
+
         firstFragment = FirstFragment.newInstance("tab1" ,"MyReactNativeApp" , false ,"tab1.bundle");
         firstFragment.setFragmentCallback(this);
         secondFragment = SecondFragment.newInstance("tab2" ,"MyReactNativeApptwo" , false , "tab2.bundle");
@@ -85,13 +104,20 @@ public class MainActivity extends BaseFragmentActivity implements FragmentCallba
         fragments.add(thirdFragment);
         mAdapter = new ViewPagerAdapter(getSupportFragmentManager(), fragments);
         mViewPager.setAdapter(mAdapter);
-        mViewPager.setOffscreenPageLimit(3);
+        mViewPager.setOffscreenPageLimit(4);
     }
+    private void createNativeFragment(int position){
+        IndexFragment indexFragment = IndexFragment.newInstance();
+        fragments.add(indexFragment);
+    }
+
 
     @Override
     public void initData() {
 
         PermissionUtil.checkPermission(mContext, WRITE_EXTERNAL_STORAGE_REQ_CODE, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE});
+
+
     }
 
     @Override
@@ -109,10 +135,16 @@ public class MainActivity extends BaseFragmentActivity implements FragmentCallba
                 position = i;
                 switch (i) {
                     case 0:
+                        mRlToorbar.setVisibility(View.VISIBLE);
                         break;
                     case 1:
+                        mRlToorbar.setVisibility(View.VISIBLE);
                         break;
                     case 2:
+                        mRlToorbar.setVisibility(View.VISIBLE);
+                        break;
+                    case 3:
+                        mRlToorbar.setVisibility(View.GONE);
                         break;
                 }
             }
@@ -148,9 +180,9 @@ public class MainActivity extends BaseFragmentActivity implements FragmentCallba
     }
 
     private class ViewPagerAdapter extends FragmentPagerAdapter {
-        private ArrayList<BaseReactFragment> fragments;
+        private ArrayList<BaseV4Fragment> fragments;
 
-        public ViewPagerAdapter(FragmentManager fm, ArrayList<BaseReactFragment> fragments) {
+        public ViewPagerAdapter(FragmentManager fm, ArrayList<BaseV4Fragment> fragments) {
             super(fm);
             this.fragments = fragments;
         }
@@ -168,11 +200,24 @@ public class MainActivity extends BaseFragmentActivity implements FragmentCallba
 
     @Override
     public void onBackPressed() {
-        fragments.get(position).getmReactInstanceManager().onBackPressed();
+        if(fragments.get(position) instanceof BaseReactFragment){
+            ((BaseReactFragment) fragments.get(position)).getmReactInstanceManager().onBackPressed();
+        }else{
+            super.onBackPressed();
+        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+    }
+
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_MENU && fragments.get(position) instanceof BaseReactFragment&&((BaseReactFragment) fragments.get(position)).getmReactInstanceManager() != null) {
+            ((BaseReactFragment) fragments.get(position)).getmReactInstanceManager().showDevOptionsDialog();
+            return true;
+        }
+        return super.onKeyUp(keyCode, event);
     }
 }

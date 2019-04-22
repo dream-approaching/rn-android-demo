@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">Socialappstore</string>
+    <string name="string_login_or_register">登陆/注册</string>
+    <string name="string_agree_register_protocol">登陆注册表示同意</string>
+    <string name="string_us_protocol">树莓用户使用协议、隐私政策</string>
+    <string name="string_login">登陆</string>
+    <string name="string_vertify_code">请输入验证码</string>
+    <string name="string_get_vertify_code">获取验证码</string>
+    <string name="app_lg_digits_pwd">QWERTYUIOPLKJHGFDSAZXCVBNMqwertyuioplkjhgfdsazxcvbnm0123456789</string>
+    <string name="app_ip_rl_po">请输入正确的手机号</string>
+    <string name="string_fd_send_vft">获取验证码</string>
+    <string name="string_explore">探索</string>
 </resources>

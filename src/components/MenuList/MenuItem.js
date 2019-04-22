@@ -1,16 +1,45 @@
 import React from 'react';
 import { View, StyleSheet, Image } from 'react-native';
-import { themeLayout, scale, themeSize } from '@/config';
+import { themeLayout, scale } from '@/config';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import NavigationService from '@/navigation/NavigationService';
 import myImages from '@/utils/images';
 import CommonText from '@/components/AppText/CommonText';
 
+export default class MenuItem extends React.PureComponent {
+  handlePressButton = () => {
+    const { item } = this.props;
+    if (item.navigatePath) {
+      NavigationService.navigate(item.navigatePath, {});
+    } else {
+      item.onPressAction && item.onPressAction();
+    }
+  };
+
+  render() {
+    const { item } = this.props;
+    return (
+      <TouchableOpacity onPress={this.handlePressButton}>
+        <View style={[styles.menuItemCon]}>
+          <View style={styles.menuLeft}>
+            {(item.icon && (
+              <Image resizeMode='contain' style={styles.iconLeft} source={item.icon} />
+            )) ||
+              null}
+            <CommonText style={styles.menuTitle}>{item.title}</CommonText>
+          </View>
+          <Image style={styles.iconRight} source={myImages.next} />
+        </View>
+      </TouchableOpacity>
+    );
+  }
+}
+
 const styles = StyleSheet.create({
   menuItemCon: {
     ...themeLayout.flex('row', 'space-between', 'center'),
     ...themeLayout.borderSide('Bottom'),
-    ...themeLayout.padding(0, scale(12)),
+    ...themeLayout.padding(0, scale(24), 0, scale(12)),
     height: scale(50)
   },
   menuLeft: {
@@ -28,36 +57,3 @@ const styles = StyleSheet.create({
     height: scale(15)
   }
 });
-
-export default class MenuItem extends React.PureComponent {
-  handlePressButton = () => {
-    const { item, onPressAction = () => {} } = this.props;
-    if (item.navigatePath) {
-      NavigationService.navigate(item.navigatePath, {});
-    } else {
-      onPressAction();
-    }
-  };
-
-  render() {
-    const { item } = this.props;
-    return (
-      <TouchableOpacity onPress={this.handlePressButton}>
-        <View
-          style={[styles.menuItemCon, { marginTop: scale(item.marginTop) || themeSize.minBorder }]}
-        >
-          <View style={styles.menuLeft}>
-            {(item.leftIcon && (
-              <Image resizeMode="contain" style={styles.iconLeft} source={item.leftIcon} />
-            )) ||
-              null}
-            <CommonText style={styles.menuTitle}>{item.title}</CommonText>
-          </View>
-          <View style={styles.menuRight}>
-            <Image style={styles.iconRight} source={myImages.next} />
-          </View>
-        </View>
-      </TouchableOpacity>
-    );
-  }
-}

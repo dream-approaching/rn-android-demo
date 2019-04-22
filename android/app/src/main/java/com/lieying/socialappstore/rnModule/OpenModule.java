@@ -1,13 +1,10 @@
 package com.lieying.socialappstore.rnModule;
 
 import android.content.Intent;
-import android.util.Log;
-import android.widget.Toast;
 
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
-import com.lieying.socialappstore.activity.Main3Activity;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,7 +14,6 @@ import javax.annotation.Nonnull;
 public class OpenModule extends ReactContextBaseJavaModule {
 
     private static final String DURATION_SHORT_KEY = "KEY_ONE";
-    private static final String DURATION_LONG_KEY = "LONG";
 
     public OpenModule(ReactApplicationContext reactContext) {
         super(reactContext);
@@ -26,7 +22,7 @@ public class OpenModule extends ReactContextBaseJavaModule {
     @Nonnull
     @Override
     public String getName() {
-        return "liyi";
+        return "OpenActivity";
     }
     @Override
     public Map<String, Object> getConstants() {
@@ -34,9 +30,15 @@ public class OpenModule extends ReactContextBaseJavaModule {
         constants.put(DURATION_SHORT_KEY, "aaaa");
         return constants;
     }
+
+    /**
+     * @param message
+     * com.lieying.content.social.ENTER
+     */
     @ReactMethod
     public void open(String message) {
-        Log.e("test" , message+"~~~~~");
-        getReactApplicationContext().startActivity(new Intent(getReactApplicationContext() , Main3Activity.class));
+        Intent intent = new Intent(message);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        getReactApplicationContext().startActivity(intent);
     }
 }

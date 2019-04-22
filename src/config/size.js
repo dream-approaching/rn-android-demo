@@ -8,6 +8,8 @@ export const themeSize = {
   screenHeight: windowPlatform.height,
   minBorder: StyleSheet.hairlineWidth,
   font: {
-    common: scale(15)
+    larger: scale(17),
+    common: scale(15),
+    secondary: scale(13)
   }
 };

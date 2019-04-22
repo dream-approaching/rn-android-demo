@@ -2,6 +2,13 @@ apply plugin: 'com.android.application'
 def dimensions_debug = "debug"
 def dimensions_release = "release"
 
+project.ext.react = [
+    entryFile: "tab3.js"
+]
+
+apply from: "../../node_modules/react-native/react.gradle"
+apply from: "../../node_modules/react-native-code-push/android/codepush.gradle"
+
 def static releaseTime() {
     return new Date().format("yyyy-MM-dd", TimeZone.getTimeZone("UTC"))
 }
@@ -29,8 +36,9 @@ android {
         minSdkVersion rootProject.ext.minSdk
         targetSdkVersion rootProject.ext.targetSdk
         versionCode 10000500
-        versionName "1.0.05"
+        versionName "1.0.5"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
     }
     signingConfigs {
         debug {
@@ -58,18 +66,46 @@ android {
             buildConfigField("String", "SINA_SECRET", "\"4b46ec1f685c29229b43c3b9e826072f\"")
 //            buildConfigField("String", "MAIN_HOST", "\"http://192.168.0.200:8060\"")
             buildConfigField("String", "MAIN_HOST", "\"https://xcs.wwlihe.cn\"")
+            buildConfigField( "String", "CODEPUSH_KEY", '""')
+            // applicationIdSuffix ".debug"
+        }
+
+        releaseStaging {
+
+            //混淆
+            minifyEnabled false
+            debuggable false
+            shrinkResources false
+            //Zipalign优化
+            zipAlignEnabled true
+            signingConfig signingConfigs.relealse
+            matchingFallbacks = ['release', 'debug']
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField("String", "UMENG_APP_KEY", "\"5c7e2b032036573c490017af\"")
+            buildConfigField("String", "UMENG_SECRET", "\"1\"")
+            buildConfigField("String", "WECHAT_APPKEY", "\"wxdc1e388c3822c80b\"")
+            buildConfigField("String", "WECHAT_SECRET", "\"815bba5db8e2825432479294bd2a0f6b\"")
+            buildConfigField("String", "QQ_APPKEY", "\"1.0.385877\"")
+            buildConfigField("String", "QQ_SECRET", "\"1xCo8itrjmSXBBUT\"")
+            buildConfigField("String", "SINA_APPKEY", "\"1789429604\"")
+            buildConfigField("String", "SINA_SECRET", "\"4b46ec1f685c29229b43c3b9e826072f\"")
+//            buildConfigField("String", "MAIN_HOST", "\"http://192.168.0.200:8060\"")
+            buildConfigField("String", "MAIN_HOST", "\"https://xcs.wwlihe.cn\"")
+            buildConfigField ("String", "CODEPUSH_KEY", "\"GLKuQCuRsS8eT_Y98SLI5XG9Q5so020bac4f-d7e1-48e7-8584-7bdb6a68f649\"")
+
         }
 
         release {
             //混淆
-            minifyEnabled true
+            minifyEnabled false
             debuggable false
             shrinkResources false
             //Zipalign优化
             zipAlignEnabled true
             signingConfig signingConfigs.relealse
 
-//            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             buildConfigField("String", "UMENG_APP_KEY", "\"5c7e2b032036573c490017af\"")
             buildConfigField("String", "UMENG_SECRET", "\"1\"")
@@ -80,6 +116,7 @@ android {
             buildConfigField("String", "SINA_APPKEY", "\"1789429604\"")
             buildConfigField("String", "SINA_SECRET", "\"4b46ec1f685c29229b43c3b9e826072f\"")
             buildConfigField("String", "MAIN_HOST", "\"https://xcs.wwlihe.cn\"")
+            buildConfigField ("String", "CODEPUSH_KEY", "\"EoCNCFQz2IqSKYEDhHVblekp2tXe020bac4f-d7e1-48e7-8584-7bdb6a68f649\"")
         }
 
 //        pretest {
@@ -115,6 +152,7 @@ android {
 }
 
 dependencies {
+    implementation project(':react-native-code-push')
     implementation project(':react-native-gesture-handler')
     implementation project(':react-native-device-info')
     implementation fileTree(include: ['*.jar'], dir: 'libs')
@@ -139,4 +177,9 @@ dependencies {
     implementation 'io.reactivex.rxjava2:rxjava:2.2.6'
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
     implementation "com.facebook.react:react-native:+"
+
+    implementation 'me.hiten:jkcardlayout:0.1.1'
+    implementation 'com.gyf.immersionbar:immersionbar:3.0.0-beta01'
+    implementation project(path: ':comlib')
+    implementation 'com.android.support:multidex:1.0.3'
 }

@@ -3,6 +3,7 @@ import { createStackNavigator, createAppContainer } from 'react-navigation';
 import Mine from '@/pages/mine/mine';
 import Setting from '@/pages/setting/setting';
 import ErrorBoundary from '@/components/ErrorBoundary';
+import codePush from "react-native-code-push";
 import NavigationService from './NavigationService';
 
 const MineNavigator = createStackNavigator(
@@ -17,7 +18,7 @@ const MineNavigator = createStackNavigator(
 
 const MineContainer = createAppContainer(MineNavigator);
 
-export default class extends React.Component {
+class MineStack extends React.Component {
   constructor(props) {
     super(props);
     console.log('mineStack constructor');
@@ -39,3 +40,7 @@ export default class extends React.Component {
     );
   }
 }
+
+const codePushOptions = { checkFrequency: codePush.CheckFrequency.ON_APP_RESUME };
+
+export default codePush(codePushOptions)(MineStack)

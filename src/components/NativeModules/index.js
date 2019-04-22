@@ -1,3 +1,6 @@
 import { NativeModules } from 'react-native';
 
-export const { liyi } = NativeModules;
+/**
+ * OpenActivity 打开原生activity
+ */
+export const { OpenActivity } = NativeModules;

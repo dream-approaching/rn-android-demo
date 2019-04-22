@@ -11,8 +11,10 @@ import android.view.ViewGroup;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
+import com.lieying.socialappstore.BuildConfig;
 import com.lieying.socialappstore.CustomToastPackage;
 import com.lieying.socialappstore.utils.ClickEventUtils;
+import com.microsoft.codepush.react.CodePush;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 
 import java.util.Arrays;
@@ -50,6 +52,7 @@ public abstract class BaseV4Fragment extends Fragment implements BaseIViewUI {
     protected List<ReactPackage> getPackages() {
         return Arrays.<ReactPackage>asList(
                 new MainReactPackage(),
+            new CodePush(BuildConfig.CODEPUSH_KEY, mContext.getApplicationContext(), BuildConfig.DEBUG),
             new RNGestureHandlerPackage(),
             new RNDeviceInfo(),
                 new CustomToastPackage());

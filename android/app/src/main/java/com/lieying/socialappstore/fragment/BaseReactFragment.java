@@ -7,12 +7,17 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.facebook.react.ReactInstanceManager;
+import com.facebook.react.ReactNativeHost;
+import com.facebook.react.ReactPackage;
 import com.facebook.react.common.LifecycleState;
 import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler;
 import com.lieying.socialappstore.BuildConfig;
 import com.lieying.socialappstore.base.BaseV4Fragment;
 import com.lieying.socialappstore.callback.FragmentCallback;
+import com.microsoft.codepush.react.CodePush;
 import com.swmansion.gesturehandler.react.RNGestureHandlerEnabledRootView;
+
+import java.util.List;
 
 /**
  * Created by chenjialin on 17/3/13.
@@ -39,6 +44,7 @@ public abstract class BaseReactFragment extends BaseV4Fragment implements Defaul
                 .setBundleAssetName(bundleAssetName)
                 .setJSMainModulePath(jsPath)
                 .addPackages(getPackages())
+                .setJSBundleFile(CodePush.getJSBundleFile(bundleAssetName))
                 .setUseDeveloperSupport(debug)
                 .setInitialLifecycleState(LifecycleState.RESUMED)
                 .build();

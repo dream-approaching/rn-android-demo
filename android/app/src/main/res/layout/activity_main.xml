@@ -7,15 +7,37 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <RelativeLayout
+        android:id="@+id/rl_main_activity_top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toolbar_height"
+        android:background="@drawable/bg_home_nav_bg">
+        <TextView
+            android:layout_marginTop="@dimen/dimens_40dp"
+            android:layout_marginLeft="@dimen/dimens_25dp"
+            android:textColor="@color/white"
+            android:textSize="@dimen/dimens_19sp"
+            android:text="@string/string_explore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
+        <ImageView
+            android:layout_marginRight="@dimen/dimens_25dp"
+            android:layout_marginTop="@dimen/dimens_40dp"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/ic_home_top_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
 
     <android.support.v4.view.ViewPager
-        android:layout_marginTop="@dimen/toolbar_height"
         android:id="@+id/main_viewpager"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:layout_below="@+id/rl_main_activity_top_bar"
         android:layout_marginBottom="60dp"
-        tools:background="#ff0000" />
+        tools:background="@color/white" />
+
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation"
         android:layout_width="match_parent"
@@ -26,19 +48,4 @@
         app:itemTextColor="@color/color_home_nav"
         app:labelVisibilityMode="labeled"
         app:menu="@menu/navigation" />
-    <RelativeLayout
-        android:id="@+id/iv_main_title"
-        android:background="@color/colorPrimary"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/toolbar_height">
-        <TextView
-            android:layout_marginTop="@dimen/dimens_10dp"
-            android:text="@string/app_name"
-            android:textSize="@dimen/text_size_title"
-            android:textColor="@color/color_common_black"
-            android:layout_centerInParent="true"
-            android:textStyle="bold"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </RelativeLayout>
 </RelativeLayout>

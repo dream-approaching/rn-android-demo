@@ -12,9 +12,7 @@ export const themeColor = {
   transparent: 'transparent',
 
   primaryColor: '#e74c3c', // 主题色
-  textGrayColor: '#989898', // 默认灰色字体颜色
-  textBlockColor: '#262626', // 默认黑色字体颜色
-  bgColor: '#E6E6E6', // 默认背景颜色
+  bgColor: '#eee', // 默认背景颜色
   placeholderColor: '#eee', // 默认placeholder颜色
   borderColor: '#eee', // borderColor
   navThemeColor: '#FEFEFE',
@@ -22,6 +20,8 @@ export const themeColor = {
   iconBlack: '#262626',
 
   font: {
-    common: '#303030'
+    larger: '#303030',
+    common: '#303030',
+    secondary: '#707070'
   }
 };

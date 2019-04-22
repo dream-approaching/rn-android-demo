@@ -6,21 +6,26 @@ function marginPadding(type, arg) {
   switch (arg.length) {
     case 1:
       typeObj = {
-        [`${type}Vertical`]: arg[0],
-        [`${type}Horizontal`]: arg[0]
+        [`${type}Top`]: arg[0],
+        [`${type}Right`]: arg[0],
+        [`${type}Bottom`]: arg[0],
+        [`${type}Left`]: arg[0]
       };
       break;
     case 2:
       typeObj = {
-        [`${type}Vertical`]: arg[0],
-        [`${type}Horizontal`]: arg[1]
+        [`${type}Top`]: arg[0],
+        [`${type}Right`]: arg[1],
+        [`${type}Bottom`]: arg[0],
+        [`${type}Left`]: arg[1]
       };
       break;
     case 3:
       typeObj = {
         [`${type}Top`]: arg[0],
-        [`${type}Horizontal`]: arg[1],
-        [`${type}Bottom`]: arg[2]
+        [`${type}Right`]: arg[1],
+        [`${type}Bottom`]: arg[2],
+        [`${type}Left`]: arg[1]
       };
       break;
     case 4:
