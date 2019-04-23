@@ -92,7 +92,7 @@ android {
             buildConfigField("String", "SINA_SECRET", "\"4b46ec1f685c29229b43c3b9e826072f\"")
 //            buildConfigField("String", "MAIN_HOST", "\"http://192.168.0.200:8060\"")
             buildConfigField("String", "MAIN_HOST", "\"https://xcs.wwlihe.cn\"")
-            buildConfigField ("String", "CODEPUSH_KEY", "\"GLKuQCuRsS8eT_Y98SLI5XG9Q5so020bac4f-d7e1-48e7-8584-7bdb6a68f649\"")
+            buildConfigField ("String", "CODEPUSH_KEY", "\"o4iJo8DvOvPwZqmDoQ5LREDtjbLU020bac4f-d7e1-48e7-8584-7bdb6a68f649\"")
 
         }
 
@@ -116,7 +116,7 @@ android {
             buildConfigField("String", "SINA_APPKEY", "\"1789429604\"")
             buildConfigField("String", "SINA_SECRET", "\"4b46ec1f685c29229b43c3b9e826072f\"")
             buildConfigField("String", "MAIN_HOST", "\"https://xcs.wwlihe.cn\"")
-            buildConfigField ("String", "CODEPUSH_KEY", "\"EoCNCFQz2IqSKYEDhHVblekp2tXe020bac4f-d7e1-48e7-8584-7bdb6a68f649\"")
+            buildConfigField ("String", "CODEPUSH_KEY", "\"bmR48duSItRtLTvGmuYJ5Cz-BcGr020bac4f-d7e1-48e7-8584-7bdb6a68f649\"")
         }
 
 //        pretest {
