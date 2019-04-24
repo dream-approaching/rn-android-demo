@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.lieying.comlib.bean.ExploreBean;
 import com.lieying.socialappstore.MainApplication;
 import com.lieying.socialappstore.R;
@@ -19,10 +18,13 @@ import com.lieying.socialappstore.utils.GlideUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ExploreAdapter extends RecyclerView.Adapter<ExploreAdapter.VH>{
+public class ExploreAdapter extends RecyclerView.Adapter<ExploreAdapter.VH> {
     List<ExploreBean> list = new ArrayList<>();
     private LayoutInflater mLayoutInflater;
-    public ExploreAdapter(Context context , List<ExploreBean> list){
+    private OnCardClickListener cardClickListener;
+
+    public ExploreAdapter(Context context, List<ExploreBean> list, OnCardClickListener cardClickListener) {
+        this.cardClickListener = cardClickListener;
         mLayoutInflater = LayoutInflater.from(context);
         this.list = list;
     }
@@ -45,18 +47,68 @@ public class ExploreAdapter extends RecyclerView.Adapter<ExploreAdapter.VH>{
 
     class VH extends BaseViewHolder {
         ImageView iv_background;
-        TextView tv_text;
+        TextView mTvItemTitle;
+        TextView mTvItemContent;
+        ImageView mIVback;
+        ImageView mIVComment;
+        ImageView mIVCollection;
+
         public VH(@NonNull View itemView) {
             super(itemView);
-            iv_background = itemView.findViewById(R.id.iv_background);
-            tv_text = itemView.findViewById(R.id.tv_text);
+            iv_background = itemView.findViewById(R.id.iv_item_card_background);
+            mTvItemContent = itemView.findViewById(R.id.tv_item_card_content);
+            mTvItemTitle = itemView.findViewById(R.id.tv_item_card_title);
+            mIVback = itemView.findViewById(R.id.iv_item_card_back);
+            mIVComment = itemView.findViewById(R.id.iv_item_card_comments);
+            mIVCollection = itemView.findViewById(R.id.iv_item_card_collection);
         }
 
         @Override
         public <T> void setData(T t) {
-            GlideUtils.loadImageForUrl(MainApplication.getInstance().getApplicationContext() , iv_background , ((ExploreBean)t).getImgpath());
-            tv_text.setText(((ExploreBean)t).getContent());
+            ExploreBean exploreBean = (ExploreBean)t;
+            GlideUtils.loadImageForUrl(MainApplication.getInstance().getApplicationContext(), iv_background, exploreBean.getImg());
+            mTvItemContent.setText(exploreBean.getTitle());
+            mTvItemTitle.setText(getTitle(exploreBean.getType()));
+            mIVback.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    cardClickListener.back();
+                }
+            });
+            mIVComment.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    cardClickListener.comments();
+                }
+            });
+            mIVCollection.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    cardClickListener.collection();
+                }
+            });
         }
+
+        private String getTitle(String type) {
+            switch (type) {
+                case "1":
+                    return "互动话题";
+                case "2":
+                    return "数字生活研究所";
+                case "3":
+                    return "应用推荐";
+                default:
+                    return "互动话题";
+            }
+        }
+    }
+
+    public interface OnCardClickListener {
+        public void back();
+
+        public void comments();
+
+        public void collection();
     }
 
 }

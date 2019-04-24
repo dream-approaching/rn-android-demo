@@ -2,6 +2,7 @@ package com.lieying.socialappstore.network;
 
 
 
+import com.lieying.comlib.bean.ExploreBean;
 import com.lieying.comlib.bean.UserInfoBean;
 
 import java.util.ArrayList;
@@ -32,4 +33,12 @@ public interface RequestApiService {
     @GET("/interface/v1/user/auth/userlogin")
     Observable<ResponseData<UserInfoBean>> loginOrRegister(@Query("params") String route);
 
+
+    /**
+     * @author liyi
+     * date 2019/3/7 0007 11:38
+     * @function:登陆或者注册
+     */
+    @GET("http://192.168.0.200:1230/interface/v1/app/content/get_app_recommend")
+    Observable<ResponseData<List<ExploreBean>>> getExploreInfo(@Query("params") String route);
 }

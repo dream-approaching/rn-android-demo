@@ -12,6 +12,7 @@ import com.facebook.react.ReactPackage;
 import com.facebook.react.common.LifecycleState;
 import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler;
 import com.lieying.socialappstore.BuildConfig;
+import com.lieying.socialappstore.MainApplication;
 import com.lieying.socialappstore.base.BaseV4Fragment;
 import com.lieying.socialappstore.callback.FragmentCallback;
 import com.microsoft.codepush.react.CodePush;
@@ -37,18 +38,14 @@ public abstract class BaseReactFragment extends BaseV4Fragment implements Defaul
         return mReactInstanceManager;
     }
 
-    protected void initReactInstanceManager(String jsPath , String moduleName ,boolean debug ,String bundleAssetName){
-        mReactInstanceManager = ReactInstanceManager.builder()
-                .setApplication(getActivity().getApplication())
-                .setCurrentActivity(getActivity())
-                .setBundleAssetName(bundleAssetName)
-                .setJSMainModulePath(jsPath)
-                .addPackages(getPackages())
-                .setJSBundleFile(CodePush.getJSBundleFile(bundleAssetName))
-                .setUseDeveloperSupport(debug)
-                .setInitialLifecycleState(LifecycleState.RESUMED)
-                .build();
-        mReactRootView.startReactApplication(mReactInstanceManager, moduleName, null);
+    public void setmReactInstanceManager(ReactInstanceManager mReactInstanceManager) {
+        this.mReactInstanceManager = mReactInstanceManager;
+    }
+
+    protected void initReactInstanceManager(String jsPath , String moduleName , boolean debug , String bundleAssetName){
+        Bundle bundle = new Bundle();
+        bundle.putString("veiw_name" , jsPath);
+        mReactRootView.startReactApplication(mReactInstanceManager, moduleName, bundle);
         fragmentCallback.initReactManager(mReactInstanceManager);
     }
 
@@ -58,7 +55,7 @@ public abstract class BaseReactFragment extends BaseV4Fragment implements Defaul
 
     @Override
     public void invokeDefaultOnBackPressed() {
-        Log.e("test", "invokeDefaultOnBackPressed ------------- ");
+
         fragmentCallback.fragmentBack();
     }
 

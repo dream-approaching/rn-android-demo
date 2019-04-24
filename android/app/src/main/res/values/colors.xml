@@ -36,4 +36,5 @@
     <color name="color_1296db">#1296db</color>
     <color name="color_94fb716b">#94fb716b</color>
     <color name="color_fb716b">#fb716b</color>
+    <color name="transparent">#00000000</color>
 </resources>

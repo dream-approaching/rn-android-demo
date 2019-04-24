@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.util.SparseArray;
 import android.view.KeyEvent;
 import android.view.MenuItem;
@@ -17,7 +18,13 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.facebook.react.ReactInstanceManager;
+import com.facebook.react.ReactPackage;
+import com.facebook.react.common.LifecycleState;
+import com.facebook.react.shell.MainReactPackage;
 import com.gyf.immersionbar.ImmersionBar;
+import com.learnium.RNDeviceInfo.RNDeviceInfo;
+import com.lieying.comlib.bean.UserInfoBean;
+import com.lieying.comlib.constant.Constants;
 import com.lieying.socialappstore.activity.LoginActivity;
 import com.lieying.socialappstore.base.BaseFragmentActivity;
 import com.lieying.socialappstore.base.BaseV4Fragment;
@@ -28,11 +35,17 @@ import com.lieying.socialappstore.fragment.IndexFragment;
 import com.lieying.socialappstore.fragment.SecondFragment;
 import com.lieying.socialappstore.fragment.ThirdFragment;
 import com.lieying.socialappstore.manager.StatusBarUtil;
+import com.lieying.socialappstore.manager.UserManager;
+import com.lieying.socialappstore.utils.GsonUtil;
 import com.lieying.socialappstore.utils.PermissionUtil;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import com.lieying.socialappstore.manager.ViewFrameManager;
+import com.lieying.socialappstore.utils.SharedPreferencesUtil;
+import com.microsoft.codepush.react.CodePush;
+import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 
 public class MainActivity extends BaseFragmentActivity implements FragmentCallback {
     private BottomNavigationView mNavigation;//底部tab
@@ -40,9 +53,9 @@ public class MainActivity extends BaseFragmentActivity implements FragmentCallba
     private ViewPager mViewPager;
     private ViewPagerAdapter mAdapter;
     private ArrayList<BaseV4Fragment> fragments = new ArrayList<>();
-    FirstFragment firstFragment;
-    SecondFragment secondFragment;
-    ThirdFragment thirdFragment;
+    BaseReactFragment firstFragment;
+    BaseReactFragment secondFragment;
+    BaseReactFragment thirdFragment;
     RelativeLayout mRlToorbar;
     private int position;
 
@@ -72,6 +85,11 @@ public class MainActivity extends BaseFragmentActivity implements FragmentCallba
     protected void setContentView(Bundle bundle) {
         setContentView(R.layout.activity_main);
         ImmersionBar.with(this).init();
+        String userInfoString = SharedPreferencesUtil.getInstance().getString(Constants.SP_KEY_USER_INFO);
+        if(!TextUtils.isEmpty(userInfoString)){
+            UserInfoBean userInfoBean = GsonUtil.GsonToBean(userInfoString, UserInfoBean.class);
+            UserManager.getInstance().setCurrentUser(userInfoBean);
+        }
     }
 
     @Override
@@ -92,13 +110,16 @@ public class MainActivity extends BaseFragmentActivity implements FragmentCallba
                 createNativeFragment(key);
             }
         }
-
-        firstFragment = FirstFragment.newInstance("tab1" ,"MyReactNativeApp" , false ,"tab1.bundle");
+        ReactInstanceManager mReactInstanceManager = MainApplication.getInstance().getReactNativeHost().getReactInstanceManager();
+        firstFragment = FirstFragment.newInstance("fragment1" ,"MyReactNativeAppthree" , false ,"tab3.bundle");
         firstFragment.setFragmentCallback(this);
-        secondFragment = SecondFragment.newInstance("tab2" ,"MyReactNativeApptwo" , false , "tab2.bundle");
+        firstFragment.setmReactInstanceManager(mReactInstanceManager);
+        secondFragment = SecondFragment.newInstance("fragment2" ,"MyReactNativeAppthree" , false , "tab3.bundle");
         secondFragment.setFragmentCallback(this);
-        thirdFragment = ThirdFragment.newInstance("tab3" ,"MyReactNativeAppthree" , true , "");
+        secondFragment.setmReactInstanceManager(mReactInstanceManager);
+        thirdFragment = ThirdFragment.newInstance("fragment3" ,"MyReactNativeAppthree" , false , "tab3.bundle");
         thirdFragment.setFragmentCallback(this);
+        thirdFragment.setmReactInstanceManager(mReactInstanceManager);
         fragments.add(firstFragment);
         fragments.add(secondFragment);
         fragments.add(thirdFragment);

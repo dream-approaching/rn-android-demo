@@ -3,7 +3,8 @@ def dimensions_debug = "debug"
 def dimensions_release = "release"
 
 project.ext.react = [
-    entryFile: "tab3.js"
+        entryFile    : "index.js",
+        bundleInDebug: true
 ]
 
 apply from: "../../node_modules/react-native/react.gradle"
@@ -36,7 +37,7 @@ android {
         minSdkVersion rootProject.ext.minSdk
         targetSdkVersion rootProject.ext.targetSdk
         versionCode 10000500
-        versionName "1.0.5"
+        versionName "1.0.6"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
@@ -64,9 +65,10 @@ android {
             buildConfigField("String", "QQ_SECRET", "\"1xCo8itrjmSXBBUT\"")
             buildConfigField("String", "SINA_APPKEY", "\"1789429604\"")
             buildConfigField("String", "SINA_SECRET", "\"4b46ec1f685c29229b43c3b9e826072f\"")
+            buildConfigField("String", "MAIN_HOST", "\"http://192.168.0.200:1530\"")
 //            buildConfigField("String", "MAIN_HOST", "\"http://192.168.0.200:8060\"")
-            buildConfigField("String", "MAIN_HOST", "\"https://xcs.wwlihe.cn\"")
-            buildConfigField( "String", "CODEPUSH_KEY", '""')
+            buildConfigField("String", "CODEPUSH_KEY", "\"\"")
+            // buildConfigField ("String", "CODEPUSH_KEY", "\"o4iJo8DvOvPwZqmDoQ5LREDtjbLU020bac4f-d7e1-48e7-8584-7bdb6a68f649\"")
             // applicationIdSuffix ".debug"
         }
 
@@ -91,8 +93,8 @@ android {
             buildConfigField("String", "SINA_APPKEY", "\"1789429604\"")
             buildConfigField("String", "SINA_SECRET", "\"4b46ec1f685c29229b43c3b9e826072f\"")
 //            buildConfigField("String", "MAIN_HOST", "\"http://192.168.0.200:8060\"")
-            buildConfigField("String", "MAIN_HOST", "\"https://xcs.wwlihe.cn\"")
-            buildConfigField ("String", "CODEPUSH_KEY", "\"o4iJo8DvOvPwZqmDoQ5LREDtjbLU020bac4f-d7e1-48e7-8584-7bdb6a68f649\"")
+            buildConfigField("String", "MAIN_HOST", "\"http://192.168.0.200:1530\"")
+            buildConfigField("String", "CODEPUSH_KEY", "\"o4iJo8DvOvPwZqmDoQ5LREDtjbLU020bac4f-d7e1-48e7-8584-7bdb6a68f649\"")
 
         }
 
@@ -115,8 +117,8 @@ android {
             buildConfigField("String", "QQ_SECRET", "\"1xCo8itrjmSXBBUT\"")
             buildConfigField("String", "SINA_APPKEY", "\"1789429604\"")
             buildConfigField("String", "SINA_SECRET", "\"4b46ec1f685c29229b43c3b9e826072f\"")
-            buildConfigField("String", "MAIN_HOST", "\"https://xcs.wwlihe.cn\"")
-            buildConfigField ("String", "CODEPUSH_KEY", "\"bmR48duSItRtLTvGmuYJ5Cz-BcGr020bac4f-d7e1-48e7-8584-7bdb6a68f649\"")
+            buildConfigField("String", "MAIN_HOST", "\"http://192.168.0.200:1530\"")
+            buildConfigField("String", "CODEPUSH_KEY", "\"bmR48duSItRtLTvGmuYJ5Cz-BcGr020bac4f-d7e1-48e7-8584-7bdb6a68f649\"")
         }
 
 //        pretest {
@@ -178,8 +180,8 @@ dependencies {
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
     implementation "com.facebook.react:react-native:+"
 
-    implementation 'me.hiten:jkcardlayout:0.1.1'
     implementation 'com.gyf.immersionbar:immersionbar:3.0.0-beta01'
     implementation project(path: ':comlib')
     implementation 'com.android.support:multidex:1.0.3'
+    implementation 'am.widget:smoothinputlayout:1.1.2'
 }
