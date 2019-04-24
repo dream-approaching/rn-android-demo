@@ -1,28 +1,37 @@
 import React from 'react';
-import { ImageBackground, StyleSheet, View } from 'react-native';
+import { ImageBackground, StyleSheet, View, Text, Button } from 'react-native';
 import MenuList from '@/components/MenuList';
-import myImages from '@/utils/images';
-import { themeColor, scale, themeLayout } from '@/config';
 import ScrollView from '@/components/ScrollView';
 import { OpenActivity } from '@/components/NativeModules';
+import LargerText from '@/components/AppText/LargerText';
+import { themeColor, scale, themeLayout } from '@/config';
+import { connect } from '@/utils/dva';
+import myImages from '@/utils/images';
 import Avatar from './components/Avatar';
 import MenuCard from './components/MenuCard';
-import LargerText from '@/components/AppText/LargerText';
 
-export default class Mine extends React.Component {
+class Mine extends React.Component {
   static navigationOptions = {
     header: null
   };
 
   componentDidMount() {
     console.log('Mine componentDidMount');
+    console.log('%cMine componentDidMount:', 'color: #0e93e0;background: #aaefe5;', this.props);
   }
+
+  handlePlus = () => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'global/testCountEffect'
+    });
+  };
 
   render() {
     const userData = {
       avatar:
         'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1298508432,4221755458&fm=26&gp=0.jpg',
-      name: '夏冬冬'
+      name: '夏冬冬21'
     };
     const cardMenu = [
       {
@@ -77,20 +86,27 @@ export default class Mine extends React.Component {
         navigatePath: ''
       }
     ];
+    const { global } = this.props;
     return (
       <View style={styles.container}>
         <ScrollView>
-          <ImageBackground resizeMode='cover' source={myImages.bg} style={styles.imgbg}>
+          <ImageBackground resizeMode="cover" source={{ uri: myImages.bg }} style={styles.imgbg}>
             <LargerText style={[styles.titleText]}>个人中心-hot-load-9</LargerText>
             <Avatar style={[styles.cardCon, styles.cardUser]} data={userData} />
             <MenuCard style={[styles.cardCon, styles.cardMenu]} menu={cardMenu} />
             <MenuList style={[styles.cardCon, styles.listMenu]} menu={listMenu} />
+            <Text>{global.count}</Text>
+            <Button title="加" onPress={this.handlePlus} />
           </ImageBackground>
         </ScrollView>
       </View>
     );
   }
 }
+
+const mapStateToProps = ({ global }) => ({ global });
+
+export default connect(mapStateToProps)(Mine);
 
 const styles = StyleSheet.create({
   container: {

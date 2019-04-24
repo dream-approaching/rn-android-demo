@@ -1,27 +1,15 @@
-import application from '@/assets/mine/application.png';
-import article from '@/assets/mine/article.png';
-import attention from '@/assets/mine/attention.png';
-import bg from '@/assets/mine/bg.png';
-import chat from '@/assets/mine/chat.png';
-import collection from '@/assets/mine/collection.png';
-import fans from '@/assets/mine/fans.png';
-import next from '@/assets/mine/next.png';
-import notice from '@/assets/mine/notice.png';
-import own from '@/assets/mine/own.png';
-import setting from '@/assets/mine/setting.png';
-import suggest from '@/assets/mine/suggest.png';
 
 export default {
-  application,
-  article,
-  attention,
-  bg,
-  chat,
-  collection,
-  fans,
-  next,
-  notice,
-  own,
-  setting,
-  suggest
+  application: 'my_application',
+  article: 'my_article',
+  attention: 'my_attention',
+  bg: 'bg_my',
+  chat: 'my_chat',
+  collection: 'my_collection',
+  fans: 'my_fans',
+  next: 'my_next',
+  notice: 'my_notice',
+  own: 'my_own',
+  setting: 'my_setting',
+  suggest: 'my_suggest'
 };

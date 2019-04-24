@@ -2,7 +2,7 @@ import React from 'react';
 import { View, StyleSheet, Image } from 'react-native';
 import { themeLayout, scale } from '@/config';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import NavigationService from '@/navigation/NavigationService';
+import NavigationService from '@/utils/NavigationService';
 import CommonText from '@/components/AppText/CommonText';
 
 const styles = StyleSheet.create({
@@ -36,7 +36,7 @@ export default class MenuItem extends React.PureComponent {
       <TouchableOpacity onPress={this.handlePressButton}>
         <View style={[styles.menuItemCon]}>
           {(item.icon && (
-            <Image resizeMode='stretch' style={styles.iconStyle} source={item.icon} />
+            <Image resizeMode="stretch" style={styles.iconStyle} source={{ uri: item.icon }} />
           )) ||
             null}
           <CommonText style={styles.menuTitle}>{item.title}</CommonText>
