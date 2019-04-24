@@ -86,7 +86,8 @@ class Mine extends React.Component {
         navigatePath: ''
       }
     ];
-    const { global } = this.props;
+    const { global, loading } = this.props;
+    console.log('%cloading:', 'color: #0e93e0;background: #aaefe5;', loading);
     return (
       <View style={styles.container}>
         <ScrollView>
@@ -104,7 +105,10 @@ class Mine extends React.Component {
   }
 }
 
-const mapStateToProps = ({ global }) => ({ global });
+const mapStateToProps = ({ global, loading }) => ({
+  global,
+  loading: loading.effects['global/testCountEffect']
+});
 
 export default connect(mapStateToProps)(Mine);
 

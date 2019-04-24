@@ -3,6 +3,7 @@ import React from 'react';
 import codePush from 'react-native-code-push';
 import dva from '@/utils/dva';
 import globalModel from '@/models/global';
+import createLogger from 'redux-logger';
 import Router from './router';
 
 const app = dva({
@@ -10,7 +11,8 @@ const app = dva({
   models: [globalModel],
   onError(e) {
     console.log('onError', e);
-  }
+  },
+  onAction: createLogger
 });
 
 const codePushOptions = {
