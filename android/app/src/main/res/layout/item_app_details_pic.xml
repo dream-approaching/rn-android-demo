@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.lieying.socialappstore.widget.NiceImageView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/iv_tast_detail_step_two_pic_one"
+    app:corner_radius="@dimen/dimens_8dp"
+    android:orientation="vertical"
+    android:layout_width="229dp"
+    android:layout_height="407dp"
+    android:layout_marginRight="@dimen/dimens_12dp">
+</com.lieying.socialappstore.widget.NiceImageView>

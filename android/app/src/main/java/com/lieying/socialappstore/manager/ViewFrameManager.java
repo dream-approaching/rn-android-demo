@@ -27,7 +27,10 @@ public class ViewFrameManager {
     public SparseArray createIndexMap(){
         IndexFgBean indexFgBean0 = new IndexFgBean();
         indexFgBean0.setNative(true);
+        IndexFgBean indexFgBean1 = new IndexFgBean();
+        indexFgBean1.setNative(true);
         sparseArray.put( 0 , indexFgBean0);
+        sparseArray.put( 1 , indexFgBean1);
         return sparseArray;
     }
 

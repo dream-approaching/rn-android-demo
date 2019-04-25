@@ -10,4 +10,8 @@
     <string name="app_ip_rl_po">请输入正确的手机号</string>
     <string name="string_fd_send_vft">获取验证码</string>
     <string name="string_explore">探索</string>
+    <string name="string_you_kind">你觉得呢</string>
+    <string name="string_download">下载</string>
+    <string name="string_comments">评论</string>
+    <string name="string_collection">收藏</string>
 </resources>

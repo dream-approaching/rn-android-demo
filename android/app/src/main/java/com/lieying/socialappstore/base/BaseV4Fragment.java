@@ -49,14 +49,6 @@ public abstract class BaseV4Fragment extends Fragment implements BaseIViewUI {
         }
         return mView;
     }
-    protected List<ReactPackage> getPackages() {
-        return Arrays.<ReactPackage>asList(
-                new MainReactPackage(),
-            new CodePush(BuildConfig.CODEPUSH_KEY, mContext.getApplicationContext(), BuildConfig.DEBUG),
-            new RNGestureHandlerPackage(),
-            new RNDeviceInfo(),
-                new CustomToastPackage());
-    }
 
     public List<Disposable> getDisposableList() {
         return mControl.getDisposables();

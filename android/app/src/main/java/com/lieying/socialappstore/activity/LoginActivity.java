@@ -15,6 +15,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.gyf.immersionbar.ImmersionBar;
 import com.lieying.comlib.bean.UserInfoBean;
 import com.lieying.comlib.utils.ButtonWaiting;
 import com.lieying.comlib.utils.MatcheUtils;
@@ -29,6 +31,7 @@ import com.lieying.socialappstore.network.ReqBody;
 import com.lieying.socialappstore.network.ResponseData;
 import com.lieying.socialappstore.network.RetrofitUtils;
 import com.lieying.socialappstore.subscribe.ControlSubscriber;
+import com.lieying.socialappstore.utils.SharedPreferencesUtil;
 import com.lieying.socialappstore.utils.ToastUtil;
 import com.lieying.socialappstore.widget.CountTimer;
 
@@ -44,6 +47,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
+
+import static com.lieying.comlib.constant.Constants.SP_KEY_USER_INFO;
 
 public class LoginActivity extends BaseActivity implements  ButtonWaiting.OnWaitingListener<String> , TextWatcher, CountTimer.OnTimerListener {
     private List<Disposable> mSubscription = new ArrayList<>();
@@ -64,7 +69,9 @@ public class LoginActivity extends BaseActivity implements  ButtonWaiting.OnWait
     }
     @Override
     protected void setContentView(Bundle savedInstanceState) {
+
         setContentView(R.layout.activity_login);
+        ImmersionBar.with(this).statusBarDarkFont(true).init();
     }
 
     @Override
@@ -81,8 +88,6 @@ public class LoginActivity extends BaseActivity implements  ButtonWaiting.OnWait
 
     @Override
     public void initView() {
-        StatusBarUtil.setStatusBarColor(LoginActivity.this, getResources().getColor(R.color.black_overlay));
-        StatusBarUtil.setStatusBarDarkTheme(LoginActivity.this, true);
         mCountTimer = new CountTimer(mContext, mTvSendCode, 60000, 1000);
         mCountTimer.setColor(R.color.color_94fb716b, R.color.color_fb716b);
         mCountTimer.setFinishTip(getString(R.string.string_fd_send_vft));
@@ -170,6 +175,8 @@ public class LoginActivity extends BaseActivity implements  ButtonWaiting.OnWait
             }
         });
 
+        mEtPhone.setText("18503068868");
+        mEtVertifyCode.setText("123456");
     }
 
 
@@ -244,6 +251,7 @@ public class LoginActivity extends BaseActivity implements  ButtonWaiting.OnWait
 
     private void login( String phone  , String vertifyCode){
         HashMap<String, String> map = new HashMap<>();
+        map.put("channel_id", "1");
         map.put("app_ver", "1");
         map.put("app_ver_code", "1");
         map.put("ch", "1");
@@ -259,6 +267,7 @@ public class LoginActivity extends BaseActivity implements  ButtonWaiting.OnWait
             protected void onSuccees(ResponseData<UserInfoBean> objectResponseData) {
                 if(objectResponseData.getStatus()==0){
                     UserManager.getInstance().setCurrentUser(objectResponseData.getData());
+                    SharedPreferencesUtil.getInstance().putString(SP_KEY_USER_INFO, new Gson().toJson(objectResponseData.getData()));
                     ToastUtil.showToast("登陆成功!");
                     finish();
                 }else{

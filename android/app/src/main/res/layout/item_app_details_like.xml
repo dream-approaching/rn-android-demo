@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/iv_tast_detail_step_two_pic_one"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:layout_marginLeft="@dimen/dimens_39dp"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    >
+    <ImageView
+        android:id="@+id/iv_item_like_icon"
+        android:layout_width="69dp"
+        android:layout_height="69dp" />
+
+    <TextView
+        android:textColor="@color/color_707070"
+        android:textSize="@dimen/dimens_13sp"
+        android:id="@+id/tv_item_like_name"
+        android:layout_marginTop="@dimen/dimens_14dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:textSize="@dimen/dimens_13sp"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:text="@string/string_download"
+        android:id="@+id/tv_item_like_download"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/bg_bnt_download"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+</LinearLayout>

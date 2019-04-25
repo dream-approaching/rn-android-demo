@@ -11,7 +11,7 @@ export default class extends React.PureComponent {
     return (
       <View style={style}>
         <View style={styles.cardTitle}>
-          <Image resizeMode='contain' style={styles.icon} source={myImages.collection} />
+          <Image resizeMode='contain' style={styles.icon} source={{uri: myImages.collection}} />
           <CommonText style={styles.titleText}>我的收藏</CommonText>
         </View>
         <View style={styles.cardListCon}>

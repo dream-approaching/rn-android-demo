@@ -4,8 +4,8 @@ import { themeColor, themeSize } from '@/config';
 
 const styles = StyleSheet.create({
   textStyle: {
-    color: themeColor.font.secondary,
-    fontSize: themeSize.font.secondary
+    color: themeColor.font.secondary, // #707070
+    fontSize: themeSize.font.secondary // 13
   }
 });
 

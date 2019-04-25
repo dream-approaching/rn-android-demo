@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactPackage;
@@ -15,8 +16,10 @@ import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.lieying.comlib.utils.EmptyUtil;
 import com.lieying.socialappstore.BuildConfig;
 import com.lieying.socialappstore.CustomToastPackage;
+import com.lieying.socialappstore.MainApplication;
 import com.lieying.socialappstore.R;
 import com.lieying.socialappstore.base.BaseActivity;
+import com.lieying.socialappstore.fragment.BaseReactFragment;
 import com.lieying.socialappstore.utils.ToastUtil;
 import com.swmansion.gesturehandler.react.RNGestureHandlerEnabledRootView;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
@@ -28,33 +31,35 @@ public class CommonReactActivity extends BaseActivity implements DefaultHardware
     private RNGestureHandlerEnabledRootView mReactRootView;
     private ReactInstanceManager mReactInstanceManager;
     public static String KEY_BUNDLE_PATH = "bundle_path";
+    public static String KEY_BUNDLE_ENTER_NAME = "bundle_name";
 
-    public static void startActivity(Context context, String path) {
+    /**
+     * @param context
+     * @param moduleName  传入rn的moduleName 如：MyReactNativeAppthree
+     * @param enterName  传入rn的入口 如：fragment1
+     */
+    public static void startActivity(Context context, String moduleName ,String enterName) {
         Intent intent = new Intent(context, CommonReactActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.putExtra(KEY_BUNDLE_PATH, path);
+        intent.putExtra(KEY_BUNDLE_PATH, moduleName);
+        intent.putExtra(KEY_BUNDLE_ENTER_NAME, enterName);
         context.startActivity(intent);
     }
 
     @Override
     protected void setContentView(Bundle savedInstanceState) {
         String bundle_path = getIntent().getStringExtra(KEY_BUNDLE_PATH);
+        String bundle_enter = getIntent().getStringExtra(KEY_BUNDLE_ENTER_NAME);
         if(EmptyUtil.isEmpty(bundle_path)){
             ToastUtil.showToast("react native bundle 不存在");
             finish();
             return;
         }
         mReactRootView = new RNGestureHandlerEnabledRootView(this.getApplicationContext());
-        mReactInstanceManager = ReactInstanceManager.builder()
-                .setApplication(getApplication())
-                .setCurrentActivity(this)
-                .setBundleAssetName(bundle_path)
-                .setJSMainModulePath(bundle_path)
-                .addPackages(getPackages())
-                .setUseDeveloperSupport(BuildConfig.DEBUG)
-                .setInitialLifecycleState(LifecycleState.RESUMED)
-                .build();
-        mReactRootView.startReactApplication(mReactInstanceManager, "MyReactNativeApp", null);
+        mReactInstanceManager = MainApplication.getInstance().getReactNativeHost().getReactInstanceManager();
+        Bundle bundle = new Bundle();
+        bundle.putString("veiw_name" , bundle_enter);
+        mReactRootView.startReactApplication(mReactInstanceManager, bundle_path, bundle);
         setContentView(mReactRootView);
     }
 
@@ -126,5 +131,14 @@ public class CommonReactActivity extends BaseActivity implements DefaultHardware
         } else {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_MENU ) {
+            mReactInstanceManager.showDevOptionsDialog();
+            return true;
+        }
+        return super.onKeyUp(keyCode, event);
     }
 }

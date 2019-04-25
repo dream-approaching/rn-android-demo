@@ -19,7 +19,7 @@ export default class extends React.PureComponent {
             <LargerText style={styles.nameText}>{data.name}</LargerText>
             <SecondaryText>编辑个人资料</SecondaryText>
           </View>
-          <Image style={styles.iconRight} source={myImages.next} />
+          <Image style={styles.iconRight} source={{uri: myImages.next}} />
         </TouchableOpacity>
       </View>
     );

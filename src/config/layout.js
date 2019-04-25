@@ -9,7 +9,7 @@ function marginPadding(type, arg) {
         [`${type}Top`]: arg[0],
         [`${type}Right`]: arg[0],
         [`${type}Bottom`]: arg[0],
-        [`${type}Left`]: arg[0]
+        [`${type}Left`]: arg[0],
       };
       break;
     case 2:
@@ -17,7 +17,7 @@ function marginPadding(type, arg) {
         [`${type}Top`]: arg[0],
         [`${type}Right`]: arg[1],
         [`${type}Bottom`]: arg[0],
-        [`${type}Left`]: arg[1]
+        [`${type}Left`]: arg[1],
       };
       break;
     case 3:
@@ -25,7 +25,7 @@ function marginPadding(type, arg) {
         [`${type}Top`]: arg[0],
         [`${type}Right`]: arg[1],
         [`${type}Bottom`]: arg[2],
-        [`${type}Left`]: arg[1]
+        [`${type}Left`]: arg[1],
       };
       break;
     case 4:
@@ -33,7 +33,7 @@ function marginPadding(type, arg) {
         [`${type}Top`]: arg[0],
         [`${type}Right`]: arg[1],
         [`${type}Bottom`]: arg[2],
-        [`${type}Left`]: arg[3]
+        [`${type}Left`]: arg[3],
       };
       break;
     default:
@@ -48,7 +48,7 @@ export const themeLayout = {
       display: 'flex',
       flexDirection: direc,
       justifyContent: justify,
-      alignItems: align
+      alignItems: align,
     };
   },
   margin(...args) {
@@ -66,7 +66,18 @@ export const themeLayout = {
     return {
       [`border${side}Width`]: width,
       [`border${side}Color`]: color,
-      borderStyle
+      borderStyle,
     };
-  }
+  },
+  border(
+    borderWidth = themeSize.minBorder,
+    borderColor = themeColor.borderColor,
+    borderStyle = 'solid'
+  ) {
+    return {
+      borderWidth,
+      borderColor,
+      borderStyle,
+    };
+  },
 };
