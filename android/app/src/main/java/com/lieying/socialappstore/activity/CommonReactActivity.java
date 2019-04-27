@@ -12,6 +12,7 @@ import com.facebook.react.ReactPackage;
 import com.facebook.react.common.LifecycleState;
 import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler;
 import com.facebook.react.shell.MainReactPackage;
+import com.gyf.immersionbar.ImmersionBar;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.lieying.comlib.utils.EmptyUtil;
 import com.lieying.socialappstore.BuildConfig;
@@ -48,6 +49,7 @@ public class CommonReactActivity extends BaseActivity implements DefaultHardware
 
     @Override
     protected void setContentView(Bundle savedInstanceState) {
+        ImmersionBar.with(this).statusBarDarkFont(false).init();
         String bundle_path = getIntent().getStringExtra(KEY_BUNDLE_PATH);
         String bundle_enter = getIntent().getStringExtra(KEY_BUNDLE_ENTER_NAME);
         if(EmptyUtil.isEmpty(bundle_path)){

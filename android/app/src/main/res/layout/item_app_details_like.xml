@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/iv_tast_detail_step_two_pic_one"
     android:orientation="vertical"
     android:gravity="center_horizontal"
     android:layout_marginLeft="@dimen/dimens_39dp"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    >
-    <ImageView
+    android:layout_height="wrap_content">
+    <com.lieying.socialappstore.widget.NiceImageView
         android:id="@+id/iv_item_like_icon"
+        app:corner_radius="@dimen/dimens_8dp"
         android:layout_width="69dp"
         android:layout_height="69dp" />
 
     <TextView
+        android:text="@string/app_name"
         android:textColor="@color/color_707070"
         android:textSize="@dimen/dimens_13sp"
         android:id="@+id/tv_item_like_name"

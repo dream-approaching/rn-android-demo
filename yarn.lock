@@ -4645,6 +4645,11 @@ react-native-gesture-handler@^1.1.0:
     invariant "^2.2.2"
     prop-types "^15.5.10"
 
+react-native-pull@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/react-native-pull/-/react-native-pull-2.0.2.tgz#15264a737bcf56debd4bacaa2705254d9ef1b345"
+  integrity sha1-FSZKc3vPVt69S6yqJwUlTZ7xs0U=
+
 react-native-safe-area-view@^0.13.0:
   version "0.13.1"
   resolved "https://registry.yarnpkg.com/react-native-safe-area-view/-/react-native-safe-area-view-0.13.1.tgz#834bbb6d22f76a7ff07de56725ee5667ba1386b0"

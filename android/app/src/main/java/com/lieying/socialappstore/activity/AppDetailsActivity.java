@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.gyf.immersionbar.ImmersionBar;
 import com.lieying.comlib.bean.AppDetailsBean;
 import com.lieying.socialappstore.R;
 import com.lieying.socialappstore.base.BaseActivity;
@@ -48,6 +49,7 @@ public class AppDetailsActivity extends BaseActivity {
     @Override
     protected void setContentView(Bundle savedInstanceState) {
         setContentView(R.layout.activity_app_details);
+        ImmersionBar.with(this).statusBarDarkFont(true).init();
     }
 
     @Override
@@ -133,12 +135,12 @@ public class AppDetailsActivity extends BaseActivity {
         //解析可能喜欢列表
         List<AppDetailsBean.LikedataBean> likeLists = appDetailsBean.getLikedata();
         for(int i = 0 ; i <likeLists.size() ; i++){
-            LinearLayout linearLayout = (LinearLayout)LayoutInflater.from(mContext).inflate(R.layout.item_app_details_like , null);
+            LinearLayout linearLayout = (LinearLayout)LayoutInflater.from(mContext).inflate(R.layout.item_app_details_like ,mLLLikes , false);
+            mLLLikes.addView(linearLayout);
             ImageView imageView = linearLayout.findViewById(R.id.iv_item_like_icon);
             TextView textView = linearLayout.findViewById(R.id.tv_item_like_name);
             GlideUtils.loadImageForUrl(mContext , imageView ,  likeLists.get(i).getApp_logo());
             textView.setText(likeLists.get(i).getApp_name_cn());
-            mLLLikes.addView(linearLayout);
         }
 
     }

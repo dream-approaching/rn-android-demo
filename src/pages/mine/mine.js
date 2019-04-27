@@ -30,7 +30,7 @@ class Mine extends React.Component {
     const userData = {
       avatar:
         'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1298508432,4221755458&fm=26&gp=0.jpg',
-      name: '夏冬冬21',
+      name: '夏冬冬',
     };
     const cardMenu = [
       {
@@ -38,7 +38,6 @@ class Mine extends React.Component {
         icon: myImages.article,
         navigatePath: '',
         onPressAction: () => {
-          console.log('OpenReactActivity', OpenReactActivity);
           OpenReactActivity.open('MyReactNativeAppthree', 'comment');
         },
       },
@@ -46,11 +45,17 @@ class Mine extends React.Component {
         title: '应用',
         icon: myImages.application,
         navigatePath: '',
+        onPressAction: () => {
+          OpenReactActivity.open('MyReactNativeAppthree', 'detailChat');
+        },
       },
       {
         title: '话题',
         icon: myImages.chat,
         navigatePath: '',
+        onPressAction: () => {
+          OpenReactActivity.open('MyReactNativeAppthree', 'detailWebview');
+        },
       },
     ];
     const listMenu = [
@@ -59,7 +64,6 @@ class Mine extends React.Component {
         icon: myImages.own,
         navigatePath: '',
         onPressAction: () => {
-          console.log('OpenActivity', OpenActivity);
           OpenActivity.open('com.lieying.content.social.login.ENTER');
         },
       },
@@ -94,7 +98,7 @@ class Mine extends React.Component {
       <View style={styles.container}>
         <ScrollView>
           <ImageBackground resizeMode='cover' source={{ uri: myImages.bg }} style={styles.imgbg}>
-            <LargerText style={[styles.titleText]}>个人中心-hot-load-9</LargerText>
+            <LargerText style={[styles.titleText]}>个人中心</LargerText>
             <Avatar style={[styles.cardCon, styles.cardUser]} data={userData} />
             <MenuCard style={[styles.cardCon, styles.cardMenu]} menu={cardMenu} />
             <MenuList style={[styles.cardCon, styles.listMenu]} menu={listMenu} />
