@@ -8,7 +8,7 @@ import SmallText from '@/components/AppText/SmallText';
 
 export default class extends React.PureComponent {
   render() {
-    const { itemData } = this.props;
+    const { itemData, replyAction } = this.props;
     return (
       <View style={styles.container}>
         <TouchableOpacity>
@@ -16,7 +16,7 @@ export default class extends React.PureComponent {
         </TouchableOpacity>
         <View style={styles.rightBody}>
           <SecondaryText>{itemData.name}</SecondaryText>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => replyAction(itemData)}>
             <CommonText style={[styles.replyText, styles.textLineHeight(20)]}>
               {itemData.text}
             </CommonText>
@@ -24,7 +24,11 @@ export default class extends React.PureComponent {
           <View style={styles.replyCon}>
             {itemData.reply.map(item => {
               return (
-                <TouchableOpacity key={item.id} style={{ marginTop: scale(3) }}>
+                <TouchableOpacity
+                  key={item.id}
+                  style={{ marginTop: scale(3) }}
+                  onPress={() => replyAction(item)}
+                >
                   <Text style={styles.textLineHeight(18)}>
                     <SecondaryText style={[styles.replyTitle]}>{item.name}:</SecondaryText>
                     <SecondaryText>{item.text}</SecondaryText>

@@ -8,8 +8,10 @@
     "debug": "react-native run-android --variant=ceshiDebug",
     "releaseStaging": "react-native run-android --variant=ceshiReleaseStaging",
     "release": "react-native run-android --variant=ceshiRelease",
-    "clean": " watchman watch-del-all && rm -rf $TMPDIR/react-native-packager-cache-* && rm -rf $TMPDIR/metro-* && rm -rf node_modules/ && rm -rf $TMPDIR/haste-map-* && npm cache clean --force && yarn",
-    "bundleTab3": "rm -rf android/app/src/main/assets/tab3.bundle && react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/tab3.bundle"
+    "clean":
+      " watchman watch-del-all && rm -rf $TMPDIR/react-native-packager-cache-* && rm -rf $TMPDIR/metro-* && rm -rf node_modules/ && rm -rf $TMPDIR/haste-map-* && npm cache clean --force && yarn",
+    "bundleTab3":
+      "rm -rf android/app/src/main/assets/tab3.bundle && react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/tab3.bundle"
   },
   "dependencies": {
     "dva-core": "^1.4.0",
@@ -21,6 +23,7 @@
     "react-native-device-info": "^1.5.0",
     "react-native-gesture-handler": "^1.1.0",
     "react-native-pull": "^2.0.2",
+    "react-native-spring-scrollview": "^2.0.20",
     "react-navigation": "3.8.1",
     "react-redux": "^7.0.2"
   },

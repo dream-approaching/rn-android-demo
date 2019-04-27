@@ -49,7 +49,7 @@ public class CommonReactActivity extends BaseActivity implements DefaultHardware
 
     @Override
     protected void setContentView(Bundle savedInstanceState) {
-        ImmersionBar.with(this).statusBarDarkFont(false).init();
+        ImmersionBar.with(this).statusBarDarkFont(false).keyboardEnable(true).init();
         String bundle_path = getIntent().getStringExtra(KEY_BUNDLE_PATH);
         String bundle_enter = getIntent().getStringExtra(KEY_BUNDLE_ENTER_NAME);
         if(EmptyUtil.isEmpty(bundle_path)){

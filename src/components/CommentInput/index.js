@@ -8,28 +8,20 @@ export default class CommentPage extends React.Component {
     header: null,
   };
 
-  state = {
-    textValue: '你觉得呢',
-  };
-
-  handleChangeText = text => {
-    console.log('%ctext:', 'color: #0e93e0;background: #aaefe5;', text);
-    this.setState({
-      textValue: text,
-    });
-  };
-
   render() {
-    const { textValue } = this.state;
+    const { textValue, handleChangeText } = this.props;
     return (
       <View style={styles.inputCon}>
         <TouchableOpacity>
           <Image style={styles.leftIcon} source={{ uri: 'ic_input_back' }} />
         </TouchableOpacity>
         <TextInput
+          ref={ref => (this.refInput = ref)}
           style={styles.inputStyle}
-          onChangeText={this.handleChangeText}
+          onChangeText={handleChangeText}
           value={textValue}
+          placeholder="你觉得呢"
+          placeholderTextColor={themeColor.placeholderColor}
         />
         <TouchableOpacity>
           <Image style={styles.rightIcon} source={{ uri: 'ic_input_collection' }} />

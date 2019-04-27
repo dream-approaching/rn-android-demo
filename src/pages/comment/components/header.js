@@ -65,11 +65,12 @@ export default class CommentPage extends React.PureComponent {
 
 const styles = StyleSheet.create({
   container: {
-    height: scale(50),
+    height: scale(68),
     ...themeLayout.borderSide('Bottom'),
     ...themeLayout.flex('row'),
     ...themeLayout.padding(0, scale(16), 0, scale(6)),
     backgroundColor: '#fff',
+    paddingTop: scale(20),
   },
   titleCon: {
     ...themeLayout.flex('row'),

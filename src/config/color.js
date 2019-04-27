@@ -14,7 +14,7 @@ export const themeColor = {
   primaryColor: '#e74c3c', // 主题色
   bgColor: '#eee', // 默认背景颜色
   bgF4: '#f4f4f4',
-  placeholderColor: '#eee', // 默认placeholder颜色
+  placeholderColor: '#aaa', // 默认placeholder颜色
   borderColor: '#eee', // borderColor
   navThemeColor: '#FEFEFE',
   iconGray: '#989898',
@@ -24,6 +24,6 @@ export const themeColor = {
     larger: '#303030',
     common: '#303030',
     secondary: '#707070',
-    small: '#a7a7a7'
-  }
+    small: '#a7a7a7',
+  },
 };
