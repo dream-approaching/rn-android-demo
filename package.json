@@ -20,6 +20,8 @@
     "react-native-code-push": "^5.6.0",
     "react-native-device-info": "^1.5.0",
     "react-native-gesture-handler": "^1.1.0",
+    "react-native-largelist-v3": "^3.0.13",
+    "react-native-spring-scrollview": "^2.0.20",
     "react-navigation": "3.8.1",
     "react-redux": "^7.0.2"
   },

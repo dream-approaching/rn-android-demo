@@ -38,6 +38,7 @@ export default class Router extends React.Component {
   componentDidMount() {
     const { nativeProps } = this.props;
     const { veiw_name: viewName } = nativeProps;
+    console.log('%cnativeProps:', 'color: #0e93e0;background: #aaefe5;', nativeProps);
     const app = {
       fragment1: RecommendContainer,
       fragment2: ChatContainer,

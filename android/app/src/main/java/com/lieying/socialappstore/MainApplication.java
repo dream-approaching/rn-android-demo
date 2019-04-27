@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.multidex.MultiDex;
 
 import com.facebook.react.ReactApplication;
+import com.bolan9999.SpringScrollViewPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.bridge.JSIModulePackage;
@@ -47,6 +48,7 @@ public class MainApplication extends Application implements ReactApplication {
         protected List<ReactPackage> getPackages() {
             return Arrays.<ReactPackage>asList(
                     new MainReactPackage(),
+            new SpringScrollViewPackage(),
                     new CodePush(BuildConfig.CODEPUSH_KEY, getApplicationContext(), BuildConfig.DEBUG),
                     new RNGestureHandlerPackage(),
                     new RNDeviceInfo(),

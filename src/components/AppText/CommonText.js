@@ -6,17 +6,13 @@ const styles = StyleSheet.create({
   textStyle: {
     // fontFamily: 'Verdana',
     color: themeColor.font.common, // #303030
-    fontSize: themeSize.font.common, // 15
-  },
+    fontSize: themeSize.font.common // 15
+  }
 });
 
 export default class extends React.PureComponent {
   render() {
-    const { children, style, ...rest } = this.props;
-    return (
-      <Text style={[styles.textStyle, style]} {...rest}>
-        {children}
-      </Text>
-    );
+    const { children, style } = this.props;
+    return <Text style={[styles.textStyle, style]}>{children}</Text>;
   }
 }
