@@ -85,7 +85,7 @@ public class MainActivity extends BaseFragmentActivity implements FragmentCallba
     @Override
     protected void setContentView(Bundle bundle) {
         setContentView(R.layout.activity_main);
-        ImmersionBar.with(this).init();
+        ImmersionBar.with(this).autoDarkModeEnable(true).init();
         String userInfoString = SharedPreferencesUtil.getInstance().getString(Constants.SP_KEY_USER_INFO);
         if (!TextUtils.isEmpty(userInfoString)) {
             UserInfoBean userInfoBean = GsonUtil.GsonToBean(userInfoString, UserInfoBean.class);
@@ -170,16 +170,20 @@ public class MainActivity extends BaseFragmentActivity implements FragmentCallba
                     case 0:
                         mRlToorbar.setVisibility(View.VISIBLE);
                         mTvToolTitle.setText("探索");
+                        StatusBarUtil.setStatusBarDarkTheme(MainActivity.this, false);
                         break;
                     case 1:
                         mRlToorbar.setVisibility(View.VISIBLE);
                         mTvToolTitle.setText("本周排行");
+                        StatusBarUtil.setStatusBarDarkTheme(MainActivity.this, false);
                         break;
                     case 2:
-                        mRlToorbar.setVisibility(View.VISIBLE);
+                        StatusBarUtil.setStatusBarDarkTheme(MainActivity.this, true);
+                        mRlToorbar.setVisibility(View.GONE);
                         break;
                     case 3:
                         mRlToorbar.setVisibility(View.GONE);
+                        StatusBarUtil.setStatusBarDarkTheme(MainActivity.this, false);
                         break;
                 }
             }

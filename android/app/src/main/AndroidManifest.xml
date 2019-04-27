@@ -52,6 +52,7 @@
         </activity>
         <activity
             android:name=".activity.CommonReactActivity"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.lieying.content.social.COMMON_RN.ENTER" />

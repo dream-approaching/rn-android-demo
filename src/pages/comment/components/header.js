@@ -69,6 +69,7 @@ const styles = StyleSheet.create({
     ...themeLayout.borderSide('Bottom'),
     ...themeLayout.flex('row'),
     ...themeLayout.padding(0, scale(16), 0, scale(6)),
+    backgroundColor: '#fff',
   },
   titleCon: {
     ...themeLayout.flex('row'),

@@ -4,6 +4,10 @@
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
+    "dev": "react-native start --reset-cache",
+    "debug": "react-native run-android --variant=ceshiDebug",
+    "releaseStaging": "react-native run-android --variant=ceshiReleaseStaging",
+    "release": "react-native run-android --variant=ceshiRelease",
     "clean": " watchman watch-del-all && rm -rf $TMPDIR/react-native-packager-cache-* && rm -rf $TMPDIR/metro-* && rm -rf node_modules/ && rm -rf $TMPDIR/haste-map-* && npm cache clean --force && yarn",
     "bundleTab3": "rm -rf android/app/src/main/assets/tab3.bundle && react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/tab3.bundle"
   },

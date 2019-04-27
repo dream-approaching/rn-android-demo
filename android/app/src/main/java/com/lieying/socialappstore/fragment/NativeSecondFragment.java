@@ -70,7 +70,7 @@ public class NativeSecondFragment extends BaseV4Fragment implements PullToRefres
     public void initView() {
         myAdapter = new MyAdapter();
         mRecyclerV.setCanRefresh(true)
-                .setCanLoadMore(true)
+                .setCanLoadMore(false)
                 .setPullLayoutManager(new LinearLayoutManager(mContext))
                 .setPullToRefreshListener(this)
                 .setPullItemAnimator(null)
