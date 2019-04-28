@@ -1,13 +1,28 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, StyleSheet } from 'react-native';
+import SpringScrollView from '@/components/SpringScrollView';
+import Header from '@/components/Header';
+import CommonText from '@/components/AppText/CommonText';
 
-export default class Recommend extends React.Component {
+export default class CommentPage extends React.Component {
+  static navigationOptions = {
+    header: null,
+  };
+
   render() {
-    console.log('Recommend render');
     return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Text>Recommend Screen</Text>
+      <View style={styles.container}>
+        <Header title='我要推荐' />
+        <SpringScrollView>
+          <CommonText>我要推荐</CommonText>
+        </SpringScrollView>
       </View>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});

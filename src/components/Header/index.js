@@ -3,6 +3,7 @@ import { View, Image, StyleSheet } from 'react-native';
 import { scale, themeLayout, themeSize } from '@/config';
 import LargerText from '@/components/AppText/LargerText';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import NavigationService from '@/utils/NavigationService';
 import myImages from '@/utils/images';
 
 export default class CommentPage extends React.PureComponent {
@@ -15,13 +16,21 @@ export default class CommentPage extends React.PureComponent {
     title: '',
   };
 
+  handleBack = () => {
+    const { backAction } = this.props;
+    if (backAction) {
+      return backAction();
+    }
+    NavigationService.navigate('Mine', {});
+  };
+
   render() {
     const { showLeftIcon, title, centerComponent, rightComponent } = this.props;
     return (
       <View style={styles.container}>
         <View style={styles.leftIconCon}>
           {showLeftIcon && (
-            <TouchableOpacity>
+            <TouchableOpacity onPress={this.handleBack}>
               <Image style={styles.leftIcon} source={{ uri: myImages.leftBack }} />
             </TouchableOpacity>
           )}

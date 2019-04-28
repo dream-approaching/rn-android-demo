@@ -113,8 +113,6 @@ class Mine extends React.Component {
           <ImageBackground resizeMode='cover' source={{ uri: myImages.bg }} style={styles.imgbg}>
             <Avatar style={[styles.cardUser]} data={userData} />
           </ImageBackground>
-          <MenuCard style={[styles.cardCon, styles.cardMenu]} menu={cardMenu} />
-          <MenuList style={[styles.cardCon, styles.listMenu]} menu={listMenu} />
           <View
             style={{
               ...themeLayout.flex('row', 'space-around'),
@@ -128,7 +126,10 @@ class Mine extends React.Component {
             />
             <Button title='评论页' onPress={() => OpenRnActivity('comment')} />
             <Button title='互动话题内页' onPress={() => OpenRnActivity('detailChat')} />
+            <Button title='我要推荐' onPress={() => OpenRnActivity('recommend')} />
           </View>
+          <MenuCard style={[styles.cardCon, styles.cardMenu]} menu={cardMenu} />
+          <MenuList style={[styles.cardCon, styles.listMenu]} menu={listMenu} />
         </SpringScrollView>
       </View>
     );

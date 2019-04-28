@@ -2,6 +2,7 @@ import React from 'react';
 import { createStackNavigator, createAppContainer } from 'react-navigation';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import NavigationService from '@/utils/NavigationService';
+import Empty from '@/pages/empty';
 import Mine from '@/pages/mine/mine';
 import Setting from '@/pages/setting/setting';
 import Recommend from '@/pages/recommend/recommend';
@@ -20,6 +21,7 @@ import MyFans from '@/pages/myFans/myFans';
 import MyFeedback from '@/pages/myFeedback/myFeedback';
 import PersonPage from '@/pages/personPage/personPage';
 
+const EmptyNav = createStackNavigator({ Empty }, { initialRouteName: 'Empty' });
 const RecommendNav = createStackNavigator({ Recommend }, { initialRouteName: 'Recommend' });
 const ChatNav = createStackNavigator({ Chat }, { initialRouteName: 'Chat' });
 const MineNav = createStackNavigator({ Mine }, { initialRouteName: 'Mine' });
@@ -64,14 +66,18 @@ const PersonPageContainer = createAppContainer(PersonPageNav);
 
 export default class Router extends React.Component {
   state = {
-    App: RecommendContainer,
+    App: createAppContainer(EmptyNav),
   };
 
   componentDidMount() {
+    console.log(
+      '%crouter componentDidMount:',
+      'color: #0e93e0;background: #aaefe5;',
+      'componentDidMount'
+    );
     const { nativeProps } = this.props;
     const { veiw_name: viewName } = nativeProps;
     const app = {
-      fragment1: RecommendContainer,
       fragment2: ChatContainer,
       fragment3: MineContainer,
       comment: CommentContainer,
@@ -88,6 +94,7 @@ export default class Router extends React.Component {
       setting: SettingContainer,
       myFeedback: MyFeedbackContainer,
       personPage: PersonPageContainer,
+      recommend: RecommendContainer,
     };
     this.setState({
       App: app[viewName],
