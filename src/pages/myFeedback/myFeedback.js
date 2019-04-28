@@ -12,9 +12,9 @@ export default class CommentPage extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Header title='设置' />
+        <Header title='我的反馈' />
         <SpringScrollView>
-          <CommonText>设置</CommonText>
+          <CommonText>我的反馈</CommonText>
         </SpringScrollView>
       </View>
     );

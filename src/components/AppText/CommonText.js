@@ -5,7 +5,7 @@ import { themeColor, themeSize } from '@/config';
 const styles = StyleSheet.create({
   textStyle: {
     // fontFamily: 'Verdana',
-    color: themeColor.font.common, // #303030
+    color: themeColor.font.black, // #303030
     fontSize: themeSize.font.common, // 15
   },
 });

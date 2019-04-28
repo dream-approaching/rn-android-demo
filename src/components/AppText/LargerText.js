@@ -4,7 +4,7 @@ import { themeColor, themeSize } from '@/config';
 
 const styles = StyleSheet.create({
   textStyle: {
-    color: themeColor.font.larger,
+    color: themeColor.font.black,
     fontSize: themeSize.font.larger,
   },
 });

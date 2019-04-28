@@ -21,8 +21,7 @@ export const themeColor = {
   iconBlack: '#262626',
 
   font: {
-    larger: '#303030',
-    common: '#303030',
+    black: '#303030',
     secondary: '#707070',
     small: '#a7a7a7',
   },

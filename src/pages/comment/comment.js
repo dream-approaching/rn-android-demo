@@ -1,12 +1,13 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import CommentItem from '@/components/CommentItem';
-import CommentInput from '@/components/CommentInput';
+import CommentItem from '@/components/Comment/CommentItem';
+import CommentInput from '@/components/Comment/CommentInput';
 import { FlatList } from 'react-native-gesture-handler';
 import { commentData } from '@/config/fakeData';
 import { SpringScrollView } from 'react-native-spring-scrollview';
+import CommentSort from '@/components/Comment/CommentSort';
 import { ChineseNormalHeader, ChineseNormalFooter } from 'react-native-spring-scrollview/Customize';
-import Header from './components/header';
+import Header from '@/components/Header';
 
 export default class CommentPage extends React.Component {
   static navigationOptions = {
@@ -16,6 +17,7 @@ export default class CommentPage extends React.Component {
   state = {
     allLoaded: false,
     textValue: '',
+    activeTab: 'new',
   };
 
   handleChangeText = text => {
@@ -33,11 +35,22 @@ export default class CommentPage extends React.Component {
 
   renderCommentItem = ({ item }) => <CommentItem replyAction={this.replyAction} itemData={item} />;
 
+  handleChangeSort = item => {
+    this.setState({
+      activeTab: item.type,
+    });
+  };
+
   render() {
-    const { textValue } = this.state;
+    const { textValue, activeTab } = this.state;
     return (
       <View style={styles.container}>
-        <Header />
+        <Header
+          title='66条评论'
+          rightComponent={
+            <CommentSort activeTab={activeTab} changeSortAction={this.handleChangeSort} />
+          }
+        />
         <SpringScrollView
           ref={ref => (this.refScrollView = ref)}
           refreshHeader={ChineseNormalHeader}

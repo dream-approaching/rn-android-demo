@@ -2,32 +2,38 @@ import React from 'react';
 import { View, StyleSheet, Image } from 'react-native';
 import { TextInput, TouchableOpacity } from 'react-native-gesture-handler';
 import { scale, themeColor, themeLayout } from '@/config';
+import myImages from '@/utils/images';
 
 export default class CommentPage extends React.Component {
-  static navigationOptions = {
-    header: null,
+  static defaultProps = {
+    textValue: '',
+    placeholder: '你觉得呢',
+    handleChangeText: () => {},
+    showLeftIcon: false,
   };
 
   render() {
-    const { textValue, handleChangeText } = this.props;
+    const { textValue, handleChangeText, placeholder, showLeftIcon } = this.props;
     return (
       <View style={styles.inputCon}>
-        <TouchableOpacity>
-          <Image style={styles.leftIcon} source={{ uri: 'ic_input_back' }} />
-        </TouchableOpacity>
+        {showLeftIcon && (
+          <TouchableOpacity>
+            <Image style={styles.leftIcon} source={{ uri: myImages.leftBack }} />
+          </TouchableOpacity>
+        )}
         <TextInput
           ref={ref => (this.refInput = ref)}
           style={styles.inputStyle}
           onChangeText={handleChangeText}
           value={textValue}
-          placeholder="你觉得呢"
+          placeholder={placeholder}
           placeholderTextColor={themeColor.placeholderColor}
         />
         <TouchableOpacity>
-          <Image style={styles.rightIcon} source={{ uri: 'ic_input_collection' }} />
+          <Image style={styles.rightIcon} source={{ uri: myImages.commentCollection }} />
         </TouchableOpacity>
         <TouchableOpacity>
-          <Image style={styles.rightIcon} source={{ uri: 'ic_input_share' }} />
+          <Image style={styles.rightIcon} source={{ uri: myImages.share }} />
         </TouchableOpacity>
       </View>
     );

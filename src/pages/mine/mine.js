@@ -1,12 +1,11 @@
 import React from 'react';
-import { ImageBackground, StyleSheet, View, Text, Button } from 'react-native';
+import { ImageBackground, StyleSheet, View, Button } from 'react-native';
 import MenuList from '@/components/MenuList';
-import ScrollView from '@/components/ScrollView';
-import { OpenActivity, OpenReactActivity } from '@/components/NativeModules';
-import LargerText from '@/components/AppText/LargerText';
+import { OpenRnActivity, OpenActivity } from '@/components/NativeModules';
 import { themeColor, scale, themeLayout } from '@/config';
 import { connect } from '@/utils/dva';
 import myImages from '@/utils/images';
+import SpringScrollView from '@/components/SpringScrollView';
 import Avatar from './components/Avatar';
 import MenuCard from './components/MenuCard';
 
@@ -38,7 +37,7 @@ class Mine extends React.Component {
         icon: myImages.article,
         navigatePath: '',
         onPressAction: () => {
-          OpenReactActivity.open('MyReactNativeAppthree', 'comment');
+          OpenRnActivity('collectArticle');
         },
       },
       {
@@ -46,7 +45,7 @@ class Mine extends React.Component {
         icon: myImages.application,
         navigatePath: '',
         onPressAction: () => {
-          OpenReactActivity.open('MyReactNativeAppthree', 'detailChat');
+          OpenRnActivity('collectApp');
         },
       },
       {
@@ -54,7 +53,7 @@ class Mine extends React.Component {
         icon: myImages.chat,
         navigatePath: '',
         onPressAction: () => {
-          OpenReactActivity.open('MyReactNativeAppthree', 'detailWebview');
+          OpenRnActivity('collectChat');
         },
       },
     ];
@@ -64,48 +63,73 @@ class Mine extends React.Component {
         icon: myImages.own,
         navigatePath: '',
         onPressAction: () => {
-          OpenActivity.open('com.lieying.content.social.login.ENTER');
+          OpenRnActivity('claimApp');
         },
       },
       {
         title: '我的通知',
         icon: myImages.notice,
         navigatePath: '',
+        onPressAction: () => {
+          OpenRnActivity('myNotice');
+        },
       },
       {
         title: '我的关注',
         icon: myImages.attention,
         navigatePath: '',
+        onPressAction: () => {
+          OpenRnActivity('myAttention');
+        },
       },
       {
         title: '我的粉丝',
         icon: myImages.fans,
         navigatePath: '',
+        onPressAction: () => {
+          OpenRnActivity('myFans');
+        },
       },
       {
         title: '设置',
         icon: myImages.setting,
-        navigatePath: 'Setting',
+        navigatePath: '',
+        onPressAction: () => {
+          OpenRnActivity('setting');
+        },
       },
       {
         title: '反馈意见',
         icon: myImages.suggest,
         navigatePath: '',
+        onPressAction: () => {
+          OpenRnActivity('myFeedback');
+        },
       },
     ];
-    const { global } = this.props;
     return (
       <View style={styles.container}>
-        <ScrollView>
+        <SpringScrollView>
           <ImageBackground resizeMode='cover' source={{ uri: myImages.bg }} style={styles.imgbg}>
-            <LargerText style={[styles.titleText]}>个人中心</LargerText>
-            <Avatar style={[styles.cardCon, styles.cardUser]} data={userData} />
-            <MenuCard style={[styles.cardCon, styles.cardMenu]} menu={cardMenu} />
-            <MenuList style={[styles.cardCon, styles.listMenu]} menu={listMenu} />
-            <Text>{global.count}</Text>
-            <Button title='加' onPress={this.handlePlus} />
+            <Avatar style={[styles.cardUser]} data={userData} />
           </ImageBackground>
-        </ScrollView>
+          <MenuCard style={[styles.cardCon, styles.cardMenu]} menu={cardMenu} />
+          <MenuList style={[styles.cardCon, styles.listMenu]} menu={listMenu} />
+          <View
+            style={{
+              ...themeLayout.flex('row', 'space-around'),
+              width: '100%',
+              marginBottom: scale(30),
+            }}
+          >
+            <Button
+              title='登录'
+              onPress={() => OpenActivity.open('com.lieying.content.social.login.ENTER')}
+            />
+            <Button title='评论页' onPress={() => OpenRnActivity('comment')} />
+            <Button title='互动话题内页' onPress={() => OpenRnActivity('detailChat')} />
+          </View>
+        </SpringScrollView>
       </View>
     );
   }
@@ -126,28 +150,22 @@ const styles = StyleSheet.create({
   imgbg: {
     alignItems: 'center',
   },
-  titleText: {
-    color: '#fff',
-    ...themeLayout.margin(scale(37), 0, scale(13), 0),
-    ...themeLayout.flex('row'),
-  },
   cardCon: {
     backgroundColor: themeColor.white,
-    borderRadius: scale(13),
-    ...themeLayout.padding(0, scale(14)),
-    width: scale(328),
+    ...themeLayout.padding(0, scale(18)),
+    width: scale(360),
   },
   cardUser: {
-    marginBottom: scale(9),
-    height: scale(93),
+    width: scale(360),
+    height: scale(158),
   },
   listMenu: {
     marginBottom: scale(50),
   },
   cardMenu: {
     ...themeLayout.flex('column', 'space-between', 'flex-start'),
-    ...themeLayout.padding(scale(12), scale(28), scale(12), scale(14)),
+    ...themeLayout.padding(scale(12), scale(34), scale(12), scale(18)),
     height: scale(111),
-    marginBottom: scale(9),
+    marginBottom: scale(4),
   },
 });

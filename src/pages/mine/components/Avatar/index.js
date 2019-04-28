@@ -5,8 +5,17 @@ import SecondaryText from '@/components/AppText/SecondaryText';
 import myImages from '@/utils/images';
 import { scale, themeLayout } from '@/config';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { OpenRnActivity } from '@/components/NativeModules';
 
 export default class extends React.PureComponent {
+  gotoEditUser = () => {
+    OpenRnActivity('editUser');
+  };
+
+  gotoPersonPage = () => {
+    OpenRnActivity('personPage');
+  };
+
   render() {
     const { style, data } = this.props;
     return (
@@ -14,13 +23,19 @@ export default class extends React.PureComponent {
         <TouchableOpacity>
           <Image style={styles.avatar} source={{ uri: data.avatar }} />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.userData}>
+        <View style={styles.userData}>
           <View style={styles.textCon}>
-            <LargerText style={styles.nameText}>{data.name}</LargerText>
-            <SecondaryText>编辑个人资料</SecondaryText>
+            <TouchableOpacity onPress={this.gotoPersonPage}>
+              <LargerText style={styles.nameText}>{data.name}</LargerText>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={this.gotoEditUser}>
+              <SecondaryText style={styles.editText}>编辑个人资料</SecondaryText>
+            </TouchableOpacity>
           </View>
-          <Image style={styles.iconRight} source={{uri: myImages.next}} />
-        </TouchableOpacity>
+          <TouchableOpacity style={styles.iconCon} onPress={this.gotoPersonPage}>
+            <Image style={styles.iconRight} source={{ uri: myImages.nextWhite }} />
+          </TouchableOpacity>
+        </View>
       </View>
     );
   }
@@ -29,22 +44,27 @@ export default class extends React.PureComponent {
 const styles = StyleSheet.create({
   container: {
     ...themeLayout.flex('row', 'space-between', 'center'),
-    ...themeLayout.padding(0, scale(38), 0, scale(26))
+    ...themeLayout.padding(scale(42), 0, 0, scale(26)),
   },
   avatar: {
     width: scale(70),
     height: scale(70),
-    borderRadius: scale(35)
+    borderRadius: scale(35),
   },
   userData: {
     ...themeLayout.flex('row', 'space-between', 'center'),
-    width: scale(180)
+    width: scale(250),
   },
   nameText: {
-    marginBottom: scale(2)
+    marginBottom: scale(3),
+    color: '#fff',
   },
+  editText: {
+    color: '#fff',
+  },
+  iconCon: { ...themeLayout.padding(scale(42)) },
   iconRight: {
     width: scale(15),
-    height: scale(15)
-  }
+    height: scale(15),
+  },
 });

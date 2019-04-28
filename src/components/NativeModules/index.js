@@ -1,8 +1,14 @@
 import { NativeModules } from 'react-native';
+import { name } from '../../../app.json';
 
 /**
  * OpenActivity 打开原生activity
  * OpenReactActivity 打开RN界面
  */
 console.log('%cNativeModules:', 'color: #0e93e0;background: #aaefe5;', NativeModules);
-export const { OpenActivity, OpenReactActivity } = NativeModules;
+
+export const { OpenActivity } = NativeModules;
+
+export const OpenRnActivity = route => {
+  NativeModules.OpenReactActivity.open(name, route);
+};
