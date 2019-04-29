@@ -5,6 +5,7 @@ import Header from '@/components/Header';
 import TextInput from '@/components/TextInput';
 import myImages from '@/utils/myImages';
 import { connect } from '@/utils/dva';
+import { debounce } from '@/utils/utils';
 import { scale, themeLayout, themeColor } from '@/config';
 import SecondaryText from '@/components/AppText/SecondaryText';
 import SearchItem from './components/searchItem';
@@ -18,6 +19,8 @@ class CommentPage extends React.Component {
     textValue: '',
   };
 
+  handleClickDebounce = debounce(value => this.queryAppListDispatch(value), 3000);
+
   componentDidMount() {
     StatusBar.setBarStyle('dark-content', true);
   }
@@ -26,8 +29,8 @@ class CommentPage extends React.Component {
     this.setState({
       textValue: value,
     });
-    this.queryAppListDispatch(value, 20);
     if (!value.length) this.clearAppList();
+    this.handleClickDebounce(value);
   };
 
   queryAppListDispatch = (searchKey, pagesize = 20, id = 0) => {
@@ -66,14 +69,14 @@ class CommentPage extends React.Component {
     const noList = textValue.length && !appList.length && !loading;
     return (
       <View style={styles.container}>
-        <Header title='我要推荐' />
+        <Header title="我要推荐" />
         <TextInput
           leftIcon={myImages.inputSearch}
           conStyle={styles.inputCon}
           onChangeText={this.handleChangeText}
           value={textValue}
-          clearButtonMode='while-editing'
-          placeholder='输入你想推荐的应用'
+          clearButtonMode="while-editing"
+          placeholder="输入你想推荐的应用"
         />
         {!noSearch && (
           <View style={styles.searchCon}>

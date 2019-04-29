@@ -1,5 +1,5 @@
 // debounce 防抖
-export const debounce = (fn, ms = 0) => {
+export const debounce = (fn, ms = 2000) => {
   let timeoutId;
   return function(...args) {
     if (timeoutId) clearTimeout(timeoutId);
