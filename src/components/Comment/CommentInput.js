@@ -1,8 +1,9 @@
 import React from 'react';
 import { View, StyleSheet, Image } from 'react-native';
-import { TextInput, TouchableOpacity } from 'react-native-gesture-handler';
-import { scale, themeColor, themeLayout } from '@/config';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { scale, themeLayout } from '@/config';
 import myImages from '@/utils/images';
+import TextInput from '@/components/TextInput';
 
 export default class CommentPage extends React.Component {
   static defaultProps = {
@@ -27,7 +28,6 @@ export default class CommentPage extends React.Component {
           onChangeText={handleChangeText}
           value={textValue}
           placeholder={placeholder}
-          placeholderTextColor={themeColor.placeholderColor}
         />
         <TouchableOpacity>
           <Image style={styles.rightIcon} source={{ uri: myImages.commentCollection }} />
@@ -58,7 +58,6 @@ const styles = StyleSheet.create({
     ...themeLayout.margin(0, scale(8)),
   },
   inputStyle: {
-    color: themeColor.font.secondary,
     ...themeLayout.border(),
     ...themeLayout.padding(scale(5), scale(10)),
     marginLeft: scale(10),

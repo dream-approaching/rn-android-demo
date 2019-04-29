@@ -29,7 +29,7 @@ export default class CommentPage extends React.Component {
 
   replyAction = item => {
     console.log('%citem:', 'color: #0e93e0;background: #aaefe5;', item);
-    this.refInputCon.refInput.focus();
+    this.refInputCon.refInput.refInput.focus();
     this.handleChangeText(`回复${item.name}：`);
   };
 
@@ -46,7 +46,7 @@ export default class CommentPage extends React.Component {
     return (
       <View style={styles.container}>
         <Header
-          title='66条评论'
+          title="66条评论"
           rightComponent={
             <CommentSort activeTab={activeTab} changeSortAction={this.handleChangeSort} />
           }
