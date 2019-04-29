@@ -81,13 +81,12 @@ class CommentPage extends React.Component {
               <SecondaryText style={styles.searchTitle}>搜索结果</SecondaryText>
             </View>
             {loading && <ActivityIndicator />}
-            {(noList && <SecondaryText>没有结果</SecondaryText>) || (
-              <SpringScrollView bounces>
-                {appList.map(item => {
+            <SpringScrollView bounces>
+              {(noList && <SecondaryText>没有结果</SecondaryText>) ||
+                appList.map(item => {
                   return <SearchItem searchKey={textValue} key={item.id} itemData={item} />;
                 })}
-              </SpringScrollView>
-            )}
+            </SpringScrollView>
           </View>
         )}
       </View>
