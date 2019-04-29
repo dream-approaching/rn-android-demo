@@ -15,5 +15,7 @@ export default {
   leftBack: 'ic_input_back',
   commentCollection: 'ic_input_collection_n',
   share: 'ic_input_share',
+  inputSearch: 'ic_input_search',
   x: 'ic_button_del',
+  xCicle: 'ic_button_del_o',
 };

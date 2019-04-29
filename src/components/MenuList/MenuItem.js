@@ -3,7 +3,7 @@ import { View, StyleSheet, Image } from 'react-native';
 import { themeLayout, scale } from '@/config';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import NavigationService from '@/utils/NavigationService';
-import myImages from '@/utils/images';
+import myImages from '@/utils/myImages';
 import CommonText from '@/components/AppText/CommonText';
 
 export default class MenuItem extends React.PureComponent {

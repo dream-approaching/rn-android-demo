@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, StatusBar } from 'react-native';
 import CommentItem from '@/components/Comment/CommentItem';
 import CommentInput from '@/components/Comment/CommentInput';
 import { FlatList } from 'react-native-gesture-handler';
@@ -21,6 +21,10 @@ export default class CommentPage extends React.Component {
     textValue: '',
     activeTab: 'new',
   };
+
+  componentDidMount() {
+    StatusBar.setBarStyle('dark-content', true)
+  }
 
   handleChangeText = text => {
     console.log('%ctext:', 'color: #0e93e0;background: #aaefe5;', text);
@@ -66,7 +70,11 @@ export default class CommentPage extends React.Component {
           <Header />
           <View style={styles.commentTitle}>
             <SecondaryText style={styles.commentTotal}>评论135</SecondaryText>
-            <CommentSort activeTab={activeTab} changeSortAction={this.handleChangeSort} />
+            <CommentSort
+              activeStyle={{ color: '#707070' }}
+              activeTab={activeTab}
+              changeSortAction={this.handleChangeSort}
+            />
           </View>
           <FlatList
             keyExtractor={item => `${item.id}`}
@@ -76,6 +84,8 @@ export default class CommentPage extends React.Component {
         </SpringScrollView>
         <CommentInput
           showLeftIcon
+          showShare
+          showCollection
           ref={ref => (this.refInputCon = ref)}
           handleChangeText={this.handleChangeText}
           textValue={textValue}

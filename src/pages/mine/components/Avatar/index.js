@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Image, StyleSheet } from 'react-native';
 import LargerText from '@/components/AppText/LargerText';
 import SecondaryText from '@/components/AppText/SecondaryText';
-import myImages from '@/utils/images';
+import myImages from '@/utils/myImages';
 import { scale, themeLayout } from '@/config';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { OpenRnActivity } from '@/components/NativeModules';

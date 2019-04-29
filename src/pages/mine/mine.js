@@ -4,7 +4,7 @@ import MenuList from '@/components/MenuList';
 import { OpenRnActivity, OpenActivity } from '@/components/NativeModules';
 import { themeColor, scale, themeLayout } from '@/config';
 import { connect } from '@/utils/dva';
-import myImages from '@/utils/images';
+import myImages from '@/utils/myImages';
 import SpringScrollView from '@/components/SpringScrollView';
 import Avatar from './components/Avatar';
 import MenuCard from './components/MenuCard';

@@ -7,7 +7,7 @@ module.exports = {
     es6: true,
     mocha: true,
     jest: true,
-    jasmine: true
+    jasmine: true,
   },
   rules: {
     'generator-star-spacing': [0],
@@ -34,8 +34,8 @@ module.exports = {
         arrow: 'parens-new-line',
         condition: 'parens-new-line',
         logical: 'parens-new-line',
-        prop: 'ignore'
-      }
+        prop: 'ignore',
+      },
     ],
     'no-else-return': [0],
     'no-plusplus': [0],
@@ -62,8 +62,8 @@ module.exports = {
         objects: 'always-multiline',
         imports: 'always-multiline',
         exports: 'always-multiline',
-        functions: 'ignore'
-      }
+        functions: 'ignore',
+      },
     ],
     'object-curly-newline': [0],
     'function-paren-newline': [0],
@@ -71,15 +71,16 @@ module.exports = {
     'no-param-reassign': [0],
     'require-yield': [1],
     'no-useless-escape': [0],
+    'react/no-array-index-key': [0],
     'func-names': [0],
-    'comma-dangle': [0]
+    'comma-dangle': [0],
   },
   parserOptions: {
     ecmaFeatures: {
-      experimentalObjectRestSpread: true
-    }
+      experimentalObjectRestSpread: true,
+    },
   },
   settings: {
-    polyfills: ['fetch', 'promises']
-  }
+    polyfills: ['fetch', 'promises'],
+  },
 };

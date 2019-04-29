@@ -7,3 +7,7 @@ export { themeLayout } from './layout';
 export { scale } from './scale';
 
 export const isAndroid = Platform.OS === 'android';
+
+export default {
+  baseUrl: 'http://192.168.0.213:8011',
+};

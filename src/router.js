@@ -70,11 +70,6 @@ export default class Router extends React.Component {
   };
 
   componentDidMount() {
-    console.log(
-      '%crouter componentDidMount:',
-      'color: #0e93e0;background: #aaefe5;',
-      'componentDidMount'
-    );
     const { nativeProps } = this.props;
     const { veiw_name: viewName } = nativeProps;
     const app = {

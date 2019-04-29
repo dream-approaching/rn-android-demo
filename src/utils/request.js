@@ -16,7 +16,7 @@ const codeMessage = {
   500: '服务器发生错误，请检查服务器。',
   502: '网关错误。',
   503: '服务不可用，服务器暂时过载或维护。',
-  504: '网关超时。'
+  504: '网关超时。',
 };
 function checkStatus(response) {
   if (response.status >= 200 && response.status < 300) {
@@ -53,7 +53,7 @@ function myFetch(fetchPromise, timeout = 10 * 1000) {
 export default function request(url, options, time) {
   const defaultOptions = {
     credentials: 'include',
-    method: 'GET'
+    method: 'GET',
   };
   let newOptions = { ...defaultOptions, ...options };
   if (
@@ -65,14 +65,14 @@ export default function request(url, options, time) {
       newOptions.headers = {
         Accept: 'application/json',
         'Content-Type': 'application/json; charset=utf-8',
-        ...newOptions.headers
+        ...newOptions.headers,
       };
       newOptions.body = JSON.stringify(newOptions.body);
     } else {
       // newOptions.body is FormData
       newOptions.headers = {
         Accept: 'application/json',
-        ...newOptions.headers
+        ...newOptions.headers,
       };
     }
   }

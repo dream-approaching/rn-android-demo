@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, StatusBar } from 'react-native';
 import CommentItem from '@/components/Comment/CommentItem';
 import CommentInput from '@/components/Comment/CommentInput';
 import { FlatList } from 'react-native-gesture-handler';
@@ -20,6 +20,10 @@ export default class CommentPage extends React.Component {
     activeTab: 'new',
   };
 
+  componentDidMount() {
+    StatusBar.setBarStyle('dark-content', true)
+  }
+
   handleChangeText = text => {
     console.log('%ctext:', 'color: #0e93e0;background: #aaefe5;', text);
     this.setState({
@@ -29,7 +33,7 @@ export default class CommentPage extends React.Component {
 
   replyAction = item => {
     console.log('%citem:', 'color: #0e93e0;background: #aaefe5;', item);
-    this.refInputCon.refInput.refInput.focus();
+    this.refInputCon.refInput.focus();
     this.handleChangeText(`回复${item.name}：`);
   };
 
@@ -46,7 +50,7 @@ export default class CommentPage extends React.Component {
     return (
       <View style={styles.container}>
         <Header
-          title="66条评论"
+          title='66条评论'
           rightComponent={
             <CommentSort activeTab={activeTab} changeSortAction={this.handleChangeSort} />
           }

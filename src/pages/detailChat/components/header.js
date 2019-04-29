@@ -4,7 +4,7 @@ import { scale, themeLayout, themeSize } from '@/config';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import LargerText from '@/components/AppText/LargerText';
 import SecondaryText from '@/components/AppText/SecondaryText';
-import myImages from '@/utils/images';
+import myImages from '@/utils/myImages';
 
 export default class CommentPage extends React.PureComponent {
   static navigationOptions = {
