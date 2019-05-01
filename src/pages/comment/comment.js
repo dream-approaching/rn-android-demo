@@ -37,12 +37,16 @@ class CommentPage extends React.Component {
         sort: 2,
         isFirst: true,
       },
-      () => {
-        this.checkAllLoaded();
-        this.refScrollView.endLoading();
+      {
+        successFn: this.queryListSuccessFn,
       }
     );
   }
+
+  queryListSuccessFn = () => {
+    this.checkAllLoaded();
+    this.refScrollView.endLoading();
+  };
 
   queryCommentDispatch = (payload, { successFn }) => {
     console.log('%csuccessFn:', 'color: #0e93e0;background: #aaefe5;', successFn);
@@ -74,20 +78,17 @@ class CommentPage extends React.Component {
   handleQueryNextPage = () => {
     const { comment } = this.props;
     const { activeTab } = this.state;
+    const isHotSort = +activeTab === 1;
+    const lastItem = lastArr(comment.commentList);
     this.queryCommentDispatch(
       {
         type: 1,
         content_id: 8,
         sort: 2,
-        id:
-          +activeTab === 1
-            ? lastArr(comment.commentList).fabulous
-            : lastArr(comment.commentList).created_time,
+        id: isHotSort ? lastItem.fabulous : lastItem.created_time,
       },
-      () => {
-        console.log('执行sccessfn');
-        this.checkAllLoaded();
-        this.refScrollView.endLoading();
+      {
+        successFn: this.queryListSuccessFn,
       }
     );
   };
