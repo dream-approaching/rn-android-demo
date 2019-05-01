@@ -1,5 +1,6 @@
 import fetch from 'isomorphic-fetch';
-import { stringify } from 'qs';
+// import { ToastAndroid } from 'react-native';
+// import { stringify } from 'qs';
 
 const codeMessage = {
   200: '服务器成功返回请求的数据。',
@@ -29,10 +30,11 @@ function checkStatus(response) {
   throw error;
 }
 
-function myFetch(fetchPromise, timeout = 10 * 1000) {
+function myFetch(fetchPromise, timeout = 15 * 1000) {
   const abortPromise = new Promise((resolve, reject) => {
     setTimeout(() => {
       const err = new Error('请求超时');
+      // ToastAndroid.show('请求超时', ToastAndroid.LONG); // 每次都会执行
       // 告诉原生有异常
       reject(err);
     }, timeout);
@@ -80,8 +82,21 @@ export default function request(url, options, time) {
   let fetchUrl;
 
   if (newOptions.method === 'GET') {
-    const { body } = newOptions;
-    const query = body ? `?${stringify(body)}` : '';
+    const { data } = newOptions;
+    // data.access_token = '3a93d69719f6e035bdb5c4d3b8a11547'; // token1
+    // data.mobilephone = '13564587895'; // 用户手机号1
+
+    data.access_token = 'c3c4db657e05f684f696096ec6f06371'; // token2
+    data.mobilephone = '18503068868'; // 用户手机号2
+
+    // data.access_token = 'eb07f80389496cc665ffb93bc059263e'; // token3
+    // data.mobilephone = '13613033073'; // 用户手机号4
+    data.app_ver = '1'; // app版本
+    data.app_ver_code = '1'; // app版本编码
+    data.ch = '1'; // 渠道
+    data.channel_id = '1'; // 渠道号
+
+    const query = data ? `?params=${JSON.stringify(data)}` : '';
     fetchUrl = `${url}${query}`;
     newOptions = null;
   } else {

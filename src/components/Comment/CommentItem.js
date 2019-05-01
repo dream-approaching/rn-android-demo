@@ -12,41 +12,47 @@ export default class extends React.PureComponent {
     return (
       <View style={styles.container}>
         <TouchableOpacity>
-          <Image style={styles.avatar} source={{ uri: itemData.avatar }} />
+          <Image style={styles.avatar} source={{ uri: itemData.head_image }} />
         </TouchableOpacity>
         <View style={styles.rightBody}>
-          <SecondaryText>{itemData.name}</SecondaryText>
+          <SecondaryText>{itemData.commit_user}</SecondaryText>
           <TouchableOpacity onPress={() => replyAction(itemData)}>
             <CommonText style={[styles.replyText, styles.textLineHeight(20)]}>
-              {itemData.text}
+              {itemData.content}
             </CommonText>
           </TouchableOpacity>
-          <View style={styles.replyCon}>
-            {itemData.reply.map(item => {
-              return (
-                <TouchableOpacity
-                  key={item.id}
-                  style={{ marginTop: scale(3) }}
-                  onPress={() => replyAction(item)}
-                >
-                  <Text style={styles.textLineHeight(18)}>
-                    <SecondaryText style={[styles.replyTitle]}>{item.name}:</SecondaryText>
-                    <SecondaryText>{item.text}</SecondaryText>
-                  </Text>
+          {!!itemData.detailtwo.length && (
+            <View style={styles.replyCon}>
+              {itemData.detailtwo.map(item => {
+                return (
+                  <TouchableOpacity
+                    key={item.id}
+                    style={{ marginTop: scale(3) }}
+                    onPress={() => replyAction(item)}
+                  >
+                    <Text style={[styles.textLineHeight(18), { flexWrap: 'wrap' }]}>
+                      <SecondaryText style={[styles.replyTitle]}>
+                        {item.commit_user}：
+                      </SecondaryText>
+                      <SecondaryText>{item.content}</SecondaryText>
+                    </Text>
+                  </TouchableOpacity>
+                );
+              })}
+              {+itemData.count > 2 && (
+                <TouchableOpacity style={{ marginTop: scale(3) }}>
+                  <SecondaryText style={[styles.replyTitle, styles.textLineHeight(18)]}>
+                    {`共${itemData.count}条回复＞`}
+                  </SecondaryText>
                 </TouchableOpacity>
-              );
-            })}
-            <TouchableOpacity style={{ marginTop: scale(3) }}>
-              <SecondaryText style={[styles.replyTitle, styles.textLineHeight(18)]}>
-                {`共${itemData.replyTotal}条回复＞`}
-              </SecondaryText>
-            </TouchableOpacity>
-          </View>
+              )}
+            </View>
+          )}
           <View style={styles.bottomBar}>
-            <SmallText>{itemData.time}</SmallText>
+            <SmallText>{itemData.created_time}</SmallText>
             <TouchableOpacity style={styles.likeCon}>
               <Image style={styles.likeIcon} source={{ uri: 'ic_like' }} />
-              <SmallText style={styles.superSmallText}>{itemData.likeNum}</SmallText>
+              <SmallText style={styles.superSmallText}>{itemData.fabulous}</SmallText>
             </TouchableOpacity>
           </View>
         </View>
@@ -71,6 +77,7 @@ const styles = StyleSheet.create({
     width: scale(50),
     height: scale(50),
     borderRadius: scale(25),
+    backgroundColor: themeColor.bgF4,
   },
   replyCon: {
     ...themeLayout.padding(scale(5), scale(8)),

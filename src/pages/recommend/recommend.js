@@ -5,9 +5,10 @@ import Header from '@/components/Header';
 import TextInput from '@/components/TextInput';
 import myImages from '@/utils/myImages';
 import { connect } from '@/utils/dva';
-import { debounce } from '@/utils/utils';
+import { debounce, lastArr } from '@/utils/utils';
 import { scale, themeLayout, themeColor } from '@/config';
 import SecondaryText from '@/components/AppText/SecondaryText';
+import { ChineseNormalFooter } from 'react-native-spring-scrollview/Customize';
 import SearchItem from './components/searchItem';
 
 class CommentPage extends React.Component {
@@ -17,9 +18,12 @@ class CommentPage extends React.Component {
 
   state = {
     textValue: '',
+    allLoaded: false,
   };
 
-  handleClickDebounce = debounce(value => this.queryAppListDispatch(value), 3000);
+  pageSize = 8;
+
+  handleClickDebounce = debounce(value => this.queryAppListDispatch(value), 500);
 
   componentDidMount() {
     StatusBar.setBarStyle('dark-content', true);
@@ -30,19 +34,14 @@ class CommentPage extends React.Component {
       textValue: value,
     });
     if (!value.length) this.clearAppList();
-    this.handleClickDebounce(value);
+    // debounce(() => this.queryAppListDispatch(value), 500)();  // 这样不行，每次onchange都会放到500ms后执行
+    this.handleClickDebounce(value); // 这样就可以，只有最后一次触发的onchange才会执行
   };
 
-  queryAppListDispatch = (searchKey, pagesize = 20, id = 0) => {
+  queryAppListDispatch = (searchKey, id = 0, pagesize = this.pageSize) => {
     const { dispatch } = this.props;
     const data = {
-      app_ver_code: '1',
-      ch: '1',
-      mobilephone: '13613033073',
-      access_token: 'eb07f80389496cc665ffb93bc059263e',
       pagesize,
-      app_ver: '1',
-      channel_id: '1',
       search_type: 2,
       search: searchKey,
       id,
@@ -50,7 +49,19 @@ class CommentPage extends React.Component {
     return dispatch({
       type: 'recommend/queryAppEffect',
       payload: data,
+      finallyFn: () => {
+        this.refScrollView && this.refScrollView.endLoading();
+        // this.refScrollView.endRefresh();
+      },
     });
+  };
+
+  queryNextPage = () => {
+    const { textValue } = this.state;
+    const { recommend } = this.props;
+    const lastItem = lastArr(recommend.appList);
+    console.log('%clastItem:', 'color: #0e93e0;background: #aaefe5;', textValue, lastItem);
+    this.queryAppListDispatch(textValue, lastItem.id);
   };
 
   clearAppList = () => {
@@ -62,21 +73,22 @@ class CommentPage extends React.Component {
   };
 
   render() {
-    const { textValue } = this.state;
+    const { textValue, allLoaded } = this.state;
     const { recommend, loading } = this.props;
     const { appList } = recommend;
+    // console.log('%cappList:', 'color: #0e93e0;background: #aaefe5;', appList);
     const noSearch = !textValue.length;
     const noList = textValue.length && !appList.length && !loading;
     return (
       <View style={styles.container}>
-        <Header title="我要推荐" />
+        <Header title='我要推荐' />
         <TextInput
           leftIcon={myImages.inputSearch}
           conStyle={styles.inputCon}
           onChangeText={this.handleChangeText}
           value={textValue}
-          clearButtonMode="while-editing"
-          placeholder="输入你想推荐的应用"
+          clearButtonMode='while-editing'
+          placeholder='输入你想推荐的应用'
         />
         {!noSearch && (
           <View style={styles.searchCon}>
@@ -84,7 +96,13 @@ class CommentPage extends React.Component {
               <SecondaryText style={styles.searchTitle}>搜索结果</SecondaryText>
             </View>
             {loading && <ActivityIndicator />}
-            <SpringScrollView bounces>
+            <SpringScrollView
+              ref={ref => (this.refScrollView = ref)}
+              bounces
+              onLoading={this.queryNextPage}
+              allLoaded={allLoaded}
+              loadingFooter={ChineseNormalFooter}
+            >
               {(noList && <SecondaryText>没有结果</SecondaryText>) ||
                 appList.map(item => {
                   return <SearchItem searchKey={textValue} key={item.id} itemData={item} />;

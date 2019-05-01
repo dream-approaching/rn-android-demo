@@ -8,7 +8,7 @@ export default {
   },
 
   effects: {
-    *queryAppEffect({ payload }, { call, put }) {
+    *queryAppEffect({ payload, finallyFn }, { call, put }) {
       try {
         const response = yield call(searchReq, payload);
         if (response.success) {
@@ -19,6 +19,8 @@ export default {
         }
       } catch (err) {
         console.log('err', err);
+      } finally {
+        finallyFn && finallyFn();
       }
     },
   },
@@ -27,7 +29,7 @@ export default {
     saveAppList(state, { payload }) {
       return {
         ...state,
-        appList: payload,
+        appList: [...state.appList, ...payload],
       };
     },
   },

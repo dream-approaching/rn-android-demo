@@ -3,6 +3,7 @@ import { View, StyleSheet, Image, TextInput } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { scale, themeLayout, themeColor } from '@/config';
 import myImages from '@/utils/myImages';
+import CommonText from '../AppText/CommonText';
 
 export default class CommentPage extends React.Component {
   static defaultProps = {
@@ -19,6 +20,7 @@ export default class CommentPage extends React.Component {
       showLeftIcon,
       showCollection,
       showShare,
+      handleSubmitComment,
     } = this.props;
     return (
       <View style={styles.inputCon}>
@@ -45,6 +47,9 @@ export default class CommentPage extends React.Component {
             <Image style={styles.rightIcon} source={{ uri: myImages.share }} />
           </TouchableOpacity>
         )}
+        <TouchableOpacity style={{ width: scale(60) }} onPress={handleSubmitComment}>
+          <CommonText>发送</CommonText>
+        </TouchableOpacity>
       </View>
     );
   }

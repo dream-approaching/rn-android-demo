@@ -4,27 +4,23 @@ import { scale, themeLayout } from '@/config';
 import SecondaryText from '@/components/AppText/SecondaryText';
 import CommonText from '@/components/AppText/CommonText';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { spiltHighlightText } from '@/utils/utils';
 
 export default class CommentPage extends React.Component {
   render() {
     const { itemData, searchKey } = this.props;
     if (!itemData) return null;
-    const { app_name_cn: title } = itemData;
-    const highlightIndex = title.indexOf(searchKey);
-    if (highlightIndex < 0) return null;
-    const arr = [
-      title.slice(0, highlightIndex),
-      title.slice(highlightIndex, highlightIndex + searchKey.length),
-      title.slice(highlightIndex + searchKey.length),
-    ];
+    const { app_name_cn: title, app_short_desc: desc } = itemData;
+    const titleArr = spiltHighlightText(title, searchKey);
+    const descArr = spiltHighlightText(desc, searchKey);
     return (
-      <TouchableOpacity style={styles.itemCon}>
+      <TouchableOpacity onPress={() => console.log(itemData.id)} style={styles.itemCon}>
         <View style={styles.coverCon}>
           <Image resizeMode='cover' style={styles.cover} source={{ uri: itemData.app_logo }} />
         </View>
         <View style={styles.rightBody}>
           <Text>
-            {arr.map((item, index) => {
+            {titleArr.map((item, index) => {
               const highlightStyle = item === searchKey ? { color: '#fb716b' } : {};
               return (
                 <CommonText key={index} style={[styles.searchTitle, highlightStyle]}>
@@ -33,9 +29,21 @@ export default class CommentPage extends React.Component {
               );
             })}
           </Text>
-          <SecondaryText numberOfLines={1} ellipsizeMode='tail' style={styles.searchDesc}>
-            {itemData.app_short_desc}
-          </SecondaryText>
+          <Text>
+            {descArr.map((item, index) => {
+              const highlightStyle = item === searchKey ? { color: '#fb716b' } : {};
+              return (
+                <SecondaryText
+                  key={index}
+                  numberOfLines={1}
+                  ellipsizeMode='tail'
+                  style={[styles.searchDesc, highlightStyle]}
+                >
+                  {item}
+                </SecondaryText>
+              );
+            })}
+          </Text>
         </View>
       </TouchableOpacity>
     );

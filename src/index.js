@@ -4,12 +4,13 @@ import codePush from 'react-native-code-push';
 import dva from '@/utils/dva';
 import globalModel from '@/models/global';
 import recommendModel from '@/models/recommend';
+import commentModel from '@/models/comment';
 // import createLogger from 'redux-logger';
 import Router from './router';
 
 const app = dva({
   initialState: {},
-  models: [globalModel, recommendModel],
+  models: [globalModel, recommendModel, commentModel],
   onError(e) {
     console.log('onError', e);
   },
