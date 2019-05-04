@@ -18,4 +18,5 @@ export default {
   inputSearch: 'ic_input_search',
   x: 'ic_button_del',
   xCicle: 'ic_button_del_o',
+  bgInput: 'bg_input',
 };

@@ -23,7 +23,7 @@ export default class CommentPage extends React.Component {
   };
 
   componentDidMount() {
-    StatusBar.setBarStyle('dark-content', true)
+    StatusBar.setBarStyle('dark-content', true);
   }
 
   handleChangeText = text => {

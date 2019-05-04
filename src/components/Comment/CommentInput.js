@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Image, TextInput } from 'react-native';
+import { ImageBackground, StyleSheet, Image, TextInput, Keyboard } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { scale, themeLayout, themeColor } from '@/config';
 import myImages from '@/utils/myImages';
@@ -12,6 +12,32 @@ export default class CommentPage extends React.Component {
     handleChangeText: () => {},
   };
 
+  state = {
+    keyboardShow: false,
+  };
+
+  componentDidMount() {
+    this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this.keyboardDidShow);
+    this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this.keyboardDidHide);
+  }
+
+  componentWillUnmount() {
+    this.keyboardDidShowListener.remove();
+    this.keyboardDidHideListener.remove();
+  }
+
+  keyboardDidShow = () => {
+    this.setState({
+      keyboardShow: true,
+    });
+  };
+
+  keyboardDidHide = () => {
+    this.setState({
+      keyboardShow: false,
+    });
+  };
+
   render() {
     const {
       textValue,
@@ -22,8 +48,12 @@ export default class CommentPage extends React.Component {
       showShare,
       handleSubmitComment,
     } = this.props;
+    const { keyboardShow } = this.state;
+    console.log('%ctextValue:', 'color: #0e93e0;background: #aaefe5;', textValue);
+    console.log(textValue.length);
+    const disabled = textValue.length === 0;
     return (
-      <View style={styles.inputCon}>
+      <ImageBackground source={{ uri: myImages.bgInput }} style={styles.inputCon}>
         {showLeftIcon && (
           <TouchableOpacity>
             <Image style={styles.leftIcon} source={{ uri: myImages.leftBack }} />
@@ -34,23 +64,32 @@ export default class CommentPage extends React.Component {
           style={styles.inputStyle}
           onChangeText={handleChangeText}
           value={textValue}
+          multiline
           placeholder={placeholder}
           placeholderTextColor={themeColor.placeholderColor}
         />
-        {showCollection && (
-          <TouchableOpacity>
-            <Image style={styles.rightIcon} source={{ uri: myImages.commentCollection }} />
+        {showCollection &&
+          !keyboardShow && (
+            <TouchableOpacity>
+              <Image style={styles.rightIcon} source={{ uri: myImages.commentCollection }} />
+            </TouchableOpacity>
+          )}
+        {showShare &&
+          !keyboardShow && (
+            <TouchableOpacity>
+              <Image style={styles.rightIcon} source={{ uri: myImages.share }} />
+            </TouchableOpacity>
+          )}
+        {keyboardShow && (
+          <TouchableOpacity
+            style={styles.submitBtn}
+            activeOpacity={disabled ? 1 : 0.2}
+            onPress={disabled ? handleSubmitComment : () => {}}
+          >
+            <CommonText style={styles.submitText(disabled)}>发送</CommonText>
           </TouchableOpacity>
         )}
-        {showShare && (
-          <TouchableOpacity>
-            <Image style={styles.rightIcon} source={{ uri: myImages.share }} />
-          </TouchableOpacity>
-        )}
-        <TouchableOpacity style={{ width: scale(60) }} onPress={handleSubmitComment}>
-          <CommonText>发送</CommonText>
-        </TouchableOpacity>
-      </View>
+      </ImageBackground>
     );
   }
 }
@@ -58,10 +97,9 @@ export default class CommentPage extends React.Component {
 const styles = StyleSheet.create({
   inputCon: {
     ...themeLayout.flex('row', 'space-between'),
-    ...themeLayout.padding(scale(11), scale(13)),
-    elevation: 30,
-    backgroundColor: '#fff',
-    // shadowOffset: scale(20),
+    ...themeLayout.padding(0, scale(13)),
+    width: scale(360),
+    height: scale(65),
   },
   leftIcon: {
     width: scale(19),
@@ -76,8 +114,18 @@ const styles = StyleSheet.create({
   inputStyle: {
     ...themeLayout.border(),
     ...themeLayout.padding(scale(5), scale(10)),
-    height: scale(35),
     flex: 1,
     color: themeColor.font.secondary,
+    borderRadius: scale(5),
+  },
+  submitBtn: {
+    width: scale(60),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  submitText: disabled => {
+    return {
+      color: disabled ? '#999' : '#333',
+    };
   },
 });

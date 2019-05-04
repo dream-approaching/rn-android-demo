@@ -12,7 +12,8 @@ export default {
   effects: {
     *queryCommentEffect({ payload, successFn }, { call, put }) {
       try {
-        const response = yield call(queryCommentReq, payload);
+        // const response = yield call(queryCommentReq, payload);
+        const response = { success: true, data: { cnt: 10, list: [] } };
         console.log('%cresponse:', 'color: #0e93e0;background: #aaefe5;', response);
         if (response && response.success) {
           yield put({
