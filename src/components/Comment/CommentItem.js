@@ -5,6 +5,8 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import SecondaryText from '@/components/AppText/SecondaryText';
 import CommonText from '@/components/AppText/CommonText';
 import SmallText from '@/components/AppText/SmallText';
+import moment from '@/components/moment';
+import LikeBtn from '@/components/Comment/likeBtn';
 
 export default class extends React.PureComponent {
   render() {
@@ -49,11 +51,8 @@ export default class extends React.PureComponent {
             </View>
           )}
           <View style={styles.bottomBar}>
-            <SmallText>{itemData.created_time}</SmallText>
-            <TouchableOpacity style={styles.likeCon}>
-              <Image style={styles.likeIcon} source={{ uri: 'ic_like' }} />
-              <SmallText style={styles.superSmallText}>{itemData.fabulous}</SmallText>
-            </TouchableOpacity>
+            <SmallText>{moment(itemData.created_time * 1000).fromNow(true)}</SmallText>
+            <LikeBtn size={12} likeNum={itemData.fabulous} textStyle={styles.superSmallText} />
           </View>
         </View>
       </View>
@@ -95,16 +94,8 @@ const styles = StyleSheet.create({
     ...themeLayout.flex('row', 'space-between'),
     marginTop: scale(6),
   },
-  likeCon: {
-    ...themeLayout.flex('row', 'space-between'),
-  },
-  likeIcon: {
-    width: scale(12),
-    height: scale(12),
-  },
   superSmallText: {
     fontSize: scale(11),
-    marginLeft: scale(3),
   },
   textLineHeight: num => ({
     lineHeight: scale(num),

@@ -53,7 +53,11 @@ export default class CommentPage extends React.Component {
     console.log(textValue.length);
     const disabled = textValue.length === 0;
     return (
-      <ImageBackground source={{ uri: myImages.bgInput }} style={styles.inputCon}>
+      <ImageBackground
+        resizeMode="stretch"
+        source={{ uri: myImages.bgInput }}
+        style={styles.inputCon}
+      >
         {showLeftIcon && (
           <TouchableOpacity>
             <Image style={styles.leftIcon} source={{ uri: myImages.leftBack }} />

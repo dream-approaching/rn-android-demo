@@ -19,4 +19,5 @@ export default {
   x: 'ic_button_del',
   xCicle: 'ic_button_del_o',
   bgInput: 'bg_input',
+  thumb: 'ic_like',
 };

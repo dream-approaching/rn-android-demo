@@ -1,12 +1,13 @@
 import React from 'react';
-import { View, StyleSheet, StatusBar, Keyboard, Button } from 'react-native';
-import CommentItem from '@/components/Comment/CommentItem';
+import { View, StyleSheet, StatusBar, Keyboard } from 'react-native';
 import CommentInput from '@/components/Comment/CommentInput';
 import { FlatList } from 'react-native-gesture-handler';
-// import { commentData } from '@/config/fakeData';
+import { commentData } from '@/config/fakeData';
 import { connect } from '@/utils/dva';
-import { SpringScrollView } from 'react-native-spring-scrollview';
+import { themeColor, scale, themeLayout } from '@/config';
+import SpringScrollView from '@/components/SpringScrollView';
 import CommentSort from '@/components/Comment/CommentSort';
+import DetailItem from './components/detailItem';
 import { ChineseNormalFooter } from 'react-native-spring-scrollview/Customize';
 import Header from '@/components/Header';
 import { lastArr } from '@/utils/utils';
@@ -112,7 +113,9 @@ class CommentPage extends React.Component {
     this.handleChangeText(`回复${item.commit_user}：`);
   };
 
-  renderCommentItem = ({ item }) => <CommentItem replyAction={this.replyAction} itemData={item} />;
+  renderCommentItem = ({ item }) => {
+    return <DetailItem type="child" replyAction={this.replyAction} itemData={item} />;
+  };
 
   handleChangeSort = item => {
     this.setState({
@@ -145,36 +148,31 @@ class CommentPage extends React.Component {
     this.submitCommentDispatch(data, { successFn });
   };
 
-  handleGotoItemAll = () => {
-    console.log('this.props:', this.props);
-    const { navigation } = this.props;
-    navigation.navigate('CommentDetail');
-  };
-
   render() {
     const { textValue, activeTab, allLoaded } = this.state;
-    console.log('%callLoaded:', 'color: #0e93e0;background: #aaefe5;', allLoaded);
+    console.log('%cactiveTab:', 'color: #0e93e0;background: #aaefe5;', activeTab);
     const { comment } = this.props;
     return (
       <View style={styles.container}>
-        <Header
-          title={`${comment.commentListTotal}条评论`}
-          rightComponent={
-            <CommentSort activeTab={activeTab} changeSortAction={this.handleChangeSort} />
-          }
-        />
-        <Button title="全部" onPress={this.handleGotoItemAll} />
+        <Header title={`${comment.commentListTotal}条评论`} />
         <SpringScrollView
           ref={ref => (this.refScrollView = ref)}
           loadingFooter={ChineseNormalFooter}
           onLoading={this.handleQueryNextPage}
           allLoaded={allLoaded}
         >
-          <FlatList
-            keyExtractor={item => `${item.id}`}
-            data={comment.commentList}
-            renderItem={this.renderCommentItem}
-          />
+          <DetailItem type="main" replyAction={this.replyAction} itemData={commentData[0]} />
+          <View style={styles.replyCon}>
+            <View style={styles.tabCon}>
+              <CommentSort activeTab={activeTab} changeSortAction={this.handleChangeSort} />
+            </View>
+            <FlatList
+              keyExtractor={item => `${item.id}`}
+              // data={comment.commentList}
+              data={commentData}
+              renderItem={this.renderCommentItem}
+            />
+          </View>
         </SpringScrollView>
         <CommentInput
           ref={ref => (this.refInputCon = ref)}
@@ -197,5 +195,15 @@ export default connect(mapStateToProps)(CommentPage);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: themeColor.bgF4,
+  },
+  tabCon: {
+    height: scale(31),
+    ...themeLayout.flex('row', 'flex-end'),
+    ...themeLayout.padding(0, scale(16)),
+    ...themeLayout.border(),
+  },
+  replyCon: {
+    backgroundColor: themeColor.bgF4,
   },
 });

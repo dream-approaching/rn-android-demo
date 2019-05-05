@@ -8,6 +8,7 @@ import Setting from '@/pages/setting/setting';
 import Recommend from '@/pages/recommend/recommend';
 import Chat from '@/pages/chat/chat';
 import Comment from '@/pages/comment/comment';
+import CommentDetail from '@/pages/comment/commentDetail';
 import DetailChat from '@/pages/detailChat/detailChat';
 import DetailWebview from '@/pages/detailWebview/detailWebview';
 import EditUser from '@/pages/editUser/editUser';
@@ -25,7 +26,10 @@ const EmptyNav = createStackNavigator({ Empty }, { initialRouteName: 'Empty' });
 const RecommendNav = createStackNavigator({ Recommend }, { initialRouteName: 'Recommend' });
 const ChatNav = createStackNavigator({ Chat }, { initialRouteName: 'Chat' });
 const MineNav = createStackNavigator({ Mine }, { initialRouteName: 'Mine' });
-const CommentNav = createStackNavigator({ Comment }, { initialRouteName: 'Comment' });
+const CommentNav = createStackNavigator(
+  { Comment, CommentDetail },
+  { initialRouteName: 'Comment' }
+);
 const DetailChatNav = createStackNavigator({ DetailChat }, { initialRouteName: 'DetailChat' });
 const DetailWebviewNav = createStackNavigator(
   { DetailWebview },
