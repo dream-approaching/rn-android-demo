@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.google.gson.Gson;
 import com.gyf.immersionbar.ImmersionBar;
 import com.lieying.comlib.bean.UserInfoBean;
@@ -22,6 +23,7 @@ import com.lieying.comlib.utils.ButtonWaiting;
 import com.lieying.comlib.utils.MatcheUtils;
 import com.lieying.comlib.utils.ViewUtil;
 import com.lieying.comlib.utils.ViewUtils;
+import com.lieying.socialappstore.MainApplication;
 import com.lieying.socialappstore.R;
 import com.lieying.socialappstore.base.BaseActivity;
 import com.lieying.socialappstore.manager.StatusBarUtil;
@@ -266,6 +268,8 @@ public class LoginActivity extends BaseActivity implements  ButtonWaiting.OnWait
             @Override
             protected void onSuccees(ResponseData<UserInfoBean> objectResponseData) {
                 if(objectResponseData.getStatus()==0){
+                    MainApplication.getInstance().getReactNativeHost().getReactInstanceManager().getCurrentReactContext().getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                            .emit("UserLogin", null);
                     UserManager.getInstance().setCurrentUser(objectResponseData.getData());
                     SharedPreferencesUtil.getInstance().putString(SP_KEY_USER_INFO, new Gson().toJson(objectResponseData.getData()));
                     ToastUtil.showToast("登陆成功!");

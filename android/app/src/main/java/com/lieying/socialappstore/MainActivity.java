@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.common.LifecycleState;
+import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.facebook.react.shell.MainReactPackage;
 import com.gyf.immersionbar.ImmersionBar;
 import com.lieying.comlib.bean.UserInfoBean;
@@ -33,6 +34,7 @@ import com.lieying.socialappstore.fragment.BaseReactFragment;
 import com.lieying.socialappstore.fragment.FirstFragment;
 import com.lieying.socialappstore.fragment.IndexFragment;
 import com.lieying.socialappstore.fragment.NativeSecondFragment;
+import com.lieying.socialappstore.fragment.NativeThridFragment;
 import com.lieying.socialappstore.fragment.SecondFragment;
 import com.lieying.socialappstore.fragment.ThirdFragment;
 import com.lieying.socialappstore.manager.StatusBarUtil;
@@ -52,8 +54,6 @@ public class MainActivity extends BaseFragmentActivity implements FragmentCallba
     private ViewPager mViewPager;
     private ViewPagerAdapter mAdapter;
     private ArrayList<BaseV4Fragment> fragments = new ArrayList<>();
-//    BaseReactFragment firstFragment;
-    BaseReactFragment secondFragment;
     BaseReactFragment thirdFragment;
     RelativeLayout mRlToorbar;
     TextView mTvToolTitle;
@@ -113,17 +113,9 @@ public class MainActivity extends BaseFragmentActivity implements FragmentCallba
             }
         }
         ReactInstanceManager mReactInstanceManager = MainApplication.getInstance().getReactNativeHost().getReactInstanceManager();
-//        firstFragment = FirstFragment.newInstance("fragment1", "MyReactNativeAppthree", false, "tab3.bundle");
-//        firstFragment.setFragmentCallback(this);
-//        firstFragment.setmReactInstanceManager(mReactInstanceManager);
-        secondFragment = SecondFragment.newInstance("fragment2", "MyReactNativeAppthree", false, "tab3.bundle");
-        secondFragment.setFragmentCallback(this);
-        secondFragment.setmReactInstanceManager(mReactInstanceManager);
         thirdFragment = ThirdFragment.newInstance("fragment3", "MyReactNativeAppthree", false, "tab3.bundle");
         thirdFragment.setFragmentCallback(this);
         thirdFragment.setmReactInstanceManager(mReactInstanceManager);
-//        fragments.add(firstFragment);
-        fragments.add(secondFragment);
         fragments.add(thirdFragment);
         mAdapter = new ViewPagerAdapter(getSupportFragmentManager(), fragments);
         mViewPager.setAdapter(mAdapter);
@@ -139,6 +131,10 @@ public class MainActivity extends BaseFragmentActivity implements FragmentCallba
             case 1:
                 NativeSecondFragment nativeSecondFragment = NativeSecondFragment.newInstance();
                 fragments.add(nativeSecondFragment);
+                break;
+            case 2:
+                NativeThridFragment nativeThridFragment = NativeThridFragment.newInstance();
+                fragments.add(nativeThridFragment);
                 break;
         }
 
@@ -251,6 +247,7 @@ public class MainActivity extends BaseFragmentActivity implements FragmentCallba
     @Override
     protected void onResume() {
         super.onResume();
+
     }
 
     @Override
@@ -261,4 +258,6 @@ public class MainActivity extends BaseFragmentActivity implements FragmentCallba
         }
         return super.onKeyUp(keyCode, event);
     }
+
+
 }

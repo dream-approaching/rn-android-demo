@@ -10,7 +10,7 @@ import LikeBtn from '@/components/Comment/likeBtn';
 
 export default class extends React.PureComponent {
   render() {
-    const { itemData, replyAction } = this.props;
+    const { itemData, replyAction, seeAllChildAction, index } = this.props;
     return (
       <View style={styles.container}>
         <TouchableOpacity>
@@ -42,7 +42,10 @@ export default class extends React.PureComponent {
                 );
               })}
               {+itemData.count > 2 && (
-                <TouchableOpacity style={{ marginTop: scale(3) }}>
+                <TouchableOpacity
+                  onPress={() => seeAllChildAction(itemData, index)}
+                  style={{ marginTop: scale(3) }}
+                >
                   <SecondaryText style={[styles.replyTitle, styles.textLineHeight(18)]}>
                     {`共${itemData.count}条回复＞`}
                   </SecondaryText>

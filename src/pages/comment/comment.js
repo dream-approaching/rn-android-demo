@@ -1,9 +1,8 @@
 import React from 'react';
-import { View, StyleSheet, StatusBar, Keyboard, Button } from 'react-native';
+import { View, StyleSheet, StatusBar, Keyboard } from 'react-native';
 import CommentItem from '@/components/Comment/CommentItem';
 import CommentInput from '@/components/Comment/CommentInput';
 import { FlatList } from 'react-native-gesture-handler';
-// import { commentData } from '@/config/fakeData';
 import { connect } from '@/utils/dva';
 import { SpringScrollView } from 'react-native-spring-scrollview';
 import CommentSort from '@/components/Comment/CommentSort';
@@ -49,11 +48,10 @@ class CommentPage extends React.Component {
   };
 
   queryCommentDispatch = (payload, { successFn }) => {
-    console.log('%csuccessFn:', 'color: #0e93e0;background: #aaefe5;', successFn);
     const { dispatch } = this.props;
     dispatch({
       type: 'comment/queryCommentEffect',
-      payload: { pagesize: 6, ...payload },
+      payload: { pagesize: 10, ...payload },
       successFn,
     });
   };
@@ -68,15 +66,15 @@ class CommentPage extends React.Component {
   };
 
   checkAllLoaded = () => {
-    console.log('%ccheckAllLoaded:', 'color: #0e93e0;background: #aaefe5;', 'checkAllLoaded');
     const { comment } = this.props;
     this.setState({
-      allLoaded: +comment.commentListTotal >= comment.commentList.length,
+      allLoaded: +comment.commentListTotal <= comment.commentList.length,
     });
   };
 
   handleQueryNextPage = () => {
     const { comment } = this.props;
+    if (!comment.commentList.length) return null;
     const { activeTab } = this.state;
     const isHotSort = +activeTab === 1;
     const lastItem = lastArr(comment.commentList);
@@ -112,7 +110,14 @@ class CommentPage extends React.Component {
     this.handleChangeText(`回复${item.commit_user}：`);
   };
 
-  renderCommentItem = ({ item }) => <CommentItem replyAction={this.replyAction} itemData={item} />;
+  renderCommentItem = ({ item, index }) => (
+    <CommentItem
+      seeAllChildAction={this.handleSeeAllChild}
+      replyAction={this.replyAction}
+      itemData={item}
+      index={index}
+    />
+  );
 
   handleChangeSort = item => {
     this.setState({
@@ -136,24 +141,30 @@ class CommentPage extends React.Component {
     const successFn = () => {
       this.setState(this.initialState);
       Keyboard.dismiss();
-      this.queryCommentDispatch({
-        type: 1,
-        content_id: 8,
-        sort: 2,
-      });
+      this.queryCommentDispatch(
+        {
+          type: 1,
+          content_id: 8,
+          sort: 2,
+          isFirst: true,
+        },
+        {}
+      );
     };
     this.submitCommentDispatch(data, { successFn });
   };
 
-  handleGotoItemAll = () => {
-    console.log('this.props:', this.props);
+  handleSeeAllChild = (item, index) => {
     const { navigation } = this.props;
-    navigation.navigate('CommentDetail');
+    navigation.navigate('ChildComment', {
+      total: item.count,
+      id: item.id,
+      index,
+    });
   };
 
   render() {
     const { textValue, activeTab, allLoaded } = this.state;
-    console.log('%callLoaded:', 'color: #0e93e0;background: #aaefe5;', allLoaded);
     const { comment } = this.props;
     return (
       <View style={styles.container}>
@@ -163,7 +174,6 @@ class CommentPage extends React.Component {
             <CommentSort activeTab={activeTab} changeSortAction={this.handleChangeSort} />
           }
         />
-        <Button title="全部" onPress={this.handleGotoItemAll} />
         <SpringScrollView
           ref={ref => (this.refScrollView = ref)}
           loadingFooter={ChineseNormalFooter}

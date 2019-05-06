@@ -54,7 +54,7 @@ export default class CommentPage extends React.Component {
     const disabled = textValue.length === 0;
     return (
       <ImageBackground
-        resizeMode="stretch"
+        resizeMode='stretch'
         source={{ uri: myImages.bgInput }}
         style={styles.inputCon}
       >
@@ -72,23 +72,21 @@ export default class CommentPage extends React.Component {
           placeholder={placeholder}
           placeholderTextColor={themeColor.placeholderColor}
         />
-        {showCollection &&
-          !keyboardShow && (
-            <TouchableOpacity>
-              <Image style={styles.rightIcon} source={{ uri: myImages.commentCollection }} />
-            </TouchableOpacity>
-          )}
-        {showShare &&
-          !keyboardShow && (
-            <TouchableOpacity>
-              <Image style={styles.rightIcon} source={{ uri: myImages.share }} />
-            </TouchableOpacity>
-          )}
+        {showCollection && !keyboardShow && (
+          <TouchableOpacity>
+            <Image style={styles.rightIcon} source={{ uri: myImages.commentCollection }} />
+          </TouchableOpacity>
+        )}
+        {showShare && !keyboardShow && (
+          <TouchableOpacity>
+            <Image style={styles.rightIcon} source={{ uri: myImages.share }} />
+          </TouchableOpacity>
+        )}
         {keyboardShow && (
           <TouchableOpacity
             style={styles.submitBtn}
             activeOpacity={disabled ? 1 : 0.2}
-            onPress={disabled ? handleSubmitComment : () => {}}
+            onPress={disabled ? () => {} : handleSubmitComment}
           >
             <CommonText style={styles.submitText(disabled)}>发送</CommonText>
           </TouchableOpacity>

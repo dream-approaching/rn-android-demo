@@ -1,8 +1,10 @@
 export default {
+  bg: 'bg_my',
+  bgLabel: 'bg_label',
+
   application: 'my_application',
   article: 'my_article',
   attention: 'my_attention',
-  bg: 'bg_my',
   chat: 'my_chat',
   collection: 'my_collection',
   fans: 'my_fans',
@@ -20,4 +22,16 @@ export default {
   xCicle: 'ic_button_del_o',
   bgInput: 'bg_input',
   thumb: 'ic_like',
+  thumbO: 'ic_like_o',
+  search: 'ic_search',
+  comment: 'ic_comments',
+  approve: 'ic_approve',
+  danger: 'ic_danger',
+  success: 'ic_success',
+
+  btnClear: 'btn_clear',
+  btnDel: 'btn_del',
+  btnFacial: 'btn_facial',
+  btnLabel: 'btn_label',
+  btnEtc: 'btn_etc',
 };

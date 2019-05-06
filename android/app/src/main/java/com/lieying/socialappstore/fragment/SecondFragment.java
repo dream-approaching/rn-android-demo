@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.common.LifecycleState;
 import com.lieying.socialappstore.BuildConfig;
-import com.swmansion.gesturehandler.react.RNGestureHandlerEnabledRootView;
 
 
 public class SecondFragment extends BaseReactFragment{

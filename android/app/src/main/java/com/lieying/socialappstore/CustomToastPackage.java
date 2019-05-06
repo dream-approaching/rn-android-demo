@@ -7,6 +7,7 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.uimanager.ViewManager;
 import com.lieying.socialappstore.rnModule.OpenModule;
 import com.lieying.socialappstore.rnModule.OpenReactModule;
+import com.lieying.socialappstore.rnModule.UserReactModule;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,6 +26,7 @@ public class CustomToastPackage implements ReactPackage {
         List<NativeModule> modules = new ArrayList<>();
         modules.add(new OpenModule(reactContext));
         modules.add(new OpenReactModule(reactContext));
+        modules.add(new UserReactModule(reactContext));
         return modules;
     }
 

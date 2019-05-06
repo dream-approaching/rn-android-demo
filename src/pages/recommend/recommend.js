@@ -87,7 +87,6 @@ class CommentPage extends React.Component {
           conStyle={styles.inputCon}
           onChangeText={this.handleChangeText}
           value={textValue}
-          clearButtonMode='while-editing'
           placeholder='输入你想推荐的应用'
         />
         {!noSearch && (

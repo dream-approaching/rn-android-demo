@@ -11,7 +11,7 @@ export const themeColor = {
   gray: '#808080',
   transparent: 'transparent',
 
-  primaryColor: '#e74c3c', // 主题色
+  primaryColor: '#fb716b', // 主题色
   bgColor: '#eee', // 默认背景颜色
   bgF4: '#f4f4f4',
   placeholderColor: '#aaa', // 默认placeholder颜色

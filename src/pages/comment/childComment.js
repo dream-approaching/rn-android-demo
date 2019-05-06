@@ -2,12 +2,12 @@ import React from 'react';
 import { View, StyleSheet, StatusBar, Keyboard } from 'react-native';
 import CommentInput from '@/components/Comment/CommentInput';
 import { FlatList } from 'react-native-gesture-handler';
-import { commentData } from '@/config/fakeData';
+// import { commentData } from '@/config/fakeData';
 import { connect } from '@/utils/dva';
 import { themeColor, scale, themeLayout } from '@/config';
 import SpringScrollView from '@/components/SpringScrollView';
 import CommentSort from '@/components/Comment/CommentSort';
-import DetailItem from './components/detailItem';
+import ChildItem from './components/childItem';
 import { ChineseNormalFooter } from 'react-native-spring-scrollview/Customize';
 import Header from '@/components/Header';
 import { lastArr } from '@/utils/utils';
@@ -17,21 +17,27 @@ class CommentPage extends React.Component {
     header: null,
   };
 
-  initialState = {
-    allLoaded: false,
-    textValue: '',
-    atSomeone: null,
-  };
-
-  state = {
-    ...this.initialState,
-    activeTab: '2',
-  };
+  constructor(props) {
+    super(props);
+    this.initialState = {
+      allLoaded: false,
+      textValue: '',
+      atSomeone: null,
+    };
+    this.state = {
+      ...this.initialState,
+      activeTab: '2',
+    };
+    const { navigation } = props;
+    this.parentId = navigation.getParam('id');
+    this.parentIndex = navigation.getParam('index');
+    this.total = navigation.getParam('total');
+  }
 
   componentDidMount() {
     StatusBar.setBarStyle('dark-content', true);
     // 获取评论列表
-    this.queryCommentDispatch(
+    this.queryChildCommentDispatch(
       {
         type: 1,
         content_id: 8,
@@ -49,12 +55,12 @@ class CommentPage extends React.Component {
     this.refScrollView.endLoading();
   };
 
-  queryCommentDispatch = (payload, { successFn }) => {
+  queryChildCommentDispatch = (payload, { successFn }) => {
     console.log('%csuccessFn:', 'color: #0e93e0;background: #aaefe5;', successFn);
     const { dispatch } = this.props;
     dispatch({
-      type: 'comment/queryCommentEffect',
-      payload: { pagesize: 6, ...payload },
+      type: 'comment/queryChildCommentEffect',
+      payload: { pagesize: 10, parent_id: this.parentId, ...payload },
       successFn,
     });
   };
@@ -72,16 +78,17 @@ class CommentPage extends React.Component {
     console.log('%ccheckAllLoaded:', 'color: #0e93e0;background: #aaefe5;', 'checkAllLoaded');
     const { comment } = this.props;
     this.setState({
-      allLoaded: +comment.commentListTotal >= comment.commentList.length,
+      allLoaded: +this.total <= comment.childCommentList.length,
     });
   };
 
   handleQueryNextPage = () => {
     const { comment } = this.props;
+    if (!comment.commentList.length) return null;
     const { activeTab } = this.state;
     const isHotSort = +activeTab === 1;
     const lastItem = lastArr(comment.commentList);
-    this.queryCommentDispatch(
+    this.queryChildCommentDispatch(
       {
         type: 1,
         content_id: 8,
@@ -95,7 +102,6 @@ class CommentPage extends React.Component {
   };
 
   handleChangeText = text => {
-    console.log('%ctext:', 'color: #0e93e0;background: #aaefe5;', text);
     this.setState({
       textValue: text,
     });
@@ -114,7 +120,7 @@ class CommentPage extends React.Component {
   };
 
   renderCommentItem = ({ item }) => {
-    return <DetailItem type="child" replyAction={this.replyAction} itemData={item} />;
+    return <ChildItem type='child' replyAction={this.replyAction} itemData={item} />;
   };
 
   handleChangeSort = item => {
@@ -139,7 +145,7 @@ class CommentPage extends React.Component {
     const successFn = () => {
       this.setState(this.initialState);
       Keyboard.dismiss();
-      this.queryCommentDispatch({
+      this.queryChildCommentDispatch({
         type: 1,
         content_id: 8,
         sort: 2,
@@ -152,24 +158,29 @@ class CommentPage extends React.Component {
     const { textValue, activeTab, allLoaded } = this.state;
     console.log('%cactiveTab:', 'color: #0e93e0;background: #aaefe5;', activeTab);
     const { comment } = this.props;
+    console.log('comment.childCommentList', comment.childCommentList);
     return (
       <View style={styles.container}>
-        <Header title={`${comment.commentListTotal}条评论`} />
+        <Header title={`${this.total}条评论`} />
         <SpringScrollView
           ref={ref => (this.refScrollView = ref)}
           loadingFooter={ChineseNormalFooter}
           onLoading={this.handleQueryNextPage}
           allLoaded={allLoaded}
+          bounces
         >
-          <DetailItem type="main" replyAction={this.replyAction} itemData={commentData[0]} />
+          <ChildItem
+            type='main'
+            replyAction={this.replyAction}
+            itemData={comment.commentList[this.parentIndex]}
+          />
           <View style={styles.replyCon}>
             <View style={styles.tabCon}>
               <CommentSort activeTab={activeTab} changeSortAction={this.handleChangeSort} />
             </View>
             <FlatList
               keyExtractor={item => `${item.id}`}
-              // data={comment.commentList}
-              data={commentData}
+              data={comment.childCommentList}
               renderItem={this.renderCommentItem}
             />
           </View>

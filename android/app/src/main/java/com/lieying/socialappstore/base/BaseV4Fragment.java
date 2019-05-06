@@ -8,20 +8,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.facebook.react.ReactPackage;
-import com.facebook.react.shell.MainReactPackage;
-import com.learnium.RNDeviceInfo.RNDeviceInfo;
-import com.lieying.socialappstore.BuildConfig;
-import com.lieying.socialappstore.CustomToastPackage;
 import com.lieying.socialappstore.utils.ClickEventUtils;
-import com.microsoft.codepush.react.CodePush;
-import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 
 import java.util.Arrays;
 import java.util.List;
 
 import io.reactivex.disposables.Disposable;
-
+/**
+  * @Description:   v4包里fragment父类
+  * @Author:         liyi
+  * @CreateDate:     2019/4/26 0026 11:20
+ */
 public abstract class BaseV4Fragment extends Fragment implements BaseIViewUI {
     private StartControl mControl;
     private OnClickControl mClickControl;
