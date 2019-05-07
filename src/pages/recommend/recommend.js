@@ -9,9 +9,10 @@ import { debounce, lastArr } from '@/utils/utils';
 import { scale, themeLayout, themeColor } from '@/config';
 import SecondaryText from '@/components/AppText/SecondaryText';
 import { ChineseNormalFooter } from 'react-native-spring-scrollview/Customize';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import SearchItem from './components/searchItem';
 
-class CommentPage extends React.Component {
+class Recommend extends React.Component {
   static navigationOptions = {
     header: null,
   };
@@ -81,14 +82,17 @@ class CommentPage extends React.Component {
     const noList = textValue.length && !appList.length && !loading;
     return (
       <View style={styles.container}>
-        <Header title='我要推荐' />
+        <Header title="我要推荐" />
         <TextInput
           leftIcon={myImages.inputSearch}
           conStyle={styles.inputCon}
           onChangeText={this.handleChangeText}
           value={textValue}
-          placeholder='输入你想推荐的应用'
+          placeholder="输入你想推荐的应用"
         />
+        <TouchableOpacity onPress={() => this.props.navigation.navigate('RecommendEdit')}>
+          <SecondaryText style={styles.searchTitle}>点击进入提交页面</SecondaryText>
+        </TouchableOpacity>
         {!noSearch && (
           <View style={styles.searchCon}>
             <View style={styles.searchTitleCon}>
@@ -119,7 +123,7 @@ const mapStateToProps = ({ recommend, loading }) => ({
   loading: loading.effects['recommend/queryAppEffect'],
 });
 
-export default connect(mapStateToProps)(CommentPage);
+export default connect(mapStateToProps)(Recommend);
 
 const styles = StyleSheet.create({
   container: {

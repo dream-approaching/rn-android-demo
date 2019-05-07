@@ -16,7 +16,7 @@ export default class CommentPage extends React.Component {
     return (
       <TouchableOpacity onPress={() => console.log(itemData.id)} style={styles.itemCon}>
         <View style={styles.coverCon}>
-          <Image resizeMode='cover' style={styles.cover} source={{ uri: itemData.app_logo }} />
+          <Image resizeMode="cover" style={styles.cover} source={{ uri: itemData.app_logo }} />
         </View>
         <View style={styles.rightBody}>
           <Text>
@@ -36,7 +36,6 @@ export default class CommentPage extends React.Component {
                 <SecondaryText
                   key={index}
                   numberOfLines={1}
-                  ellipsizeMode='tail'
                   style={[styles.searchDesc, highlightStyle]}
                 >
                   {item}

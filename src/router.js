@@ -6,6 +6,8 @@ import Empty from '@/pages/empty';
 import Mine from '@/pages/mine/mine';
 import Setting from '@/pages/setting/setting';
 import Recommend from '@/pages/recommend/recommend';
+import RecommendEdit from '@/pages/recommend/recommendEdit';
+import AddLabel from '@/pages/recommend/addLabel';
 import XFriend from '@/pages/xfriend/xfriend';
 import XFriendDetail from '@/pages/xfriend/xfriendDetail';
 import Comment from '@/pages/comment/comment';
@@ -29,7 +31,10 @@ import MoreChat from '@/pages/search/moreChat';
 import MoreShare from '@/pages/search/moreShare';
 
 const EmptyNav = createStackNavigator({ Empty }, { initialRouteName: 'Empty' });
-const RecommendNav = createStackNavigator({ Recommend }, { initialRouteName: 'Recommend' });
+const RecommendNav = createStackNavigator(
+  { Recommend, RecommendEdit, AddLabel },
+  { initialRouteName: 'Recommend' }
+);
 const XFriendNav = createStackNavigator({ XFriend }, { initialRouteName: 'XFriend' });
 const XFriendDetailNav = createStackNavigator(
   { XFriendDetail },
