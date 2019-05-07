@@ -3,7 +3,7 @@ import { View, StyleSheet, Image } from 'react-native';
 import SpringScrollView from '@/components/SpringScrollView';
 import SecondaryText from '@/components/AppText/SecondaryText';
 import { scale, themeLayout, themeSize } from '@/config';
-import XfriendItem from '@/components/pageComponent/xfriend';
+import XfriendItem from '@/components/pageComponent/xfriendItem';
 
 export default class CommentPage extends React.Component {
   static navigationOptions = {
@@ -27,6 +27,7 @@ export default class CommentPage extends React.Component {
       likeNum: 123,
       commentNum: 234,
       shareNum: 89,
+      approve: false,
     };
     return (
       <View style={styles.container}>
