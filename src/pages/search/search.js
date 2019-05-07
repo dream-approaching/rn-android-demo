@@ -6,6 +6,10 @@ import SearchBar from './components/searchBar';
 import SectionTitle from './components/sectionTitle';
 import { themeLayout, scale, themeColor, themeSize } from '@/config';
 import CommonText from '@/components/AppText/CommonText';
+import { appData, articleData, xfriendData } from '@/config/fakeData';
+import XfriendItem from '@/components/pageComponent/xfriendItem';
+import AppItem from '@/components/pageComponent/appItem';
+import ArticleItem from '@/components/pageComponent/articleItem';
 
 const history = ['工具', '效率', '旅游'];
 const hot = [
@@ -74,6 +78,56 @@ export default class CommentPage extends React.Component {
     );
   };
 
+  renderSearchResult = () => {
+    const { black } = themeColor.font;
+    const sectionList = [
+      {
+        title: 'APP应用',
+        navigate: 'MoreApp',
+        bodyRender: appData.map((item, index) => {
+          const islastOne = index === appData.length - 1;
+          return <AppItem key={item.name} itemData={item} islastOne={islastOne} />;
+        }),
+      },
+      {
+        title: '文章',
+        navigate: 'MoreArticle',
+        bodyRender: articleData.map((item, index) => {
+          const islastOne = index === appData.length - 1;
+          return <ArticleItem key={item.name} itemData={item} islastOne={islastOne} />;
+        }),
+      },
+      {
+        title: '互动话题',
+        navigate: 'MoreChat',
+        bodyRender: articleData.map((item, index) => {
+          const islastOne = index === appData.length - 1;
+          return <ArticleItem key={item.name} itemData={item} islastOne={islastOne} />;
+        }),
+      },
+      {
+        title: 'X友分享',
+        navigate: 'MoreShare',
+        bodyRender: xfriendData.map((item, index) => {
+          const islastOne = index === appData.length - 1;
+          return <XfriendItem key={item.name} itemData={item} islastOne={islastOne} />;
+        }),
+      },
+    ];
+    return (
+      <Fragment>
+        {sectionList.map(item => {
+          return (
+            <View key={item.title} style={[styles.searchSectionCon, styles.sectionCon]}>
+              <SectionTitle color={black} title={item.title} type='more' navigate={item.navigate} />
+              <View style={styles.searchSectionList}>{item.bodyRender}</View>
+            </View>
+          );
+        })}
+      </Fragment>
+    );
+  };
+
   render() {
     const { searchKey } = this.state;
     return (
@@ -84,7 +138,7 @@ export default class CommentPage extends React.Component {
           cancelSearchAction={this.handleCancelSearch}
           title='搜索'
         />
-        <SpringScrollView>{this.renderDidNotSearch()}</SpringScrollView>
+        <SpringScrollView>{this.renderSearchResult()}</SpringScrollView>
       </View>
     );
   }
@@ -131,5 +185,14 @@ const styles = StyleSheet.create({
     borderRadius: scale(12),
     height: scale(32),
     minWidth: scale(85),
+  },
+  searchSectionCon: {
+    ...themeLayout.borderSide('Bottom', themeColor.borderColor, scale(2)),
+    marginTop: scale(22),
+  },
+  searchSectionList: {
+    ...themeLayout.flex('column'),
+    paddingBottom: scale(10),
+    paddingTop: scale(5),
   },
 });

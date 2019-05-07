@@ -5,10 +5,16 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import myImages from '@/utils/myImages';
 import CommonText from '@/components/AppText/CommonText';
 import SecondaryText from '@/components/AppText/SecondaryText';
+import NavigationService from '@/utils/NavigationService';
 
 export default class CommentPage extends React.PureComponent {
+  handleNavigate = () => {
+    const { navigate } = this.props;
+    NavigationService.navigate(navigate, {});
+  };
+
   render() {
-    const { title, type, rightAction, color = '#707070' } = this.props;
+    const { title, type, rightAction, color = themeColor.font.secondary } = this.props;
     return (
       <View style={styles.container}>
         <View style={styles.titleCon}>
@@ -16,7 +22,7 @@ export default class CommentPage extends React.PureComponent {
           <CommonText style={[styles.titleText, { color }]}>{title}</CommonText>
         </View>
         {type === 'more' && (
-          <TouchableOpacity style={styles.moreCon} onPress={rightAction}>
+          <TouchableOpacity style={styles.moreCon} onPress={this.handleNavigate}>
             <SecondaryText>查看更多</SecondaryText>
             <Image style={styles.rightIcon} source={{ uri: myImages.next }} />
           </TouchableOpacity>

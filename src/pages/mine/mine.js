@@ -136,7 +136,7 @@ class Mine extends React.Component {
             }}
           >
             <Button title='搜索' onPress={() => OpenRnActivity('search')} />
-            <Button title='X友分享' onPress={() => OpenRnActivity('search')} />
+            <Button title='X友分享内页' onPress={() => OpenRnActivity('xFriendDetail')} />
           </View>
           <MenuCard style={[styles.cardCon, styles.cardMenu]} menu={cardMenu} />
           <MenuList style={[styles.cardCon, styles.listMenu]} menu={listMenu} />

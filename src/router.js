@@ -7,6 +7,7 @@ import Mine from '@/pages/mine/mine';
 import Setting from '@/pages/setting/setting';
 import Recommend from '@/pages/recommend/recommend';
 import XFriend from '@/pages/xfriend/xfriend';
+import XFriendDetail from '@/pages/xfriend/xfriendDetail';
 import Comment from '@/pages/comment/comment';
 import ChildComment from '@/pages/comment/childComment';
 import DetailChat from '@/pages/detailChat/detailChat';
@@ -22,13 +23,24 @@ import MyFans from '@/pages/myFans/myFans';
 import MyFeedback from '@/pages/myFeedback/myFeedback';
 import PersonPage from '@/pages/personPage/personPage';
 import Search from '@/pages/search/search';
+import MoreApp from '@/pages/search/moreApp';
+import MoreArticle from '@/pages/search/moreArticle';
+import MoreChat from '@/pages/search/moreChat';
+import MoreShare from '@/pages/search/moreShare';
 
 const EmptyNav = createStackNavigator({ Empty }, { initialRouteName: 'Empty' });
 const RecommendNav = createStackNavigator({ Recommend }, { initialRouteName: 'Recommend' });
 const XFriendNav = createStackNavigator({ XFriend }, { initialRouteName: 'XFriend' });
+const XFriendDetailNav = createStackNavigator(
+  { XFriendDetail },
+  { initialRouteName: 'XFriendDetail' }
+);
 const MineNav = createStackNavigator({ Mine }, { initialRouteName: 'Mine' });
 const CommentNav = createStackNavigator({ Comment, ChildComment }, { initialRouteName: 'Comment' });
-const DetailChatNav = createStackNavigator({ DetailChat }, { initialRouteName: 'DetailChat' });
+const DetailChatNav = createStackNavigator(
+  { DetailChat, ChildComment },
+  { initialRouteName: 'DetailChat' }
+);
 const DetailWebviewNav = createStackNavigator(
   { DetailWebview },
   { initialRouteName: 'DetailWebview' }
@@ -47,10 +59,14 @@ const MyFansNav = createStackNavigator({ MyFans }, { initialRouteName: 'MyFans' 
 const SettingNav = createStackNavigator({ Setting }, { initialRouteName: 'Setting' });
 const MyFeedbackNav = createStackNavigator({ MyFeedback }, { initialRouteName: 'MyFeedback' });
 const PersonPageNav = createStackNavigator({ PersonPage }, { initialRouteName: 'PersonPage' });
-const SearchNav = createStackNavigator({ Search }, { initialRouteName: 'Search' });
+const SearchNav = createStackNavigator(
+  { Search, MoreApp, MoreArticle, MoreChat, MoreShare },
+  { initialRouteName: 'Search' }
+);
 
 const RecommendContainer = createAppContainer(RecommendNav);
 const XFriendContainer = createAppContainer(XFriendNav);
+const XFriendDetailContainer = createAppContainer(XFriendDetailNav);
 const MineContainer = createAppContainer(MineNav);
 const CommentContainer = createAppContainer(CommentNav);
 const DetailChatContainer = createAppContainer(DetailChatNav);
@@ -76,9 +92,11 @@ export default class Router extends React.Component {
   componentDidMount() {
     const { nativeProps } = this.props;
     const { veiw_name: viewName } = nativeProps;
+    console.log('%cparams:', 'color: #0e93e0;background: #aaefe5;', nativeProps);
     const app = {
       fragment4: XFriendContainer,
       fragment3: MineContainer,
+      xFriendDetail: XFriendDetailContainer,
       comment: CommentContainer,
       detailChat: DetailChatContainer,
       detailWebview: DetailWebviewContainer,

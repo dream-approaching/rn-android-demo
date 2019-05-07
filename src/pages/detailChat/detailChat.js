@@ -39,7 +39,23 @@ export default class CommentPage extends React.Component {
     this.handleChangeText(`回复${item.name}：`);
   };
 
-  renderCommentItem = ({ item }) => <CommentItem replyAction={this.replyAction} itemData={item} />;
+  renderCommentItem = ({ item, index }) => (
+    <CommentItem
+      seeAllChildAction={this.handleSeeAllChild}
+      replyAction={this.replyAction}
+      itemData={item}
+      index={index}
+    />
+  );
+
+  handleSeeAllChild = (item, index) => {
+    const { navigation } = this.props;
+    navigation.navigate('ChildComment', {
+      total: item.count,
+      id: item.id,
+      index,
+    });
+  };
 
   handleChangeSort = item => {
     this.setState({
@@ -69,7 +85,7 @@ export default class CommentPage extends React.Component {
         >
           <Header />
           <View style={styles.commentTitle}>
-            <SecondaryText style={styles.commentTotal}>评论135</SecondaryText>
+            <SecondaryText style={styles.commentTotal}>135个回答</SecondaryText>
             <CommentSort
               activeStyle={{ color: '#707070' }}
               activeTab={activeTab}

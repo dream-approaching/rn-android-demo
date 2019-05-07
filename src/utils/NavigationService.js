@@ -10,7 +10,7 @@ function navigate(routeName, params) {
   navigator.dispatch(
     NavigationActions.navigate({
       routeName,
-      params
+      params,
     })
   );
 }
@@ -19,5 +19,5 @@ function navigate(routeName, params) {
 
 export default {
   navigate,
-  setTopLevelNavigator
+  setTopLevelNavigator,
 };

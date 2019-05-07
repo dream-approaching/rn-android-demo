@@ -33,6 +33,7 @@ public class CommonReactActivity extends BaseActivity implements DefaultHardware
     private ReactInstanceManager mReactInstanceManager;
     public static String KEY_BUNDLE_PATH = "bundle_path";
     public static String KEY_BUNDLE_ENTER_NAME = "bundle_name";
+    public static String KEY_BUNDLE_ENTER_PARAMS = "bundle_name_params";
 
     /**
      * @param context
@@ -47,11 +48,25 @@ public class CommonReactActivity extends BaseActivity implements DefaultHardware
         context.startActivity(intent);
     }
 
+    /**
+     * @param context
+     * @param moduleName  传入rn的moduleName 如：MyReactNativeAppthree
+     */
+    public static void startActivity(Context context, String moduleName ,String enterName ,String paramsJson) {
+        Intent intent = new Intent(context, CommonReactActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra(KEY_BUNDLE_PATH, moduleName);
+        intent.putExtra(KEY_BUNDLE_ENTER_NAME, enterName);
+        intent.putExtra(KEY_BUNDLE_ENTER_PARAMS, paramsJson);
+        context.startActivity(intent);
+    }
+
     @Override
     protected void setContentView(Bundle savedInstanceState) {
         ImmersionBar.with(this).statusBarDarkFont(false).keyboardEnable(true).init();
         String bundle_path = getIntent().getStringExtra(KEY_BUNDLE_PATH);
         String bundle_enter = getIntent().getStringExtra(KEY_BUNDLE_ENTER_NAME);
+        String bundle_params = getIntent().getStringExtra(KEY_BUNDLE_ENTER_PARAMS);
         if(EmptyUtil.isEmpty(bundle_path)){
             ToastUtil.showToast("react native bundle 不存在");
             finish();
@@ -61,6 +76,7 @@ public class CommonReactActivity extends BaseActivity implements DefaultHardware
         mReactInstanceManager = MainApplication.getInstance().getReactNativeHost().getReactInstanceManager();
         Bundle bundle = new Bundle();
         bundle.putString("veiw_name" , bundle_enter);
+        bundle.putString("params" , bundle_params);
         mReactRootView.startReactApplication(mReactInstanceManager, bundle_path, bundle);
         setContentView(mReactRootView);
     }

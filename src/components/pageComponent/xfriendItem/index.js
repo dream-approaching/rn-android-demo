@@ -1,18 +1,40 @@
 import React from 'react';
-import { View, Image, StyleSheet, Text } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import { themeLayout, scale, themeColor } from '@/config';
+import { View, Image, StyleSheet, Text, TouchableOpacity } from 'react-native';
+// import { TouchableOpacity } from 'react-native-gesture-handler';
+import { themeLayout, scale, themeColor, themeSize } from '@/config';
 import SecondaryText from '@/components/AppText/SecondaryText';
 import SmallText from '@/components/AppText/SmallText';
 import CommonText from '@/components/AppText/CommonText';
 import LikeBtn from '@/components/Comment/likeBtn';
 import moment from '@/components/moment';
 import myImages from '@/utils/myImages';
+import { OpenRnActivity } from '@/components/NativeModules';
 
 export default class extends React.PureComponent {
+  state = {
+    mainBodyHeight: 0,
+  };
+
+  mainBodyLayout = ({ nativeEvent }) => {
+    console.log('%cargs:', 'color: #0e93e0;background: #aaefe5;', nativeEvent.layout);
+    const { height } = nativeEvent.layout;
+    this.setState({
+      mainBodyHeight: height,
+    });
+  };
+
+  toggleAttention = () => {
+    const { itemData } = this.props;
+    console.log('%citemData:', 'color: #0e93e0;background: #aaefe5;', itemData.attention);
+  };
+
+  gotoXfriendDetail = () => {
+    return OpenRnActivity('xFriendDetail');
+  };
+
   render() {
     const { itemData } = this.props;
-    console.log('%citemData:', 'color: #0e93e0;background: #aaefe5;', itemData);
+    const { mainBodyHeight } = this.state;
     return (
       <View style={styles.container}>
         <TouchableOpacity>
@@ -24,19 +46,35 @@ export default class extends React.PureComponent {
         <View style={styles.itemRight}>
           <View style={styles.flexRowBetween}>
             <SecondaryText>{itemData.name}</SecondaryText>
-            <TouchableOpacity>
-              <SmallText style={styles.attenText}>+关注</SmallText>
+            <TouchableOpacity onPress={this.toggleAttention}>
+              <SmallText style={styles.attenText(itemData.attention)}>
+                {!itemData.attention ? '+关注' : '已关注'}
+              </SmallText>
             </TouchableOpacity>
           </View>
           <SmallText>{moment(itemData.time * 1000).fromNow(true)}</SmallText>
-          <TouchableOpacity style={styles.mainBody}>
-            <Text style={styles.mainContext}>
+          <TouchableOpacity onPress={this.gotoXfriendDetail} style={styles.mainBody}>
+            <Text
+              ref={ref => (this.refText = ref)}
+              numberOfLines={6}
+              onLayout={this.mainBodyLayout}
+              style={styles.mainContext}
+            >
               {itemData.label.map(item => {
-                return <Text key={item}>#{item} </Text>;
+                return (
+                  <CommonText style={styles.labelText} key={item}>
+                    #{item}{' '}
+                  </CommonText>
+                );
               })}
-              <CommonText>{itemData.content}</CommonText>
+              <CommonText>&nbsp;&nbsp;{itemData.content}</CommonText>
             </Text>
           </TouchableOpacity>
+          {mainBodyHeight >= 110 && (
+            <TouchableOpacity onPress={this.gotoXfriendDetail}>
+              <Text style={styles.seeAllText}>查看详情</Text>
+            </TouchableOpacity>
+          )}
           <View style={styles.flexRowBetween}>
             <TouchableOpacity style={styles.appCon}>
               <Image style={styles.appIcon} source={{ uri: itemData.app.icon }} />
@@ -55,7 +93,7 @@ export default class extends React.PureComponent {
               <SmallText style={styles.bottomBarText}>89</SmallText>
             </TouchableOpacity>
             <TouchableOpacity style={styles.btnEtc}>
-              <Image style={styles.etcIcon} source={{ uri: myImages.btnEtc }} />
+              <Image style={styles.bottomBarIcon} source={{ uri: myImages.btnEtc }} />
             </TouchableOpacity>
           </View>
         </View>
@@ -79,6 +117,7 @@ const styles = StyleSheet.create({
     width: scale(49),
     height: scale(49),
     borderRadius: scale(25),
+    backgroundColor: themeColor.bgF4,
   },
   bigV: {
     position: 'absolute',
@@ -97,12 +136,17 @@ const styles = StyleSheet.create({
   flexRowBetween: {
     ...themeLayout.flex('row', 'space-between'),
   },
-  attenText: {
-    fontSize: scale(11),
-    color: themeColor.primaryColor,
+  attenText: attention => {
+    return {
+      fontSize: scale(11),
+      color: attention ? themeColor.font.secondary : themeColor.primaryColor,
+    };
   },
   mainContext: {
     lineHeight: scale(20),
+  },
+  labelText: {
+    color: themeColor.font.secondary,
   },
   appCon: {
     height: scale(22),
@@ -110,7 +154,7 @@ const styles = StyleSheet.create({
     ...themeLayout.padding(0, scale(10)),
     backgroundColor: themeColor.bgF4,
     borderRadius: scale(10),
-    marginTop: scale(10),
+    marginTop: scale(8),
   },
   appIcon: {
     width: scale(17),
@@ -141,5 +185,10 @@ const styles = StyleSheet.create({
   etcIcon: {
     width: scale(18),
     height: scale(18),
+  },
+  seeAllText: {
+    color: '#2c5b93',
+    fontSize: themeSize.font.secondary,
+    marginTop: scale(5),
   },
 });

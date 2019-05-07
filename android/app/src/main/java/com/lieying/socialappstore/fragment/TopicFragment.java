@@ -13,12 +13,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.lieying.comlib.bean.AppListBean;
+import com.lieying.comlib.bean.ReactParamsJson;
 import com.lieying.comlib.bean.TopicBean;
 import com.lieying.comlib.constant.Constants;
 import com.lieying.comlib.pull.PullToRefreshListener;
 import com.lieying.comlib.pull.PullToRefreshRecyclerView;
 import com.lieying.socialappstore.R;
 import com.lieying.socialappstore.activity.AppDetailsActivity;
+import com.lieying.socialappstore.activity.CommonReactActivity;
 import com.lieying.socialappstore.base.BaseV4Fragment;
 import com.lieying.socialappstore.manager.UserManager;
 import com.lieying.socialappstore.network.BaseObserver;
@@ -26,6 +28,7 @@ import com.lieying.socialappstore.network.ReqBody;
 import com.lieying.socialappstore.network.ResponseData;
 import com.lieying.socialappstore.network.RetrofitUtils;
 import com.lieying.socialappstore.utils.GlideUtils;
+import com.lieying.socialappstore.utils.GsonUtil;
 import com.lieying.socialappstore.utils.ToastUtil;
 import com.lieying.socialappstore.widget.DefaultNoMoreViewHolder;
 
@@ -222,6 +225,15 @@ public class TopicFragment extends BaseV4Fragment implements PullToRefreshListen
                 GlideUtils.loadImageForUrl(mContext, mIvIcon, bean.getImg());
                 mTvTitle.setText(bean.getTitle());
                 mTvJoinContent.setText(bean.getJoin_people() + "人已参与");
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ReactParamsJson reactParamsJson = new ReactParamsJson.Builder().seUserID(mApplist.get(position).getId()).build();
+                        String params = GsonUtil.GsonString(reactParamsJson);
+                        Log.e("test" , "params : ---------  "+params);
+                        CommonReactActivity.startActivity(mContext , "MyReactNativeAppthree" ,"detailChat" , params);
+                    }
+                });
             }
         }
     }

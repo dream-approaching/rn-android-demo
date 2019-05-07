@@ -3,6 +3,7 @@ import { View, StyleSheet, StatusBar, Keyboard } from 'react-native';
 import CommentItem from '@/components/Comment/CommentItem';
 import CommentInput from '@/components/Comment/CommentInput';
 import { FlatList } from 'react-native-gesture-handler';
+import { commentData } from '@/config/fakeData';
 import { connect } from '@/utils/dva';
 import { SpringScrollView } from 'react-native-spring-scrollview';
 import CommentSort from '@/components/Comment/CommentSort';
@@ -182,7 +183,8 @@ class CommentPage extends React.Component {
         >
           <FlatList
             keyExtractor={item => `${item.id}`}
-            data={comment.commentList}
+            data={commentData}
+            // data={comment.commentList}
             renderItem={this.renderCommentItem}
           />
         </SpringScrollView>

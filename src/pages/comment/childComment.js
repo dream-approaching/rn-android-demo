@@ -7,7 +7,7 @@ import { connect } from '@/utils/dva';
 import { themeColor, scale, themeLayout } from '@/config';
 import SpringScrollView from '@/components/SpringScrollView';
 import CommentSort from '@/components/Comment/CommentSort';
-import ChildItem from './components/childItem';
+import ChildItem from '@/components/Comment/ChildItem';
 import { ChineseNormalFooter } from 'react-native-spring-scrollview/Customize';
 import Header from '@/components/Header';
 import { lastArr } from '@/utils/utils';
