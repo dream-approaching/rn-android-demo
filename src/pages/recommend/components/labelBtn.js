@@ -6,9 +6,9 @@ import { scale, themeLayout } from '@/config';
 
 export default class extends React.Component {
   render() {
-    const { children, empty } = this.props;
+    const { children, empty, pressAction = () => {} } = this.props;
     return (
-      <TouchableOpacity>
+      <TouchableOpacity onPress={pressAction}>
         <ImageBackground resizeMode="cover" style={styles.imgbg} source={{ uri: myImages.bg }}>
           <CommonText style={styles.btnText}>{empty ? '+More' : children}</CommonText>
           {!empty && <Image style={styles.delImg} source={{ uri: myImages.btnDel }} />}

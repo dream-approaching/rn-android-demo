@@ -11,15 +11,10 @@ export default class CommentPage extends React.Component {
     header: null,
   };
 
-  backAction = () => {
-    const { navigation } = this.props;
-    navigation.pop();
-  };
-
   render() {
     return (
       <View style={styles.container}>
-        <Header backAction={this.backAction} title='更多相关文章' />
+        <Header backAction={this.backAction} title="更多相关文章" />
         <SpringScrollView>
           <View style={styles.searchSectionList}>
             {articleData.map(item => (

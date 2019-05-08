@@ -45,6 +45,11 @@ export default class extends React.Component {
     });
   };
 
+  gotoAddLabel = () => {
+    const { navigation } = this.props;
+    navigation.navigate('AddLabel');
+  };
+
   renderHeaderRight = () => {
     return (
       <TouchableOpacity style={styles.headerTextCon}>
@@ -58,7 +63,7 @@ export default class extends React.Component {
     if (isShowKeyBoard) {
       return (
         <View style={styles.footerUp}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={this.gotoAddLabel}>
             <Image style={styles.bigLabel} source={{ uri: myImages.btnLabel }} />
           </TouchableOpacity>
           <TouchableOpacity>
@@ -75,7 +80,7 @@ export default class extends React.Component {
         </View>
         <View style={styles.lableCon}>
           <LabelBtn>工具工具</LabelBtn>
-          <LabelBtn empty />
+          <LabelBtn pressAction={this.gotoAddLabel} empty />
         </View>
       </View>
     );
@@ -83,9 +88,10 @@ export default class extends React.Component {
 
   render() {
     const { textValue } = this.state;
+    const { navigation } = this.props;
     return (
       <View style={styles.container}>
-        <Header title="提交" rightComponent={this.renderHeaderRight()} />
+        <Header navigation={navigation} title="提交" rightComponent={this.renderHeaderRight()} />
         <View style={styles.pageBody}>
           <SpringScrollView>
             <TextInput

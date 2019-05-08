@@ -10,9 +10,10 @@ export default class extends React.Component {
   };
 
   render() {
+    const { navigation } = this.props;
     return (
       <View style={styles.container}>
-        <Header title="添加标签" />
+        <Header navigation={navigation} title="添加标签" />
         <SpringScrollView>
           <CommonText>添加标签</CommonText>
         </SpringScrollView>
