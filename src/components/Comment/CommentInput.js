@@ -49,8 +49,6 @@ export default class CommentPage extends React.Component {
       handleSubmitComment,
     } = this.props;
     const { keyboardShow } = this.state;
-    console.log('%ctextValue:', 'color: #0e93e0;background: #aaefe5;', textValue);
-    console.log(textValue.length);
     const disabled = textValue.length === 0;
     return (
       <ImageBackground

@@ -216,3 +216,23 @@ export const articleData = [
       '好社区年12轻人的人年轻人的同好人年轻人的同的同好人年轻人的同好社区年轻好社区年12轻人的人年轻人的同好人年轻人的同的同好人年轻人的同好社区年轻',
   },
 ];
+
+export const hotLable = [
+  { id: 1, label: '工具', cnt: '11' },
+  { id: 2, label: '效率', cnt: '12' },
+  { id: 3, label: '购物', cnt: '122' },
+  { id: 4, label: '壁纸吗', cnt: '121' },
+  { id: 5, label: '音乐', cnt: '122' },
+  { id: 6, label: '阅读', cnt: '62' },
+  { id: 7, label: '笔记', cnt: '22' },
+  { id: 8, label: '健康', cnt: '132' },
+  { id: 9, label: '视频制作', cnt: '12' },
+  { id: 10, label: '教育学习', cnt: '12' },
+  { id: 11, label: '没事', cnt: '12' },
+  { id: 12, label: '游戏', cnt: '12' },
+  { id: 13, label: '工美食', cnt: '152' },
+  { id: 14, label: '美食', cnt: '120' },
+  { id: 15, label: '电影', cnt: '23' },
+  { id: 16, label: '办公', cnt: '12' },
+  { id: 17, label: '动漫', cnt: '12' },
+];

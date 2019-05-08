@@ -17,7 +17,7 @@ public class ReactParamsJson {
             mReactParamsJson = new ReactParamsJson();
         }
 
-        public Builder setName(String contenID) {
+        public Builder setContentID(String contenID) {
             mReactParamsJson.contentId = contenID;
             return this;
         }

@@ -22,9 +22,9 @@ class Recommend extends React.Component {
     allLoaded: false,
   };
 
-  pageSize = 8;
+  pageSize = 10;
 
-  handleClickDebounce = debounce(value => this.queryAppListDispatch(value), 500);
+  handleSearchDebounce = debounce(value => this.queryAppListDispatch(value), 500);
 
   componentDidMount() {
     StatusBar.setBarStyle('dark-content', true);
@@ -36,7 +36,7 @@ class Recommend extends React.Component {
     });
     if (!value.length) this.clearAppList();
     // debounce(() => this.queryAppListDispatch(value), 500)();  // 这样不行，每次onchange都会放到500ms后执行
-    this.handleClickDebounce(value); // 这样就可以，只有最后一次触发的onchange才会执行
+    this.handleSearchDebounce(value); // 这样就可以，只有最后一次触发的onchange才会执行
   };
 
   queryAppListDispatch = (searchKey, id = 0, pagesize = this.pageSize) => {
@@ -82,13 +82,13 @@ class Recommend extends React.Component {
     const noList = textValue.length && !appList.length && !loading;
     return (
       <View style={styles.container}>
-        <Header title="我要推荐" />
+        <Header title='我要推荐' />
         <TextInput
           leftIcon={myImages.inputSearch}
           conStyle={styles.inputCon}
           onChangeText={this.handleChangeText}
           value={textValue}
-          placeholder="输入你想推荐的应用"
+          placeholder='输入你想推荐的应用'
         />
         <TouchableOpacity onPress={() => this.props.navigation.navigate('RecommendEdit')}>
           <SecondaryText style={styles.searchTitle}>点击进入提交页面</SecondaryText>

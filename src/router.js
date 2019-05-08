@@ -1,4 +1,5 @@
 import React from 'react';
+// import { Easing, Animated } from 'react-native';
 import { createStackNavigator, createAppContainer } from 'react-navigation';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import NavigationService from '@/utils/NavigationService';
@@ -29,6 +30,31 @@ import MoreApp from '@/pages/search/moreApp';
 import MoreArticle from '@/pages/search/moreArticle';
 import MoreChat from '@/pages/search/moreChat';
 import MoreShare from '@/pages/search/moreShare';
+
+// const transitionConfig = () => ({
+//   transitionSpec: {
+//     duration: 1000,
+//     easing: Easing.out(Easing.poly(4)),
+//     timing: Animated.timing,
+//   },
+//   screenInterpolator: sceneProps => {
+//     const { layout, position, scene } = sceneProps;
+//     const { index } = scene;
+
+//     const height = layout.initHeight;
+//     const translateY = position.interpolate({
+//       inputRange: [index - 1, index, index + 1],
+//       outputRange: [height, 0, 0],
+//     });
+
+//     const opacity = position.interpolate({
+//       inputRange: [index - 1, index - 0.99, index],
+//       outputRange: [0, 1, 1],
+//     });
+
+//     return { opacity, transform: [{ translateY }] };
+//   },
+// });
 
 const EmptyNav = createStackNavigator({ Empty }, { initialRouteName: 'Empty' });
 const RecommendNav = createStackNavigator(
@@ -97,7 +123,6 @@ export default class Router extends React.Component {
   componentDidMount() {
     const { nativeProps } = this.props;
     const { veiw_name: viewName } = nativeProps;
-    console.log('%cparams:', 'color: #0e93e0;background: #aaefe5;', nativeProps);
     const app = {
       fragment4: XFriendContainer,
       fragment3: MineContainer,
@@ -132,6 +157,7 @@ export default class Router extends React.Component {
           ref={navigatorRef => {
             NavigationService.setTopLevelNavigator(navigatorRef);
           }}
+          screenProps={this.props}
         />
       </ErrorBoundary>
     );

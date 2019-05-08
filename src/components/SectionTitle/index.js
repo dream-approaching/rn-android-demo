@@ -7,7 +7,7 @@ import CommonText from '@/components/AppText/CommonText';
 import SecondaryText from '@/components/AppText/SecondaryText';
 import NavigationService from '@/utils/NavigationService';
 
-export default class CommentPage extends React.PureComponent {
+export default class extends React.PureComponent {
   handleNavigate = () => {
     const { navigate } = this.props;
     NavigationService.navigate(navigate, {});

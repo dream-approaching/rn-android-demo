@@ -17,7 +17,10 @@ export default class CommentPage extends React.PureComponent {
   };
 
   handleBack = () => {
-    const { navigation } = this.props;
+    const { navigation, backAction } = this.props;
+    if (backAction) {
+      return backAction();
+    }
     if (navigation) {
       return navigation.pop();
     }

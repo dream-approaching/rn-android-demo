@@ -11,7 +11,7 @@ export default {
     *queryAppEffect({ payload, finallyFn }, { call, put }) {
       try {
         const response = yield call(searchReq, payload);
-        if (response.success) {
+        if (response.code === 0) {
           yield put({
             type: 'saveAppList',
             payload: response.data || [],

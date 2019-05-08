@@ -252,11 +252,8 @@ public class MainActivity extends BaseFragmentActivity implements FragmentCallba
 
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_MENU && fragments.get(position) instanceof BaseReactFragment && ((BaseReactFragment) fragments.get(position)).getmReactInstanceManager() != null) {
-            ((BaseReactFragment) fragments.get(position)).getmReactInstanceManager().showDevOptionsDialog();
+            MainApplication.getInstance().getReactNativeHost().getReactInstanceManager().showDevOptionsDialog();
             return true;
-        }
-        return super.onKeyUp(keyCode, event);
     }
 
 

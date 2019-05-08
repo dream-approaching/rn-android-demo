@@ -11,7 +11,7 @@ import CommentSort from '@/components/Comment/CommentSort';
 import { scale, themeLayout } from '@/config';
 import Header from './components/header';
 
-export default class CommentPage extends React.Component {
+export default class DetailChat extends React.Component {
   static navigationOptions = {
     header: null,
   };
@@ -23,7 +23,9 @@ export default class CommentPage extends React.Component {
   };
 
   componentDidMount() {
+    const { screenProps } = this.props;
     StatusBar.setBarStyle('dark-content', true);
+    console.log('DetailChat screenProps.nativeProps', screenProps.nativeProps);
   }
 
   handleChangeText = text => {
@@ -36,7 +38,7 @@ export default class CommentPage extends React.Component {
   replyAction = item => {
     console.log('%citem:', 'color: #0e93e0;background: #aaefe5;', item);
     this.refInputCon.refInput.focus();
-    this.handleChangeText(`回复${item.name}：`);
+    this.handleChangeText(`回复${item.commit_user}：`);
   };
 
   renderCommentItem = ({ item, index }) => (

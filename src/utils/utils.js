@@ -30,6 +30,11 @@ export const throttle = (fn, wait) => {
   };
 };
 
+export function clearRepeatArr(arr, repeatArr) {
+  const setRepeatArr = new Set(repeatArr);
+  return arr.filter(item => !setRepeatArr.has(item));
+}
+
 export const lastArr = arr => arr[arr.length - 1];
 
 export const spiltHighlightText = (text, highlightKey) => {

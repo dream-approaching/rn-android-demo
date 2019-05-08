@@ -16,7 +16,6 @@ export default class extends React.PureComponent {
   };
 
   mainBodyLayout = ({ nativeEvent }) => {
-    console.log('%cargs:', 'color: #0e93e0;background: #aaefe5;', nativeEvent.layout);
     const { height } = nativeEvent.layout;
     this.setState({
       mainBodyHeight: height,
@@ -29,11 +28,12 @@ export default class extends React.PureComponent {
   };
 
   gotoXfriendDetail = () => {
-    return OpenRnActivity('xFriendDetail');
+    const { noPress } = this.props;
+    return noPress ? () => {} : OpenRnActivity('xFriendDetail');
   };
 
   render() {
-    const { itemData } = this.props;
+    const { itemData, noPress } = this.props;
     const { mainBodyHeight } = this.state;
     return (
       <View style={styles.container}>
@@ -53,7 +53,11 @@ export default class extends React.PureComponent {
             </TouchableOpacity>
           </View>
           <SmallText>{moment(itemData.time * 1000).fromNow(true)}</SmallText>
-          <TouchableOpacity onPress={this.gotoXfriendDetail} style={styles.mainBody}>
+          <TouchableOpacity
+            activeOpacity={noPress ? 1 : 0.2}
+            onPress={this.gotoXfriendDetail}
+            style={styles.mainBody}
+          >
             <Text
               ref={ref => (this.refText = ref)}
               numberOfLines={6}

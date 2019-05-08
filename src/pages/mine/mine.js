@@ -125,18 +125,8 @@ class Mine extends React.Component {
               onPress={() => OpenActivity.open('com.lieying.content.social.login.ENTER')}
             />
             <Button title='评论页' onPress={() => OpenRnActivity('comment')} />
-            <Button title='互动话题内页' onPress={() => OpenRnActivity('detailChat')} />
             <Button title='我要推荐' onPress={() => OpenRnActivity('recommend')} />
-          </View>
-          <View
-            style={{
-              ...themeLayout.flex('row', 'space-around'),
-              width: '100%',
-              marginBottom: scale(30),
-            }}
-          >
             <Button title='搜索' onPress={() => OpenRnActivity('search')} />
-            <Button title='X友分享内页' onPress={() => OpenRnActivity('xFriendDetail')} />
           </View>
           <MenuCard style={[styles.cardCon, styles.cardMenu]} menu={cardMenu} />
           <MenuList style={[styles.cardCon, styles.listMenu]} menu={listMenu} />

@@ -2,12 +2,13 @@ import React from 'react';
 import { View, StyleSheet, TouchableOpacity, TextInput, Image, Keyboard } from 'react-native';
 import Header from '@/components/Header';
 import CommonText from '@/components/AppText/CommonText';
-import { themeColor, themeLayout, scale } from '@/config';
-import SpringScrollView from '@/components/SpringScrollView';
+import { themeColor, themeLayout, scale, themeSize } from '@/config';
 import myImages from '@/utils/myImages';
+import { connect } from '@/utils/dva';
+import { clearRepeatArr } from '@/utils/utils';
 import LabelBtn from './components/labelBtn';
 
-export default class extends React.Component {
+class RecommendEdit extends React.Component {
   static navigationOptions = {
     header: null,
   };
@@ -23,6 +24,10 @@ export default class extends React.Component {
   }
 
   componentWillUnmount() {
+    this.props.dispatch({
+      type: 'xshare/saveSelectedLabelList',
+      payload: [],
+    });
     this.keyboardDidShowListener.remove();
     this.keyboardDidHideListener.remove();
   }
@@ -45,15 +50,36 @@ export default class extends React.Component {
     });
   };
 
+  handleSubmitShare = () => {
+    const { textValue } = this.state;
+    const disabled = !textValue.length;
+    if (disabled) return null;
+    console.log('handleSubmitShare', 'handleSubmitShare');
+  };
+
+  handleDeleteLabel = item => {
+    const { xshare, dispatch } = this.props;
+    dispatch({
+      type: 'xshare/saveSelectedLabelList',
+      payload: clearRepeatArr(xshare.selectedLabel, [item]),
+    });
+  };
+
   gotoAddLabel = () => {
     const { navigation } = this.props;
     navigation.navigate('AddLabel');
   };
 
   renderHeaderRight = () => {
+    const { textValue } = this.state;
+    const disabled = !textValue.length;
     return (
-      <TouchableOpacity style={styles.headerTextCon}>
-        <CommonText style={styles.headerText}>发表</CommonText>
+      <TouchableOpacity
+        activeOpacity={disabled ? 0.5 : 0.2}
+        onPress={this.handleSubmitShare}
+        style={[styles.headerTextCon]}
+      >
+        <CommonText style={styles.headerText(disabled)}>发表</CommonText>
       </TouchableOpacity>
     );
   };
@@ -72,6 +98,7 @@ export default class extends React.Component {
         </View>
       );
     }
+    const { xshare } = this.props;
     return (
       <View style={styles.footerCon}>
         <View style={styles.footerTip}>
@@ -79,31 +106,36 @@ export default class extends React.Component {
           <CommonText style={styles.tipText}>添加标签（最多可添加3个）</CommonText>
         </View>
         <View style={styles.lableCon}>
-          <LabelBtn>工具工具</LabelBtn>
-          <LabelBtn pressAction={this.gotoAddLabel} empty />
+          {xshare.selectedLabel.map(item => {
+            return (
+              <LabelBtn pressAction={() => this.handleDeleteLabel(item)} key={item.id}>
+                {item.label}
+              </LabelBtn>
+            );
+          })}
+          {xshare.selectedLabel.length < 3 && <LabelBtn pressAction={this.gotoAddLabel} empty />}
         </View>
       </View>
     );
   };
 
   render() {
-    const { textValue } = this.state;
+    const { textValue, isShowKeyBoard } = this.state;
     const { navigation } = this.props;
     return (
       <View style={styles.container}>
-        <Header navigation={navigation} title="提交" rightComponent={this.renderHeaderRight()} />
+        <Header navigation={navigation} title='提交' rightComponent={this.renderHeaderRight()} />
         <View style={styles.pageBody}>
-          <SpringScrollView>
-            <TextInput
-              ref={ref => (this.refInput = ref)}
-              style={styles.inputStyle}
-              onChangeText={this.handleChangeText}
-              value={textValue}
-              multiline
-              placeholder="ceshi"
-              placeholderTextColor={themeColor.placeholderColor}
-            />
-          </SpringScrollView>
+          <TextInput
+            selectable
+            ref={ref => (this.refInput = ref)}
+            style={styles.inputStyle(isShowKeyBoard)}
+            onChangeText={this.handleChangeText}
+            value={textValue}
+            multiline
+            placeholder='大家都在等着你的分享呢&#10;认真写下应用值得推荐的理由&#10;会更容易被推荐哦'
+            placeholderTextColor='#c5c5c5'
+          />
           {this.renderFooter()}
         </View>
       </View>
@@ -111,23 +143,37 @@ export default class extends React.Component {
   }
 }
 
+const mapStateToProps = ({ xshare }) => ({ xshare });
+
+export default connect(mapStateToProps)(RecommendEdit);
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
   pageBody: {
     flex: 1,
-    ...themeLayout.padding(scale(16), scale(16), scale(20)),
+    ...themeLayout.padding(scale(0), scale(12)),
   },
   headerTextCon: {
     ...themeLayout.flex('row', 'flex-end'),
   },
-  headerText: {
-    color: themeColor.primaryColor,
+  headerText: disabled => {
+    return {
+      color: themeColor.primaryColor,
+      opacity: disabled ? 0.5 : 1,
+    };
   },
-  inputStyle: {
-    flex: 1,
-    ...themeLayout.border(),
+  inputStyle: isShowKeyBoard => {
+    return {
+      color: themeColor.font.black,
+      fontSize: themeSize.font.common,
+      height: isShowKeyBoard
+        ? themeSize.screenHeight - scale(400)
+        : themeSize.screenHeight - scale(200),
+      lineHeight: scale(22),
+      textAlignVertical: 'top',
+    };
   },
   footerCon: {
     bottom: 0,

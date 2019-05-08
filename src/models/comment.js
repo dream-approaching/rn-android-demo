@@ -16,7 +16,7 @@ export default {
       try {
         const response = yield call(queryCommentReq, payload);
         console.log('%cresponse:', 'color: #0e93e0;background: #aaefe5;', response);
-        if (response && response.success) {
+        if (response && response.code === 0) {
           yield put({
             type: 'saveCommentList',
             payload: response.data || {},
@@ -38,7 +38,7 @@ export default {
           'color: #0e93e0;background: #aaefe5;',
           response
         );
-        if (response && response.success) {
+        if (response && response.code === 0) {
           yield put({
             type: 'saveChildCommentList',
             payload: response.data || [],
@@ -56,7 +56,7 @@ export default {
       try {
         const response = yield call(submitCommentReq, payload);
         console.log('%cresponse:', 'color: #0e93e0;background: #aaefe5;', response);
-        if (response && response.success) {
+        if (response && response.code === 0) {
           successFn && successFn();
         } else {
           ToastAndroid.show(response.msg, ToastAndroid.LONG);

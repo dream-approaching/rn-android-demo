@@ -2,14 +2,14 @@ import React, { Fragment } from 'react';
 import { View, StyleSheet, StatusBar } from 'react-native';
 import SpringScrollView from '@/components/SpringScrollView';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import SearchBar from './components/searchBar';
-import SectionTitle from './components/sectionTitle';
+import SectionTitle from '@/components/SectionTitle';
 import { themeLayout, scale, themeColor, themeSize } from '@/config';
 import CommonText from '@/components/AppText/CommonText';
 import { appData, articleData, xfriendData } from '@/config/fakeData';
 import XfriendItem from '@/components/pageComponent/xfriendItem';
 import AppItem from '@/components/pageComponent/appItem';
 import ArticleItem from '@/components/pageComponent/articleItem';
+import SearchBar from './components/searchBar';
 
 const history = ['工具', '效率', '旅游'];
 const hot = [

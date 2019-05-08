@@ -228,7 +228,7 @@ public class TopicFragment extends BaseV4Fragment implements PullToRefreshListen
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        ReactParamsJson reactParamsJson = new ReactParamsJson.Builder().seUserID(mApplist.get(position).getId()).build();
+                        ReactParamsJson reactParamsJson = new ReactParamsJson.Builder().setContentID(mApplist.get(position).getId()).build();
                         String params = GsonUtil.GsonString(reactParamsJson);
                         Log.e("test" , "params : ---------  "+params);
                         CommonReactActivity.startActivity(mContext , "MyReactNativeAppthree" ,"detailChat" , params);

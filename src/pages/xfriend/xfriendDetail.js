@@ -35,6 +35,12 @@ export default class CommentPage extends React.Component {
     return <ChildItem type='child' replyAction={this.replyAction} itemData={item} />;
   };
 
+  replyAction = item => {
+    console.log('%citem:', 'color: #0e93e0;background: #aaefe5;', item);
+    this.refInputCon.refInput.focus();
+    this.handleChangeText(`回复${item.commit_user}：`);
+  };
+
   handleChangeSort = item => {
     this.setState({
       activeTab: item.type,
@@ -84,7 +90,7 @@ export default class CommentPage extends React.Component {
           allLoaded={allLoaded}
           bounces
         >
-          <XfriendItem itemData={xfriendData[0]} />
+          <XfriendItem noPress itemData={xfriendData[0]} />
           <View style={styles.replyCon}>
             <View style={styles.tabCon}>
               <SecondaryText style={styles.commentTotal}>135个回答</SecondaryText>
