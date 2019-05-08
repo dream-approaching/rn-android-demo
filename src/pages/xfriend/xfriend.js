@@ -6,12 +6,25 @@ import { ChineseNormalFooter, ChineseNormalHeader } from 'react-native-spring-sc
 import { scale, themeLayout } from '@/config';
 import { xfriendData } from '@/config/fakeData';
 import XfriendItem from '@/components/pageComponent/xfriendItem';
-import { lastArr } from '@/utils/utils';
+import { lastArr, navigateBeforeCheckLogin } from '@/utils/utils';
+import { connect } from '@/utils/dva';
 import { OpenRnActivity } from '@/components/NativeModules';
 
-export default class CommentPage extends React.Component {
+class Xshare extends React.Component {
   static navigationOptions = {
     header: null,
+  };
+
+  componentDidMount() {
+    this.queryXshareListDispatch();
+  }
+
+  queryXshareListDispatch = () => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'xshare/queryXshareListEffect',
+      payload: 'data',
+    });
   };
 
   handleRefreshList = () => {
@@ -21,22 +34,13 @@ export default class CommentPage extends React.Component {
   };
 
   handleQueryNextPage = () => {
-    // const { comment } = this.props;
+    const { xshare } = this.props;
+    console.log('%cxshare:', 'color: #0e93e0;background: #aaefe5;', xshare);
     // if (!comment.commentList.length) return null;
     // const { activeTab } = this.state;
     // const isHotSort = +activeTab === 1;
     // const lastItem = lastArr(comment.commentList);
-    // this.queryCommentDispatch(
-    //   {
-    //     type: 1,
-    //     content_id: 8,
-    //     sort: 2,
-    //     id: isHotSort ? lastItem.fabulous : lastItem.created_time,
-    //   },
-    //   {
-    //     successFn: this.queryListSuccessFn,
-    //   }
-    // );
+    this.queryXshareListDispatch();
     console.log('%clastArr:', 'color: #0e93e0;background: #aaefe5;', lastArr);
     setTimeout(() => {
       this.refScrollView.endLoading();
@@ -44,7 +48,7 @@ export default class CommentPage extends React.Component {
   };
 
   gotoShare = () => {
-    return OpenRnActivity('recommend');
+    return navigateBeforeCheckLogin(() => OpenRnActivity('recommend'));
   };
 
   render() {
@@ -72,6 +76,13 @@ export default class CommentPage extends React.Component {
     );
   }
 }
+
+const mapStateToProps = ({ xshare, loading }) => ({
+  xshare,
+  loading: loading.effects['xshare/queryXshareListEffect'],
+});
+
+export default connect(mapStateToProps)(Xshare);
 
 const styles = StyleSheet.create({
   container: {

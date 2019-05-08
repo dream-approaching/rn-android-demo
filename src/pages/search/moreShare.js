@@ -5,10 +5,23 @@ import Header from '@/components/Header';
 import { xfriendData } from '@/config/fakeData';
 import XfriendItem from '@/components/pageComponent/xfriendItem';
 import { themeLayout, scale } from '@/config';
+import { connect } from '@/utils/dva';
 
-export default class CommentPage extends React.Component {
+class MoreShare extends React.Component {
   static navigationOptions = {
     header: null,
+  };
+
+  componentDidMount() {
+    this.queryMoreShareDispatch();
+  }
+
+  queryMoreShareDispatch = () => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'search/queryMoreShareEffect',
+      payload: 'data',
+    });
   };
 
   render() {
@@ -27,6 +40,13 @@ export default class CommentPage extends React.Component {
     );
   }
 }
+
+const mapStateToProps = ({ search, loading }) => ({
+  search,
+  loading: loading.effects['search/queryAppEffect'],
+});
+
+export default connect(mapStateToProps)(MoreShare);
 
 const styles = StyleSheet.create({
   container: {

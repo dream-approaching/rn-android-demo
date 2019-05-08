@@ -25,7 +25,7 @@ class RecommendEdit extends React.Component {
 
   componentWillUnmount() {
     this.props.dispatch({
-      type: 'xshare/saveSelectedLabelList',
+      type: 'recommend/saveSelectedLabelList',
       payload: [],
     });
     this.keyboardDidShowListener.remove();
@@ -52,16 +52,21 @@ class RecommendEdit extends React.Component {
 
   handleSubmitShare = () => {
     const { textValue } = this.state;
+    const { dispatch } = this.props;
     const disabled = !textValue.length;
     if (disabled) return null;
     console.log('handleSubmitShare', 'handleSubmitShare');
+    dispatch({
+      type: 'recommend/submitXShareEffect',
+      payload: '需要提交的数据',
+    });
   };
 
   handleDeleteLabel = item => {
-    const { xshare, dispatch } = this.props;
+    const { recommend, dispatch } = this.props;
     dispatch({
-      type: 'xshare/saveSelectedLabelList',
-      payload: clearRepeatArr(xshare.selectedLabel, [item]),
+      type: 'recommend/saveSelectedLabelList',
+      payload: clearRepeatArr(recommend.selectedLabel, [item]),
     });
   };
 
@@ -98,7 +103,7 @@ class RecommendEdit extends React.Component {
         </View>
       );
     }
-    const { xshare } = this.props;
+    const { recommend } = this.props;
     return (
       <View style={styles.footerCon}>
         <View style={styles.footerTip}>
@@ -106,14 +111,14 @@ class RecommendEdit extends React.Component {
           <CommonText style={styles.tipText}>添加标签（最多可添加3个）</CommonText>
         </View>
         <View style={styles.lableCon}>
-          {xshare.selectedLabel.map(item => {
+          {recommend.selectedLabel.map(item => {
             return (
               <LabelBtn pressAction={() => this.handleDeleteLabel(item)} key={item.id}>
                 {item.label}
               </LabelBtn>
             );
           })}
-          {xshare.selectedLabel.length < 3 && <LabelBtn pressAction={this.gotoAddLabel} empty />}
+          {recommend.selectedLabel.length < 3 && <LabelBtn pressAction={this.gotoAddLabel} empty />}
         </View>
       </View>
     );
@@ -124,7 +129,7 @@ class RecommendEdit extends React.Component {
     const { navigation } = this.props;
     return (
       <View style={styles.container}>
-        <Header navigation={navigation} title='提交' rightComponent={this.renderHeaderRight()} />
+        <Header navigation={navigation} title="提交" rightComponent={this.renderHeaderRight()} />
         <View style={styles.pageBody}>
           <TextInput
             selectable
@@ -133,8 +138,8 @@ class RecommendEdit extends React.Component {
             onChangeText={this.handleChangeText}
             value={textValue}
             multiline
-            placeholder='大家都在等着你的分享呢&#10;认真写下应用值得推荐的理由&#10;会更容易被推荐哦'
-            placeholderTextColor='#c5c5c5'
+            placeholder="大家都在等着你的分享呢&#10;认真写下应用值得推荐的理由&#10;会更容易被推荐哦"
+            placeholderTextColor="#c5c5c5"
           />
           {this.renderFooter()}
         </View>
@@ -143,7 +148,7 @@ class RecommendEdit extends React.Component {
   }
 }
 
-const mapStateToProps = ({ xshare }) => ({ xshare });
+const mapStateToProps = ({ recommend }) => ({ recommend });
 
 export default connect(mapStateToProps)(RecommendEdit);
 

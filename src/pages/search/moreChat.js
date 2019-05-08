@@ -5,10 +5,23 @@ import Header from '@/components/Header';
 import { articleData } from '@/config/fakeData';
 import ArticleItem from '@/components/pageComponent/articleItem';
 import { themeLayout, scale } from '@/config';
+import { connect } from '@/utils/dva';
 
-export default class CommentPage extends React.Component {
+class MoreChat extends React.Component {
   static navigationOptions = {
     header: null,
+  };
+
+  componentDidMount() {
+    this.queryMoreChatDispatch();
+  }
+
+  queryMoreChatDispatch = () => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'search/queryMoreChatEffect',
+      payload: 'data',
+    });
   };
 
   render() {
@@ -27,6 +40,13 @@ export default class CommentPage extends React.Component {
     );
   }
 }
+
+const mapStateToProps = ({ search, loading }) => ({
+  search,
+  loading: loading.effects['search/queryAppEffect'],
+});
+
+export default connect(mapStateToProps)(MoreChat);
 
 const styles = StyleSheet.create({
   container: {

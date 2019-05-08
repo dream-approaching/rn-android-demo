@@ -9,6 +9,7 @@ import { appData, articleData, xfriendData } from '@/config/fakeData';
 import XfriendItem from '@/components/pageComponent/xfriendItem';
 import AppItem from '@/components/pageComponent/appItem';
 import ArticleItem from '@/components/pageComponent/articleItem';
+import { connect } from '@/utils/dva';
 import SearchBar from './components/searchBar';
 
 const history = ['工具', '效率', '旅游'];
@@ -25,7 +26,8 @@ const hot = [
   '工具4',
   '效率效率',
 ];
-export default class CommentPage extends React.Component {
+
+class Search extends React.Component {
   static navigationOptions = {
     header: null,
   };
@@ -36,7 +38,16 @@ export default class CommentPage extends React.Component {
 
   componentDidMount() {
     StatusBar.setBarStyle('dark-content', true);
+    this.queryHotSearchDispatch();
   }
+
+  queryHotSearchDispatch = () => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'search/queryHotSearchEffect',
+      payload: 'data',
+    });
+  };
 
   handleChangeSearchKey = value => {
     console.log(value);
@@ -51,7 +62,7 @@ export default class CommentPage extends React.Component {
     return (
       <Fragment>
         <View style={[styles.historyCon, styles.sectionCon]}>
-          <SectionTitle title='历史搜索' type='del' />
+          <SectionTitle title="历史搜索" type="del" />
           <View style={styles.historyList}>
             {history.map(item => {
               return (
@@ -63,7 +74,7 @@ export default class CommentPage extends React.Component {
           </View>
         </View>
         <View style={[styles.hotCon, styles.sectionCon]}>
-          <SectionTitle title='热门分类' />
+          <SectionTitle title="热门分类" />
           <View style={styles.hotList}>
             {hot.map(item => {
               return (
@@ -119,7 +130,7 @@ export default class CommentPage extends React.Component {
         {sectionList.map(item => {
           return (
             <View key={item.title} style={[styles.searchSectionCon, styles.sectionCon]}>
-              <SectionTitle color={black} title={item.title} type='more' navigate={item.navigate} />
+              <SectionTitle color={black} title={item.title} type="more" navigate={item.navigate} />
               <View style={styles.searchSectionList}>{item.bodyRender}</View>
             </View>
           );
@@ -136,13 +147,20 @@ export default class CommentPage extends React.Component {
           searchKey={searchKey}
           changeSearchKeyAction={this.handleChangeSearchKey}
           cancelSearchAction={this.handleCancelSearch}
-          title='搜索'
+          title="搜索"
         />
         <SpringScrollView>{this.renderSearchResult()}</SpringScrollView>
       </View>
     );
   }
 }
+
+const mapStateToProps = ({ search, loading }) => ({
+  search,
+  loading: loading.effects['search/queryXshareListEffect'],
+});
+
+export default connect(mapStateToProps)(Search);
 
 const styles = StyleSheet.create({
   container: {

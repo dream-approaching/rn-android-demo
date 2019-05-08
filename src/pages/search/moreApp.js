@@ -5,10 +5,23 @@ import Header from '@/components/Header';
 import { appData } from '@/config/fakeData';
 import AppItem from '@/components/pageComponent/appItem';
 import { themeLayout, scale } from '@/config';
+import { connect } from '@/utils/dva';
 
-export default class CommentPage extends React.Component {
+class MoreApp extends React.Component {
   static navigationOptions = {
     header: null,
+  };
+
+  componentDidMount() {
+    this.queryMoreAppDispatch();
+  }
+
+  queryMoreAppDispatch = () => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'search/queryMoreAppEffect',
+      payload: 'data',
+    });
   };
 
   render() {
@@ -25,6 +38,13 @@ export default class CommentPage extends React.Component {
     );
   }
 }
+
+const mapStateToProps = ({ search, loading }) => ({
+  search,
+  loading: loading.effects['search/queryAppEffect'],
+});
+
+export default connect(mapStateToProps)(MoreApp);
 
 const styles = StyleSheet.create({
   container: {

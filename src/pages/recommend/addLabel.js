@@ -32,8 +32,8 @@ class AddLabel extends React.Component {
   }, 500);
 
   componentDidMount() {
-    const { xshare } = this.props;
-    this.setState({ selectedLabel: xshare.selectedLabel });
+    const { recommend } = this.props;
+    this.setState({ selectedLabel: recommend.selectedLabel });
     this.queryLabelDispatch();
   }
 
@@ -45,7 +45,7 @@ class AddLabel extends React.Component {
       search,
     };
     dispatch({
-      type: 'xshare/queryHotLabelEffect',
+      type: 'recommend/queryHotLabelEffect',
       payload: data,
     });
   };
@@ -62,7 +62,7 @@ class AddLabel extends React.Component {
     const { navigation, dispatch } = this.props;
     const { selectedLabel } = this.state;
     dispatch({
-      type: 'xshare/saveSelectedLabelList',
+      type: 'recommend/saveSelectedLabelList',
       payload: selectedLabel,
     });
     navigation.navigate('RecommendEdit', { selectedLabel });
@@ -104,8 +104,8 @@ class AddLabel extends React.Component {
   };
 
   renderSearchList = () => {
-    const { xshare } = this.props;
-    const searchList = clearRepeatArr(xshare.searchLable, this.state.selectedLabel);
+    const { recommend } = this.props;
+    const searchList = clearRepeatArr(recommend.searchLable, this.state.selectedLabel);
     return (
       <View style={styles.searchListCon}>
         {searchList.map(item => {
@@ -126,7 +126,7 @@ class AddLabel extends React.Component {
 
   renderSelectedLabel = () => {
     const { selectedLabel } = this.state;
-    const { xshare } = this.props;
+    const { recommend } = this.props;
     return (
       <Fragment>
         <View style={styles.labelCon}>
@@ -139,9 +139,9 @@ class AddLabel extends React.Component {
           })}
         </View>
         <View style={styles.hotCon}>
-          <SectionTitle title='热门分类' />
+          <SectionTitle title="热门分类" />
           <View style={styles.hotListCon}>
-            {xshare.hotLable.map(item => {
+            {recommend.hotLable.map(item => {
               const disabled = new Set(selectedLabel).has(item);
               return (
                 <TouchableOpacity
@@ -166,7 +166,7 @@ class AddLabel extends React.Component {
       <View style={styles.container}>
         <Header
           navigation={navigation}
-          title='添加标签'
+          title="添加标签"
           rightComponent={this.renderHeaderRight()}
         />
         <SpringScrollView>
@@ -177,7 +177,7 @@ class AddLabel extends React.Component {
               style={styles.inputStyle}
               onChangeText={this.handleChangeText}
               value={textValue}
-              placeholder='搜索标签'
+              placeholder="搜索标签"
             />
             {isSearching ? this.renderSearchList() : this.renderSelectedLabel()}
           </View>
@@ -187,9 +187,9 @@ class AddLabel extends React.Component {
   }
 }
 
-const mapStateToProps = ({ xshare, loading }) => ({
-  xshare,
-  loading: loading.effects['xshare/queryHotLabelEffect'],
+const mapStateToProps = ({ recommend, loading }) => ({
+  recommend,
+  loading: loading.effects['recommend/queryHotLabelEffect'],
 });
 
 export default connect(mapStateToProps)(AddLabel);

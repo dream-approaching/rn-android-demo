@@ -11,8 +11,9 @@ import CommentInput from '@/components/Comment/CommentInput';
 import SecondaryText from '@/components/AppText/SecondaryText';
 import ChildItem from '@/components/Comment/ChildItem';
 import { scale, themeLayout, themeColor, themeSize } from '@/config';
+import { connect } from '@/utils/dva';
 
-export default class CommentPage extends React.Component {
+class XshareDetail extends React.Component {
   static navigationOptions = {
     header: null,
   };
@@ -29,10 +30,19 @@ export default class CommentPage extends React.Component {
 
   componentDidMount() {
     StatusBar.setBarStyle('dark-content', true);
+    this.queryXshareDetailDispatch();
   }
 
+  queryXshareDetailDispatch = () => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'xshare/queryXshareDetailEffect',
+      payload: 'data',
+    });
+  };
+
   renderCommentItem = ({ item }) => {
-    return <ChildItem type='child' replyAction={this.replyAction} itemData={item} />;
+    return <ChildItem type="child" replyAction={this.replyAction} itemData={item} />;
   };
 
   replyAction = item => {
@@ -82,7 +92,7 @@ export default class CommentPage extends React.Component {
     const { textValue, activeTab, allLoaded } = this.state;
     return (
       <View style={styles.container}>
-        <Header title='查看详情' />
+        <Header title="查看详情" />
         <SpringScrollView
           ref={ref => (this.refScrollView = ref)}
           loadingFooter={ChineseNormalFooter}
@@ -117,6 +127,13 @@ export default class CommentPage extends React.Component {
     );
   }
 }
+
+const mapStateToProps = ({ xshare, loading }) => ({
+  xshare,
+  loading: loading.effects['xshare/queryXshareListEffect'],
+});
+
+export default connect(mapStateToProps)(XshareDetail);
 
 const styles = StyleSheet.create({
   container: {

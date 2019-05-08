@@ -1,30 +1,37 @@
-import { queryHotLabelReq } from '@/services/xshare';
+import { queryXshareListReq, queryXshareDetailReq } from '@/services/xshare';
 
 export default {
   namespace: 'xshare',
 
   state: {
-    selectedLabel: [],
-    hotLable: [], // 热门标签
-    searchLable: [], // 搜索标签
+    xshareList: [],
+    xshareListTotal: 0,
   },
 
   effects: {
-    *queryHotLabelEffect({ payload }, { call, put }) {
+    *queryXshareListEffect({ payload }, { call, put }) {
       try {
-        const response = yield call(queryHotLabelReq, payload);
+        const response = yield call(queryXshareListReq, payload);
         if (response && response.code === 0) {
-          if (payload.search) {
-            yield put({
-              type: 'saveSearchLabelList',
-              payload: response.data || [],
-            });
-          } else {
-            yield put({
-              type: 'saveHotLabelList',
-              payload: response.data || [],
-            });
-          }
+          yield put({
+            type: 'saveXshareList',
+            payload: response.data || {},
+            isFirstPage: payload.isFirst,
+          });
+        }
+      } catch (err) {
+        console.log('err', err);
+      }
+    },
+    *queryXshareDetailEffect({ payload }, { call, put }) {
+      try {
+        const response = yield call(queryXshareDetailReq, payload);
+        if (response && response.code === 0) {
+          yield put({
+            type: 'saveXshareList',
+            payload: response.data || {},
+            isFirstPage: payload.isFirst,
+          });
         }
       } catch (err) {
         console.log('err', err);
@@ -33,22 +40,11 @@ export default {
   },
 
   reducers: {
-    saveHotLabelList(state, { payload }) {
+    saveXshareList(state, { payload, isFirstPage }) {
       return {
         ...state,
-        hotLable: payload,
-      };
-    },
-    saveSearchLabelList(state, { payload }) {
-      return {
-        ...state,
-        searchLable: payload,
-      };
-    },
-    saveSelectedLabelList(state, { payload }) {
-      return {
-        ...state,
-        selectedLabel: payload,
+        xshareList: isFirstPage ? payload.list : [...state.commentList, ...payload.list],
+        xshareListTotal: payload.cnt,
       };
     },
   },
