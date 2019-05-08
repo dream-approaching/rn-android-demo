@@ -3,16 +3,21 @@ package com.lieying.socialappstore.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.lieying.comlib.bean.ExploreBean;
 import com.lieying.comlib.bean.UserInfoBean;
+import com.lieying.comlib.constant.Constants;
 import com.lieying.comlib.utils.ScreenUtils;
 import com.lieying.socialappstore.R;
+import com.lieying.socialappstore.activity.CollectionActivity;
 import com.lieying.socialappstore.activity.TopicActivity;
+import com.lieying.socialappstore.activity.UserIndexActivity;
 import com.lieying.socialappstore.adapter.ExploreAdapter;
 import com.lieying.socialappstore.base.BaseV4Fragment;
 import com.lieying.socialappstore.manager.UserManager;
@@ -23,6 +28,7 @@ import com.lieying.socialappstore.network.RetrofitUtils;
 import com.lieying.socialappstore.utils.SharedPreferencesUtil;
 import com.lieying.socialappstore.utils.ToastUtil;
 import com.lieying.socialappstore.widget.cardlayout.CardLayoutHelper;
+import com.lieying.socialappstore.widget.cardlayout.OnCardLayoutListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -84,7 +90,6 @@ public class IndexFragment extends BaseV4Fragment {
                 .setSwipeThreshold(0.2f)
                 .setDuration(300);
         mCardLayoutHelper.setConfig(config);
-
          exploreAdapter = new ExploreAdapter(mContext, list, new ExploreAdapter.OnCardClickListener() {
             @Override
             public void back() {
@@ -93,14 +98,17 @@ public class IndexFragment extends BaseV4Fragment {
 
             @Override
             public void comments() {
-                Intent intent = new Intent("com.lieying.content.social.login.ENTER");
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
+                UserIndexActivity.startActivity(mContext , UserManager.getCurrentUser().getPhone());
             }
 
              @Override
              public void collection() {
-                 startActivity(new Intent(getActivity() , TopicActivity.class));
+             }
+
+             @Override
+             public void moveEnd() {
+                 list.addAll(list);
+                 exploreAdapter.notifyDataSetChanged();
              }
          });
         recyclerView.setAdapter(exploreAdapter);
@@ -150,4 +158,5 @@ public class IndexFragment extends BaseV4Fragment {
             }
         });
     }
+
 }

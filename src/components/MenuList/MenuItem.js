@@ -2,18 +2,14 @@ import React from 'react';
 import { View, StyleSheet, Image } from 'react-native';
 import { themeLayout, scale } from '@/config';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import NavigationService from '@/utils/NavigationService';
 import myImages from '@/utils/myImages';
 import CommonText from '@/components/AppText/CommonText';
+import { navigateBeforeCheckLogin } from '@/utils/utils';
 
 export default class MenuItem extends React.PureComponent {
   handlePressButton = () => {
     const { item } = this.props;
-    if (item.navigatePath) {
-      NavigationService.navigate(item.navigatePath, {});
-    } else {
-      item.onPressAction && item.onPressAction();
-    }
+    item.onPressAction && navigateBeforeCheckLogin(item.onPressAction);
   };
 
   render() {

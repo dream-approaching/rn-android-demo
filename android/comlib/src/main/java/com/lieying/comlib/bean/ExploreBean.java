@@ -2,13 +2,14 @@ package com.lieying.comlib.bean;
 
 public class ExploreBean {
 
+
     /**
      * title : 543444330000333rerttr34344
      * img : http://192.168.0.200:1130/uploads_cms_images/15554894766938817.jpg
      * comment_num : 0
-     * type : 2
-     * id : 7
-     * favorites : false
+     * type : 3
+     * id : 11
+     * is_favorites : true
      */
 
     private String title;
@@ -16,7 +17,7 @@ public class ExploreBean {
     private String comment_num;
     private String type;
     private String id;
-    private boolean favorites;
+    private boolean is_favorites;
 
     public String getTitle() {
         return title;
@@ -58,11 +59,11 @@ public class ExploreBean {
         this.id = id;
     }
 
-    public boolean isFavorites() {
-        return favorites;
+    public boolean isIs_favorites() {
+        return is_favorites;
     }
 
-    public void setFavorites(boolean favorites) {
-        this.favorites = favorites;
+    public void setIs_favorites(boolean is_favorites) {
+        this.is_favorites = is_favorites;
     }
 }

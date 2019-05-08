@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.lieying.socialappstore.widget.SwipeItemLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        app:layout_itemType="main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/iv_item_second_logo"
+            android:layout_width="@dimen/dimens_42dp"
+            android:layout_height="@dimen/dimens_42dp"
+            android:layout_marginLeft="@dimen/dimens_16dp"
+            android:layout_marginTop="@dimen/dimens_17dp"
+            android:src="@drawable/ic_home_top_search"
+             />
+
+
+        <TextView
+            android:id="@+id/tv_item_second_content"
+            android:layout_width="263dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dimens_20dp"
+            android:layout_marginTop="7dp"
+            android:layout_marginRight="12dp"
+            android:layout_toRightOf="@+id/iv_item_second_logo"
+            android:layout_alignTop="@+id/iv_item_second_logo"
+            android:text="aaaaaaaaaaaaaaaaaaaa"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:textColor="@color/color_707070"
+            android:textSize="@dimen/dimens_15sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_below="@+id/tv_item_second_content"
+            android:layout_alignLeft="@+id/iv_item_second_logo"
+            android:layout_marginTop="@dimen/dimens_16dp"
+            android:layout_marginRight="@dimen/dimens_16dp"
+            android:background="@color/color_eeeeee" />
+    </RelativeLayout>
+    <TextView
+        android:id="@+id/tv_item_collection_delete"
+        android:layout_width="70dp"
+        android:layout_height="93dp"
+        android:background="@color/color_fb716b"
+        android:gravity="center"
+        android:text="取消\n收藏"
+        android:textColor="@color/white"
+        android:textSize="@dimen/dimens_16sp"
+        app:layout_itemType="menu" />
+
+</com.lieying.socialappstore.widget.SwipeItemLayout>

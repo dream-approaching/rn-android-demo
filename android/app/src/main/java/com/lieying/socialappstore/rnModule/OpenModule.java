@@ -5,6 +5,9 @@ import android.content.Intent;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
+import com.lieying.socialappstore.activity.CollectionActivity;
+import com.lieying.socialappstore.activity.UserIndexActivity;
+import com.lieying.socialappstore.manager.UserManager;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -40,5 +43,22 @@ public class OpenModule extends ReactContextBaseJavaModule {
         Intent intent = new Intent(message);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         getReactApplicationContext().startActivity(intent);
+    }
+    /**
+     * @param type 收藏类型: 1：文章收藏界面    3：App搜藏界面
+     *
+     */
+    @ReactMethod
+    public void openCollection( String type) {
+        CollectionActivity.startActivity(getReactApplicationContext() , type);
+    }
+
+    /**
+     * @param type 收藏类型: 1：文章收藏界面    3：App搜藏界面
+     *
+     */
+    @ReactMethod
+    public void openUserIndex( String type) {
+        UserIndexActivity.startActivity(getReactApplicationContext() , UserManager.getCurrentUser().getPhone());
     }
 }

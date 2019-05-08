@@ -10,7 +10,7 @@ import { debounce, clearRepeatArr } from '@/utils/utils';
 import CommonText from '@/components/AppText/CommonText';
 import SecondaryText from '@/components/AppText/SecondaryText';
 import { connect } from '@/utils/dva';
-import { hotLable } from '@/config/fakeData';
+// import { hotLable } from '@/config/fakeData';
 import LabelBtn from './components/labelBtn';
 
 class AddLabel extends React.Component {
@@ -23,14 +23,18 @@ class AddLabel extends React.Component {
   state = {
     textValue: '',
     selectedLabel: [],
+    isSearching: false,
   };
 
-  handleSearchDebounce = debounce(value => this.queryLabelDispatch(value), 500);
+  handleSearchDebounce = debounce(value => {
+    this.setState({ isSearching: true });
+    return this.queryLabelDispatch(value);
+  }, 500);
 
   componentDidMount() {
     const { xshare } = this.props;
     this.setState({ selectedLabel: xshare.selectedLabel });
-    // this.queryLabelDispatch();
+    this.queryLabelDispatch();
   }
 
   queryLabelDispatch = search => {
@@ -81,7 +85,17 @@ class AddLabel extends React.Component {
     });
   };
 
+  handleSelectSearchLabel = item => {
+    this.handleAddLabel(item);
+    this.setState({
+      isSearching: false,
+      textValue: '',
+    });
+  };
+
   renderHeaderRight = () => {
+    const { isSearching } = this.state;
+    if (isSearching) return null;
     return (
       <TouchableOpacity onPress={this.handleSubmitLabel} style={[styles.headerTextCon]}>
         <CommonText style={styles.headerText}>完成</CommonText>
@@ -90,11 +104,17 @@ class AddLabel extends React.Component {
   };
 
   renderSearchList = () => {
+    const { xshare } = this.props;
+    const searchList = clearRepeatArr(xshare.searchLable, this.state.selectedLabel);
     return (
       <View style={styles.searchListCon}>
-        {hotLable.map(item => {
+        {searchList.map(item => {
           return (
-            <TouchableOpacity style={styles.searchListItem} key={item.id}>
+            <TouchableOpacity
+              onPress={() => this.handleSelectSearchLabel(item)}
+              style={styles.searchListItem}
+              key={item.id}
+            >
               <CommonText>#{item.label}</CommonText>
               <SecondaryText style={styles.searchCnt}>{item.cnt}人用过</SecondaryText>
             </TouchableOpacity>
@@ -106,6 +126,7 @@ class AddLabel extends React.Component {
 
   renderSelectedLabel = () => {
     const { selectedLabel } = this.state;
+    const { xshare } = this.props;
     return (
       <Fragment>
         <View style={styles.labelCon}>
@@ -120,7 +141,7 @@ class AddLabel extends React.Component {
         <View style={styles.hotCon}>
           <SectionTitle title='热门分类' />
           <View style={styles.hotListCon}>
-            {hotLable.map(item => {
+            {xshare.hotLable.map(item => {
               const disabled = new Set(selectedLabel).has(item);
               return (
                 <TouchableOpacity
@@ -140,7 +161,7 @@ class AddLabel extends React.Component {
 
   render() {
     const { navigation } = this.props;
-    const { textValue } = this.state;
+    const { textValue, isSearching } = this.state;
     return (
       <View style={styles.container}>
         <Header
@@ -158,8 +179,7 @@ class AddLabel extends React.Component {
               value={textValue}
               placeholder='搜索标签'
             />
-            {/* {this.renderSelectedLabel()} */}
-            {this.renderSearchList()}
+            {isSearching ? this.renderSearchList() : this.renderSelectedLabel()}
           </View>
         </SpringScrollView>
       </View>

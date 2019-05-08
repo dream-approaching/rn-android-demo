@@ -4,9 +4,13 @@ package com.lieying.socialappstore.network;
 
 import com.lieying.comlib.bean.AppDetailsBean;
 import com.lieying.comlib.bean.AppListBean;
+import com.lieying.comlib.bean.CollectionBean;
 import com.lieying.comlib.bean.ExploreBean;
 import com.lieying.comlib.bean.TopicBean;
+import com.lieying.comlib.bean.UserIndexInfoBean;
 import com.lieying.comlib.bean.UserInfoBean;
+import com.lieying.comlib.bean.UserJoinBean;
+import com.lieying.comlib.bean.UserShareBean;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,4 +76,46 @@ public interface RequestApiService {
      */
     @GET("http://192.168.0.200:1230/interface/v1/app/content/get_play_recommend")
     Observable<ResponseData<List<TopicBean>>> getTopicInfo(@Query("params") String route);
+
+
+    /**
+     * @author liyi
+     * date 2019/3/7 0007 11:38
+     * @function:个人主页获取分享动态数据
+     */
+    @GET("http://192.168.0.200:1230/interface/v1/app/content/get_other_sharelist")
+    Observable<ResponseData<List<UserShareBean>>> getUserShareInfo(@Query("params") String route);
+
+    /**
+     * @author liyi
+     * date 2019/3/7 0007 11:38
+     * @function:个人主页获取参与互动数据
+     */
+    @GET("http://192.168.0.200:1230/interface/v1/app/content/get_other_tasklist")
+    Observable<ResponseData<List<UserJoinBean>>> getUserJoinInfo(@Query("params") String route);
+
+    /**
+     * @author liyi
+     * date 2019/3/7 0007 11:38
+     * @function:获取用户主页数据
+     */
+    @GET("http://192.168.0.200:1230/interface/v1/app/content/get_other_info")
+    Observable<ResponseData<UserIndexInfoBean>> getUserIndexInfo(@Query("params") String route);
+
+    /**
+     * @author liyi
+     * date 2019/3/7 0007 11:38
+     * @function:收藏内容
+     */
+    @GET("http://192.168.0.200:1230/interface/v1/app/favorites/set_favorites")
+    Observable<ResponseData<Object>> collectionContent(@Query("params") String route);
+
+
+    /**
+     * @author liyi
+     * date 2019/3/7 0007 11:38
+     * @function:收藏内容
+     */
+    @GET("http://192.168.0.200:1230/interface/v1/app/favorites/get_favorites_list")
+    Observable<ResponseData<List<CollectionBean>>> getCollectionList(@Query("params") String route);
 }

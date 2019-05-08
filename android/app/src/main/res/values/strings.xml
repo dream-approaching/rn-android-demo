@@ -14,4 +14,14 @@
     <string name="string_download">下载</string>
     <string name="string_comments">评论</string>
     <string name="string_collection">收藏</string>
+    <string name="string_delete"><u>删除</u></string>
+    <string name="app_no_more">看到底线啦</string>
+    <string name="string_report">举报</string>
+    <string name="string_report_ad">垃圾广告营销</string>
+    <string name="string_report_chaofeng">嘲讽/不友善内容</string>
+    <string name="string_report_wuru">侮辱谩骂骚扰</string>
+    <string name="string_report_yinhui">淫秽色情信息</string>
+    <string name="string_report_weifa">违法有害信息</string>
+    <string name="string_report_chaoxi">内容涉嫌抄袭/盗用</string>
+    <string name="string_report_other">其他</string>
 </resources>

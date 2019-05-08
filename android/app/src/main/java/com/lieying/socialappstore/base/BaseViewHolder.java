@@ -18,7 +18,7 @@ public abstract class BaseViewHolder extends RecyclerView.ViewHolder {
         mItemView.setClickable(true);
     }
 
-    public abstract <T> void setData(T t);
+    public abstract  void setData(int position);
 
     public interface OnHolderCreatedListener {
         void onHolderCreated(BaseViewHolder holder);

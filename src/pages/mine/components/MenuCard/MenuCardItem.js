@@ -2,7 +2,7 @@ import React from 'react';
 import { View, StyleSheet, Image } from 'react-native';
 import { themeLayout, scale } from '@/config';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import NavigationService from '@/utils/NavigationService';
+import { navigateBeforeCheckLogin } from '@/utils/utils';
 import CommonText from '@/components/AppText/CommonText';
 
 const styles = StyleSheet.create({
@@ -23,11 +23,7 @@ const styles = StyleSheet.create({
 export default class MenuItem extends React.PureComponent {
   handlePressButton = () => {
     const { item } = this.props;
-    if (item.navigatePath) {
-      NavigationService.navigate(item.navigatePath, {});
-    } else {
-      item.onPressAction && item.onPressAction();
-    }
+    item.onPressAction && navigateBeforeCheckLogin(item.onPressAction);
   };
 
   render() {

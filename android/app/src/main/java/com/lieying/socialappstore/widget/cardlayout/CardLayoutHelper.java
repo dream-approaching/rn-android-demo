@@ -128,6 +128,10 @@ public class CardLayoutHelper<T> {
 
     private OnCardLayoutListener mOnCardLayoutListener;
 
+    public JKCardLayoutManager getmJKCardLayoutManager() {
+        return mJKCardLayoutManager;
+    }
+
     private JKCardLayoutManager mJKCardLayoutManager;
 
     private CardAnimatorManager mAnimatorStackManager;

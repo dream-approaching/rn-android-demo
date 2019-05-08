@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    tools:context=".activity.UserIndexActivity">
+
+    <RelativeLayout
+        android:paddingTop="40dp"
+        android:background="@drawable/bg_bnt_download"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.lieying.socialappstore.widget.NiceImageView
+            android:id="@+id/iv_user_index_head_icon"
+            android:layout_centerHorizontal="true"
+            android:layout_width="74dp"
+            android:layout_height="74dp"
+            android:layout_marginTop="58dp"
+            app:is_circle="true" />
+
+        <TextView
+            android:id="@+id/tv_user_index_user_nick"
+            android:layout_below="@+id/iv_user_index_head_icon"
+            android:layout_marginTop="@dimen/dimens_14dp"
+            android:text="夏东东"
+            android:textSize="@dimen/dimens_19sp"
+            android:textColor="@color/white"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/tv_user_index_user_position"
+            android:layout_below="@+id/tv_user_index_user_nick"
+            android:layout_marginTop="@dimen/dimens_8dp"
+            android:textSize="@dimen/dimens_9dp"
+            android:text="深圳-网页设计师"
+            android:textColor="@color/white"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/tv_user_index_user_dignity"
+            android:layout_below="@+id/tv_user_index_user_position"
+            android:layout_marginTop="@dimen/dimens_8dp"
+            android:textSize="@dimen/dimens_12sp"
+            android:textColor="@color/white"
+            android:text="官方认证:树莓开发者"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:background="#77FFFFFF"
+            android:layout_marginTop="@dimen/dimens_20dp"
+            android:layout_below="@+id/tv_user_index_user_dignity"
+            android:layout_width="match_parent"
+            android:gravity="center_vertical"
+            android:layout_height="@dimen/dimens_42dp">
+
+            <TextView
+                android:id="@+id/tv_user_index_follow_count"
+                android:gravity="center"
+                android:text="关  注"
+                android:textColor="@color/white"
+                android:textSize="@dimen/dimens_13sp"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/tv_user_index_fans_count"
+                android:gravity="center"
+                android:text="粉  丝"
+                android:textColor="@color/white"
+                android:textSize="@dimen/dimens_13sp"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tab_user_index"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="84dp"
+        android:layout_marginRight="84dp"
+        android:layout_height="38dp"
+        android:layout_marginTop="@dimen/dimens_40dp"
+        android:minWidth="200dp"
+        app:tabIndicator="@drawable/ic_tab_indicator"
+        app:tabIndicatorColor="@color/colorCommonRed"
+        app:tabIndicatorHeight="@dimen/dimens_2dp"
+        app:tabSelectedTextColor="@color/text_color_normal"
+        app:tabTextAppearance="@style/TabLayoutTextStyle"
+        app:tabTextColor="@color/text_color_gray" />
+    <View
+        android:layout_marginTop="@dimen/dimens_5dp"
+        android:background="@color/color_eeeeee"
+        android:layout_width="match_parent"
+        android:layout_height="4dp"></View>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vp_user_index"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:fillViewport="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+
+
+</LinearLayout>

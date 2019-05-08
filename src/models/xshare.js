@@ -36,13 +36,13 @@ export default {
     saveHotLabelList(state, { payload }) {
       return {
         ...state,
-        hotLable: [...state.hotLable, ...payload],
+        hotLable: payload,
       };
     },
     saveSearchLabelList(state, { payload }) {
       return {
         ...state,
-        searchLable: [...state.searchLable, ...payload],
+        searchLable: payload,
       };
     },
     saveSelectedLabelList(state, { payload }) {

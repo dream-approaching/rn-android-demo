@@ -1,3 +1,5 @@
+import { OpenActivity, GetUserInfo } from '@/components/NativeModules';
+
 // debounce 防抖
 export const debounce = (fn, ms = 300) => {
   let timeoutId;
@@ -46,4 +48,16 @@ export const spiltHighlightText = (text, highlightKey) => {
     text.slice(highlightIndex + highlightKey.length),
   ];
   return arr;
+};
+
+export const checkLogin = () => {
+  const { KEY_ONE_NICK, KEY_ONE_PHONE, KEY_ONE_TOKEN } = GetUserInfo;
+  return !!(KEY_ONE_NICK && KEY_ONE_PHONE && KEY_ONE_TOKEN);
+};
+
+export const navigateBeforeCheckLogin = action => {
+  if (checkLogin()) {
+    return action();
+  }
+  return OpenActivity.open('com.lieying.content.social.login.ENTER');
 };

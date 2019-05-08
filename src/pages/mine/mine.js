@@ -15,7 +15,7 @@ class Mine extends React.Component {
   };
 
   componentDidMount() {
-    console.log('Mine componentDidMount');
+    console.log('Mine componentDidMount, GetUserInfo');
   }
 
   handlePlus = () => {
@@ -35,23 +35,18 @@ class Mine extends React.Component {
       {
         title: '文章',
         icon: myImages.article,
-        navigatePath: '',
-        onPressAction: () => {
-          OpenRnActivity('collectArticle');
-        },
+        onPressAction: () => OpenActivity.openCollection('1'),
       },
       {
         title: '应用',
         icon: myImages.application,
-        navigatePath: '',
         onPressAction: () => {
-          OpenRnActivity('collectApp');
+          OpenActivity.openCollection('3');
         },
       },
       {
         title: '话题',
         icon: myImages.chat,
-        navigatePath: '',
         onPressAction: () => {
           OpenRnActivity('collectChat');
         },
@@ -61,7 +56,6 @@ class Mine extends React.Component {
       {
         title: '我要认领应用',
         icon: myImages.own,
-        navigatePath: '',
         onPressAction: () => {
           OpenRnActivity('claimApp');
         },
@@ -69,7 +63,6 @@ class Mine extends React.Component {
       {
         title: '我的通知',
         icon: myImages.notice,
-        navigatePath: '',
         onPressAction: () => {
           OpenRnActivity('myNotice');
         },
@@ -77,7 +70,6 @@ class Mine extends React.Component {
       {
         title: '我的关注',
         icon: myImages.attention,
-        navigatePath: '',
         onPressAction: () => {
           OpenRnActivity('myAttention');
         },
@@ -85,7 +77,6 @@ class Mine extends React.Component {
       {
         title: '我的粉丝',
         icon: myImages.fans,
-        navigatePath: '',
         onPressAction: () => {
           OpenRnActivity('myFans');
         },
@@ -93,7 +84,6 @@ class Mine extends React.Component {
       {
         title: '设置',
         icon: myImages.setting,
-        navigatePath: '',
         onPressAction: () => {
           OpenRnActivity('setting');
         },
@@ -101,7 +91,6 @@ class Mine extends React.Component {
       {
         title: '反馈意见',
         icon: myImages.suggest,
-        navigatePath: '',
         onPressAction: () => {
           OpenRnActivity('myFeedback');
         },
