@@ -1,4 +1,4 @@
-import fetch from 'isomorphic-fetch';
+import fetch from 'whatwg-fetch';
 // import { ToastAndroid } from 'react-native';
 // import { stringify } from 'qs';
 
