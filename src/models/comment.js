@@ -1,4 +1,5 @@
 import { submitCommentReq, queryCommentReq, queryChildCommentReq } from '@/services/comment';
+import { giveLikelikeReq } from '@/services/common';
 import { ToastAndroid } from 'react-native';
 
 export default {
@@ -46,7 +47,7 @@ export default {
           });
           successFn && successFn();
         } else {
-          ToastAndroid.show(response.msg, ToastAndroid.LONG);
+          ToastAndroid.show(response.msg, ToastAndroid.SHORT);
         }
       } catch (err) {
         console.log('err', err);
@@ -59,13 +60,26 @@ export default {
         if (response && response.code === 0) {
           successFn && successFn();
         } else {
-          ToastAndroid.show(response.msg, ToastAndroid.LONG);
+          ToastAndroid.show(response.msg, ToastAndroid.SHORT);
         }
       } catch (err) {
         failedFn && failedFn();
         console.log('err', err);
       } finally {
         finallyFn && finallyFn();
+      }
+    },
+    *giveLikelikeEffect({ payload, successFn }, { call }) {
+      try {
+        const response = yield call(giveLikelikeReq, payload);
+        console.log('%cgiveLikelikeReq response:', 'color: #0e93e0;background: #aaefe5;', response);
+        if (response && response.code === 0) {
+          successFn && successFn();
+        } else {
+          ToastAndroid.show(response.msg, ToastAndroid.SHORT);
+        }
+      } catch (err) {
+        console.log('err', err);
       }
     },
   },
