@@ -33,27 +33,33 @@ export default class extends React.PureComponent {
     }
   };
 
-  gotoXfriendDetail = itemData => {
-    const { noPress } = this.props;
+  gotoXfriendDetail = () => {
+    const { noPress, itemData } = this.props;
     return noPress ? () => {} : OpenRnActivity('xFriendDetail', JSON.stringify(itemData));
   };
 
-  gotoAppDetail = itemData => {
+  gotoAppDetail = () => {
+    const { itemData } = this.props;
     OpenActivity.openAppDetails(
       itemData.mydata
         ? itemData.mydata.id
-        : itemData.appdata
-        ? itemData.appdata.id
-        : itemData.app_info
+        : itemData.appdata ? itemData.appdata.id : itemData.app_info
     );
+  };
+
+  gotoPersonPage = () => {
+    const { origin, itemData } = this.props;
+    if (origin === 'myPage') return null;
+    OpenRnActivity('myShare', JSON.stringify({ phone: itemData.mobilephone }));
   };
 
   render() {
     const { itemData, noPress, origin } = this.props;
     const { mainBodyHeight } = this.state;
+    const isOwnPersonPage = origin === 'myPage';
     return (
       <View style={styles.container}>
-        <TouchableOpacity>
+        <TouchableOpacity activeOpacity={isOwnPersonPage ? 1 : 0.2} onPress={this.gotoPersonPage}>
           <View style={styles.avatarCon}>
             <Image style={styles.avatar} source={{ uri: itemData.head_image }} />
             {+itemData.is_big_v === 2 && (
@@ -64,7 +70,7 @@ export default class extends React.PureComponent {
         <View style={styles.itemRight}>
           <View style={styles.flexRowBetween}>
             <SecondaryText>{itemData.commit_user}</SecondaryText>
-            {origin !== 'myPage' && (
+            {!isOwnPersonPage && (
               <TouchableOpacity onPress={this.toggleAttention}>
                 <SmallText style={styles.attenText(itemData.is_add_friends)}>
                   {itemData.is_add_friends ? '+关注' : '已关注'}
@@ -75,7 +81,7 @@ export default class extends React.PureComponent {
           <SmallText>{itemData.timestr || itemData.created_time}</SmallText>
           <TouchableOpacity
             activeOpacity={noPress ? 1 : 0.2}
-            onPress={() => this.gotoXfriendDetail(itemData)}
+            onPress={this.gotoXfriendDetail}
             style={styles.mainBody}
           >
             <Text
@@ -96,28 +102,24 @@ export default class extends React.PureComponent {
             </Text>
           </TouchableOpacity>
           {mainBodyHeight >= 110 && (
-            <TouchableOpacity onPress={() => this.gotoXfriendDetail(itemData)}>
+            <TouchableOpacity onPress={this.gotoXfriendDetail}>
               <Text style={styles.seeAllText}>查看详情</Text>
             </TouchableOpacity>
           )}
           <View style={styles.flexRowBetween}>
-            <TouchableOpacity onPress={() => this.gotoAppDetail(itemData)} style={styles.appCon}>
+            <TouchableOpacity onPress={this.gotoAppDetail} style={styles.appCon}>
               <Image
                 style={styles.appIcon}
                 source={{
                   uri: itemData.mydata
                     ? itemData.mydata.img
-                    : itemData.appdata
-                    ? itemData.appdata.app_logo
-                    : itemData.app_logo,
+                    : itemData.appdata ? itemData.appdata.app_logo : itemData.app_logo,
                 }}
               />
               <SmallText style={styles.appName}>
                 {itemData.mydata
                   ? itemData.mydata.title
-                  : itemData.appdata
-                  ? itemData.appdata.app_short_desc
-                  : itemData.app_name_cn}
+                  : itemData.appdata ? itemData.appdata.app_short_desc : itemData.app_name_cn}
               </SmallText>
             </TouchableOpacity>
             <View />

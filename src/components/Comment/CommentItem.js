@@ -7,13 +7,20 @@ import CommonText from '@/components/AppText/CommonText';
 import SmallText from '@/components/AppText/SmallText';
 import moment from '@/components/moment';
 import LikeBtn from '@/components/Comment/likeBtn';
+import { OpenRnActivity } from '@/components/NativeModules';
 
 export default class extends React.PureComponent {
+  gotoPersonPage = () => {
+    const { itemData } = this.props;
+    console.log('%citemData:', 'color: #0e93e0;background: #aaefe5;', itemData);
+    OpenRnActivity('myShare', JSON.stringify({ phone: itemData.mobilephone }));
+  };
+
   render() {
     const { itemData, replyAction, seeAllChildAction, index } = this.props;
     return (
       <View style={styles.container}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={this.gotoPersonPage}>
           <Image style={styles.avatar} source={{ uri: itemData.head_image }} />
         </TouchableOpacity>
         <View style={styles.rightBody}>

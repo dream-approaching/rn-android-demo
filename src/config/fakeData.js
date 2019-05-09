@@ -176,31 +176,6 @@ export const xshare = {
   ],
 };
 
-export const appData = [
-  {
-    avatar: img,
-    name: '即刻',
-    desc: '好社区年轻人的人年轻人的同好社区年轻',
-    label: '竞品',
-  },
-  {
-    avatar: img,
-    name: '即刻2',
-    desc: '好社区年12轻人的人年轻人的同好人年轻人的同的同好人年轻人的同好社区年轻',
-  },
-];
-export const articleData = [
-  {
-    avatar: img,
-    name: '即刻即年轻人的同好人年轻人的刻即刻即刻即刻即刻即刻',
-  },
-  {
-    avatar: img,
-    name:
-      '好社区年12轻人的人年轻人的同好人年轻人的同的同好人年轻人的同好社区年轻好社区年12轻人的人年轻人的同好人年轻人的同的同好人年轻人的同好社区年轻',
-  },
-];
-
 export const hotClassify = [
   { id: 1, label: '工具', cnt: '11' },
   { id: 2, label: '效率', cnt: '12' },
