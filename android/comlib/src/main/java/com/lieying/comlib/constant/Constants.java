@@ -17,4 +17,7 @@ public class Constants {
     public static final String JOIN_TYPE_COMMONTS = "2";//参与互动类型：评论
 
     public static final String JOIN_TYPE_COLLECTION = "3";//参与互动类型：收藏
+
+    //请求截图
+    public static final int REQUEST_CROP_PHOTO = 102;
 }

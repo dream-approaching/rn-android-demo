@@ -5,22 +5,22 @@ import SecondaryText from '@/components/AppText/SecondaryText';
 import myImages from '@/utils/myImages';
 import { scale, themeLayout } from '@/config';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { OpenRnActivity } from '@/components/NativeModules';
+import { OpenActivity } from '@/components/NativeModules';
 
 export default class extends React.PureComponent {
   gotoEditUser = () => {
-    OpenRnActivity('editUser');
+    OpenActivity.openUserData();
   };
 
   gotoPersonPage = () => {
-    OpenRnActivity('personPage');
+    OpenActivity.openUserIndex('18845299535');
   };
 
   render() {
     const { style, data } = this.props;
     return (
       <View style={[style, styles.container]}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={this.gotoPersonPage}>
           <Image style={styles.avatar} source={{ uri: data.avatar }} />
         </TouchableOpacity>
         <View style={styles.userData}>

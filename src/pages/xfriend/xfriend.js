@@ -4,47 +4,70 @@ import SpringScrollView from '@/components/SpringScrollView';
 import SecondaryText from '@/components/AppText/SecondaryText';
 import { ChineseNormalFooter, ChineseNormalHeader } from 'react-native-spring-scrollview/Customize';
 import { scale, themeLayout } from '@/config';
-import { xfriendData } from '@/config/fakeData';
 import XfriendItem from '@/components/pageComponent/xfriendItem';
 import { lastArr, navigateBeforeCheckLogin } from '@/utils/utils';
 import { connect } from '@/utils/dva';
 import { OpenRnActivity } from '@/components/NativeModules';
+import Loading from '@/components/Loading/loading';
 
 class Xshare extends React.Component {
   static navigationOptions = {
     header: null,
   };
 
+  state = {
+    allLoaded: false,
+  };
+
   componentDidMount() {
-    this.queryXshareListDispatch();
+    const data = {
+      id: 0,
+      isFirst: true,
+    };
+    this.queryXshareListDispatch(data);
   }
 
-  queryXshareListDispatch = () => {
+  // 查询X友列表
+  queryXshareListDispatch = params => {
     const { dispatch } = this.props;
+    const data = {
+      pagesize: 20,
+      ...params,
+    };
     dispatch({
       type: 'xshare/queryXshareListEffect',
-      payload: 'data',
+      payload: data,
+      successFn: response => {
+        if (response.length === 0) {
+          this.setState({
+            allLoaded: true,
+          });
+        }
+      },
+      finallyFn: () => {
+        if (data.isFirst) {
+          this.refScrollView && this.refScrollView.endRefresh();
+        } else {
+          this.refScrollView && this.refScrollView.endLoading();
+        }
+      },
     });
   };
 
   handleRefreshList = () => {
-    setTimeout(() => {
-      this.refScrollView.endRefresh();
-    }, 2000);
+    const data = {
+      id: 0,
+      isFirst: true,
+    };
+    this.queryXshareListDispatch(data);
+    this.setState({ allLoaded: false });
   };
 
   handleQueryNextPage = () => {
     const { xshare } = this.props;
-    console.log('%cxshare:', 'color: #0e93e0;background: #aaefe5;', xshare);
-    // if (!comment.commentList.length) return null;
-    // const { activeTab } = this.state;
-    // const isHotSort = +activeTab === 1;
-    // const lastItem = lastArr(comment.commentList);
-    this.queryXshareListDispatch();
-    console.log('%clastArr:', 'color: #0e93e0;background: #aaefe5;', lastArr);
-    setTimeout(() => {
-      this.refScrollView.endLoading();
-    }, 2000);
+    const lastItem = lastArr(xshare.xshareList);
+    console.log('%cxshare:', 'color: #0e93e0;background: #aaefe5;', lastItem);
+    this.queryXshareListDispatch({ id: lastItem.id });
   };
 
   gotoShare = () => {
@@ -52,8 +75,11 @@ class Xshare extends React.Component {
   };
 
   render() {
+    const { allLoaded } = this.state;
+    const { xshare, loading } = this.props;
     const avatar =
       'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1298508432,4221755458&fm=26&gp=0.jpg';
+    if (loading && !xshare.xshareList.length) return <Loading />;
     return (
       <View style={styles.container}>
         <SpringScrollView
@@ -63,13 +89,14 @@ class Xshare extends React.Component {
           onLoading={this.handleQueryNextPage}
           refreshHeader={ChineseNormalHeader}
           onRefresh={this.handleRefreshList}
+          allLoaded={allLoaded}
         >
           <TouchableOpacity onPress={this.gotoShare} style={styles.shareCon}>
             <Image style={styles.avatar} source={{ uri: avatar }} />
             <SecondaryText>点击这里分享你喜爱的应用吧~ </SecondaryText>
           </TouchableOpacity>
-          {xfriendData.map(item => {
-            return <XfriendItem key={item.name} itemData={item} />;
+          {xshare.xshareList.map(item => {
+            return <XfriendItem key={item.id} itemData={item} />;
           })}
         </SpringScrollView>
       </View>

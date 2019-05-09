@@ -8,15 +8,15 @@ import { spiltHighlightText } from '@/utils/utils';
 
 export default class CommentPage extends React.Component {
   render() {
-    const { itemData, searchKey } = this.props;
+    const { itemData, searchKey, gotoAppAction = () => {} } = this.props;
     if (!itemData) return null;
     const { app_name_cn: title, app_short_desc: desc } = itemData;
     const titleArr = spiltHighlightText(title, searchKey);
     const descArr = spiltHighlightText(desc, searchKey);
     return (
-      <TouchableOpacity onPress={() => console.log(itemData.id)} style={styles.itemCon}>
+      <TouchableOpacity onPress={gotoAppAction} style={styles.itemCon}>
         <View style={styles.coverCon}>
-          <Image resizeMode="cover" style={styles.cover} source={{ uri: itemData.app_logo }} />
+          <Image resizeMode='cover' style={styles.cover} source={{ uri: itemData.app_logo }} />
         </View>
         <View style={styles.rightBody}>
           <Text>

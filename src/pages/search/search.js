@@ -1,31 +1,16 @@
 import React, { Fragment } from 'react';
-import { View, StyleSheet, StatusBar } from 'react-native';
+import { View, StyleSheet, StatusBar, BackHandler } from 'react-native';
 import SpringScrollView from '@/components/SpringScrollView';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import SectionTitle from '@/components/SectionTitle';
 import { themeLayout, scale, themeColor, themeSize } from '@/config';
 import CommonText from '@/components/AppText/CommonText';
-import { appData, articleData, xfriendData } from '@/config/fakeData';
 import XfriendItem from '@/components/pageComponent/xfriendItem';
 import AppItem from '@/components/pageComponent/appItem';
 import ArticleItem from '@/components/pageComponent/articleItem';
 import { connect } from '@/utils/dva';
 import SearchBar from './components/searchBar';
-
-const history = ['工具', '效率', '旅游'];
-const hot = [
-  '工具',
-  '效率',
-  '旅游',
-  '工具2',
-  '效率2',
-  '旅游2',
-  '工具3',
-  '效率3',
-  '旅游3',
-  '工具4',
-  '效率效率',
-];
+import Loading from '@/components/Loading/loading';
 
 class Search extends React.Component {
   static navigationOptions = {
@@ -34,52 +19,114 @@ class Search extends React.Component {
 
   state = {
     searchKey: '',
+    isSearching: false,
   };
 
   componentDidMount() {
     StatusBar.setBarStyle('dark-content', true);
-    this.queryHotSearchDispatch();
+    this.queryHistorySearchDispatch();
+    this.queryHotClassifyDispatch();
   }
 
-  queryHotSearchDispatch = () => {
+  // 查询历史搜索
+  queryHistorySearchDispatch = () => {
     const { dispatch } = this.props;
     dispatch({
-      type: 'search/queryHotSearchEffect',
-      payload: 'data',
+      type: 'search/queryHistorySearchEffect',
+      payload: {
+        id: 0,
+        pagesize: 10, // 只显示10条历史搜索
+      },
     });
   };
 
+  // 查询热门分类
+  queryHotClassifyDispatch = () => {
+    const { dispatch } = this.props;
+    const data = {
+      id: 0,
+      pagesize: 50,
+    };
+    dispatch({
+      type: 'recommend/queryHotClassifyEffect',
+      payload: data,
+    });
+  };
+
+  // 搜索接口
+  querySearchDispatch = (search, searchType = 1) => {
+    const { dispatch } = this.props;
+    const data = {
+      id: 0,
+      pagesize: 20,
+      search,
+      search_type: searchType,
+    };
+    dispatch({
+      type: 'search/querySearchEffect',
+      payload: data,
+    });
+  };
+
+  handleSelectClassify = item => {
+    this.handleChangeSearchKey(item.label);
+  };
+
   handleChangeSearchKey = value => {
-    console.log(value);
-    this.setState({ searchKey: value });
+    const { isSearching } = this.state;
+    this.setState({ searchKey: value, isSearching: true });
+    if (value.length) {
+      !isSearching && this.setState({ isSearching: true });
+    } else {
+      this.setState({ isSearching: false });
+    }
+    this.querySearchDispatch(value);
+  };
+
+  handleCleanText = () => {
+    this.setState({ searchKey: '', isSearching: false });
   };
 
   handleCancelSearch = () => {
-    console.log('取消搜索，返回上一页');
+    BackHandler.exitApp();
+  };
+
+  handleGotoMore = item => {
+    const { navigation } = this.props;
+    const { searchKey } = this.state;
+    navigation.navigate('MoreSearch', { type: item.type, searchKey });
   };
 
   renderDidNotSearch = () => {
+    const { search, recommend } = this.props;
     return (
       <Fragment>
         <View style={[styles.historyCon, styles.sectionCon]}>
-          <SectionTitle title="历史搜索" type="del" />
+          <SectionTitle
+            title='历史搜索'
+            type={search.historySearchList.length > 0 ? 'del' : null}
+          />
           <View style={styles.historyList}>
-            {history.map(item => {
+            {search.historySearchList.map(item => {
               return (
-                <TouchableOpacity style={styles.historyItem} key={item}>
-                  <CommonText>{item}</CommonText>
+                <TouchableOpacity style={styles.historyItem} key={item.id}>
+                  <CommonText>{item.content}</CommonText>
                 </TouchableOpacity>
               );
             })}
           </View>
         </View>
         <View style={[styles.hotCon, styles.sectionCon]}>
-          <SectionTitle title="热门分类" />
+          <SectionTitle title='热门分类' />
           <View style={styles.hotList}>
-            {hot.map(item => {
+            {recommend.hotClassify.map(item => {
               return (
-                <TouchableOpacity style={styles.hotItem} key={item}>
-                  <CommonText>{item}</CommonText>
+                <TouchableOpacity
+                  onPress={() => this.handleSelectClassify(item)}
+                  style={styles.hotItem}
+                  key={item.id}
+                >
+                  <CommonText>{item.label}</CommonText>
                 </TouchableOpacity>
               );
             })}
@@ -90,48 +137,66 @@ class Search extends React.Component {
   };
 
   renderSearchResult = () => {
+    const { search, searchLoading } = this.props;
+    const { app, recommend, topic, share } = search.searchAll;
+    if (searchLoading) return <Loading />;
+    if (!app && !recommend && !topic && !share) return <CommonText>暂无相关内容</CommonText>;
     const { black } = themeColor.font;
     const sectionList = [
       {
         title: 'APP应用',
-        navigate: 'MoreApp',
-        bodyRender: appData.map((item, index) => {
-          const islastOne = index === appData.length - 1;
-          return <AppItem key={item.name} itemData={item} islastOne={islastOne} />;
-        }),
+        type: 2,
+        data: app,
+        bodyRender: () =>
+          app.map((item, index) => {
+            const islastOne = index === app.length - 1;
+            return <AppItem key={item.id} itemData={item} islastOne={islastOne} />;
+          }),
       },
       {
         title: '文章',
-        navigate: 'MoreArticle',
-        bodyRender: articleData.map((item, index) => {
-          const islastOne = index === appData.length - 1;
-          return <ArticleItem key={item.name} itemData={item} islastOne={islastOne} />;
-        }),
+        type: 3,
+        data: recommend,
+        bodyRender: () =>
+          recommend.map((item, index) => {
+            const islastOne = index === recommend.length - 1;
+            return <ArticleItem key={item.id} itemData={item} islastOne={islastOne} />;
+          }),
       },
       {
         title: '互动话题',
-        navigate: 'MoreChat',
-        bodyRender: articleData.map((item, index) => {
-          const islastOne = index === appData.length - 1;
-          return <ArticleItem key={item.name} itemData={item} islastOne={islastOne} />;
-        }),
+        type: 4,
+        data: topic,
+        bodyRender: () =>
+          topic.map((item, index) => {
+            const islastOne = index === topic.length - 1;
+            return <ArticleItem key={item.id} itemData={item} islastOne={islastOne} />;
+          }),
       },
       {
         title: 'X友分享',
-        navigate: 'MoreShare',
-        bodyRender: xfriendData.map((item, index) => {
-          const islastOne = index === appData.length - 1;
-          return <XfriendItem key={item.name} itemData={item} islastOne={islastOne} />;
-        }),
+        type: 5,
+        data: share,
+        bodyRender: () =>
+          share.map((item, index) => {
+            const islastOne = index === share.length - 1;
+            return <XfriendItem key={item.id} itemData={item} islastOne={islastOne} />;
+          }),
       },
     ];
     return (
       <Fragment>
         {sectionList.map(item => {
+          if (!item.data) return null;
           return (
             <View key={item.title} style={[styles.searchSectionCon, styles.sectionCon]}>
-              <SectionTitle color={black} title={item.title} type="more" navigate={item.navigate} />
-              <View style={styles.searchSectionList}>{item.bodyRender}</View>
+              <SectionTitle
+                color={black}
+                title={item.title}
+                type='more'
+                rightAction={() => this.handleGotoMore(item)}
+              />
+              <View style={styles.searchSectionList}>{item.bodyRender()}</View>
             </View>
           );
         })}
@@ -140,24 +205,29 @@ class Search extends React.Component {
   };
 
   render() {
-    const { searchKey } = this.state;
+    const { searchKey, isSearching } = this.state;
     return (
       <View style={styles.container}>
         <SearchBar
           searchKey={searchKey}
           changeSearchKeyAction={this.handleChangeSearchKey}
           cancelSearchAction={this.handleCancelSearch}
-          title="搜索"
+          cleanTextAction={this.handleCleanText}
+          title='搜索'
         />
-        <SpringScrollView>{this.renderSearchResult()}</SpringScrollView>
+        <SpringScrollView>
+          {isSearching ? this.renderSearchResult() : this.renderDidNotSearch()}
+        </SpringScrollView>
       </View>
     );
   }
 }
 
-const mapStateToProps = ({ search, loading }) => ({
+const mapStateToProps = ({ search, recommend, loading }) => ({
   search,
+  recommend,
   loading: loading.effects['search/queryXshareListEffect'],
+  searchLoading: loading.effects['search/querySearchEffect'],
 });
 
 export default connect(mapStateToProps)(Search);

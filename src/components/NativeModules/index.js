@@ -9,6 +9,6 @@ console.log('%cNativeModules:', 'color: #0e93e0;background: #aaefe5;', NativeMod
 
 export const { OpenActivity, GetUserInfo } = NativeModules;
 
-export const OpenRnActivity = route => {
-  NativeModules.OpenReactActivity.open(name, route);
+export const OpenRnActivity = (route, json) => {
+  NativeModules.OpenReactActivity.open(name, route, json);
 };

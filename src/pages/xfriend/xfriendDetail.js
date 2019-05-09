@@ -2,7 +2,7 @@ import React from 'react';
 import { View, StyleSheet, Keyboard, StatusBar } from 'react-native';
 import SpringScrollView from '@/components/SpringScrollView';
 import Header from '@/components/Header';
-import { xfriendData, commentData } from '@/config/fakeData';
+import { commentData } from '@/config/fakeData';
 import { FlatList } from 'react-native-gesture-handler';
 import XfriendItem from '@/components/pageComponent/xfriendItem';
 import { ChineseNormalFooter } from 'react-native-spring-scrollview/Customize';
@@ -31,6 +31,8 @@ class XshareDetail extends React.Component {
   componentDidMount() {
     StatusBar.setBarStyle('dark-content', true);
     this.queryXshareDetailDispatch();
+    console.log('this.props', this.props);
+    // 请求评论列表
   }
 
   queryXshareDetailDispatch = () => {
@@ -42,7 +44,7 @@ class XshareDetail extends React.Component {
   };
 
   renderCommentItem = ({ item }) => {
-    return <ChildItem type="child" replyAction={this.replyAction} itemData={item} />;
+    return <ChildItem type='child' replyAction={this.replyAction} itemData={item} />;
   };
 
   replyAction = item => {
@@ -90,9 +92,10 @@ class XshareDetail extends React.Component {
 
   render() {
     const { textValue, activeTab, allLoaded } = this.state;
+    const { screenProps } = this.props;
     return (
       <View style={styles.container}>
-        <Header title="查看详情" />
+        <Header title='查看详情' />
         <SpringScrollView
           ref={ref => (this.refScrollView = ref)}
           loadingFooter={ChineseNormalFooter}
@@ -100,7 +103,7 @@ class XshareDetail extends React.Component {
           allLoaded={allLoaded}
           bounces
         >
-          <XfriendItem noPress itemData={xfriendData[0]} />
+          <XfriendItem noPress itemData={JSON.parse(screenProps.nativeProps.params)} />
           <View style={styles.replyCon}>
             <View style={styles.tabCon}>
               <SecondaryText style={styles.commentTotal}>135个回答</SecondaryText>

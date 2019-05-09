@@ -17,6 +17,7 @@ import com.lieying.comlib.utils.ScreenUtils;
 import com.lieying.socialappstore.R;
 import com.lieying.socialappstore.activity.CollectionActivity;
 import com.lieying.socialappstore.activity.TopicActivity;
+import com.lieying.socialappstore.activity.UserDataActivity;
 import com.lieying.socialappstore.activity.UserIndexActivity;
 import com.lieying.socialappstore.adapter.ExploreAdapter;
 import com.lieying.socialappstore.base.BaseV4Fragment;
@@ -98,7 +99,7 @@ public class IndexFragment extends BaseV4Fragment {
 
             @Override
             public void comments() {
-                UserIndexActivity.startActivity(mContext , UserManager.getCurrentUser().getPhone());
+                UserDataActivity.startActivity(mContext);
             }
 
              @Override

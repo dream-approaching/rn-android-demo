@@ -5,26 +5,34 @@ import SecondaryText from '@/components/AppText/SecondaryText';
 import SmallText from '@/components/AppText/SmallText';
 import CommonText from '@/components/AppText/CommonText';
 import myImages from '@/utils/myImages';
+import { OpenActivity } from '@/components/NativeModules';
 
 export default class extends React.PureComponent {
+  gotoAppDetail = itemData => {
+    OpenActivity.openAppDetails(itemData.mydata ? itemData.mydata.id : itemData.app_info);
+  };
+
   render() {
     const { itemData, islastOne } = this.props;
     return (
-      <TouchableOpacity style={styles.container(islastOne)}>
-        <Image style={styles.appIcon} source={{ uri: itemData.avatar }} />
+      <TouchableOpacity
+        onPress={() => this.gotoAppDetail(itemData)}
+        style={styles.container(islastOne)}
+      >
+        <Image style={styles.appIcon} source={{ uri: itemData.app_logo }} />
         <View style={styles.itemRight}>
-          <CommonText style={styles.appTitle}>{itemData.name}</CommonText>
+          <CommonText style={styles.appTitle}>{itemData.app_name_cn}</CommonText>
           <SecondaryText style={styles.desc} numberOfLines={1}>
-            {itemData.desc}
+            {itemData.app_short_desc}
           </SecondaryText>
           <View>
-            {itemData.label && (
+            {itemData.is_high_quality && (
               <ImageBackground
                 resizeMode='contain'
                 source={{ uri: myImages.bgLabel }}
                 style={styles.bgLabel}
               >
-                <SmallText style={styles.labelText}>{itemData.label}</SmallText>
+                <SmallText style={styles.labelText}>精品</SmallText>
               </ImageBackground>
             )}
           </View>

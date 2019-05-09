@@ -1,4 +1,5 @@
-import { queryHotLabelReq, searchReq, submitXShareReq } from '@/services/recommend';
+import { queryHotClassifyReq, submitXShareReq } from '@/services/recommend';
+import { searchReq } from '@/services/search';
 
 export default {
   namespace: 'recommend',
@@ -6,19 +7,21 @@ export default {
   state: {
     appList: [],
     selectedLabel: [],
-    hotLable: [], // 热门标签
+    hotClassify: [], // 热门标签
     searchLable: [], // 搜索标签
   },
 
   effects: {
-    *queryAppEffect({ payload, finallyFn }, { call, put }) {
+    *queryAppEffect({ payload, finallyFn, successFn }, { call, put }) {
       try {
         const response = yield call(searchReq, payload);
-        if (response.code === 0) {
+        if (response && response.code === 0) {
           yield put({
             type: 'saveAppList',
             payload: response.data || [],
+            isFirstPage: payload.isFirst,
           });
+          successFn && successFn(response.data);
         }
       } catch (err) {
         console.log('err', err);
@@ -26,18 +29,18 @@ export default {
         finallyFn && finallyFn();
       }
     },
-    *queryHotLabelEffect({ payload }, { call, put }) {
+    *queryHotClassifyEffect({ payload }, { call, put }) {
       try {
-        const response = yield call(queryHotLabelReq, payload);
+        const response = yield call(queryHotClassifyReq, payload);
         if (response && response.code === 0) {
           if (payload.search) {
             yield put({
-              type: 'saveSearchLabelList',
+              type: 'saveSearchClassifyList',
               payload: response.data || [],
             });
           } else {
             yield put({
-              type: 'saveHotLabelList',
+              type: 'saveHotClassifyList',
               payload: response.data || [],
             });
           }
@@ -59,19 +62,19 @@ export default {
   },
 
   reducers: {
-    saveAppList(state, { payload }) {
+    saveAppList(state, { payload, isFirstPage }) {
       return {
         ...state,
-        appList: [...state.appList, ...payload],
+        appList: isFirstPage ? payload : [...state.appList, ...payload],
       };
     },
-    saveHotLabelList(state, { payload }) {
+    saveHotClassifyList(state, { payload }) {
       return {
         ...state,
-        hotLable: payload,
+        hotClassify: payload,
       };
     },
-    saveSearchLabelList(state, { payload }) {
+    saveSearchClassifyList(state, { payload }) {
       return {
         ...state,
         searchLable: payload,

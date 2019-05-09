@@ -28,6 +28,7 @@ export default {
   approve: 'ic_approve',
   danger: 'ic_danger',
   success: 'ic_success',
+  defaultHeader: 'ic_default_header',
 
   btnClear: 'btn_clear',
   btnDel: 'btn_del',

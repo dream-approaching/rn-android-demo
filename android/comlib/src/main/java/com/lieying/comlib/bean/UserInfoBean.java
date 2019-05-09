@@ -8,6 +8,12 @@ package com.lieying.comlib.bean;
 public class UserInfoBean {
 
 
+    /**
+     * userinfo : {"id":"14","channel_id":"1","nick_name":"试玩","refresh_token":"e3546129237d587df017fbbcc11ed946","access_token":"c3c4db657e05f684f696096ec6f06371","mobilephone":"18503068868","expires_in":"1558755079","head_image":"http://192.168.0.200:8060/uploads_cms_images/1552617692930_2304.jpg","sex":"m","user_title":"","user_type":"0","career":"科学家","location":"北京","profile":"dsddsf","age":"0"}
+     */
+
+    private UserinfoBean userinfo;
+
     public String getAccessToken(){
         if(userinfo == null){
             return "c3c4db657e05f684f696096ec6f06371";
@@ -27,17 +33,6 @@ public class UserInfoBean {
         return userinfo.nick_name;
     }
 
-    @Override
-    public String toString() {
-        return getAccessToken()+","+getPhone()+","+getName();
-    }
-
-    /**
-     * userinfo : {"id":"14","channel_id":"1","nick_name":"bchIKL049184823","refresh_token":"3cb441e8358f6bf889b9a11abe674cc8","access_token":"e11c20ca95cf1fd63ebbe87c7f418f68","mobilephone":"18503068868","expires_in":"1558506575","head_image":""}
-     */
-
-    private UserinfoBean userinfo;
-
     public UserinfoBean getUserinfo() {
         return userinfo;
     }
@@ -46,16 +41,24 @@ public class UserInfoBean {
         this.userinfo = userinfo;
     }
 
+
     public static class UserinfoBean {
         /**
          * id : 14
          * channel_id : 1
-         * nick_name : bchIKL049184823
-         * refresh_token : 3cb441e8358f6bf889b9a11abe674cc8
-         * access_token : e11c20ca95cf1fd63ebbe87c7f418f68
+         * nick_name : 试玩
+         * refresh_token : e3546129237d587df017fbbcc11ed946
+         * access_token : c3c4db657e05f684f696096ec6f06371
          * mobilephone : 18503068868
-         * expires_in : 1558506575
-         * head_image :
+         * expires_in : 1558755079
+         * head_image : http://192.168.0.200:8060/uploads_cms_images/1552617692930_2304.jpg
+         * sex : m
+         * user_title :
+         * user_type : 0
+         * career : 科学家
+         * location : 北京
+         * profile : dsddsf
+         * age : 0
          */
 
         private String id;
@@ -66,6 +69,13 @@ public class UserInfoBean {
         private String mobilephone;
         private String expires_in;
         private String head_image;
+        private String sex;
+        private String user_title;
+        private String user_type;
+        private String career;
+        private String location;
+        private String profile;
+        private String age;
 
         public String getId() {
             return id;
@@ -129,6 +139,62 @@ public class UserInfoBean {
 
         public void setHead_image(String head_image) {
             this.head_image = head_image;
+        }
+
+        public String getSex() {
+            return sex;
+        }
+
+        public void setSex(String sex) {
+            this.sex = sex;
+        }
+
+        public String getUser_title() {
+            return user_title;
+        }
+
+        public void setUser_title(String user_title) {
+            this.user_title = user_title;
+        }
+
+        public String getUser_type() {
+            return user_type;
+        }
+
+        public void setUser_type(String user_type) {
+            this.user_type = user_type;
+        }
+
+        public String getCareer() {
+            return career;
+        }
+
+        public void setCareer(String career) {
+            this.career = career;
+        }
+
+        public String getLocation() {
+            return location;
+        }
+
+        public void setLocation(String location) {
+            this.location = location;
+        }
+
+        public String getProfile() {
+            return profile;
+        }
+
+        public void setProfile(String profile) {
+            this.profile = profile;
+        }
+
+        public String getAge() {
+            return age;
+        }
+
+        public void setAge(String age) {
+            this.age = age;
         }
     }
 }

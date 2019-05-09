@@ -1,21 +1,45 @@
-import { queryHotSearchReq } from '@/services/search';
+import { queryHistorySearchReq, searchReq } from '@/services/search';
 
 export default {
   namespace: 'search',
 
   state: {
-    hotSearchList: [],
+    historySearchList: [],
+    searchAll: {},
+    searchList: [],
   },
 
   effects: {
-    *queryHotSearchEffect({ payload, finallyFn }, { call, put }) {
+    *queryHistorySearchEffect({ payload }, { call, put }) {
       try {
-        const response = yield call(queryHotSearchReq, payload);
+        const response = yield call(queryHistorySearchReq, payload);
         if (response && response.code === 0) {
           yield put({
-            type: 'saveHotSearchList',
+            type: 'saveHistorySearchList',
             payload: response.data || [],
           });
+        }
+      } catch (err) {
+        console.log('err', err);
+      }
+    },
+    *querySearchEffect({ payload, finallyFn, successFn }, { call, put }) {
+      try {
+        const response = yield call(searchReq, payload);
+        if (response && response.code === 0) {
+          if (+payload.search_type === 1) {
+            yield put({
+              type: 'saveSearchAll',
+              payload: response.data || {},
+            });
+          } else {
+            yield put({
+              type: 'saveSearchList',
+              payload: response.data || [],
+              isFirstPage: payload.isFirst,
+            });
+          }
+          successFn && successFn(response.data);
         }
       } catch (err) {
         console.log('err', err);
@@ -26,10 +50,22 @@ export default {
   },
 
   reducers: {
-    saveHotSearchList(state, { payload }) {
+    saveHistorySearchList(state, { payload }) {
       return {
         ...state,
-        hotSearchList: payload,
+        historySearchList: payload,
+      };
+    },
+    saveSearchAll(state, { payload }) {
+      return {
+        ...state,
+        searchAll: payload,
+      };
+    },
+    saveSearchList(state, { payload, isFirstPage }) {
+      return {
+        ...state,
+        searchList: isFirstPage ? payload : [...state.searchList, ...payload],
       };
     },
   },

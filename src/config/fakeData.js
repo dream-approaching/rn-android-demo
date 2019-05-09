@@ -108,89 +108,73 @@ export const commentData = [
   },
 ];
 
-export const xfriendData = [
-  {
-    avatar: img,
-    name: '蜡笔小新',
-    time: '1557043585',
-    label: ['工具'],
-    content:
-      '推荐即可这款Ap工具p找到自己人年轻人的同好社区年轻工具人的人年轻人的同工具好社区年轻人的人年轻人的同好社区年轻人的',
-    app: {
-      icon: img,
-      name: '即刻',
+export const xshare = {
+  xshareList: [
+    {
+      id: '8',
+      channel_id: '1',
+      commit_user: 'chxFKL347170615',
+      mobilephone: '18503068868',
+      fabulous: '0',
+      label: '\u5de5\u5177,\u65c5\u6e38',
+      content: '11\u53d1\u8fbe\u7684\u65b9\u5f0f',
+      app_info: '8',
+      comment_num: '0',
+      created_time: '1556088283',
+      forward_num: '0',
+      head_image: 'http://192.168.0.200:8060/uploads_cms_images/1552617692930_2304.jpg',
+      is_big_v: '1',
+      is_add_friends: false,
+      timestr: '2019-04',
+      mydata: {
+        img: 'http://192.168.0.200:1130/uploads_cms_images/15554904006273519.png',
+        title: '\u6700\u6e29\u99a8\u597d\u73a9\u7684\u8bed\u97f3\u4ea4\u53cb\u793e\u533a\u3002',
+      },
     },
-    likeNum: 123,
-    commentNum: 234,
-    shareNum: 89,
-    approve: false,
-  },
-  {
-    avatar: img,
-    name: '蜡笔小新2',
-    time: '1557043585',
-    label: ['工具', '笔记'],
-    content:
-      '推荐即可这款App找到自己蜡笔小新2人年轻人的同好社区年轻蜡笔小新2人的人年轻人的同好社区年轻人的人年轻人的同好社区年轻人的',
-    app: {
-      icon: img,
-      name: '即刻2',
+    {
+      id: '6',
+      channel_id: '1',
+      commit_user: 'chxFKL347170615',
+      mobilephone: '18503068868',
+      fabulous: '0',
+      label: '\u5de5\u5177,\u65c5\u6e38',
+      content: '11\u53d1\u8fbe\u7684\u65b9\u5f0f',
+      app_info: '4',
+      comment_num: '0',
+      created_time: '1556260485',
+      forward_num: '3',
+      head_image: 'http://192.168.0.200:8060/uploads_cms_images/1552617692930_2304.jpg',
+      is_big_v: '1',
+      is_add_friends: false,
+      timestr: '2019-04',
+      mydata: {
+        img: 'http://192.168.0.200:1130/uploads_cms_images/15554894758525927.png',
+        title: '\u6253\u53d1\u65e0\u804a\u65f6\u95f4\u7684\u6700\u4f73\u88c5\u5907\uff01',
+      },
     },
-    likeNum: 1213,
-    commentNum: 2134,
-    shareNum: 819,
-    approve: true,
-  },
-  {
-    avatar: img,
-    name: '蜡笔小新3',
-    time: '1557043585',
-    label: ['工具', '笔记'],
-    content:
-      '推荐即可这款App找到自己人年轻人的同好社区年轻人的人年轻人的同好社区年轻人的人年轻人的同好社区年轻人的',
-    app: {
-      icon: img,
-      name: '即刻2',
+    {
+      id: '2',
+      channel_id: '1',
+      commit_user: 'chxFKL347170615',
+      mobilephone: '18503068868',
+      fabulous: '0',
+      label: '\u5de5\u5177,\u65c5\u6e38',
+      content: '11\u53d1\u8fbe\u7684\u65b9\u5f0f',
+      app_info: '3',
+      comment_num: '0',
+      created_time: '1556088272',
+      forward_num: '5',
+      head_image: 'http://192.168.0.200:8060/uploads_cms_images/1552617692930_2304.jpg',
+      is_big_v: '1',
+      is_add_friends: false,
+      timestr: '2019-04',
+      mydata: {
+        img: 'http://192.168.0.200:1130/uploads_cms_images/15554894590966689.png',
+        title: '\u6d77\u91cf\u8c6a\u793c\uff0c\u4e00\u70ae\u5373\u4e2d',
+      },
     },
-    likeNum: 1213,
-    commentNum: 2134,
-    shareNum: 819,
-    approve: false,
-    attention: true,
-  },
-  {
-    avatar: img,
-    name: '蜡笔小新4',
-    time: '1557043585',
-    label: ['工具', '笔记'],
-    content:
-      '推荐即可这到自己到自己人蜡笔小到自己人蜡笔小到自己人蜡笔小到自己人蜡笔小到自己人蜡笔小到自己人蜡笔小到自己人蜡笔小人蜡笔小到自己人蜡笔小款App找到自己人蜡笔小新年轻人笔记的同好社区年轻人的人年轻人的同好社区年轻人的人年轻人的同好社区年轻人的',
-    app: {
-      icon: img,
-      name: '即刻2',
-    },
-    likeNum: 1213,
-    commentNum: 2134,
-    shareNum: 819,
-    approve: true,
-  },
-  {
-    avatar: img,
-    name: '蜡笔小新5',
-    time: '1557043585',
-    label: ['工具', '笔记'],
-    content:
-      '推荐即可这款App找到自己到自己人蜡笔小人年轻人的同好社区年轻人的人年轻人的同好社区年轻人的人年轻人的人年轻人的同好社人年轻人的同好社区年轻人的',
-    app: {
-      icon: img,
-      name: '即刻2',
-    },
-    likeNum: 1213,
-    commentNum: 2134,
-    shareNum: 819,
-    approve: true,
-  },
-];
+  ],
+};
 
 export const appData = [
   {
@@ -217,7 +201,7 @@ export const articleData = [
   },
 ];
 
-export const hotLable = [
+export const hotClassify = [
   { id: 1, label: '工具', cnt: '11' },
   { id: 2, label: '效率', cnt: '12' },
   { id: 3, label: '购物', cnt: '122' },
@@ -236,3 +220,95 @@ export const hotLable = [
   { id: 16, label: '办公', cnt: '12' },
   { id: 17, label: '动漫', cnt: '12' },
 ];
+
+export const search = {
+  historySearchList: ['工具', '效率', '旅游'],
+};
+
+export const recommend = {
+  hotClassify: [
+    '工具',
+    '效率',
+    '旅游',
+    '工具2',
+    '效率2',
+    '旅游2',
+    '工具3',
+    '效率3',
+    '旅游3',
+    '工具4',
+    '效率效率',
+  ],
+};
+
+export const searchAll = {
+  data: {
+    app: [
+      {
+        id: '78',
+        app_name_cn: '\u5feb\u624b',
+        app_logo: 'http://192.168.0.200:1130/uploads_cms_images/15554903805179806.png',
+        app_short_desc: '\u770b\u89c1\u6bcf\u4e00\u79cd\u751f\u6d3b\u9c7c',
+        is_high_quality: '0',
+        type: '2',
+      },
+      {
+        id: '76',
+        app_name_cn: '\u514d\u8d39\u5c0f\u8bf4\u5927\u5168',
+        app_logo: 'http://192.168.0.200:1130/uploads_cms_images/15554894758525927.png',
+        app_short_desc:
+          '\u9c7c\u6253\u53d1\u65e0\u804a\u65f6\u95f4\u7684\u6700\u4f73\u88c5\u5907\uff01',
+        is_high_quality: '0',
+        type: '2',
+      },
+    ],
+    recommend: [
+      { id: '181', title: '\u7231\u5403\u9c7c\u7684\u732b\u54aa', type: '3' },
+      { id: '180', title: '330000333rerttr34344', type: '3' },
+    ],
+    topic: [
+      { id: '183', title: '\u6df1\u5733\u70e4\u9c7c\u63a8\u8350', type: '4' },
+      { id: '176', title: '\u6df1\u5733\u70e4\u9c7c\u63a8\u8350', type: '4' },
+    ],
+    share: [
+      {
+        id: '10868',
+        channel_id: '1',
+        commit_user: 'chxFKL347170615',
+        mobilephone: '13564587895',
+        fabulous: '3',
+        label: '\u82b1\u5349,\u65c5\u6e38,\u9c7c',
+        content: '10868\u53d1\u8fbe\u7684\u65b9\u5f0f\u9c7c',
+        app_info: '4',
+        app_name_cn: '\u514d\u8d39\u5c0f\u8bf4\u5927\u5168',
+        app_logo: 'http://192.168.0.200:1130/uploads_cms_images/15554894758525927.png',
+        app_short_desc:
+          '\u9c7c\u6253\u53d1\u65e0\u804a\u65f6\u95f4\u7684\u6700\u4f73\u88c5\u5907\uff01',
+        comment_num: '15',
+        created_time: '1556088283',
+        head_image: 'http://192.168.0.200:8060/uploads_cms_images/1552617692930_2304.jpg',
+        is_big_v: '1',
+        is_add_friends: true,
+      },
+      {
+        id: '10867',
+        channel_id: '1',
+        commit_user: 'chxFKL347170615',
+        mobilephone: '13564587895',
+        fabulous: '3',
+        label: '\u82b1\u5349,\u65c5\u6e38,\u9c7c',
+        content: '10867\u53d1\u8fbe\u7684\u65b9\u5f0f\u9c7c',
+        app_info: '4',
+        app_name_cn: '\u514d\u8d39\u5c0f\u8bf4\u5927\u5168',
+        app_logo: 'http://192.168.0.200:1130/uploads_cms_images/15554894758525927.png',
+        app_short_desc:
+          '\u9c7c\u6253\u53d1\u65e0\u804a\u65f6\u95f4\u7684\u6700\u4f73\u88c5\u5907\uff01',
+        comment_num: '15',
+        created_time: '1556088283',
+        head_image: 'http://192.168.0.200:8060/uploads_cms_images/1552617692930_2304.jpg',
+        is_big_v: '1',
+        is_add_friends: true,
+      },
+    ],
+  },
+};

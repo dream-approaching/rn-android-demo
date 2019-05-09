@@ -17,6 +17,7 @@ public class UserReactModule extends ReactContextBaseJavaModule {
     private static final String DURATION_SHORT_KEY_TOKEN = "KEY_ONE_TOKEN";
     private static final String DURATION_SHORT_KEY_PHONE = "KEY_ONE_PHONE";
     private static final String DURATION_SHORT_KEY_NICK = "KEY_ONE_NICK";
+    private static final String DURATION_SHORT_KEY_HEAD = "KEY_ONE_HEAD";
 
     public UserReactModule(ReactApplicationContext reactContext) {
         super(reactContext);
@@ -33,6 +34,9 @@ public class UserReactModule extends ReactContextBaseJavaModule {
         constants.put(DURATION_SHORT_KEY_TOKEN, UserManager.getCurrentUser().getAccessToken());
         constants.put(DURATION_SHORT_KEY_PHONE, UserManager.getCurrentUser().getPhone());
         constants.put(DURATION_SHORT_KEY_NICK, UserManager.getCurrentUser().getName());
+        if( UserManager.getCurrentUser().getUserinfo()!=null){
+            constants.put(DURATION_SHORT_KEY_HEAD, UserManager.getCurrentUser().getUserinfo().getHead_image());
+        }
         return constants;
     }
 

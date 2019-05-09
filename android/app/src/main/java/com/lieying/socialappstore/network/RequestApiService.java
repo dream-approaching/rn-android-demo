@@ -118,4 +118,24 @@ public interface RequestApiService {
      */
     @GET("http://192.168.0.200:1230/interface/v1/app/favorites/get_favorites_list")
     Observable<ResponseData<List<CollectionBean>>> getCollectionList(@Query("params") String route);
+
+    /**
+     * 发送请求
+     * 上传用户头像
+     */
+    @Multipart
+    @POST("/interface/v1/user/auth/upload_headimg")
+    Observable<ResponseData<Object>> uploadHeadIcon(@Part MultipartBody.Part cmd, @Part MultipartBody.Part userID,
+                                                           @Part MultipartBody.Part file, @Part MultipartBody.Part file2,
+                                                           @Part MultipartBody.Part file3, @Part MultipartBody.Part file4,
+                                                           @Part MultipartBody.Part file5);
+
+
+    /**
+     * @author liyi
+     * date 2019/3/7 0007 11:38
+     * @function:获取用户信息
+     */
+    @GET("/interface/v1/user/auth/get_userinfo")
+    Observable<ResponseData<UserInfoBean>> getUserInfo(@Query("params") String route);
 }

@@ -1,13 +1,8 @@
 import request from '@/utils/request';
 import config from '@/config';
 
-// 查询app 文章 话题 分享
-export async function searchReq(params) {
-  return request(`${config.baseUrl}/interface/v1/app/label/search_list`, { data: params });
-}
-
-// 查询热门标签 以及 搜索标签
-export async function queryHotLabelReq(params) {
+// 查询以及搜索 热门分类
+export async function queryHotClassifyReq(params) {
   return request(`${config.baseUrl}/interface/v1/app/label/get_hot_list`, { data: params });
 }
 

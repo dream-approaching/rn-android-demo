@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, StatusBar, ActivityIndicator } from 'react-native';
+import { View, StyleSheet, StatusBar } from 'react-native';
 import SpringScrollView from '@/components/SpringScrollView';
 import Header from '@/components/Header';
 import TextInput from '@/components/TextInput';
@@ -9,8 +9,9 @@ import { debounce, lastArr } from '@/utils/utils';
 import { scale, themeLayout, themeColor } from '@/config';
 import SecondaryText from '@/components/AppText/SecondaryText';
 import { ChineseNormalFooter } from 'react-native-spring-scrollview/Customize';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+// import { TouchableOpacity } from 'react-native-gesture-handler';
 import SearchItem from './components/searchItem';
+import Loading from '@/components/Loading/loading';
 
 class Recommend extends React.Component {
   static navigationOptions = {
@@ -22,12 +23,18 @@ class Recommend extends React.Component {
     allLoaded: false,
   };
 
-  pageSize = 10;
-
   handleSearchDebounce = debounce(value => this.queryAppListDispatch(value), 500);
 
   componentDidMount() {
     StatusBar.setBarStyle('dark-content', true);
+  }
+
+  componentWillUnmount() {
+    this.props.dispatch({
+      type: 'recommend/saveAppList',
+      isFirstPage: true,
+      payload: [],
+    });
   }
 
   handleChangeText = value => {
@@ -36,23 +43,33 @@ class Recommend extends React.Component {
     });
     if (!value.length) this.clearAppList();
     // debounce(() => this.queryAppListDispatch(value), 500)();  // 这样不行，每次onchange都会放到500ms后执行
-    this.handleSearchDebounce(value); // 这样就可以，只有最后一次触发的onchange才会执行
+    const data = {
+      id: 0,
+      isFirst: true,
+      search: value,
+    };
+    this.handleSearchDebounce(data); // 这样就可以，只有最后一次触发的onchange才会执行
   };
 
-  queryAppListDispatch = (searchKey, id = 0, pagesize = this.pageSize) => {
+  queryAppListDispatch = params => {
     const { dispatch } = this.props;
     const data = {
-      pagesize,
+      pagesize: 20,
       search_type: 2,
-      search: searchKey,
-      id,
+      ...params,
     };
     return dispatch({
       type: 'recommend/queryAppEffect',
       payload: data,
+      successFn: response => {
+        if (response.length === 0) {
+          this.setState({
+            allLoaded: true,
+          });
+        }
+      },
       finallyFn: () => {
         this.refScrollView && this.refScrollView.endLoading();
-        // this.refScrollView.endRefresh();
       },
     });
   };
@@ -62,7 +79,11 @@ class Recommend extends React.Component {
     const { recommend } = this.props;
     const lastItem = lastArr(recommend.appList);
     console.log('%clastItem:', 'color: #0e93e0;background: #aaefe5;', textValue, lastItem);
-    this.queryAppListDispatch(textValue, lastItem.id);
+    const data = {
+      id: lastItem.id,
+      search: textValue,
+    };
+    this.queryAppListDispatch(data);
   };
 
   clearAppList = () => {
@@ -71,6 +92,10 @@ class Recommend extends React.Component {
       type: 'recommend/saveAppList',
       payload: [],
     });
+  };
+
+  gotoAppDetail = item => {
+    this.props.navigation.navigate('RecommendEdit', { id: item.id });
   };
 
   render() {
@@ -90,15 +115,15 @@ class Recommend extends React.Component {
           value={textValue}
           placeholder='输入你想推荐的应用'
         />
-        <TouchableOpacity onPress={() => this.props.navigation.navigate('RecommendEdit')}>
+        {/* <TouchableOpacity onPress={() => this.props.navigation.navigate('RecommendEdit')}>
           <SecondaryText style={styles.searchTitle}>点击进入提交页面</SecondaryText>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         {!noSearch && (
           <View style={styles.searchCon}>
             <View style={styles.searchTitleCon}>
               <SecondaryText style={styles.searchTitle}>搜索结果</SecondaryText>
             </View>
-            {loading && <ActivityIndicator />}
+            {loading && <Loading />}
             <SpringScrollView
               ref={ref => (this.refScrollView = ref)}
               bounces
@@ -108,7 +133,14 @@ class Recommend extends React.Component {
             >
               {(noList && <SecondaryText>没有结果</SecondaryText>) ||
                 appList.map(item => {
-                  return <SearchItem searchKey={textValue} key={item.id} itemData={item} />;
+                  return (
+                    <SearchItem
+                      gotoAppAction={() => this.gotoAppDetail(item)}
+                      searchKey={textValue}
+                      key={item.id}
+                      itemData={item}
+                    />
+                  );
                 })}
             </SpringScrollView>
           </View>

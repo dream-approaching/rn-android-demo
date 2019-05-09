@@ -1,40 +1,46 @@
-import { queryXshareListReq, queryXshareDetailReq } from '@/services/xshare';
+import { queryXshareListReq, queryOthershareListReq } from '@/services/xshare';
 
 export default {
   namespace: 'xshare',
 
   state: {
     xshareList: [],
-    xshareListTotal: 0,
+    otherShareList: [],
   },
 
   effects: {
-    *queryXshareListEffect({ payload }, { call, put }) {
+    *queryXshareListEffect({ payload, successFn, finallyFn }, { call, put }) {
       try {
         const response = yield call(queryXshareListReq, payload);
         if (response && response.code === 0) {
           yield put({
             type: 'saveXshareList',
-            payload: response.data || {},
+            payload: response.data || [],
             isFirstPage: payload.isFirst,
           });
+          successFn && successFn(response.data);
         }
       } catch (err) {
         console.log('err', err);
+      } finally {
+        finallyFn && finallyFn();
       }
     },
-    *queryXshareDetailEffect({ payload }, { call, put }) {
+    *queryOtherShareListEffect({ payload, successFn, finallyFn }, { call, put }) {
       try {
-        const response = yield call(queryXshareDetailReq, payload);
+        const response = yield call(queryOthershareListReq, payload);
         if (response && response.code === 0) {
           yield put({
-            type: 'saveXshareList',
-            payload: response.data || {},
+            type: 'saveOthershareList',
+            payload: response.data || [],
             isFirstPage: payload.isFirst,
           });
+          successFn && successFn(response.data);
         }
       } catch (err) {
         console.log('err', err);
+      } finally {
+        finallyFn && finallyFn();
       }
     },
   },
@@ -43,8 +49,13 @@ export default {
     saveXshareList(state, { payload, isFirstPage }) {
       return {
         ...state,
-        xshareList: isFirstPage ? payload.list : [...state.commentList, ...payload.list],
-        xshareListTotal: payload.cnt,
+        xshareList: isFirstPage ? payload : [...state.xshareList, ...payload],
+      };
+    },
+    saveOthershareList(state, { payload, isFirstPage }) {
+      return {
+        ...state,
+        otherShareList: isFirstPage ? payload : [...state.otherShareList, ...payload],
       };
     },
   },

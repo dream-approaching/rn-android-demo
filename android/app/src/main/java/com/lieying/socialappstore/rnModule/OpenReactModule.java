@@ -41,4 +41,15 @@ public class OpenReactModule extends ReactContextBaseJavaModule {
     public void open(String moduleName , String enterName) {
         CommonReactActivity.startActivity(getReactApplicationContext() , moduleName , enterName);
     }
+
+    /**
+     * @param json 带入到rn的参数
+     * @param moduleName  传入rn的moduleName 如：MyReactNativeAppthree
+     * @param enterName  传入rn的入口 如：fragment1
+     * com.lieying.content.social.ENTER
+     */
+    @ReactMethod
+    public void open(String moduleName , String enterName ,String json) {
+        CommonReactActivity.startActivity(getReactApplicationContext() , moduleName , enterName , json);
+    }
 }

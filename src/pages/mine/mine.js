@@ -1,7 +1,7 @@
 import React from 'react';
 import { ImageBackground, StyleSheet, View, Button } from 'react-native';
 import MenuList from '@/components/MenuList';
-import { OpenRnActivity, OpenActivity } from '@/components/NativeModules';
+import { OpenRnActivity, OpenActivity, GetUserInfo } from '@/components/NativeModules';
 import { themeColor, scale, themeLayout } from '@/config';
 import { connect } from '@/utils/dva';
 import myImages from '@/utils/myImages';
@@ -114,7 +114,13 @@ class Mine extends React.Component {
               onPress={() => OpenActivity.open('com.lieying.content.social.login.ENTER')}
             />
             <Button title='评论页' onPress={() => OpenRnActivity('comment')} />
-            <Button title='我要推荐' onPress={() => OpenRnActivity('recommend')} />
+            <Button
+              title='我的分享'
+              onPress={() =>
+                OpenRnActivity('myShare', JSON.stringify({ phone: GetUserInfo.KEY_ONE_PHONE }))
+              }
+            />
+            {/* <Button title='我要推荐' onPress={() => OpenRnActivity('recommend')} /> */}
             <Button title='搜索' onPress={() => OpenRnActivity('search')} />
           </View>
           <MenuCard style={[styles.cardCon, styles.cardMenu]} menu={cardMenu} />

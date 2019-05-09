@@ -24,12 +24,10 @@ import MyNotice from '@/pages/myNotice/myNotice';
 import MyAttention from '@/pages/myAttention/myAttention';
 import MyFans from '@/pages/myFans/myFans';
 import MyFeedback from '@/pages/myFeedback/myFeedback';
+import MyShare from '@/pages/myshare/myshare';
 import PersonPage from '@/pages/personPage/personPage';
 import Search from '@/pages/search/search';
-import MoreApp from '@/pages/search/moreApp';
-import MoreArticle from '@/pages/search/moreArticle';
-import MoreChat from '@/pages/search/moreChat';
-import MoreShare from '@/pages/search/moreShare';
+import MoreSearch from '@/pages/search/moreSearch';
 
 // const transitionConfig = () => ({
 //   transitionSpec: {
@@ -89,11 +87,9 @@ const MyAttentionNav = createStackNavigator({ MyAttention }, { initialRouteName:
 const MyFansNav = createStackNavigator({ MyFans }, { initialRouteName: 'MyFans' });
 const SettingNav = createStackNavigator({ Setting }, { initialRouteName: 'Setting' });
 const MyFeedbackNav = createStackNavigator({ MyFeedback }, { initialRouteName: 'MyFeedback' });
+const MyShareNav = createStackNavigator({ MyShare }, { initialRouteName: 'MyShare' });
 const PersonPageNav = createStackNavigator({ PersonPage }, { initialRouteName: 'PersonPage' });
-const SearchNav = createStackNavigator(
-  { Search, MoreApp, MoreArticle, MoreChat, MoreShare },
-  { initialRouteName: 'Search' }
-);
+const SearchNav = createStackNavigator({ Search, MoreSearch }, { initialRouteName: 'Search' });
 
 const RecommendContainer = createAppContainer(RecommendNav);
 const XFriendContainer = createAppContainer(XFriendNav);
@@ -112,6 +108,7 @@ const MyAttentionContainer = createAppContainer(MyAttentionNav);
 const MyFansContainer = createAppContainer(MyFansNav);
 const SettingContainer = createAppContainer(SettingNav);
 const MyFeedbackContainer = createAppContainer(MyFeedbackNav);
+const MyShareContainer = createAppContainer(MyShareNav);
 const PersonPageContainer = createAppContainer(PersonPageNav);
 const SearchContainer = createAppContainer(SearchNav);
 
@@ -140,6 +137,7 @@ export default class Router extends React.Component {
       myFans: MyFansContainer,
       setting: SettingContainer,
       myFeedback: MyFeedbackContainer,
+      myShare: MyShareContainer,
       personPage: PersonPageContainer,
       recommend: RecommendContainer,
       search: SearchContainer,

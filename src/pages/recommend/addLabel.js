@@ -10,7 +10,7 @@ import { debounce, clearRepeatArr } from '@/utils/utils';
 import CommonText from '@/components/AppText/CommonText';
 import SecondaryText from '@/components/AppText/SecondaryText';
 import { connect } from '@/utils/dva';
-// import { hotLable } from '@/config/fakeData';
+// import { hotClassify } from '@/config/fakeData';
 import LabelBtn from './components/labelBtn';
 
 class AddLabel extends React.Component {
@@ -45,7 +45,7 @@ class AddLabel extends React.Component {
       search,
     };
     dispatch({
-      type: 'recommend/queryHotLabelEffect',
+      type: 'recommend/queryHotClassifyEffect',
       payload: data,
     });
   };
@@ -139,9 +139,9 @@ class AddLabel extends React.Component {
           })}
         </View>
         <View style={styles.hotCon}>
-          <SectionTitle title="热门分类" />
+          <SectionTitle title='热门分类' />
           <View style={styles.hotListCon}>
-            {recommend.hotLable.map(item => {
+            {recommend.hotClassify.map(item => {
               const disabled = new Set(selectedLabel).has(item);
               return (
                 <TouchableOpacity
@@ -166,7 +166,7 @@ class AddLabel extends React.Component {
       <View style={styles.container}>
         <Header
           navigation={navigation}
-          title="添加标签"
+          title='添加标签'
           rightComponent={this.renderHeaderRight()}
         />
         <SpringScrollView>
@@ -177,7 +177,7 @@ class AddLabel extends React.Component {
               style={styles.inputStyle}
               onChangeText={this.handleChangeText}
               value={textValue}
-              placeholder="搜索标签"
+              placeholder='搜索标签'
             />
             {isSearching ? this.renderSearchList() : this.renderSelectedLabel()}
           </View>
@@ -189,7 +189,7 @@ class AddLabel extends React.Component {
 
 const mapStateToProps = ({ recommend, loading }) => ({
   recommend,
-  loading: loading.effects['recommend/queryHotLabelEffect'],
+  loading: loading.effects['recommend/queryHotClassifyEffect'],
 });
 
 export default connect(mapStateToProps)(AddLabel);

@@ -31,6 +31,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".activity.EditUserDataActivity"></activity>
+        <activity android:name=".activity.UserDataActivity" />
         <activity android:name=".activity.CollectionActivity">
             <intent-filter>
                 <action android:name="com.lieying.content.social.COLLECTION.ENTER" />
@@ -41,6 +43,10 @@
         <activity android:name=".activity.UserIndexActivity" />
         <activity android:name=".activity.AppDetailsActivity" />
         <activity android:name=".activity.TopicActivity" />
+        <activity
+            android:name=".activity.ClipHeaderIconActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -6,6 +6,8 @@ import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 
+import com.lieying.socialappstore.utils.ImageHandler;
+
 import java.io.File;
 import java.util.List;
 import java.util.Map;
@@ -110,6 +112,35 @@ public class RetrofitUtils {
                 .subscribe(subscriber);
         list.add(subscriber.getDisposable());
     }
+    /**
+     *  上传头像
+     * */
+    public void sendHeadIcon(final File file , String token,  Observer<ResponseData<Object>> subscriber ){
+        RequestBody requestFile =
+                RequestBody.create(MediaType.parse("multipart/form-data"), file);
+        final MultipartBody.Part body =
+                MultipartBody.Part.createFormData("image_content", ImageHandler.getImage(file.getPath()));
+        final MultipartBody.Part image_size =
+                MultipartBody.Part.createFormData("image_size", "1");
+        final MultipartBody.Part access_token =
+                MultipartBody.Part.createFormData("access_token", token);
+        final MultipartBody.Part ch =
+                MultipartBody.Part.createFormData("ch", "1");
+        final MultipartBody.Part app_ver =
+                MultipartBody.Part.createFormData("app_ver", "1");
+        final MultipartBody.Part app_ver_code =
+                MultipartBody.Part.createFormData("app_ver_code", "1");
+        final MultipartBody.Part image_type =
+                MultipartBody.Part.createFormData("image_type", "png");
+//
+        sendRequset(new Function<String, ObservableSource<ResponseData<Object>>>() {
+            @Override
+            public ObservableSource<ResponseData<Object>> apply(String s) throws Exception {
+                return apiService.uploadHeadIcon(image_size,access_token , ch , app_ver , app_ver_code , image_type  ,body);
+            }
+        }, subscriber);
+    }
+
 
     public RequestApiService getApiService() {
         return apiService;

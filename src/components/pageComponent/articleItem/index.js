@@ -8,10 +8,10 @@ export default class extends React.PureComponent {
     const { itemData, islastOne } = this.props;
     return (
       <TouchableOpacity style={styles.container(islastOne)}>
-        <Image style={styles.leftImg} source={{ uri: itemData.avatar }} />
+        {itemData.img && <Image style={styles.leftImg} source={{ uri: itemData.img }} />}
         <View style={styles.itemRight}>
           <CommonText numberOfLines={2} style={styles.articleTitle}>
-            {itemData.name}
+            {itemData.title}
           </CommonText>
         </View>
       </TouchableOpacity>

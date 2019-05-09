@@ -3,13 +3,14 @@ import { View, StyleSheet, StatusBar, Keyboard } from 'react-native';
 import CommentItem from '@/components/Comment/CommentItem';
 import CommentInput from '@/components/Comment/CommentInput';
 import { FlatList } from 'react-native-gesture-handler';
-import { commentData } from '@/config/fakeData';
+// import { commentData } from '@/config/fakeData';
 import { connect } from '@/utils/dva';
 import { SpringScrollView } from 'react-native-spring-scrollview';
 import CommentSort from '@/components/Comment/CommentSort';
 import { ChineseNormalFooter } from 'react-native-spring-scrollview/Customize';
 import Header from '@/components/Header';
 import { lastArr } from '@/utils/utils';
+// import Loading from '@/components/Loading/loading';
 
 class CommentPage extends React.Component {
   static navigationOptions = {
@@ -167,6 +168,7 @@ class CommentPage extends React.Component {
   render() {
     const { textValue, activeTab, allLoaded } = this.state;
     const { comment } = this.props;
+    // if (loading) return <Loading />;
     return (
       <View style={styles.container}>
         <Header
@@ -183,8 +185,8 @@ class CommentPage extends React.Component {
         >
           <FlatList
             keyExtractor={item => `${item.id}`}
-            data={commentData}
-            // data={comment.commentList}
+            // data={commentData}
+            data={comment.commentList}
             renderItem={this.renderCommentItem}
           />
         </SpringScrollView>
@@ -201,7 +203,8 @@ class CommentPage extends React.Component {
 
 const mapStateToProps = ({ comment, loading }) => ({
   comment,
-  loading: loading.effects['comment/submitCommentEffect'],
+  loading: loading.effects['comment/queryCommentEffect'],
+  submitLoading: loading.effects['comment/submitCommentEffect'],
 });
 
 export default connect(mapStateToProps)(CommentPage);

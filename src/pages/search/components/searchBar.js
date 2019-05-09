@@ -11,7 +11,12 @@ export default class CommentPage extends React.PureComponent {
   };
 
   render() {
-    const { cancelSearchAction, searchKey, changeSearchKeyAction } = this.props;
+    const {
+      cancelSearchAction,
+      searchKey,
+      changeSearchKeyAction,
+      cleanTextAction = () => {},
+    } = this.props;
     return (
       <View style={styles.container}>
         <View style={styles.inputCon}>
@@ -26,7 +31,7 @@ export default class CommentPage extends React.PureComponent {
             placeholderTextColor={themeColor.placeholderColor}
           />
           {searchKey.length > 0 && (
-            <TouchableOpacity>
+            <TouchableOpacity onPress={cleanTextAction}>
               <Image style={styles.rightIcon} source={{ uri: myImages.btnDel }} />
             </TouchableOpacity>
           )}

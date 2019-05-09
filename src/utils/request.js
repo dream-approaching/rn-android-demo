@@ -1,5 +1,6 @@
-import fetch from 'whatwg-fetch';
-// import { ToastAndroid } from 'react-native';
+// import fetch from 'whatwg-fetch';
+import 'whatwg-fetch';
+import { ToastAndroid } from 'react-native';
 // import { stringify } from 'qs';
 
 const codeMessage = {
@@ -34,13 +35,13 @@ function myFetch(fetchPromise, timeout = 15 * 1000) {
   const abortPromise = new Promise((resolve, reject) => {
     setTimeout(() => {
       const err = new Error('请求超时');
-      // ToastAndroid.show('请求超时', ToastAndroid.LONG); // 每次都会执行
-      // 告诉原生有异常
+      err.name = 'timeout';
       reject(err);
     }, timeout);
   });
 
   const abortablePromise = Promise.race([fetchPromise, abortPromise]);
+  console.log('333');
 
   return abortablePromise;
 }
@@ -89,6 +90,9 @@ export default function request(url, options, time) {
     data.access_token = 'c3c4db657e05f684f696096ec6f06371'; // token2
     data.mobilephone = '18503068868'; // 用户手机号2
 
+    data.access_token = 'c3c4db657e05f684f696096ec6f06371'; // liyi
+    data.mobilephone = '18503068868'; // liyi
+
     // data.access_token = 'eb07f80389496cc665ffb93bc059263e'; // token3
     // data.mobilephone = '13613033073'; // 用户手机号4
     data.app_ver = '1'; // app版本
@@ -122,6 +126,9 @@ export default function request(url, options, time) {
       }
       if (status >= 404 && status < 422) {
         console.log('404异常');
+      }
+      if (status === 'timeout') {
+        ToastAndroid.show('请求超时', ToastAndroid.LONG);
       }
       console.log(e);
     });

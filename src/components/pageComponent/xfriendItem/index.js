@@ -6,9 +6,8 @@ import SecondaryText from '@/components/AppText/SecondaryText';
 import SmallText from '@/components/AppText/SmallText';
 import CommonText from '@/components/AppText/CommonText';
 import LikeBtn from '@/components/Comment/likeBtn';
-import moment from '@/components/moment';
 import myImages from '@/utils/myImages';
-import { OpenRnActivity } from '@/components/NativeModules';
+import { OpenRnActivity, OpenActivity } from '@/components/NativeModules';
 
 export default class extends React.PureComponent {
   state = {
@@ -27,35 +26,56 @@ export default class extends React.PureComponent {
     console.log('%citemData:', 'color: #0e93e0;background: #aaefe5;', itemData.attention);
   };
 
-  gotoXfriendDetail = () => {
+  handleRightBottomAction = () => {
+    const { origin } = this.props;
+    if (origin === 'myPage') {
+      // showModal
+    }
+  };
+
+  gotoXfriendDetail = itemData => {
     const { noPress } = this.props;
-    return noPress ? () => {} : OpenRnActivity('xFriendDetail');
+    return noPress ? () => {} : OpenRnActivity('xFriendDetail', JSON.stringify(itemData));
+  };
+
+  gotoAppDetail = itemData => {
+    OpenActivity.openAppDetails(
+      itemData.mydata
+        ? itemData.mydata.id
+        : itemData.appdata
+        ? itemData.appdata.id
+        : itemData.app_info
+    );
   };
 
   render() {
-    const { itemData, noPress } = this.props;
+    const { itemData, noPress, origin } = this.props;
     const { mainBodyHeight } = this.state;
     return (
       <View style={styles.container}>
         <TouchableOpacity>
           <View style={styles.avatarCon}>
-            <Image style={styles.avatar} source={{ uri: itemData.avatar }} />
-            {itemData.approve && <Image style={styles.bigV} source={{ uri: myImages.approve }} />}
+            <Image style={styles.avatar} source={{ uri: itemData.head_image }} />
+            {+itemData.is_big_v === 2 && (
+              <Image style={styles.bigV} source={{ uri: myImages.approve }} />
+            )}
           </View>
         </TouchableOpacity>
         <View style={styles.itemRight}>
           <View style={styles.flexRowBetween}>
-            <SecondaryText>{itemData.name}</SecondaryText>
-            <TouchableOpacity onPress={this.toggleAttention}>
-              <SmallText style={styles.attenText(itemData.attention)}>
-                {!itemData.attention ? '+关注' : '已关注'}
-              </SmallText>
-            </TouchableOpacity>
+            <SecondaryText>{itemData.commit_user}</SecondaryText>
+            {origin !== 'myPage' && (
+              <TouchableOpacity onPress={this.toggleAttention}>
+                <SmallText style={styles.attenText(itemData.is_add_friends)}>
+                  {itemData.is_add_friends ? '+关注' : '已关注'}
+                </SmallText>
+              </TouchableOpacity>
+            )}
           </View>
-          <SmallText>{moment(itemData.time * 1000).fromNow(true)}</SmallText>
+          <SmallText>{itemData.timestr || itemData.created_time}</SmallText>
           <TouchableOpacity
             activeOpacity={noPress ? 1 : 0.2}
-            onPress={this.gotoXfriendDetail}
+            onPress={() => this.gotoXfriendDetail(itemData)}
             style={styles.mainBody}
           >
             <Text
@@ -64,40 +84,58 @@ export default class extends React.PureComponent {
               onLayout={this.mainBodyLayout}
               style={styles.mainContext}
             >
-              {itemData.label.map(item => {
-                return (
-                  <CommonText style={styles.labelText} key={item}>
-                    #{item}{' '}
-                  </CommonText>
-                );
-              })}
+              {itemData.label &&
+                itemData.label.split(',').map(item => {
+                  return (
+                    <CommonText style={styles.labelText} key={item}>
+                      #{item}{' '}
+                    </CommonText>
+                  );
+                })}
               <CommonText>&nbsp;&nbsp;{itemData.content}</CommonText>
             </Text>
           </TouchableOpacity>
           {mainBodyHeight >= 110 && (
-            <TouchableOpacity onPress={this.gotoXfriendDetail}>
+            <TouchableOpacity onPress={() => this.gotoXfriendDetail(itemData)}>
               <Text style={styles.seeAllText}>查看详情</Text>
             </TouchableOpacity>
           )}
           <View style={styles.flexRowBetween}>
-            <TouchableOpacity style={styles.appCon}>
-              <Image style={styles.appIcon} source={{ uri: itemData.app.icon }} />
-              <SmallText style={styles.appName}>{itemData.app.name}</SmallText>
+            <TouchableOpacity onPress={() => this.gotoAppDetail(itemData)} style={styles.appCon}>
+              <Image
+                style={styles.appIcon}
+                source={{
+                  uri: itemData.mydata
+                    ? itemData.mydata.img
+                    : itemData.appdata
+                    ? itemData.appdata.app_logo
+                    : itemData.app_logo,
+                }}
+              />
+              <SmallText style={styles.appName}>
+                {itemData.mydata
+                  ? itemData.mydata.title
+                  : itemData.appdata
+                  ? itemData.appdata.app_short_desc
+                  : itemData.app_name_cn}
+              </SmallText>
             </TouchableOpacity>
             <View />
           </View>
           <View style={styles.bottomBar}>
-            <LikeBtn size={16} likeNum={123} textStyle={styles.bottomBarText} />
+            <LikeBtn size={16} likeNum={itemData.fabulous} textStyle={styles.bottomBarText} />
             <TouchableOpacity style={styles.flexRowBetween}>
               <Image style={styles.bottomBarIcon} source={{ uri: myImages.comment }} />
-              <SmallText style={styles.bottomBarText}>234</SmallText>
+              <SmallText style={styles.bottomBarText}>{itemData.comment_num}</SmallText>
             </TouchableOpacity>
             <TouchableOpacity style={styles.flexRowBetween}>
               <Image style={styles.bottomBarIcon} source={{ uri: myImages.share }} />
-              <SmallText style={styles.bottomBarText}>89</SmallText>
+              <SmallText style={styles.bottomBarText}>{itemData.forward_num}</SmallText>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.btnEtc}>
-              <Image style={styles.bottomBarIcon} source={{ uri: myImages.btnEtc }} />
+            <TouchableOpacity onPress={this.handleRightBottomAction} style={styles.btnEtc}>
+              {(origin === 'myPage' && <SmallText style={styles.delText}>删除</SmallText>) || (
+                <Image style={styles.bottomBarIcon} source={{ uri: myImages.btnEtc }} />
+              )}
             </TouchableOpacity>
           </View>
         </View>
@@ -143,7 +181,7 @@ const styles = StyleSheet.create({
   attenText: attention => {
     return {
       fontSize: scale(11),
-      color: attention ? themeColor.font.secondary : themeColor.primaryColor,
+      color: !attention ? themeColor.font.secondary : themeColor.primaryColor,
     };
   },
   mainContext: {
@@ -168,7 +206,7 @@ const styles = StyleSheet.create({
   appName: {
     color: themeColor.primaryColor,
     marginLeft: scale(6),
-    fontWeight: '500',
+    // fontWeight: '500',
   },
   bottomBar: {
     ...themeLayout.flex('row', 'space-between'),
@@ -194,5 +232,10 @@ const styles = StyleSheet.create({
     color: '#2c5b93',
     fontSize: themeSize.font.secondary,
     marginTop: scale(5),
+  },
+  delText: {
+    color: themeColor.primaryColor,
+    fontSize: scale(11),
+    ...themeLayout.borderSide('Bottom', themeColor.primaryColor),
   },
 });

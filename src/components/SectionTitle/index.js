@@ -5,16 +5,10 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import myImages from '@/utils/myImages';
 import CommonText from '@/components/AppText/CommonText';
 import SecondaryText from '@/components/AppText/SecondaryText';
-import NavigationService from '@/utils/NavigationService';
 
 export default class extends React.PureComponent {
-  handleNavigate = () => {
-    const { navigate } = this.props;
-    NavigationService.navigate(navigate, {});
-  };
-
   render() {
-    const { title, type, rightAction, color = themeColor.font.secondary } = this.props;
+    const { title, type, rightAction = () => {}, color = themeColor.font.secondary } = this.props;
     return (
       <View style={styles.container}>
         <View style={styles.titleCon}>
@@ -22,7 +16,7 @@ export default class extends React.PureComponent {
           <CommonText style={[styles.titleText, { color }]}>{title}</CommonText>
         </View>
         {type === 'more' && (
-          <TouchableOpacity style={styles.moreCon} onPress={this.handleNavigate}>
+          <TouchableOpacity style={styles.moreCon} onPress={rightAction}>
             <SecondaryText>查看更多</SecondaryText>
             <Image style={styles.rightIcon} source={{ uri: myImages.next }} />
           </TouchableOpacity>

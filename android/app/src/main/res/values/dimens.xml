@@ -69,7 +69,7 @@
     <!--corners-->
     <dimen name="widget_time_corner">3dp</dimen>
 
-
+    <dimen name="title_size">19sp</dimen>
     <dimen name="dimens_15sp">15sp</dimen>
     <dimen name="dimens_12dp">12dp</dimen>
     <dimen name="dimens_22dp">22dp</dimen>

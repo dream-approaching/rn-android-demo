@@ -5,7 +5,9 @@ import android.content.Intent;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
+import com.lieying.socialappstore.activity.AppDetailsActivity;
 import com.lieying.socialappstore.activity.CollectionActivity;
+import com.lieying.socialappstore.activity.UserDataActivity;
 import com.lieying.socialappstore.activity.UserIndexActivity;
 import com.lieying.socialappstore.manager.UserManager;
 
@@ -46,7 +48,7 @@ public class OpenModule extends ReactContextBaseJavaModule {
     }
     /**
      * @param type 收藏类型: 1：文章收藏界面    3：App搜藏界面
-     *
+     * 打开收藏界面
      */
     @ReactMethod
     public void openCollection( String type) {
@@ -54,11 +56,27 @@ public class OpenModule extends ReactContextBaseJavaModule {
     }
 
     /**
-     * @param type 收藏类型: 1：文章收藏界面    3：App搜藏界面
-     *
+     * @param phone 用户标识（手机号）
+     *  打开个人主页界面
      */
     @ReactMethod
-    public void openUserIndex( String type) {
+    public void openUserIndex( String phone) {
         UserIndexActivity.startActivity(getReactApplicationContext() , UserManager.getCurrentUser().getPhone());
+    }
+
+    /**
+     * 打开用户中心界面
+     */
+    @ReactMethod
+    public void openUserData() {
+        UserDataActivity.startActivity(getReactApplicationContext());
+    }
+
+    /**
+     * 打开用户中心界面
+     */
+    @ReactMethod
+    public void openAppDetails(String app_id) {
+        AppDetailsActivity.startActivity(getReactApplicationContext() ,app_id);
     }
 }
