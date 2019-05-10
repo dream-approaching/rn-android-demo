@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { View, StyleSheet, TouchableOpacity, ToastAndroid } from 'react-native';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import SpringScrollView from '@/components/SpringScrollView';
 import Header from '@/components/Header';
 import SectionTitle from '@/components/SectionTitle';
@@ -10,6 +10,7 @@ import { debounce, clearRepeatArr } from '@/utils/utils';
 import CommonText from '@/components/AppText/CommonText';
 import SecondaryText from '@/components/AppText/SecondaryText';
 import { connect } from '@/utils/dva';
+import Toast from '@/components/Toast';
 // import { hotClassify } from '@/config/fakeData';
 import LabelBtn from './components/labelBtn';
 
@@ -71,7 +72,7 @@ class AddLabel extends React.Component {
   handleAddLabel = item => {
     const { selectedLabel } = this.state;
     if (selectedLabel.length === 3) {
-      return ToastAndroid.show('最多选择3个', ToastAndroid.SHORT);
+      Toast.show('最多选择3个');
     }
     this.setState({
       selectedLabel: [...selectedLabel, item],

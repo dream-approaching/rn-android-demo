@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_dialog_bottom_one"
+        android:layout_width="match_parent"
+        android:layout_height="68dp"
+        android:gravity="center"
+        android:layout_gravity="center_horizontal"
+        android:text="拍照"
+        android:textColor="@color/color_303030"
+        android:textSize="@dimen/dimens_19sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/color_eeeeee" />
+
+    <TextView
+        android:id="@+id/tv_dialog_bottom_two"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="68dp"
+        android:gravity="center"
+        android:text="拍照"
+        android:textColor="@color/color_303030"
+        android:textSize="@dimen/dimens_19sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:background="@color/color_eeeeee" />
+    <TextView
+        android:id="@+id/tv_dialog_bottom_three"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="61dp"
+        android:gravity="center"
+        android:text="拍照"
+        android:textColor="@color/color_303030"
+        android:textSize="@dimen/dimens_19sp" />
+</LinearLayout>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Image } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { scale, themeLayout, themeColor } from '@/config';
 import SecondaryText from '@/components/AppText/SecondaryText';
@@ -8,6 +8,8 @@ import SmallText from '@/components/AppText/SmallText';
 import moment from '@/components/moment';
 import LikeBtn from '@/components/Comment/likeBtn';
 import { OpenRnActivity } from '@/components/NativeModules';
+import { LIKE_TYPE } from '@/config/constants';
+import ImageWithDefault from '../ImageWithDefault';
 
 export default class Chat extends React.Component {
   gotoPersonPage = () => {
@@ -22,14 +24,14 @@ export default class Chat extends React.Component {
     return (
       <View style={[styles.mainComment, { backgroundColor: isMain ? '#fff' : 'transparent' }]}>
         <TouchableOpacity onPress={this.gotoPersonPage}>
-          <Image style={styles.avatar(isMain)} source={{ uri: itemData.head_image }} />
+          <ImageWithDefault style={styles.avatar(isMain)} source={{ uri: itemData.head_image }} />
         </TouchableOpacity>
         <View style={styles.rightBody(isMain)}>
           <View style={styles.userBar}>
             <SecondaryText style={{ color: isMain ? '#303030' : '#707070' }}>
               {itemData.commit_user}
             </SecondaryText>
-            <LikeBtn size={isMain ? 15 : 13} likeNum={itemData.fabulous} />
+            <LikeBtn type={LIKE_TYPE.comment} itemData={itemData} size={isMain ? 15 : 13} />
           </View>
           <SmallText>{moment(itemData.created_time * 1000).fromNow(true)}</SmallText>
           <TouchableOpacity onPress={() => replyAction(itemData)}>

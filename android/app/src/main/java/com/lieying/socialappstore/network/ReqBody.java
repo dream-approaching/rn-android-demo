@@ -1,5 +1,10 @@
 package com.lieying.socialappstore.network;
 
+import android.os.Build;
+
+import com.lieying.socialappstore.BuildConfig;
+import com.lieying.socialappstore.manager.UserManager;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -46,6 +51,11 @@ public class ReqBody {
             for (Map.Entry<String, String> entry : map.entrySet()) {
                 jsonObject.put(entry.getKey(), entry.getValue());
             }
+            jsonObject.put("channel_id" , BuildConfig.APP_ID);
+            jsonObject.put("app_ver", BuildConfig.APP_VER);
+            jsonObject.put("app_ver_code", BuildConfig.APP_VER_CODE);
+            jsonObject.put("ch", BuildConfig.CN);
+            map.put("access_token", UserManager.getCurrentUser().getAccessToken());
         } catch (JSONException e) {
             e.printStackTrace();
         }

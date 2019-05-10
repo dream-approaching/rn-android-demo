@@ -12,14 +12,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.lieying.comlib.bean.AppListBean;
-import com.lieying.comlib.bean.ReactParamsJson;
+import com.lieying.socialappstore.bean.ReactParamsJson;
 import com.lieying.comlib.bean.TopicBean;
 import com.lieying.comlib.constant.Constants;
 import com.lieying.comlib.pull.PullToRefreshListener;
 import com.lieying.comlib.pull.PullToRefreshRecyclerView;
 import com.lieying.socialappstore.R;
-import com.lieying.socialappstore.activity.AppDetailsActivity;
 import com.lieying.socialappstore.activity.CommonReactActivity;
 import com.lieying.socialappstore.base.BaseV4Fragment;
 import com.lieying.socialappstore.manager.UserManager;
@@ -92,10 +90,6 @@ public class TopicFragment extends BaseV4Fragment implements PullToRefreshListen
      */
     private void getAppData(boolean isFresh) {
         HashMap<String, String> map = new HashMap<>();
-        map.put("channel_id", "1");
-        map.put("app_ver", "1");
-        map.put("app_ver_code", "1");
-        map.put("ch", "1");
         map.put("id", isFresh || mApplist.size() == 0 ? "" : mApplist.get(mApplist.size() - 1).getId());
         map.put("pagesize", Constants.DEFAULT_PAGE_SIZE + "");
         map.put("mobilephone", UserManager.getCurrentUser().getPhone());

@@ -1,12 +1,14 @@
 package com.lieying.comlib.utils;
 
 import android.content.Context;
+import android.util.DisplayMetrics;
+import android.view.WindowManager;
 
 /**
  * 获取手机屏幕信息工具类
  */
 public class ScreenUtils {
-
+    private static DisplayMetrics dm = null;
     public static float getDensity(Context context) {
         return context.getResources().getDisplayMetrics().density;
     }
@@ -52,4 +54,14 @@ public class ScreenUtils {
         return (int) (spValue * fontScale + 0.5f);
     }
 
+    public static DisplayMetrics displayMetrics(Context context) {
+        if (null != dm) {
+            return dm;
+        }
+        DisplayMetrics dm = new DisplayMetrics();
+        WindowManager windowManager = (WindowManager) context
+                .getSystemService(Context.WINDOW_SERVICE);
+        windowManager.getDefaultDisplay().getMetrics(dm);
+        return dm;
+    }
 }

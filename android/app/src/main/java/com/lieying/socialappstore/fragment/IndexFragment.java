@@ -1,24 +1,16 @@
 package com.lieying.socialappstore.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
-import com.google.gson.Gson;
 import com.lieying.comlib.bean.ExploreBean;
-import com.lieying.comlib.bean.UserInfoBean;
-import com.lieying.comlib.constant.Constants;
+import com.lieying.socialappstore.bean.ReactParamsJson;
 import com.lieying.comlib.utils.ScreenUtils;
 import com.lieying.socialappstore.R;
-import com.lieying.socialappstore.activity.CollectionActivity;
-import com.lieying.socialappstore.activity.TopicActivity;
-import com.lieying.socialappstore.activity.UserDataActivity;
-import com.lieying.socialappstore.activity.UserIndexActivity;
+import com.lieying.socialappstore.activity.CommonReactActivity;
 import com.lieying.socialappstore.adapter.ExploreAdapter;
 import com.lieying.socialappstore.base.BaseV4Fragment;
 import com.lieying.socialappstore.manager.UserManager;
@@ -26,10 +18,8 @@ import com.lieying.socialappstore.network.BaseObserver;
 import com.lieying.socialappstore.network.ReqBody;
 import com.lieying.socialappstore.network.ResponseData;
 import com.lieying.socialappstore.network.RetrofitUtils;
-import com.lieying.socialappstore.utils.SharedPreferencesUtil;
 import com.lieying.socialappstore.utils.ToastUtil;
 import com.lieying.socialappstore.widget.cardlayout.CardLayoutHelper;
-import com.lieying.socialappstore.widget.cardlayout.OnCardLayoutListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,8 +27,6 @@ import java.util.List;
 
 import io.reactivex.ObservableSource;
 import io.reactivex.functions.Function;
-
-import static com.lieying.comlib.constant.Constants.SP_KEY_USER_INFO;
 
 
 /**
@@ -97,10 +85,12 @@ public class IndexFragment extends BaseV4Fragment {
                 mCardLayoutHelper.doBack();
             }
 
-            @Override
-            public void comments() {
-                UserDataActivity.startActivity(mContext);
-            }
+             @Override
+             public void comments(ExploreBean exploreBean) {
+                 CommonReactActivity.startActivity(mContext , "MyReactNativeAppthree" ,"detailChat" , new ReactParamsJson.Builder().setContentID(exploreBean.getId()).setContentType(exploreBean.getType()).getRNParams());
+             }
+
+
 
              @Override
              public void collection() {
@@ -130,10 +120,6 @@ public class IndexFragment extends BaseV4Fragment {
      */
     private void getCardData(){
         HashMap<String, String> map = new HashMap<>();
-        map.put("channel_id", "1");
-        map.put("app_ver", "1");
-        map.put("app_ver_code", "1");
-        map.put("ch", "1");
         map.put("mobilephone", UserManager.getCurrentUser().getPhone());
         map.put("access_token", UserManager.getCurrentUser().getAccessToken());
         RetrofitUtils.getInstance(mContext).sendRequset(new Function<String, ObservableSource<ResponseData<List<ExploreBean>>>>() {

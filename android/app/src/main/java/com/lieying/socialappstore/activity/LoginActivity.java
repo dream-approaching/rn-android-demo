@@ -253,10 +253,6 @@ public class LoginActivity extends BaseActivity implements  ButtonWaiting.OnWait
 
     private void login( String phone  , String vertifyCode){
         HashMap<String, String> map = new HashMap<>();
-        map.put("channel_id", "1");
-        map.put("app_ver", "1");
-        map.put("app_ver_code", "1");
-        map.put("ch", "1");
         map.put("mobilephone",phone);
         map.put("validate_code",vertifyCode);
         RetrofitUtils.getInstance(mContext).sendRequset(new Function<String, ObservableSource<ResponseData<UserInfoBean>>>() {
@@ -268,10 +264,11 @@ public class LoginActivity extends BaseActivity implements  ButtonWaiting.OnWait
             @Override
             protected void onSuccees(ResponseData<UserInfoBean> objectResponseData) {
                 if(objectResponseData.getStatus()==0){
-                    MainApplication.getInstance().getReactNativeHost().getReactInstanceManager().getCurrentReactContext().getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                            .emit("UserLogin", null);
+
                     UserManager.getInstance().setCurrentUser(objectResponseData.getData());
                     SharedPreferencesUtil.getInstance().putString(SP_KEY_USER_INFO, new Gson().toJson(objectResponseData.getData()));
+                    MainApplication.getInstance().getReactNativeHost().getReactInstanceManager().getCurrentReactContext().getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                            .emit("UserLogin", null);
                     ToastUtil.showToast("登陆成功!");
                     finish();
                 }else{

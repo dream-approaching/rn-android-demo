@@ -11,15 +11,19 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.lieying.comlib.bean.ExploreBean;
+import com.lieying.comlib.constant.Constants;
 import com.lieying.socialappstore.MainApplication;
 import com.lieying.socialappstore.R;
+import com.lieying.socialappstore.activity.CommonReactActivity;
 import com.lieying.socialappstore.base.BaseViewHolder;
+import com.lieying.socialappstore.bean.ReactParamsJson;
 import com.lieying.socialappstore.manager.UserManager;
 import com.lieying.socialappstore.network.BaseObserver;
 import com.lieying.socialappstore.network.ReqBody;
 import com.lieying.socialappstore.network.ResponseData;
 import com.lieying.socialappstore.network.RetrofitUtils;
 import com.lieying.socialappstore.utils.GlideUtils;
+import com.lieying.socialappstore.utils.GsonUtil;
 import com.lieying.socialappstore.utils.ToastUtil;
 
 import java.util.ArrayList;
@@ -76,8 +80,23 @@ public class ExploreAdapter extends RecyclerView.Adapter<ExploreAdapter.VH> {
 
         @Override
         public void setData(int position) {
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    switch (list.get(position).getType()){
+                        case Constants.INDEX_ARITCLE_TYPE_TOPIC:
+                            CommonReactActivity.startActivity(mContext , "MyReactNativeAppthree" ,"detailChat" , new ReactParamsJson.Builder().setContentID(list.get(position).getId()).setContentType(Constants.COMMENT_TYPE_APP).getRNParams());
+                            break;
+                        case Constants.INDEX_ARITCLE_TYPE_SHUZI:
+                            ToastUtil.showToast("暂时不支持打开数字生活研究所"+list.get(position).getTitle());
+                            break;
+                        case Constants.INDEX_ARITCLE_TYPE_APP:
+                            ToastUtil.showToast("暂时不支持打开数字生活研究所"+list.get(position).getTitle());
+                            break;
+                    }
+                }
+            });
             GlideUtils.loadImageForUrl(MainApplication.getInstance().getApplicationContext(), iv_background, list.get(position).getImg());
-            Log.e("test" , "list.get(position).isFavorites():" +position+"       "+list.get(position).isIs_favorites());
             mIVCollection.setImageResource(list.get(position).isIs_favorites() ? R.drawable.ic_card_index_collection_s : R.drawable.ic_card_index_collection);
             mTvItemContent.setText(list.get(position).getTitle());
             mTvItemTitle.setText(getTitle(list.get(position).getType()));
@@ -90,7 +109,7 @@ public class ExploreAdapter extends RecyclerView.Adapter<ExploreAdapter.VH> {
             mIVComment.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    cardClickListener.comments();
+                    cardClickListener.comments(list.get(position));
                 }
             });
             mIVCollection.setOnClickListener(new View.OnClickListener() {
@@ -120,17 +139,11 @@ public class ExploreAdapter extends RecyclerView.Adapter<ExploreAdapter.VH> {
          * @Author: liyi
          */
         private void collection(String type, String collection, int position) {
-            Log.e("test" , "opt ---------  "+collection);
             HashMap<String, String> map = new HashMap<>();
-            map.put("channel_id", "1");
-            map.put("app_ver", "1");
-            map.put("app_ver_code", "1");
-            map.put("ch", "1");
             map.put("type", type);
             map.put("opt", collection);
             map.put("info_id", list.get(position).getId());
             map.put("mobilephone", UserManager.getCurrentUser().getPhone());
-            map.put("access_token", UserManager.getCurrentUser().getAccessToken());
             RetrofitUtils.getInstance(mContext).sendRequset(new Function<String, ObservableSource<ResponseData<Object>>>() {
                 @Override
                 public ObservableSource<ResponseData<Object>> apply(String s) throws Exception {
@@ -164,7 +177,7 @@ public class ExploreAdapter extends RecyclerView.Adapter<ExploreAdapter.VH> {
     public interface OnCardClickListener {
         public void back();
 
-        public void comments();
+        public void comments(ExploreBean exploreBean);
 
         public void collection();
 

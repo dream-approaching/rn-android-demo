@@ -10,22 +10,31 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.google.gson.Gson;
 import com.gyf.immersionbar.ImmersionBar;
 import com.lieying.comlib.bean.UserInfoBean;
 import com.lieying.comlib.constant.Constants;
 import com.lieying.comlib.utils.EmptyUtil;
 import com.lieying.comlib.utils.FileUtil;
+import com.lieying.socialappstore.MainApplication;
 import com.lieying.socialappstore.R;
 import com.lieying.socialappstore.base.BaseActivity;
+import com.lieying.socialappstore.callback.DialogClickCallback;
 import com.lieying.socialappstore.manager.UserManager;
 import com.lieying.socialappstore.network.BaseObserver;
 import com.lieying.socialappstore.network.ReqBody;
 import com.lieying.socialappstore.network.ResponseData;
 import com.lieying.socialappstore.network.RetrofitUtils;
+import com.lieying.socialappstore.utils.DialogUtils;
 import com.lieying.socialappstore.utils.GlideUtils;
 import com.lieying.socialappstore.utils.SharedPreferencesUtil;
 import com.lieying.socialappstore.utils.ToastUtil;
+import com.lieying.socialappstore.widget.TitleView;
+import com.lieying.socialappstore.widget.citypicker.AddressPickTask;
+import com.lieying.socialappstore.widget.citypicker.City;
+import com.lieying.socialappstore.widget.citypicker.County;
+import com.lieying.socialappstore.widget.citypicker.Province;
 import com.weiwang.photoalbumlibrary.matisse.Matisse;
 import com.weiwang.photoalbumlibrary.matisse.MimeType;
 import com.weiwang.photoalbumlibrary.matisse.engine.impl.GlideEngine;
@@ -35,6 +44,10 @@ import java.util.HashMap;
 
 import io.reactivex.ObservableSource;
 import io.reactivex.functions.Function;
+
+import static com.lieying.socialappstore.activity.EditUserDataActivity.KEY_DATA_TYPE;
+import static com.lieying.socialappstore.activity.EditUserDataActivity.KEY_REQUEST_CODE;
+import static com.lieying.socialappstore.utils.ToastUtil.showToast;
 
 public class UserDataActivity extends BaseActivity {
     private static final int REQUEST_CODE_CHOOSE = 3001;
@@ -47,6 +60,7 @@ public class UserDataActivity extends BaseActivity {
     private int msg_type;
 
     private String mHeaderPath;
+
     public static void startActivity(Context context) {
         Intent intent = new Intent(context, UserDataActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -87,41 +101,81 @@ public class UserDataActivity extends BaseActivity {
 
     @Override
     public void initListener() {
-
+        ((TitleView)findViewById(R.id.title_user_data_activity)).setBackClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MainApplication.getInstance().getReactNativeHost().getReactInstanceManager().getCurrentReactContext().getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                        .emit("refreshUserData", null);
+                finish();
+            }
+        });
     }
 
     @Override
     public void onUnDoubleClickView(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.rl_user_data_header:
-                Matisse.from(this)
-                        .choose(MimeType.ofImage())
-                        .theme(R.style.Matisse_Dracula)
-                        .countable(false)
-                        .maxSelectable(1)
-                        .originalEnable(true)
-                        .maxOriginalSize(10)
-                        .imageEngine(new GlideEngine())
-                        .forResult(REQUEST_CODE_CHOOSE);
+                DialogUtils.showBottomDialog(mContext, "拍照", "从相册选择", "取消", new DialogClickCallback() {
+                    @Override
+                    public void onClick(int postion) {
+                        switch (postion){
+                            case 1:
+                                break;
+                            case 2:  //拍照
+                                Matisse.from(UserDataActivity.this)
+                                        .choose(MimeType.ofImage())
+                                        .theme(R.style.Matisse_Dracula)
+                                        .countable(false)
+                                        .maxSelectable(1)
+                                        .originalEnable(true)
+                                        .maxOriginalSize(10)
+                                        .imageEngine(new GlideEngine())
+                                        .forResult(REQUEST_CODE_CHOOSE);
+                                break;
+                        }
+                    }
+                });
+
                 break;
             case R.id.rl_user_data_nick:
                 msg_type = 0;
-                EditUserDataActivity.startActivity(this , msg_type);
+                startEditActivity(msg_type);
                 break;
             case R.id.rl_user_data_sex:
+                DialogUtils.showBottomDialog(mContext, "男", "女", "取消", new DialogClickCallback() {
+                    @Override
+                    public void onClick(int postion) {
+                        switch (postion){
+                            case 1:
+                                update("sex" , "m");  // 男
+                                break;
+                            case 2:
+                                update("sex" , "f");  // 女
+                                break;
+                        }
+
+                    }
+                });
                 break;
             case R.id.rl_user_data_city:
+                onAddress3Picker();
                 break;
             case R.id.rl_user_data_occupation:
                 msg_type = 1;
-                EditUserDataActivity.startActivity(this , msg_type);
+                startEditActivity(msg_type);
                 break;
             case R.id.rl_user_data_brief:
                 msg_type = 2;
-                EditUserDataActivity.startActivity(this , msg_type);
+                startEditActivity(msg_type);
                 break;
 
         }
+    }
+
+    private void startEditActivity(int type) {
+        Intent intent = new Intent(this, EditUserDataActivity.class);
+        intent.putExtra(KEY_DATA_TYPE, type);
+        startActivityForResult(intent, KEY_REQUEST_CODE);
     }
 
     @Override
@@ -149,22 +203,36 @@ public class UserDataActivity extends BaseActivity {
         }
         if (requestCode == 8) {  //填完个人信息之后返回
             if (resultCode == 24) {
-                String msg = data.getStringExtra(msg_type+"");
-                switch (msg_type){
+                String msg = data.getStringExtra("msg");
+                switch (msg_type) {
                     case 0:
                         mTvNick.setText(msg);
+                        if(UserManager.getCurrentUser().getUserinfo()!=null){
+                            UserManager.getCurrentUser().getUserinfo().setNick_name(msg);
+                        }
                         break;
                     case 1:
                         mTvOccupation.setText(msg);
+                        if(UserManager.getCurrentUser().getUserinfo()!=null){
+                            UserManager.getCurrentUser().getUserinfo().setCareer(msg);
+                        }
                         break;
                     case 2:
                         mTvBrief.setText(msg);
+                        if(UserManager.getCurrentUser().getUserinfo()!=null){
+                            UserManager.getCurrentUser().getUserinfo().setProfile(msg);
+                        }
                         break;
+                }
+                if(UserManager.getCurrentUser().getUserinfo()!=null){
+                    String userInfo = new Gson().toJson( UserManager.getCurrentUser());
+                    SharedPreferencesUtil.getInstance().putString(Constants.SP_KEY_USER_INFO, userInfo);
                 }
             }
         }
 
     }
+
     private void setHeaderIMG(String path) {
         if (EmptyUtil.isNotEmpty(path)) {
             mHeaderPath = path;
@@ -174,6 +242,7 @@ public class UserDataActivity extends BaseActivity {
 
     /**
      * 上传图片
+     *
      * @param file
      */
     private void uploadPic(String file) {
@@ -181,15 +250,15 @@ public class UserDataActivity extends BaseActivity {
             @Override
             protected void onSuccees(ResponseData<Object> stringResponseData) throws Exception {
                 if (stringResponseData.getStatus() == 0) {
-                    ToastUtil.showToast("上传成功");
+                    showToast("上传成功");
                 } else {
-                    ToastUtil.showToast(stringResponseData.getMsg());
+                    showToast(stringResponseData.getMsg());
                 }
             }
 
             @Override
             protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
-                ToastUtil.showToast("上传成功");
+                showToast("上传成功");
                 e.printStackTrace();
             }
         });
@@ -197,14 +266,11 @@ public class UserDataActivity extends BaseActivity {
 
     private void getUserInfo() {
         if (UserManager.getCurrentUser().getUserinfo() == null) {
-            ToastUtil.showToast("您尚未登陆");
+            showToast("您尚未登陆");
             return;
         }
         HashMap<String, String> map = new HashMap<>();
         map.put("access_token", UserManager.getCurrentUser().getAccessToken());
-        map.put("app_ver", "1");
-        map.put("app_ver_code", "1");
-        map.put("ch", "1");
         map.put("mobilephone", UserManager.getCurrentUser().getPhone());
 
         RetrofitUtils.getInstance(mContext).sendRequset(new Function<String, ObservableSource<ResponseData<UserInfoBean>>>() {
@@ -221,29 +287,87 @@ public class UserDataActivity extends BaseActivity {
                     SharedPreferencesUtil.getInstance().putString(Constants.SP_KEY_USER_INFO, userInfo);
                     setView();
                 } else {
-                    ToastUtil.showToast(objectResponseData.getMsg());
+                    showToast(objectResponseData.getMsg());
                 }
             }
 
             @Override
             protected void onFailure(Throwable e, boolean isNetWorkError) {
                 if (isNetWorkError) {
-                    ToastUtil.showToast("网络层错误");
+                    showToast("网络层错误");
                 } else {
-                    ToastUtil.showToast("请求失败");
+                    showToast("请求失败");
                 }
             }
         });
     }
 
-    private void setView(){
-        if(UserManager.getCurrentUser()!=null && UserManager.getCurrentUser().getUserinfo()!=null){
+    private void setView() {
+        if (UserManager.getCurrentUser() != null && UserManager.getCurrentUser().getUserinfo() != null) {
             GlideUtils.loadCircleImageForUrl(mContext, R.drawable.ic_default_header, mIvHeaderIcon, UserManager.getCurrentUser().getUserinfo().getHead_image());
             mTvNick.setText(UserManager.getCurrentUser().getUserinfo().getNick_name());
-            mTvSex.setText(UserManager.getCurrentUser().getUserinfo().getSex().equals("m")?"男" : "女");
+            mTvSex.setText(UserManager.getCurrentUser().getUserinfo().getSex().equals("m") ? "男" : "女");
             mTvOccupation.setText(UserManager.getCurrentUser().getUserinfo().getCareer());
             mTvCity.setText(UserManager.getCurrentUser().getUserinfo().getLocation());
             mTvBrief.setText(UserManager.getCurrentUser().getUserinfo().getProfile());
         }
+    }
+
+    private void update(String params , String msg){
+        HashMap<String, String> map = new HashMap<>();
+        map.put("access_token", UserManager.getCurrentUser().getAccessToken());
+        map.put(params , msg);
+        map.put("mobilephone", UserManager.getCurrentUser().getPhone());
+        RetrofitUtils.getInstance(mContext).sendRequset(new Function<String, ObservableSource<ResponseData<Object>>>() {
+            @Override
+            public ObservableSource<ResponseData<Object>> apply(String s) throws Exception {
+                return RetrofitUtils.getInstance(mContext).getApiService().updateUserInfo(ReqBody.getReqString(map));
+            }
+        }, new BaseObserver<ResponseData<Object>>() {
+            @Override
+            protected void onSuccees(ResponseData<Object> objectResponseData) {
+                if (objectResponseData.getStatus() == 0 && objectResponseData.getData() != null) {
+                    if(params.equals("sex")){
+                        switch (msg){
+                            case "m":
+                                mTvSex.setText("男");
+                                break;
+                            case "f":
+                                mTvSex.setText("女");
+                                break;
+                        }
+                    }else{
+                        mTvCity.setText(msg);
+                    }
+                } else {
+                    showToast(objectResponseData.getMsg());
+                }
+            }
+
+            @Override
+            protected void onFailure(Throwable e, boolean isNetWorkError) {
+                if (isNetWorkError) {
+                    showToast("网络层错误");
+                } else {
+                    showToast("请求失败");
+                }
+            }
+        });
+    }
+    public void onAddress3Picker() {
+        AddressPickTask task = new AddressPickTask(this);
+        task.setHideCounty(true);
+        task.setCallback(new AddressPickTask.Callback() {
+            @Override
+            public void onAddressInitFailed() {
+                showToast("数据初始化失败");
+            }
+
+            @Override
+            public void onAddressPicked(Province province, City city, County county) {
+                update("location" ,  city.getAreaName());
+            }
+        });
+        task.execute("四川", "阿坝");
     }
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Image, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
 import { scale, themeLayout, themeColor } from '@/config';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import SecondaryText from '@/components/AppText/SecondaryText';
@@ -8,6 +8,8 @@ import SmallText from '@/components/AppText/SmallText';
 import moment from '@/components/moment';
 import LikeBtn from '@/components/Comment/likeBtn';
 import { OpenRnActivity } from '@/components/NativeModules';
+import { LIKE_TYPE } from '@/config/constants';
+import ImageWithDefault from '../ImageWithDefault';
 
 export default class extends React.PureComponent {
   gotoPersonPage = () => {
@@ -21,7 +23,7 @@ export default class extends React.PureComponent {
     return (
       <View style={styles.container}>
         <TouchableOpacity onPress={this.gotoPersonPage}>
-          <Image style={styles.avatar} source={{ uri: itemData.head_image }} />
+          <ImageWithDefault style={styles.avatar} source={{ uri: itemData.head_image }} />
         </TouchableOpacity>
         <View style={styles.rightBody}>
           <SecondaryText>{itemData.commit_user}</SecondaryText>
@@ -62,7 +64,12 @@ export default class extends React.PureComponent {
           )}
           <View style={styles.bottomBar}>
             <SmallText>{moment(itemData.created_time * 1000).fromNow(true)}</SmallText>
-            <LikeBtn size={12} likeNum={itemData.fabulous} textStyle={styles.superSmallText} />
+            <LikeBtn
+              type={LIKE_TYPE.comment}
+              itemData={itemData}
+              size={12}
+              textStyle={styles.superSmallText}
+            />
           </View>
         </View>
       </View>

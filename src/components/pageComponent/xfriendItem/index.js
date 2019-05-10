@@ -8,8 +8,11 @@ import CommonText from '@/components/AppText/CommonText';
 import LikeBtn from '@/components/Comment/likeBtn';
 import myImages from '@/utils/myImages';
 import { OpenRnActivity, OpenActivity } from '@/components/NativeModules';
+import { LIKE_TYPE } from '@/config/constants';
+import { connect } from '@/utils/dva';
+import ImageWithDefault from '@/components/ImageWithDefault';
 
-export default class extends React.PureComponent {
+class XshareItem extends React.PureComponent {
   state = {
     mainBodyHeight: 0,
   };
@@ -22,8 +25,21 @@ export default class extends React.PureComponent {
   };
 
   toggleAttention = () => {
-    const { itemData } = this.props;
+    const { itemData, dispatch } = this.props;
     console.log('%citemData:', 'color: #0e93e0;background: #aaefe5;', itemData.attention);
+    const data = {
+      mobilephone: itemData.mobilephone,
+      id: itemData.id,
+      real_name: itemData.commit_user,
+      head_image: itemData.head_image,
+    };
+    dispatch({
+      type: 'xshare/toggleAttentionEffect',
+      payload: data,
+      successFn: () => {
+        this.setState({});
+      },
+    });
   };
 
   handleRightBottomAction = () => {
@@ -43,7 +59,9 @@ export default class extends React.PureComponent {
     OpenActivity.openAppDetails(
       itemData.mydata
         ? itemData.mydata.id
-        : itemData.appdata ? itemData.appdata.id : itemData.app_info
+        : itemData.appdata
+        ? itemData.appdata.id
+        : itemData.app_info
     );
   };
 
@@ -61,7 +79,7 @@ export default class extends React.PureComponent {
       <View style={styles.container}>
         <TouchableOpacity activeOpacity={isOwnPersonPage ? 1 : 0.2} onPress={this.gotoPersonPage}>
           <View style={styles.avatarCon}>
-            <Image style={styles.avatar} source={{ uri: itemData.head_image }} />
+            <ImageWithDefault style={styles.avatar} source={{ uri: itemData.head_image }} />
             {+itemData.is_big_v === 2 && (
               <Image style={styles.bigV} source={{ uri: myImages.approve }} />
             )}
@@ -108,25 +126,34 @@ export default class extends React.PureComponent {
           )}
           <View style={styles.flexRowBetween}>
             <TouchableOpacity onPress={this.gotoAppDetail} style={styles.appCon}>
-              <Image
+              <ImageWithDefault
                 style={styles.appIcon}
                 source={{
                   uri: itemData.mydata
                     ? itemData.mydata.img
-                    : itemData.appdata ? itemData.appdata.app_logo : itemData.app_logo,
+                    : itemData.appdata
+                    ? itemData.appdata.app_logo
+                    : itemData.app_logo,
                 }}
               />
               <SmallText style={styles.appName}>
                 {itemData.mydata
                   ? itemData.mydata.title
-                  : itemData.appdata ? itemData.appdata.app_short_desc : itemData.app_name_cn}
+                  : itemData.appdata
+                  ? itemData.appdata.app_short_desc
+                  : itemData.app_name_cn}
               </SmallText>
             </TouchableOpacity>
             <View />
           </View>
           <View style={styles.bottomBar}>
-            <LikeBtn size={16} likeNum={itemData.fabulous} textStyle={styles.bottomBarText} />
-            <TouchableOpacity style={styles.flexRowBetween}>
+            <LikeBtn
+              type={LIKE_TYPE.comment}
+              itemData={itemData}
+              size={16}
+              textStyle={styles.bottomBarText}
+            />
+            <TouchableOpacity style={styles.flexRowBetween} onPress={this.gotoXfriendDetail}>
               <Image style={styles.bottomBarIcon} source={{ uri: myImages.comment }} />
               <SmallText style={styles.bottomBarText}>{itemData.comment_num}</SmallText>
             </TouchableOpacity>
@@ -145,6 +172,10 @@ export default class extends React.PureComponent {
     );
   }
 }
+
+const mapStateToProps = ({ xshare }) => ({ xshare });
+
+export default connect(mapStateToProps)(XshareItem);
 
 const styles = StyleSheet.create({
   container: {

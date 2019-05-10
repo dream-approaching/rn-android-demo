@@ -132,6 +132,8 @@ public class RetrofitUtils {
                 MultipartBody.Part.createFormData("app_ver_code", "1");
         final MultipartBody.Part image_type =
                 MultipartBody.Part.createFormData("image_type", "png");
+        final MultipartBody.Part channel_id =
+                MultipartBody.Part.createFormData("channel_id", "1");
 //
         sendRequset(new Function<String, ObservableSource<ResponseData<Object>>>() {
             @Override

@@ -6,6 +6,7 @@ import myImages from '@/utils/myImages';
 import { scale, themeLayout } from '@/config';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { OpenActivity } from '@/components/NativeModules';
+import ImageWithDefault from '@/components/ImageWithDefault';
 
 export default class extends React.PureComponent {
   gotoEditUser = () => {
@@ -21,7 +22,7 @@ export default class extends React.PureComponent {
     return (
       <View style={[style, styles.container]}>
         <TouchableOpacity onPress={this.gotoPersonPage}>
-          <Image style={styles.avatar} source={{ uri: data.avatar }} />
+          <ImageWithDefault style={styles.avatar} source={{ uri: data.avatar }} />
         </TouchableOpacity>
         <View style={styles.userData}>
           <View style={styles.textCon}>

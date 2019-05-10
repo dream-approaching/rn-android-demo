@@ -89,10 +89,6 @@ public class UserIndexJoinFragment extends BaseV4Fragment implements PullToRefre
      */
     private void getAppData(boolean isFresh) {
         HashMap<String, String> map = new HashMap<>();
-        map.put("channel_id", "1");
-        map.put("app_ver", "1");
-        map.put("app_ver_code", "1");
-        map.put("ch", "1");
         map.put("id", isFresh || mApplist.size() == 0 ? "" : mApplist.get(mApplist.size() - 1).getId());
         map.put("pagesize", Constants.DEFAULT_PAGE_SIZE + "");
         map.put("mobilephone", UserManager.getCurrentUser().getPhone());

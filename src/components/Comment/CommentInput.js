@@ -47,6 +47,7 @@ export default class CommentPage extends React.Component {
       showCollection,
       showShare,
       handleSubmitComment,
+      leftIconAction,
     } = this.props;
     const { keyboardShow } = this.state;
     const disabled = textValue.length === 0;
@@ -57,7 +58,7 @@ export default class CommentPage extends React.Component {
         style={styles.inputCon}
       >
         {showLeftIcon && (
-          <TouchableOpacity>
+          <TouchableOpacity onPress={leftIconAction}>
             <Image style={styles.leftIcon} source={{ uri: myImages.leftBack }} />
           </TouchableOpacity>
         )}

@@ -17,3 +17,8 @@ export async function queryChildCommentReq(params) {
     data: params,
   });
 }
+
+// 获取所有评论
+export async function queryAllCommentReq(params) {
+  return request(`${config.baseUrl2}/interface/v1/app/comment/get_comment_data`, { data: params });
+}

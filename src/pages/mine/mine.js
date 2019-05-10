@@ -27,9 +27,8 @@ class Mine extends React.Component {
 
   render() {
     const userData = {
-      avatar:
-        'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1298508432,4221755458&fm=26&gp=0.jpg',
-      name: '夏冬冬',
+      avatar: GetUserInfo.avatar,
+      name: GetUserInfo.nickname || `用户${GetUserInfo.phone.slice(7)}`,
     };
     const cardMenu = [
       {
@@ -117,7 +116,7 @@ class Mine extends React.Component {
             <Button
               title='我的分享'
               onPress={() =>
-                OpenRnActivity('myShare', JSON.stringify({ phone: GetUserInfo.KEY_ONE_PHONE }))
+                OpenRnActivity('myShare', JSON.stringify({ phone: GetUserInfo.phone }))
               }
             />
             {/* <Button title='我要推荐' onPress={() => OpenRnActivity('recommend')} /> */}

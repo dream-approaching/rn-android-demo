@@ -8,18 +8,19 @@ import java.util.List;
  * @CreateDate: 2019/4/25 0025 17:33
  */
 public class AppDetailsBean {
-
     /**
-     * id : 7
-     * app_name_cn : 快看漫画
-     * app_logo : http://192.168.0.200:1130/uploads_cms_images/15554903936696521.png
-     * app_short_desc : 全都超好看，搞笑治愈段子图片神器
-     * create_time : 1555490078
-     * app_desc : 漫画超全，更新快，高清全彩不费眼！～￣▽￣～操作简单，加载快，条式阅读体验赞！～￣▽￣～看漫画，就上快看漫画！【一上线就连续天蝉联免费排行榜榜首】【下载必看】《整容游戏》：一个职场白领偶然使用了一款美颜软件后现实的脸也跟着整容，先要保持美貌就必须完成一系列考验人性的任务···《零分偶像》：低智商明星毕业考试只考零分？与土鳖学霸女欢乐爆笑的爱情故事。《密会情人》：社会热点题材，讲述婚姻、爱情和欲望之间的矛盾纠葛···【软件特色】、海量正版资源，亿用户的选择快看漫画发展至今累计用户近亿人！这里有上千部高质量正
+     * id : 68
+     * app_name_cn : 百度浏览器
+     * app_logo : http://192.168.0.200:1130/uploads_cms_images/15574571574094071.png
+     * app_short_desc : 清爽利落，好用省流量浏览器
+     * create_time : 1557457060
+     * app_desc : 上百度浏览器，做个有趣的人！上网更快更安全更省流，超亿用户的选择！【趣星球】脑洞大开的奇葩趣事，弹幕吐不停！“逗比”红人纷纷入驻，新鲜趣味持续放送，更有“话题吐槽”全新上线，支持图文并发，焦点内容，你来创造！【阅资讯】聚合内容精挑细选，时事热点一手掌握，点评互动，更有态度！【读小说】热门小说精致阅读体验，精选书单、权威榜单，可整本离线，更新随时提醒！【看视频】丰富视频汇聚万千资源，高清内容无广告播放，看得爽！【个性化】新首页配合多种主题壁纸唯美上线，更可自定义上传，我的首页我做主！
      * comment_num : 0
-     * app_screenshot : http://192.168.0.200:1130/uploads_cms_images/1555490393930404.jpg,http://192.168.0.200:1130/uploads_cms_images/1555490394181908.jpg,http://192.168.0.200:1130/uploads_cms_images/15554903944389007.jpg,http://192.168.0.200:1130/uploads_cms_images/15554903946905796.jpg
-     * develop_classfy : 图书阅读
-     * likedata : [{"id":"4","app_name_cn":"免费小说大全","app_logo":"http://192.168.0.200:1130/uploads_cms_images/15554894758525927.png","app_short_desc":"打发无聊时间的最佳装备！","create_time":"1555489297","fabulous":"0"}]
+     * app_screenshot : http://192.168.0.200:1130/uploads_cms_images/15574571576908369.jpg,http://192.168.0.200:1130/uploads_cms_images/15574571580607434.jpg,http://192.168.0.200:1130/uploads_cms_images/15574571583729164.jpg,http://192.168.0.200:1130/uploads_cms_images/15574571586292191.jpg,http://192.168.0.200:1130/uploads_cms_images/15574571589547058.jpg
+     * develop_classfy : 浏览器
+     * app_down_url : http://192.168.0.200:1130/uploads_cms_images/15574571570971372.apk
+     * is_fabulous : false
+     * likedata : [{"id":"67","app_name_cn":"上网导航","app_logo":"http://192.168.0.200:1130/uploads_cms_images/15574571399689197.png","app_short_desc":"手机上网从hao123开始！","create_time":"1557457060","fabulous":"0","app_down_url":"http://192.168.0.200:1130/uploads_cms_images/15574571396753600.apk"},{"id":"66","app_name_cn":"浏览器","app_logo":"http://192.168.0.200:1130/uploads_cms_images/15574571200528478.png","app_short_desc":"UC小游戏，闯关赢钱撩妹去！","create_time":"1557457060","fabulous":"0","app_down_url":""},{"id":"65","app_name_cn":"手机百度","app_logo":"http://192.168.0.200:1130/uploads_cms_images/1557457118338103.png","app_short_desc":"经典 搜索 全面 精准","create_time":"1557457060","fabulous":"0","app_down_url":""},{"id":"64","app_name_cn":"浏览器","app_logo":"http://192.168.0.200:1130/uploads_cms_images/15574571162769720.png","app_short_desc":"便捷管理手机文件","create_time":"1557457060","fabulous":"0","app_down_url":"http://192.168.0.200:1130/uploads_cms_images/15574571159841397.apk"},{"id":"35","app_name_cn":"热点浏览器","app_logo":"http://192.168.0.200:1130/uploads_cms_images/15573722815656870.png","app_short_desc":"热点浏览器，上网必备APP。","create_time":"1557372183","fabulous":"0","app_down_url":"http://192.168.0.200:1130/uploads_cms_images/15573722745379931.apk"}]
      */
 
     private String id;
@@ -31,6 +32,8 @@ public class AppDetailsBean {
     private String comment_num;
     private String app_screenshot;
     private String develop_classfy;
+    private String app_down_url;
+    private boolean is_fabulous;
     private List<LikedataBean> likedata;
 
     public String getId() {
@@ -105,6 +108,22 @@ public class AppDetailsBean {
         this.develop_classfy = develop_classfy;
     }
 
+    public String getApp_down_url() {
+        return app_down_url;
+    }
+
+    public void setApp_down_url(String app_down_url) {
+        this.app_down_url = app_down_url;
+    }
+
+    public boolean isIs_fabulous() {
+        return is_fabulous;
+    }
+
+    public void setIs_fabulous(boolean is_fabulous) {
+        this.is_fabulous = is_fabulous;
+    }
+
     public List<LikedataBean> getLikedata() {
         return likedata;
     }
@@ -115,12 +134,13 @@ public class AppDetailsBean {
 
     public static class LikedataBean {
         /**
-         * id : 4
-         * app_name_cn : 免费小说大全
-         * app_logo : http://192.168.0.200:1130/uploads_cms_images/15554894758525927.png
-         * app_short_desc : 打发无聊时间的最佳装备！
-         * create_time : 1555489297
+         * id : 67
+         * app_name_cn : 上网导航
+         * app_logo : http://192.168.0.200:1130/uploads_cms_images/15574571399689197.png
+         * app_short_desc : 手机上网从hao123开始！
+         * create_time : 1557457060
          * fabulous : 0
+         * app_down_url : http://192.168.0.200:1130/uploads_cms_images/15574571396753600.apk
          */
 
         private String id;
@@ -129,6 +149,7 @@ public class AppDetailsBean {
         private String app_short_desc;
         private String create_time;
         private String fabulous;
+        private String app_down_url;
 
         public String getId() {
             return id;
@@ -176,6 +197,14 @@ public class AppDetailsBean {
 
         public void setFabulous(String fabulous) {
             this.fabulous = fabulous;
+        }
+
+        public String getApp_down_url() {
+            return app_down_url;
+        }
+
+        public void setApp_down_url(String app_down_url) {
+            this.app_down_url = app_down_url;
         }
     }
 }

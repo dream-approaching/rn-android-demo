@@ -1,11 +1,12 @@
 import React from 'react';
-import { View, ImageBackground, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, ImageBackground, StyleSheet, TouchableOpacity } from 'react-native';
 import { themeLayout, scale, themeColor } from '@/config';
 import SecondaryText from '@/components/AppText/SecondaryText';
 import SmallText from '@/components/AppText/SmallText';
 import CommonText from '@/components/AppText/CommonText';
 import myImages from '@/utils/myImages';
 import { OpenActivity } from '@/components/NativeModules';
+import ImageWithDefault from '@/components/ImageWithDefault';
 
 export default class extends React.PureComponent {
   gotoAppDetail = itemData => {
@@ -19,7 +20,7 @@ export default class extends React.PureComponent {
         onPress={() => this.gotoAppDetail(itemData)}
         style={styles.container(islastOne)}
       >
-        <Image style={styles.appIcon} source={{ uri: itemData.app_logo }} />
+        <ImageWithDefault style={styles.appIcon} source={{ uri: itemData.app_logo }} />
         <View style={styles.itemRight}>
           <CommonText style={styles.appTitle}>{itemData.app_name_cn}</CommonText>
           <SecondaryText style={styles.desc} numberOfLines={1}>

@@ -65,7 +65,10 @@ android {
             buildConfigField("String", "SINA_APPKEY", "\"1789429604\"")
             buildConfigField("String", "SINA_SECRET", "\"4b46ec1f685c29229b43c3b9e826072f\"")
             buildConfigField("String", "MAIN_HOST", "\"http://192.168.0.200:1230\"")
-//            buildConfigField("String", "MAIN_HOST", "\"http://192.168.0.200:8060\"")
+            buildConfigField("String", "APP_ID", "\"1\"")
+            buildConfigField("String", "APP_VER", "\"1\"")
+            buildConfigField("String", "APP_VER_CODE", "\"1\"")
+            buildConfigField("String", "CN", "\"1\"")
             buildConfigField("String", "CODEPUSH_KEY", "\"\"")
             // buildConfigField ("String", "CODEPUSH_KEY", "\"o4iJo8DvOvPwZqmDoQ5LREDtjbLU020bac4f-d7e1-48e7-8584-7bdb6a68f649\"")
             // applicationIdSuffix ".debug"
@@ -74,7 +77,7 @@ android {
         releaseStaging {
 
             //混淆
-            minifyEnabled false
+            minifyEnabled true
             debuggable false
             shrinkResources false
             //Zipalign优化
@@ -92,6 +95,10 @@ android {
             buildConfigField("String", "SINA_APPKEY", "\"1789429604\"")
             buildConfigField("String", "SINA_SECRET", "\"4b46ec1f685c29229b43c3b9e826072f\"")
 //            buildConfigField("String", "MAIN_HOST", "\"http://192.168.0.200:8060\"")
+            buildConfigField("String", "APP_ID", "\"1\"")
+            buildConfigField("String", "APP_VER", "\"1\"")
+            buildConfigField("String", "APP_VER_CODE", "\"1\"")
+            buildConfigField("String", "CN", "\"1\"")
             buildConfigField("String", "MAIN_HOST", "\"http://192.168.0.200:1530\"")
             buildConfigField("String", "CODEPUSH_KEY", "\"o4iJo8DvOvPwZqmDoQ5LREDtjbLU020bac4f-d7e1-48e7-8584-7bdb6a68f649\"")
 
@@ -99,7 +106,7 @@ android {
 
         release {
             //混淆
-            minifyEnabled false
+            minifyEnabled true
             debuggable false
             shrinkResources false
             //Zipalign优化
@@ -117,6 +124,10 @@ android {
             buildConfigField("String", "SINA_APPKEY", "\"1789429604\"")
             buildConfigField("String", "SINA_SECRET", "\"4b46ec1f685c29229b43c3b9e826072f\"")
             buildConfigField("String", "MAIN_HOST", "\"http://192.168.0.200:1230\"")
+            buildConfigField("String", "APP_ID", "\"1\"")
+            buildConfigField("String", "APP_VER", "\"1\"")
+            buildConfigField("String", "APP_VER_CODE", "\"1\"")
+            buildConfigField("String", "CN", "\"1\"")
             buildConfigField("String", "CODEPUSH_KEY", "\"bmR48duSItRtLTvGmuYJ5Cz-BcGr020bac4f-d7e1-48e7-8584-7bdb6a68f649\"")
         }
 
@@ -142,7 +153,7 @@ android {
 
     applicationVariants.all { variant ->
         variant.outputs.all {
-            outputFileName = "xcs_V${getVersionName(variant.buildType.name)}_${releaseTime()}_${variant.productFlavors[0].name}.apk"
+            outputFileName = "shumei_V${getVersionName(variant.buildType.name)}_${releaseTime()}_${variant.productFlavors[0].name}.apk"
         }
     }
     compileOptions {

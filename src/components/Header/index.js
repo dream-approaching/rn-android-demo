@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Image, StyleSheet, TouchableOpacity, BackHandler } from 'react-native';
 import { scale, themeLayout, themeSize } from '@/config';
 import LargerText from '@/components/AppText/LargerText';
 import myImages from '@/utils/myImages';
@@ -22,6 +22,7 @@ export default class CommentPage extends React.PureComponent {
     if (navigation) {
       return navigation.pop();
     }
+    BackHandler.exitApp();
   };
 
   render() {

@@ -1,10 +1,11 @@
 import React from 'react';
-import { View, StyleSheet, Text, Image } from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
 import { scale, themeLayout } from '@/config';
 import SecondaryText from '@/components/AppText/SecondaryText';
 import CommonText from '@/components/AppText/CommonText';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { spiltHighlightText } from '@/utils/utils';
+import ImageWithDefault from '@/components/ImageWithDefault';
 
 export default class CommentPage extends React.Component {
   render() {
@@ -16,7 +17,11 @@ export default class CommentPage extends React.Component {
     return (
       <TouchableOpacity onPress={gotoAppAction} style={styles.itemCon}>
         <View style={styles.coverCon}>
-          <Image resizeMode='cover' style={styles.cover} source={{ uri: itemData.app_logo }} />
+          <ImageWithDefault
+            resizeMode='cover'
+            style={styles.cover}
+            source={{ uri: itemData.app_logo }}
+          />
         </View>
         <View style={styles.rightBody}>
           <Text>

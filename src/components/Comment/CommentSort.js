@@ -9,11 +9,11 @@ export default class CommentPage extends React.Component {
     const tab = [
       {
         text: '最热',
-        type: '1',
+        type: 1,
       },
       {
         text: '最新',
-        type: '2',
+        type: 2,
       },
     ];
     const { changeSortAction, activeTab, activeStyle } = this.props;

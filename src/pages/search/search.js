@@ -103,7 +103,7 @@ class Search extends React.Component {
       <Fragment>
         <View style={[styles.historyCon, styles.sectionCon]}>
           <SectionTitle
-            title="历史搜索"
+            title='历史搜索'
             type={search.historySearchList.length > 0 ? 'del' : null}
           />
           <View style={styles.historyList}>
@@ -117,7 +117,7 @@ class Search extends React.Component {
           </View>
         </View>
         <View style={[styles.hotCon, styles.sectionCon]}>
-          <SectionTitle title="热门分类" />
+          <SectionTitle title='热门分类' />
           <View style={styles.hotList}>
             {recommend.hotClassify.map(item => {
               return (
@@ -193,7 +193,7 @@ class Search extends React.Component {
               <SectionTitle
                 color={black}
                 title={item.title}
-                type="more"
+                type='more'
                 rightAction={() => this.handleGotoMore(item)}
               />
               <View style={styles.searchSectionList}>{item.bodyRender()}</View>
@@ -213,7 +213,7 @@ class Search extends React.Component {
           changeSearchKeyAction={this.handleChangeSearchKey}
           cancelSearchAction={this.handleQuitActivity}
           cleanTextAction={this.handleCleanText}
-          title="搜索"
+          title='搜索'
         />
         <SpringScrollView>
           {isSearching ? this.renderSearchResult() : this.renderDidNotSearch()}

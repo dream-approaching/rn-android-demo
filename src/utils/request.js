@@ -1,6 +1,6 @@
 // import fetch from 'whatwg-fetch';
 import 'whatwg-fetch';
-import { ToastAndroid } from 'react-native';
+import { GetUserInfo } from '@/components/NativeModules';
 // import { stringify } from 'qs';
 
 const codeMessage = {
@@ -83,22 +83,19 @@ export default function request(url, options, time) {
   let fetchUrl;
 
   if (newOptions.method === 'GET') {
-    const { data } = newOptions;
-    // data.access_token = '3a93d69719f6e035bdb5c4d3b8a11547'; // token1
-    // data.mobilephone = '13564587895'; // 用户手机号1
-
-    data.access_token = 'c3c4db657e05f684f696096ec6f06371'; // token2
-    data.mobilephone = '18503068868'; // 用户手机号2
-
-    data.access_token = 'c3c4db657e05f684f696096ec6f06371'; // liyi
-    data.mobilephone = '18503068868'; // liyi
-
-    // data.access_token = 'eb07f80389496cc665ffb93bc059263e'; // token3
-    // data.mobilephone = '13613033073'; // 用户手机号4
-    data.app_ver = '1'; // app版本
-    data.app_ver_code = '1'; // app版本编码
-    data.ch = '1'; // 渠道
-    data.channel_id = '1'; // 渠道号
+    const globalParams = {
+      // access_token: '3a93d69719f6e035bdb5c4d3b8a11547',
+      // mobilephone: '13564587895',
+      // access_token: 'eb07f80389496cc665ffb93bc059263e',
+      // mobilephone: '13613033073',
+      access_token: GetUserInfo.token,
+      mobilephone: GetUserInfo.phone,
+      app_ver: '1',
+      app_ver_code: '1',
+      ch: '1',
+      channel_id: '1',
+    };
+    const data = { ...globalParams, ...newOptions.data };
 
     const query = data ? `?params=${JSON.stringify(data)}` : '';
     fetchUrl = `${url}${query}`;
@@ -128,7 +125,7 @@ export default function request(url, options, time) {
         console.log('404异常');
       }
       if (status === 'timeout') {
-        ToastAndroid.show('请求超时', ToastAndroid.LONG);
+        console.log('%c请求超时:', 'color: #0e93e0;background: #aaefe5;', `${fetchUrl}:请求超时`);
       }
       console.log(e);
     });

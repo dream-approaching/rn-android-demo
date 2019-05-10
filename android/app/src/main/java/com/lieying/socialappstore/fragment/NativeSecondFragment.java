@@ -10,6 +10,7 @@ import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.style.StyleSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -93,10 +94,6 @@ public class NativeSecondFragment extends BaseV4Fragment implements PullToRefres
      */
     private void getAppData(boolean isFresh){
         HashMap<String, String> map = new HashMap<>();
-        map.put("channel_id", "1");
-        map.put("app_ver", "1");
-        map.put("app_ver_code", "1");
-        map.put("ch", "1");
         map.put("id" , isFresh || mApplist.size() == 0 ? "" : mApplist.get(mApplist.size() -1).getId());
         map.put("pagesize" , Constants.DEFAULT_PAGE_SIZE+"");
         map.put("mobilephone", UserManager.getCurrentUser().getPhone());
@@ -118,9 +115,6 @@ public class NativeSecondFragment extends BaseV4Fragment implements PullToRefres
                 if(objectResponseData.getStatus()==0 && objectResponseData.getData() != null){
                     if(isFresh){
                         mApplist.clear();
-                        mApplist.addAll(objectResponseData.getData());
-                        mApplist.addAll(objectResponseData.getData());
-                        mApplist.addAll(objectResponseData.getData());
                         mApplist.addAll(objectResponseData.getData());
                         myAdapter.notifyDataSetChanged();
                     }else {
@@ -178,8 +172,7 @@ public class NativeSecondFragment extends BaseV4Fragment implements PullToRefres
         @Override
         public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
             if (holder instanceof MsgHolder) {
-                AppListBean bean = mApplist.get(position);
-                ((MsgHolder) holder).initData(bean , position);
+                ((MsgHolder) holder).initData(mApplist.get(position) , position);
             } else if (holder instanceof DefaultNoMoreViewHolder) {
                 ((DefaultNoMoreViewHolder) holder).setTip("我是有底线的");
             }
@@ -230,6 +223,7 @@ public class NativeSecondFragment extends BaseV4Fragment implements PullToRefres
                 mIvPraise.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        collection(4+"", bean.isIs_fabulous() ? "add":"del", bean , position);
                     }
                 });
                 itemView.setOnClickListener(new View.OnClickListener() {
@@ -240,5 +234,50 @@ public class NativeSecondFragment extends BaseV4Fragment implements PullToRefres
                 });
             }
         }
+
+        /**
+         * @Description: 获取首页卡片数据
+         * @Params: collection   add代表收藏，del代表取消收藏
+         * @Author: liyi
+         */
+        private void collection(String type, String collection, AppListBean bean , int position) {
+            Log.e("test" , "opt ---------  "+collection);
+            HashMap<String, String> map = new HashMap<>();
+            map.put("type", type);
+            map.put("opt", collection);
+            map.put("info_id", bean.getId());
+            map.put("mobilephone", UserManager.getCurrentUser().getPhone());
+            map.put("access_token", UserManager.getCurrentUser().getAccessToken());
+            RetrofitUtils.getInstance(mContext).sendRequset(new Function<String, ObservableSource<ResponseData<Object>>>() {
+                @Override
+                public ObservableSource<ResponseData<Object>> apply(String s) throws Exception {
+                    return RetrofitUtils.getInstance(mContext).getApiService().collectionContent(ReqBody.getReqString(map));
+                }
+            }, new BaseObserver<ResponseData<Object>>() {
+                @Override
+                protected void onSuccees(ResponseData<Object> objectResponseData) {
+                    if (objectResponseData.getStatus() == 0) {
+                        Log.e("test" , "22222222 pos"+ position+"             "+mApplist.get(position).getId()+"     "+mApplist.get(position).isIs_fabulous()+"    "+collection);
+                        if (collection.equals("add")) {
+                            ToastUtil.showToast("搜藏成功");
+                            mApplist.get(position).setIs_fabulous(false);
+                        } else {
+                            ToastUtil.showToast("取消收藏成功");
+                            mApplist.get(position).setIs_fabulous(true);
+                        }
+                       notifyItemChanged(position+1);
+                    }
+                }
+
+                @Override
+                protected void onFailure(Throwable e, boolean isNetWorkError) {
+                    if (isNetWorkError) {
+                        ToastUtil.showToast("请求失败");
+                    }
+                }
+            });
+        }
     }
+
+
 }

@@ -1,11 +1,18 @@
-import { submitCommentReq, queryCommentReq, queryChildCommentReq } from '@/services/comment';
-import { giveLikelikeReq } from '@/services/common';
-import { ToastAndroid } from 'react-native';
+import {
+  submitCommentReq,
+  queryCommentReq,
+  queryChildCommentReq,
+  queryAllCommentReq,
+} from '@/services/comment';
+import { toggleLikeReq } from '@/services/common';
+import Toast from '@/components/Toast';
 
 export default {
   namespace: 'comment',
 
   state: {
+    allCommentList: [],
+    allCommentListTotal: 0,
     commentList: [],
     commentListTotal: 0,
     childCommentList: [],
@@ -13,7 +20,28 @@ export default {
   },
 
   effects: {
-    *queryCommentEffect({ payload, successFn }, { call, put }) {
+    *queryAllCommentEffect({ payload, successFn, finallyFn }, { call, put }) {
+      try {
+        const response = yield call(queryAllCommentReq, payload);
+        console.log('%cpayload:', 'color: #0e93e0;background: #aaefe5;', payload);
+        console.log('%cresponse:', 'color: #0e93e0;background: #aaefe5;', response);
+        if (response && response.code === 0) {
+          yield put({
+            type: 'saveAllCommentList',
+            payload: response.data || {},
+            isFirstPage: payload.isFirst,
+          });
+          successFn && successFn(response.data.list);
+        } else {
+          Toast.show(response.msg);
+        }
+      } catch (err) {
+        console.log('err', err);
+      } finally {
+        finallyFn && finallyFn();
+      }
+    },
+    *queryCommentEffect({ payload, successFn, finallyFn }, { call, put }) {
       try {
         const response = yield call(queryCommentReq, payload);
         console.log('%cresponse:', 'color: #0e93e0;background: #aaefe5;', response);
@@ -23,15 +51,17 @@ export default {
             payload: response.data || {},
             isFirstPage: payload.isFirst,
           });
-          successFn && successFn();
+          successFn && successFn(response.data.list);
         } else {
-          ToastAndroid.show(response.msg, ToastAndroid.LONG);
+          Toast.show(response.msg);
         }
       } catch (err) {
         console.log('err', err);
+      } finally {
+        finallyFn && finallyFn();
       }
     },
-    *queryChildCommentEffect({ payload, successFn }, { call, put }) {
+    *queryChildCommentEffect({ payload, successFn, finallyFn }, { call, put }) {
       try {
         const response = yield call(queryChildCommentReq, payload);
         console.log(
@@ -45,12 +75,14 @@ export default {
             payload: response.data || [],
             isFirstPage: payload.isFirst,
           });
-          successFn && successFn();
+          successFn && successFn(response.data);
         } else {
-          ToastAndroid.show(response.msg, ToastAndroid.SHORT);
+          Toast.show(response.msg);
         }
       } catch (err) {
         console.log('err', err);
+      } finally {
+        finallyFn && finallyFn();
       }
     },
     *submitCommentEffect({ payload, successFn, failedFn, finallyFn }, { call }) {
@@ -60,7 +92,7 @@ export default {
         if (response && response.code === 0) {
           successFn && successFn();
         } else {
-          ToastAndroid.show(response.msg, ToastAndroid.SHORT);
+          Toast.show(response.msg);
         }
       } catch (err) {
         failedFn && failedFn();
@@ -69,14 +101,14 @@ export default {
         finallyFn && finallyFn();
       }
     },
-    *giveLikelikeEffect({ payload, successFn }, { call }) {
+    *toggleLikeEffect({ payload, successFn }, { call }) {
       try {
-        const response = yield call(giveLikelikeReq, payload);
+        const response = yield call(toggleLikeReq, payload);
         console.log('%cgiveLikelikeReq response:', 'color: #0e93e0;background: #aaefe5;', response);
         if (response && response.code === 0) {
           successFn && successFn();
         } else {
-          ToastAndroid.show(response.msg, ToastAndroid.SHORT);
+          Toast.show(response.msg);
         }
       } catch (err) {
         console.log('err', err);
@@ -85,6 +117,13 @@ export default {
   },
 
   reducers: {
+    saveAllCommentList(state, { payload, isFirstPage }) {
+      return {
+        ...state,
+        allCommentList: isFirstPage ? payload.list : [...state.allCommentList, ...payload.list],
+        allCommentListTotal: payload.cnt,
+      };
+    },
     saveCommentList(state, { payload, isFirstPage }) {
       return {
         ...state,
@@ -95,7 +134,7 @@ export default {
     saveChildCommentList(state, { payload, isFirstPage }) {
       return {
         ...state,
-        childCommentList: isFirstPage ? payload : [...state.commentList, ...payload],
+        childCommentList: isFirstPage ? payload : [...state.childCommentList, ...payload],
       };
     },
   },

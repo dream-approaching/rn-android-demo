@@ -1,8 +1,8 @@
 import React from 'react';
-import { View, StyleSheet, Keyboard, StatusBar } from 'react-native';
+import { View, StyleSheet, StatusBar } from 'react-native';
 import SpringScrollView from '@/components/SpringScrollView';
 import Header from '@/components/Header';
-import { commentData } from '@/config/fakeData';
+// import { commentData } from '@/config/fakeData';
 import { FlatList } from 'react-native-gesture-handler';
 import XfriendItem from '@/components/pageComponent/xfriendItem';
 import { ChineseNormalFooter } from 'react-native-spring-scrollview/Customize';
@@ -12,131 +12,111 @@ import SecondaryText from '@/components/AppText/SecondaryText';
 import ChildItem from '@/components/Comment/ChildItem';
 import { scale, themeLayout, themeColor, themeSize } from '@/config';
 import { connect } from '@/utils/dva';
+import commentHoc from '@/components/pageComponent/commentHoc';
+import { COMMENT_TYPE } from '@/config/constants';
 
 class XshareDetail extends React.Component {
   static navigationOptions = {
     header: null,
   };
 
-  initialState = {
-    allLoaded: false,
-    textValue: '',
-  };
-
-  state = {
-    ...this.initialState,
-    activeTab: '2',
-  };
-
   componentDidMount() {
+    const { screenProps } = this.props;
     StatusBar.setBarStyle('dark-content', true);
-    this.queryXshareDetailDispatch();
-    console.log('this.props', this.props);
-    // 请求评论列表
+    this.contendId = JSON.parse(screenProps.nativeProps.params).id;
+    this.queryCommentDispatch({
+      id: 0,
+      isFirst: true,
+    }); // 请求评论列表
   }
 
-  queryXshareDetailDispatch = () => {
-    const { dispatch } = this.props;
-    dispatch({
-      type: 'xshare/queryXshareDetailEffect',
-      payload: 'data',
+  componentWillUnmount() {
+    this.props.dispatch({
+      type: 'comment/saveAllCommentList',
+      payload: [],
+      isFirstPage: true,
     });
+  }
+
+  queryCommentDispatch = payload => {
+    const data = {
+      content_id: this.contendId,
+      ...payload,
+    };
+    this.props.queryCommentDispatch('comment/queryAllCommentEffect', data);
   };
 
   renderCommentItem = ({ item }) => {
-    return <ChildItem type='child' replyAction={this.replyAction} itemData={item} />;
-  };
-
-  replyAction = item => {
-    console.log('%citem:', 'color: #0e93e0;background: #aaefe5;', item);
-    this.refInputCon.refInput.focus();
-    this.handleChangeText(`回复${item.commit_user}：`);
-  };
-
-  handleChangeSort = item => {
-    this.setState({
-      activeTab: item.type,
-    });
-  };
-
-  handleChangeText = text => {
-    this.setState({
-      textValue: text,
-    });
+    return <ChildItem type='child' replyAction={this.props.replyAction} itemData={item} />;
   };
 
   handleSubmitComment = () => {
-    const { textValue, atSomeone } = this.state;
     const data = {
-      type: 1,
-      content_id: 8,
-      content: textValue,
+      type: COMMENT_TYPE.share,
+      content_id: this.contendId,
     };
-    if (atSomeone) {
-      const { name } = atSomeone;
-      const withoutName = new Set([...textValue].filter(x => !new Set(name).has(x)));
-      data.content = [...withoutName].join('');
-      data.parent_id = atSomeone.id;
-    }
-    const successFn = () => {
-      this.setState(this.initialState);
-      Keyboard.dismiss();
-      this.queryChildCommentDispatch({
-        type: 1,
-        content_id: 8,
-        sort: 2,
-      });
-    };
-    this.submitCommentDispatch(data, { successFn });
+    this.props.handleSubmitComment(data);
   };
 
   render() {
-    const { textValue, activeTab, allLoaded } = this.state;
-    const { screenProps } = this.props;
+    const {
+      screenProps,
+      comment,
+      placeholder,
+      textValue,
+      activeTab,
+      allLoaded,
+      handleQueryNextPage,
+      handleChangeSort,
+      handleChangeText,
+    } = this.props;
     return (
       <View style={styles.container}>
         <Header title='查看详情' />
         <SpringScrollView
           ref={ref => (this.refScrollView = ref)}
           loadingFooter={ChineseNormalFooter}
-          onLoading={this.handleQueryNextPage}
+          onLoading={() => handleQueryNextPage(comment.allCommentList)}
           allLoaded={allLoaded}
           bounces
         >
           <XfriendItem noPress itemData={JSON.parse(screenProps.nativeProps.params)} />
           <View style={styles.replyCon}>
             <View style={styles.tabCon}>
-              <SecondaryText style={styles.commentTotal}>135个回答</SecondaryText>
+              <SecondaryText style={styles.commentTotal}>
+                {comment.allCommentListTotal}个回答
+              </SecondaryText>
               <CommentSort
                 activeStyle={{ color: themeColor.font.secondary }}
                 activeTab={activeTab}
-                changeSortAction={this.handleChangeSort}
+                changeSortAction={handleChangeSort}
               />
             </View>
             <FlatList
               keyExtractor={item => `${item.id}`}
-              data={commentData}
+              data={comment.allCommentList}
               renderItem={this.renderCommentItem}
             />
           </View>
         </SpringScrollView>
         <CommentInput
           ref={ref => (this.refInputCon = ref)}
-          handleChangeText={this.handleChangeText}
+          handleChangeText={handleChangeText}
           handleSubmitComment={this.handleSubmitComment}
           textValue={textValue}
+          placeholder={placeholder}
         />
       </View>
     );
   }
 }
 
-const mapStateToProps = ({ xshare, loading }) => ({
-  xshare,
-  loading: loading.effects['xshare/queryXshareListEffect'],
+const mapStateToProps = ({ comment, loading }) => ({
+  comment,
+  loading: loading.effects['comment/queryAllCommentEffect'],
 });
 
-export default connect(mapStateToProps)(XshareDetail);
+export default connect(mapStateToProps)(commentHoc(XshareDetail));
 
 const styles = StyleSheet.create({
   container: {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import SpringScrollView from '@/components/SpringScrollView';
 import SecondaryText from '@/components/AppText/SecondaryText';
 import { ChineseNormalFooter, ChineseNormalHeader } from 'react-native-spring-scrollview/Customize';
@@ -9,6 +9,7 @@ import { lastArr, navigateBeforeCheckLogin } from '@/utils/utils';
 import { connect } from '@/utils/dva';
 import { OpenRnActivity } from '@/components/NativeModules';
 import Loading from '@/components/Loading/loading';
+import ImageWithDefault from '@/components/ImageWithDefault';
 
 class Xshare extends React.Component {
   static navigationOptions = {
@@ -92,7 +93,7 @@ class Xshare extends React.Component {
           allLoaded={allLoaded}
         >
           <TouchableOpacity onPress={this.gotoShare} style={styles.shareCon}>
-            <Image style={styles.avatar} source={{ uri: avatar }} />
+            <ImageWithDefault style={styles.avatar} source={{ uri: avatar }} />
             <SecondaryText>点击这里分享你喜爱的应用吧~ </SecondaryText>
           </TouchableOpacity>
           {xshare.xshareList.map(item => {

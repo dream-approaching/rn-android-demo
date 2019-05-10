@@ -10,24 +10,29 @@ class LikeBtn extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      likeNum: props.likeNum,
-      status: props.status,
+      likeNum: props.itemData.fabulous,
+      isLike: !props.itemData.is_fabulous,
     };
   }
 
-  handleGiveLike = params => {
-    const { dispatch } = this.props;
-    const { likeNum, status } = this.state;
+  handleToggleLike = () => {
+    const { dispatch, itemData, type } = this.props;
+    const { likeNum, isLike } = this.state;
     const data = {
-      ...params,
+      mobilephone: itemData.mobilephone,
+      type,
+      opt: isLike ? 'del' : 'add',
+      id: itemData.id,
+      real_name: itemData.commit_user,
+      head_image: itemData.head_image,
     };
     dispatch({
-      type: 'commnet/giveLikelikeEffect',
+      type: 'comment/toggleLikeEffect',
       payload: data,
       successFn: () => {
         this.setState({
-          likeNum: likeNum + 1,
-          status: !status,
+          likeNum: isLike ? likeNum - 1 : +likeNum + 1,
+          isLike: !isLike,
         });
       },
     });
@@ -35,12 +40,12 @@ class LikeBtn extends React.Component {
 
   render() {
     const { size = 14, textStyle } = this.props;
-    const { likeNum, status } = this.state;
+    const { likeNum, isLike } = this.state;
     return (
-      <TouchableOpacity onPress={this.handleGiveLike} style={styles.likeCon}>
+      <TouchableOpacity onPress={this.handleToggleLike} style={styles.likeCon}>
         <Image
           style={styles.likeIcon(size)}
-          source={{ uri: status ? myImages.thumbO : myImages.thumb }}
+          source={{ uri: isLike ? myImages.thumbO : myImages.thumb }}
         />
         <SmallText style={textStyle}>{likeNum}</SmallText>
       </TouchableOpacity>

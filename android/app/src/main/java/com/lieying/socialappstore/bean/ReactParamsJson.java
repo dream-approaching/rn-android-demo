@@ -1,4 +1,6 @@
-package com.lieying.comlib.bean;
+package com.lieying.socialappstore.bean;
+
+import com.lieying.socialappstore.utils.GsonUtil;
 
 /**
  * @Description: java类作用描述
@@ -8,6 +10,7 @@ package com.lieying.comlib.bean;
 public class ReactParamsJson {
     String contentId;
     String userID;
+    String contentType;
 
     public static class Builder {
 
@@ -23,13 +26,23 @@ public class ReactParamsJson {
         }
 
 
-        public Builder seUserID(String userID) {
+        public Builder setUserID(String userID) {
             mReactParamsJson.userID = userID;
             return this;
         }
+        public Builder setContentType(String contentType) {
+            mReactParamsJson.contentType = contentType;
+            return this;
+        }
+
+
 
         public ReactParamsJson build(){
             return mReactParamsJson;
+        }
+
+        public String getRNParams(){
+            return GsonUtil.GsonString(mReactParamsJson);
         }
     }
 }

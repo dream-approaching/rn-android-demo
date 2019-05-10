@@ -14,6 +14,7 @@ import android.util.SparseArray;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,6 +27,7 @@ import com.facebook.react.shell.MainReactPackage;
 import com.gyf.immersionbar.ImmersionBar;
 import com.lieying.comlib.bean.UserInfoBean;
 import com.lieying.comlib.constant.Constants;
+import com.lieying.socialappstore.activity.CommonReactActivity;
 import com.lieying.socialappstore.activity.LoginActivity;
 import com.lieying.socialappstore.base.BaseFragmentActivity;
 import com.lieying.socialappstore.base.BaseV4Fragment;
@@ -53,6 +55,7 @@ public class MainActivity extends BaseFragmentActivity implements FragmentCallba
     private final int WRITE_EXTERNAL_STORAGE_REQ_CODE = 1;
     private ViewPager mViewPager;
     private ViewPagerAdapter mAdapter;
+    private ImageView mIvSearch;
     private ArrayList<BaseV4Fragment> fragments = new ArrayList<>();
     BaseReactFragment thirdFragment;
     RelativeLayout mRlToorbar;
@@ -99,6 +102,7 @@ public class MainActivity extends BaseFragmentActivity implements FragmentCallba
         mViewPager = findViewById(R.id.main_viewpager);
         mRlToorbar = findViewById(R.id.rl_main_activity_top_bar);
         mTvToolTitle = findViewById(R.id.rl_main_activity_top_title);
+        mIvSearch = findViewById(R.id.iv_main_search);
     }
 
     @Override
@@ -190,6 +194,13 @@ public class MainActivity extends BaseFragmentActivity implements FragmentCallba
             }
         });
         mNavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        mIvSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CommonReactActivity.startActivity(mContext ,"MyReactNativeAppthree" , "search");
+            }
+        });
     }
 
     @Override
@@ -252,8 +263,11 @@ public class MainActivity extends BaseFragmentActivity implements FragmentCallba
 
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
-            MainApplication.getInstance().getReactNativeHost().getReactInstanceManager().showDevOptionsDialog();
+        if (keyCode == KeyEvent.KEYCODE_MENU && fragments.get(position) instanceof BaseReactFragment && ((BaseReactFragment) fragments.get(position)).getmReactInstanceManager() != null) {
+            ((BaseReactFragment) fragments.get(position)).getmReactInstanceManager().showDevOptionsDialog();
             return true;
+        }
+        return super.onKeyUp(keyCode, event);
     }
 
 

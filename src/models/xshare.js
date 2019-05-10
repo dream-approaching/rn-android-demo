@@ -1,4 +1,6 @@
 import { queryXshareListReq, queryOthershareListReq } from '@/services/xshare';
+import { toggleAttentionReq } from '@/services/common';
+import Toast from '@/components/Toast';
 
 export default {
   namespace: 'xshare',
@@ -41,6 +43,18 @@ export default {
         console.log('err', err);
       } finally {
         finallyFn && finallyFn();
+      }
+    },
+    *toggleAttentionEffect({ payload, successFn }, { call }) {
+      try {
+        const response = yield call(toggleAttentionReq, payload);
+        if (response && response.code === 0) {
+          successFn && successFn();
+        } else {
+          Toast.show(response.msg);
+        }
+      } catch (err) {
+        console.log('err', err);
       }
     },
   },

@@ -3,48 +3,61 @@ import { View, StyleSheet, StatusBar, BackHandler } from 'react-native';
 import CommentItem from '@/components/Comment/CommentItem';
 import CommentInput from '@/components/Comment/CommentInput';
 import { FlatList } from 'react-native-gesture-handler';
-import { commentData } from '@/config/fakeData';
-import { SpringScrollView } from 'react-native-spring-scrollview';
-import { ChineseNormalHeader, ChineseNormalFooter } from 'react-native-spring-scrollview/Customize';
+import { ChineseNormalFooter } from 'react-native-spring-scrollview/Customize';
 import SecondaryText from '@/components/AppText/SecondaryText';
 import CommentSort from '@/components/Comment/CommentSort';
 import { scale, themeLayout } from '@/config';
+import { connect } from '@/utils/dva';
+import SpringScrollView from '@/components/SpringScrollView';
 import Header from './components/header';
+import { COMMENT_TYPE } from '@/config/constants';
+import commentHoc from '@/components/pageComponent/commentHoc';
 
-export default class DetailChat extends React.Component {
+class DetailChat extends React.Component {
   static navigationOptions = {
     header: null,
-  };
-
-  state = {
-    allLoaded: false,
-    textValue: '',
-    activeTab: 'new',
   };
 
   componentDidMount() {
     const { screenProps } = this.props;
     StatusBar.setBarStyle('dark-content', true);
-    console.log('DetailChat screenProps.nativeProps', screenProps.nativeProps);
+    this.contendId = JSON.parse(screenProps.nativeProps.params).contentId;
+    const data = {
+      id: 0, // 上一页数据最小的  fabulous或者时间戳
+      isFirst: true,
+    };
+    this.queryCommentDispatch(data);
   }
 
-  handleChangeText = text => {
-    console.log('%ctext:', 'color: #0e93e0;background: #aaefe5;', text);
-    this.setState({
-      textValue: text,
+  componentWillUnmount() {
+    this.props.dispatch({
+      type: 'comment/saveCommentList',
+      payload: [],
+      isFirstPage: true,
     });
+  }
+
+  queryCommentDispatch = payload => {
+    const data = {
+      type: COMMENT_TYPE.chat,
+      content_id: this.contendId,
+      ...payload,
+    };
+    this.props.queryCommentDispatch('comment/queryCommentEffect', data);
   };
 
-  replyAction = item => {
-    console.log('%citem:', 'color: #0e93e0;background: #aaefe5;', item);
-    this.refInputCon.refInput.focus();
-    this.handleChangeText(`回复${item.commit_user}：`);
+  handleSubmitComment = () => {
+    const data = {
+      type: COMMENT_TYPE.chat,
+      content_id: this.contendId,
+    };
+    this.props.handleSubmitComment(data);
   };
 
   renderCommentItem = ({ item, index }) => (
     <CommentItem
       seeAllChildAction={this.handleSeeAllChild}
-      replyAction={this.replyAction}
+      replyAction={this.props.replyAction}
       itemData={item}
       index={index}
     />
@@ -56,12 +69,8 @@ export default class DetailChat extends React.Component {
       total: item.count,
       id: item.id,
       index,
-    });
-  };
-
-  handleChangeSort = item => {
-    this.setState({
-      activeTab: item.type,
+      contendId: this.contendId,
+      type: COMMENT_TYPE.chat,
     });
   };
 
@@ -70,37 +79,39 @@ export default class DetailChat extends React.Component {
   };
 
   render() {
-    const { textValue, activeTab } = this.state;
+    const {
+      textValue,
+      activeTab,
+      placeholder,
+      allLoaded,
+      comment,
+      handleChangeSort,
+      handleQueryNextPage,
+      handleChangeText,
+    } = this.props;
     return (
       <View style={styles.container}>
         <SpringScrollView
           ref={ref => (this.refScrollView = ref)}
-          refreshHeader={ChineseNormalHeader}
-          onRefresh={() => {
-            setTimeout(() => {
-              this.refScrollView.endRefresh();
-            }, 3000);
-          }}
           loadingFooter={ChineseNormalFooter}
-          onLoading={() => {
-            setTimeout(() => {
-              this.refScrollView.endLoading();
-            }, 3000);
-          }}
-          allLoaded={this.state.allLoaded}
+          onLoading={() => handleQueryNextPage(comment.commentList)}
+          allLoaded={allLoaded}
+          bounces
         >
           <Header />
           <View style={styles.commentTitle}>
-            <SecondaryText style={styles.commentTotal}>135个回答</SecondaryText>
+            <SecondaryText style={styles.commentTotal}>
+              {comment.commentListTotal}个回答
+            </SecondaryText>
             <CommentSort
               activeStyle={{ color: '#707070' }}
               activeTab={activeTab}
-              changeSortAction={this.handleChangeSort}
+              changeSortAction={handleChangeSort}
             />
           </View>
           <FlatList
             keyExtractor={item => `${item.id}`}
-            data={commentData}
+            data={comment.commentList}
             renderItem={this.renderCommentItem}
           />
         </SpringScrollView>
@@ -110,13 +121,22 @@ export default class DetailChat extends React.Component {
           showShare
           showCollection
           ref={ref => (this.refInputCon = ref)}
-          handleChangeText={this.handleChangeText}
+          handleChangeText={handleChangeText}
+          handleSubmitComment={this.handleSubmitComment}
           textValue={textValue}
+          placeholder={placeholder}
         />
       </View>
     );
   }
 }
+
+const mapStateToProps = ({ comment, loading }) => ({
+  comment,
+  loading: loading.effects['comment/queryXshareListEffect'],
+});
+
+export default connect(mapStateToProps)(commentHoc(DetailChat));
 
 const styles = StyleSheet.create({
   container: {

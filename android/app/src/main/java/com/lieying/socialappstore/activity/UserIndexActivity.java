@@ -1,5 +1,4 @@
 package com.lieying.socialappstore.activity;
-
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.Nullable;
@@ -9,14 +8,10 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
-import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.gyf.immersionbar.ImmersionBar;
-import com.lieying.comlib.bean.AppDetailsBean;
 import com.lieying.comlib.bean.UserIndexInfoBean;
 import com.lieying.socialappstore.R;
-import com.lieying.socialappstore.base.BaseActivity;
 import com.lieying.socialappstore.base.BaseFragmentActivity;
 import com.lieying.socialappstore.base.BaseV4Fragment;
 import com.lieying.socialappstore.fragment.UserIndexJoinFragment;
@@ -29,10 +24,8 @@ import com.lieying.socialappstore.network.RetrofitUtils;
 import com.lieying.socialappstore.utils.GlideUtils;
 import com.lieying.socialappstore.utils.ToastUtil;
 import com.lieying.socialappstore.widget.NiceImageView;
-
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import io.reactivex.ObservableSource;
 import io.reactivex.functions.Function;
 
@@ -89,10 +82,6 @@ public class UserIndexActivity extends BaseFragmentActivity {
     @Override
     public void initData() {
         HashMap<String, String> map = new HashMap<>();
-        map.put("channel_id", "1");
-        map.put("app_ver", "1");
-        map.put("app_ver_code", "1");
-        map.put("ch", "1");
         map.put("mobilephone", UserManager.getCurrentUser().getPhone());
         map.put("othermobilephone", "18503068868");
         map.put("access_token", UserManager.getCurrentUser().getAccessToken());

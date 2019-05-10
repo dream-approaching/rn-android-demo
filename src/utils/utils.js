@@ -51,8 +51,9 @@ export const spiltHighlightText = (text, highlightKey) => {
 };
 
 export const checkLogin = () => {
-  const { KEY_ONE_NICK, KEY_ONE_PHONE, KEY_ONE_TOKEN } = GetUserInfo;
-  return !!(KEY_ONE_NICK && KEY_ONE_PHONE && KEY_ONE_TOKEN);
+  const { nickname, phone, token } = GetUserInfo;
+  console.log('%cGetUserInfo:', 'color: #0e93e0;background: #aaefe5;', GetUserInfo);
+  return !!(nickname && phone && token);
 };
 
 export const navigateBeforeCheckLogin = action => {

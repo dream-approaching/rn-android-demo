@@ -1,10 +1,11 @@
 import React from 'react';
-import { View, Image, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { scale, themeLayout, themeSize } from '@/config';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import LargerText from '@/components/AppText/LargerText';
 import SecondaryText from '@/components/AppText/SecondaryText';
 import myImages from '@/utils/myImages';
+import ImageWithDefault from '@/components/ImageWithDefault';
 
 export default class CommentPage extends React.PureComponent {
   static navigationOptions = {
@@ -15,7 +16,7 @@ export default class CommentPage extends React.PureComponent {
     return (
       <View style={styles.container}>
         <TouchableOpacity>
-          <Image style={styles.coverImg} source={{ uri: myImages.attention }} />
+          <ImageWithDefault style={styles.coverImg} source={{ uri: myImages.attention }} />
         </TouchableOpacity>
         <View style={styles.titleCon}>
           <LargerText style={styles.title}>有那些小众却不熟主流的音乐App</LargerText>

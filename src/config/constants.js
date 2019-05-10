@@ -1,20 +1,25 @@
 export const SEARCH_TYPE = {
-  1: '全部',
-  2: 'APP应用',
-  3: '文章',
-  4: '互动话题',
-  5: 'X友分享',
+  all: 1, // '全部'
+  app: 2, // 'APP应用'
+  article: 3, // '文章'
+  chat: 4, // '互动话题'
+  share: 5, // 'X友分享'
+};
+
+export const LIKE_TYPE = {
+  share: 5, // 'X友分享'
+  comment: 6, // '评论'
 };
 
 export const COMMENT_TYPE = {
-  1: '互动话题',
-  2: '数字生活研究所',
-  3: '应用推荐',
-  4: 'App',
-  5: 'X友分享',
+  chat: 1, // 互动话题
+  article: 2, // 数字生活研究所
+  recommend: 3, // 应用推荐
+  app: 4, // App
+  share: 5, // X友分享
 };
 
 export const COMMENT_SORT = {
-  1: '最热',
-  2: '最新',
+  hot: 1, // 最热
+  new: 2, // 最新
 };

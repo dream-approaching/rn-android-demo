@@ -46,7 +46,6 @@ public class NativeThridFragment extends BaseV4Fragment {
 
     @Override
     public void initView() {
-        mTabLayout.setupWithViewPager(mViewPager);
         ArrayList<BaseV4Fragment> a = new ArrayList<>();
         f1= TopicFragment.newInstance();
         f2= XFriendShareFragment.newInstance("fragment4", "MyReactNativeAppthree", false, "tab3.bundle");
@@ -57,6 +56,7 @@ public class NativeThridFragment extends BaseV4Fragment {
         mAdapter = new MyAdapter(getFragmentManager(), a);
         mViewPager.setAdapter(mAdapter);
         mViewPager.setOffscreenPageLimit(2);
+        mTabLayout.setupWithViewPager(mViewPager);
     }
 
     @Override

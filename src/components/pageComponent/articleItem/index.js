@@ -1,14 +1,15 @@
 import React from 'react';
-import { View, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { themeLayout, scale, themeColor } from '@/config';
 import CommonText from '@/components/AppText/CommonText';
+import ImageWithDefault from '@/components/ImageWithDefault';
 
 export default class extends React.PureComponent {
   render() {
     const { itemData, islastOne } = this.props;
     return (
       <TouchableOpacity style={styles.container(islastOne)}>
-        {itemData.img && <Image style={styles.leftImg} source={{ uri: itemData.img }} />}
+        <ImageWithDefault style={styles.leftImg} source={{ uri: itemData.img }} />
         <View style={styles.itemRight}>
           <CommonText numberOfLines={2} style={styles.articleTitle}>
             {itemData.title}

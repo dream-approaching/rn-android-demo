@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, StatusBar, BackHandler } from 'react-native';
+import { View, StyleSheet, StatusBar } from 'react-native';
 import SpringScrollView from '@/components/SpringScrollView';
 import Header from '@/components/Header';
 import TextInput from '@/components/TextInput';
@@ -49,10 +49,6 @@ class Recommend extends React.Component {
       search: value,
     };
     this.handleSearchDebounce(data); // 这样就可以，只有最后一次触发的onchange才会执行
-  };
-
-  handleQuitActivity = () => {
-    BackHandler.exitApp();
   };
 
   queryAppListDispatch = params => {
@@ -111,13 +107,13 @@ class Recommend extends React.Component {
     const noList = textValue.length && !appList.length && !loading;
     return (
       <View style={styles.container}>
-        <Header backAction={this.handleQuitActivity} title="我要推荐" />
+        <Header title='我要推荐' />
         <TextInput
           leftIcon={myImages.inputSearch}
           conStyle={styles.inputCon}
           onChangeText={this.handleChangeText}
           value={textValue}
-          placeholder="输入你想推荐的应用"
+          placeholder='输入你想推荐的应用'
         />
         {/* <TouchableOpacity onPress={() => this.props.navigation.navigate('RecommendEdit')}>
           <SecondaryText style={styles.searchTitle}>点击进入提交页面</SecondaryText>
