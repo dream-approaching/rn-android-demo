@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, StatusBar, Keyboard } from 'react-native';
+import { View, StyleSheet, StatusBar, Keyboard, BackHandler } from 'react-native';
 import CommentItem from '@/components/Comment/CommentItem';
 import CommentInput from '@/components/Comment/CommentInput';
 import { FlatList } from 'react-native-gesture-handler';
@@ -165,6 +165,10 @@ class CommentPage extends React.Component {
     });
   };
 
+  handleQuitActivity = () => {
+    BackHandler.exitApp();
+  };
+
   render() {
     const { textValue, activeTab, allLoaded } = this.state;
     const { comment } = this.props;
@@ -172,6 +176,7 @@ class CommentPage extends React.Component {
     return (
       <View style={styles.container}>
         <Header
+          backAction={this.handleQuitActivity}
           title={`${comment.commentListTotal}条评论`}
           rightComponent={
             <CommentSort activeTab={activeTab} changeSortAction={this.handleChangeSort} />

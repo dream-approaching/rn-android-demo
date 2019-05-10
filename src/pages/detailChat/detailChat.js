@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, StatusBar } from 'react-native';
+import { View, StyleSheet, StatusBar, BackHandler } from 'react-native';
 import CommentItem from '@/components/Comment/CommentItem';
 import CommentInput from '@/components/Comment/CommentInput';
 import { FlatList } from 'react-native-gesture-handler';
@@ -65,6 +65,10 @@ export default class DetailChat extends React.Component {
     });
   };
 
+  handleQuitActivity = () => {
+    BackHandler.exitApp();
+  };
+
   render() {
     const { textValue, activeTab } = this.state;
     return (
@@ -102,6 +106,7 @@ export default class DetailChat extends React.Component {
         </SpringScrollView>
         <CommentInput
           showLeftIcon
+          leftIconAction={this.handleQuitActivity}
           showShare
           showCollection
           ref={ref => (this.refInputCon = ref)}

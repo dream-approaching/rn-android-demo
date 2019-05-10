@@ -2,8 +2,6 @@ import React from 'react';
 import { View, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { scale, themeLayout, themeSize } from '@/config';
 import LargerText from '@/components/AppText/LargerText';
-// import { TouchableOpacity } from 'react-native-gesture-handler';
-import NavigationService from '@/utils/NavigationService';
 import myImages from '@/utils/myImages';
 
 export default class CommentPage extends React.PureComponent {
@@ -24,7 +22,6 @@ export default class CommentPage extends React.PureComponent {
     if (navigation) {
       return navigation.pop();
     }
-    NavigationService.navigate('Mine', {});
   };
 
   render() {

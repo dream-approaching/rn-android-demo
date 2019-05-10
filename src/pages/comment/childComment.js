@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, StatusBar, Keyboard } from 'react-native';
+import { View, StyleSheet, StatusBar, Keyboard, BackHandler } from 'react-native';
 import CommentInput from '@/components/Comment/CommentInput';
 import { FlatList } from 'react-native-gesture-handler';
 // import { commentData } from '@/config/fakeData';
@@ -107,6 +107,10 @@ class CommentPage extends React.Component {
     });
   };
 
+  handleQuitActivity = () => {
+    BackHandler.exitApp();
+  };
+
   replyAction = item => {
     console.log('%citem:', 'color: #0e93e0;background: #aaefe5;', item);
     this.refInputCon.refInput.focus();
@@ -120,7 +124,7 @@ class CommentPage extends React.Component {
   };
 
   renderCommentItem = ({ item }) => {
-    return <ChildItem type='child' replyAction={this.replyAction} itemData={item} />;
+    return <ChildItem type="child" replyAction={this.replyAction} itemData={item} />;
   };
 
   handleChangeSort = item => {
@@ -161,7 +165,7 @@ class CommentPage extends React.Component {
     console.log('comment.childCommentList', comment.childCommentList);
     return (
       <View style={styles.container}>
-        <Header title={`${this.total}条评论`} />
+        <Header backAction={this.handleQuitActivity} title={`${this.total}条评论`} />
         <SpringScrollView
           ref={ref => (this.refScrollView = ref)}
           loadingFooter={ChineseNormalFooter}
@@ -170,7 +174,7 @@ class CommentPage extends React.Component {
           bounces
         >
           <ChildItem
-            type='main'
+            type="main"
             replyAction={this.replyAction}
             itemData={comment.commentList[this.parentIndex]}
           />
