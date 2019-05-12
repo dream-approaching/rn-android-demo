@@ -1,58 +1,74 @@
 import React from 'react';
 import { View, StyleSheet, StatusBar } from 'react-native';
+import ScrollableTabView from 'react-native-scrollable-tab-view';
+import CommonText from '@/components/AppText/CommonText';
 import { FlatList } from 'react-native-gesture-handler';
-import { comment } from '@/config/fakeData';
 import SpringScrollView from '@/components/SpringScrollView';
-import ChildItem from '@/components/Comment/ChildItem';
 import { ChineseNormalHeader } from 'react-native-spring-scrollview/Customize';
 import Header from '@/components/Header';
-// import ChineseNormalHeader from './scrollHeader';
+import { comment } from '@/config/fakeData';
+import ChildItem from '@/components/Comment/ChildItem';
+import TabBar from './components/TabBar';
 
-class CommentPage extends React.Component {
+class MyNotice extends React.Component {
   static navigationOptions = {
     header: null,
   };
 
-  state = { test: 0 };
+  state = { test: 1 };
 
   componentDidMount() {
     StatusBar.setBarStyle('dark-content', true);
   }
 
-  renderCommentItem = ({ item }) => {
-    return <ChildItem type="child" replyAction={() => {}} itemData={item} />;
+  handleChangeTab = avtiveTab => {
+    console.log('%cargs:', 'color: #0e93e0;background: #aaefe5;', avtiveTab);
   };
 
   handleRefresh = () => {
     setTimeout(() => {
-      this.setState({ test: this.state.test + 1 }, () => this.refScrollView.endRefresh());
+      this.setState({ test: this.state.test + 1 }, () => {
+        this.refScrollView.endRefresh();
+      });
     }, 2000);
   };
 
+  renderCommentItem = ({ item }) => {
+    return <ChildItem type="child" replyAction={() => {}} itemData={item} />;
+  };
+
   render() {
-    // if (loading) return <Loading />;
     return (
       <View style={styles.container}>
-        <Header title={this.state.test} />
-        <SpringScrollView
-          ref={ref => (this.refScrollView = ref)}
-          refreshHeader={ChineseNormalHeader}
-          onRefresh={this.handleRefresh}
-          bounces
-        >
-          <FlatList
-            keyExtractor={item => `${item.id}`}
-            // data={commentData}
-            data={comment.allCommentList}
-            renderItem={this.renderCommentItem}
-          />
-        </SpringScrollView>
+        <Header title="我的通知" />
+        <ScrollableTabView onChangeTab={this.handleChangeTab} renderTabBar={() => <TabBar />}>
+          <SpringScrollView
+            tabLabel="评论"
+            ref={ref => (this.refScrollView = ref)}
+            refreshHeader={ChineseNormalHeader}
+            onRefresh={this.handleRefresh}
+            bounces
+          >
+            <FlatList
+              keyExtractor={item => `${item.id}`}
+              // data={commentData}
+              data={comment.allCommentList}
+              renderItem={this.renderCommentItem}
+            />
+          </SpringScrollView>
+          <CommonText showDot tabLabel="点赞">
+            favorite
+          </CommonText>
+          <CommonText showDot tabLabel="系统通知">
+            project
+          </CommonText>
+        </ScrollableTabView>
       </View>
     );
   }
 }
 
-export default CommentPage;
+export default MyNotice;
 
 const styles = StyleSheet.create({
   container: {
