@@ -6,8 +6,8 @@ import { FlatList } from 'react-native-gesture-handler';
 import SpringScrollView from '@/components/SpringScrollView';
 import { ChineseNormalHeader } from 'react-native-spring-scrollview/Customize';
 import Header from '@/components/Header';
-import { comment } from '@/config/fakeData';
-import ChildItem from '@/components/Comment/ChildItem';
+import { notice } from '@/config/fakeData';
+import CommentLikeItem from './components/commentLikeItem';
 import TabBar from './components/TabBar';
 
 class MyNotice extends React.Component {
@@ -34,16 +34,16 @@ class MyNotice extends React.Component {
   };
 
   renderCommentItem = ({ item }) => {
-    return <ChildItem type="child" replyAction={() => {}} itemData={item} />;
+    return <CommentLikeItem itemData={item} />;
   };
 
   render() {
     return (
       <View style={styles.container}>
-        <Header title="我的通知" />
+        <Header title='我的通知' />
         <ScrollableTabView onChangeTab={this.handleChangeTab} renderTabBar={() => <TabBar />}>
           <SpringScrollView
-            tabLabel="评论"
+            tabLabel='评论'
             ref={ref => (this.refScrollView = ref)}
             refreshHeader={ChineseNormalHeader}
             onRefresh={this.handleRefresh}
@@ -52,14 +52,14 @@ class MyNotice extends React.Component {
             <FlatList
               keyExtractor={item => `${item.id}`}
               // data={commentData}
-              data={comment.allCommentList}
+              data={notice.commentList}
               renderItem={this.renderCommentItem}
             />
           </SpringScrollView>
-          <CommonText showDot tabLabel="点赞">
+          <CommonText showDot tabLabel='点赞'>
             favorite
           </CommonText>
-          <CommonText showDot tabLabel="系统通知">
+          <CommonText showDot tabLabel='系统通知'>
             project
           </CommonText>
         </ScrollableTabView>

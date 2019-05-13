@@ -94,7 +94,7 @@ class Recommend extends React.Component {
     });
   };
 
-  gotoAppDetail = item => {
+  gotoRecommendEdit = item => {
     this.props.navigation.navigate('RecommendEdit', { id: item.id });
   };
 
@@ -115,7 +115,7 @@ class Recommend extends React.Component {
           value={textValue}
           placeholder='输入你想推荐的应用'
         />
-        {/* <TouchableOpacity onPress={() => this.props.navigation.navigate('RecommendEdit')}>
+        {/* <TouchableOpacity onPress={() => this.gotoRecommendEdit({ id: 78 })}>
           <SecondaryText style={styles.searchTitle}>点击进入提交页面</SecondaryText>
         </TouchableOpacity> */}
         {!noSearch && (
@@ -135,7 +135,7 @@ class Recommend extends React.Component {
                 appList.map(item => {
                   return (
                     <SearchItem
-                      gotoAppAction={() => this.gotoAppDetail(item)}
+                      gotoAppAction={() => this.gotoRecommendEdit(item)}
                       searchKey={textValue}
                       key={item.id}
                       itemData={item}

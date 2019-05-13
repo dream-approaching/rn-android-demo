@@ -104,7 +104,6 @@ export default {
     *toggleLikeEffect({ payload, successFn }, { call }) {
       try {
         const response = yield call(toggleLikeReq, payload);
-        console.log('%cgiveLikelikeReq response:', 'color: #0e93e0;background: #aaefe5;', response);
         if (response && response.code === 0) {
           successFn && successFn();
         } else {

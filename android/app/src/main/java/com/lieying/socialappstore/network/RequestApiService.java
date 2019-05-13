@@ -142,9 +142,18 @@ public interface RequestApiService {
     /**
      * @author liyi
      * date 2019/3/7 0007 11:38
-     * @function:获取用户信息
+     * @function:更新用户信息
      */
     @GET("http://192.168.0.200:1530/interface/v1/user/auth/update_userinfo")
     Observable<ResponseData<Object>> updateUserInfo(@Query("params") String route);
+
+
+    /**
+     * @author liyi
+     * date 2019/3/7 0007 11:38
+     * @function:更新用户信息
+     */
+    @GET("http://192.168.0.200:1230/interface/v1/app/push/update_xgpush_token")
+    Observable<ResponseData<Object>> updateUserPushToken(@Query("params") String route);
 
 }

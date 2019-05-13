@@ -5,6 +5,7 @@ import android.app.Application;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.multidex.MultiDex;
+import android.util.Log;
 
 import com.facebook.react.ReactApplication;
 import com.bolan9999.SpringScrollViewPackage;
@@ -19,6 +20,9 @@ import com.lieying.comlib.pull.SimpleRefreshMoreView;
 import com.lieying.socialappstore.manager.AppActivityManager;
 import com.microsoft.codepush.react.CodePush;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
+import com.tencent.android.tpush.XGIOperateCallback;
+import com.tencent.android.tpush.XGPushConfig;
+import com.tencent.android.tpush.XGPushManager;
 
 import java.util.Arrays;
 import java.util.List;
@@ -73,8 +77,9 @@ public class MainApplication extends Application implements ReactApplication {
     @Override
     public void onCreate() {
         super.onCreate();
-        MultiDex.install(this);
         mApp = this;
+        MultiDex.install(this);
+        XGPushConfig.enableDebug(this,true);
         AppActivityManager.getInstance();
         registerActivityLifecycleCallbacks(new ActivityLifecycle());
         PullToRefreshRecyclerView.PullSysConfig config = new PullToRefreshRecyclerView
@@ -83,6 +88,17 @@ public class MainApplication extends Application implements ReactApplication {
                 .refreshViewClass(SimpleRefreshHeadView.class)
                 .build();
         PullToRefreshRecyclerView.setPullSysConfig(config);
+        XGPushManager.registerPush(this, new XGIOperateCallback() {
+            @Override
+            public void onSuccess(Object data, int flag) {
+//token在设备卸载重装的时候有可能会变
+                Log.d("TPush", "注册成功，设备token为：" + data);
+            }
+            @Override
+            public void onFail(Object data, int errCode, String msg) {
+                Log.d("TPush", "注册失败，错误码：" + errCode + ",错误信息：" + msg);
+            }
+        });
     }
 
     @Override

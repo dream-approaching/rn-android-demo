@@ -11,10 +11,9 @@ import { OpenRnActivity } from '@/components/NativeModules';
 import { LIKE_TYPE } from '@/config/constants';
 import ImageWithDefault from '../ImageWithDefault';
 
-export default class Chat extends React.Component {
+export default class ChildItem extends React.Component {
   gotoPersonPage = () => {
     const { itemData } = this.props;
-    console.log('%citemData:', 'color: #0e93e0;background: #aaefe5;', itemData);
     OpenRnActivity('myShare', JSON.stringify({ phone: itemData.mobilephone }));
   };
 

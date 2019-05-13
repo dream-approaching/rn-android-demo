@@ -7,12 +7,17 @@ import myImages from '@/utils/myImages';
 import { connect } from '@/utils/dva';
 
 class LikeBtn extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      likeNum: props.itemData.fabulous,
-      isLike: !props.itemData.is_fabulous,
-    };
+  state = {
+    likeNum: 0,
+    isLike: false,
+  };
+
+  componentDidMount() {
+    const { itemData } = this.props;
+    this.setState({
+      likeNum: itemData.fabulous,
+      isLike: !itemData.is_fabulous,
+    });
   }
 
   handleToggleLike = () => {

@@ -8,5 +8,5 @@ export async function toggleLikeReq(params) {
 
 // 关注
 export async function toggleAttentionReq(params) {
-  return request(`${config.baseUrl}/interface/v1/app/fabulous/set_fabulous`, { data: params });
+  return request(`${config.baseUrl3}/interface/v1/app/follow/set_follow`, { data: params });
 }

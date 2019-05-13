@@ -80,7 +80,7 @@ class XshareDetail extends React.Component {
           allLoaded={allLoaded}
           bounces
         >
-          <XfriendItem noPress itemData={JSON.parse(screenProps.nativeProps.params)} />
+          <XfriendItem isDetail noPress itemData={JSON.parse(screenProps.nativeProps.params)} />
           <View style={styles.replyCon}>
             <View style={styles.tabCon}>
               <SecondaryText style={styles.commentTotal}>

@@ -8,5 +8,5 @@ export async function queryHotClassifyReq(params) {
 
 // X友分享提交
 export async function submitXShareReq(params) {
-  return request(`${config.baseUrl}/interface/v1/app/-----`, { data: params });
+  return request(`${config.baseUrl2}/interface/v1/app/share/commit_share`, { data: params });
 }

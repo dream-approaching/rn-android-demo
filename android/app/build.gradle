@@ -39,6 +39,16 @@ android {
         versionCode 10000500
         versionName "1.0.6"
         multiDexEnabled true
+
+        ndk {
+            //根据需要 自行选择添加的对应cpu类型的.so库。
+            abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a'
+            // 还可以添加 'x86', 'x86_64', 'mips', 'mips64'
+        }
+        manifestPlaceholders = [
+                XG_ACCESS_ID : "2100333712",
+                XG_ACCESS_KEY: "AS5X1T49X5RE",
+        ]
     }
     signingConfigs {
         debug {
@@ -196,4 +206,11 @@ dependencies {
     implementation 'com.android.support:multidex:1.0.3'
     implementation 'am.widget:smoothinputlayout:1.1.2'
     implementation project(path: ':photoalbumlibrary')
+
+    //信鸽部分
+    implementation 'com.tencent.xinge:xinge:4.3.2-release'
+    implementation 'com.tencent.jg:jg:1.1'
+    implementation 'com.tencent.wup:wup:1.0.0.E-Release'
+    implementation 'com.tencent.mid:mid:4.0.7-Release'
+
 }

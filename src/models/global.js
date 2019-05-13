@@ -4,26 +4,28 @@ export default {
   namespace: 'global',
 
   state: {
-    count: 1,
+    shouldXshareRefresh: false,
   },
 
   effects: {
-    *testCountEffect(_, { put, select }) {
-      const unreadCount = yield select(
-        state => state.global.count + 1
-      );
-      yield put({
-        type: 'testCountReducer',
-        payload: unreadCount,
-      });
+    *toggleXshareRefreshEffect({ payload, successFn }, { put }) {
+      try {
+        yield put({
+          type: 'toggleXshareRefreshReducer',
+          payload,
+        });
+        successFn && successFn();
+      } catch (err) {
+        console.log('err', err);
+      }
     },
   },
 
   reducers: {
-    testCountReducer(state, { payload }) {
+    toggleXshareRefreshReducer(state, { payload }) {
       return {
         ...state,
-        count: payload,
+        shouldXshareRefresh: payload,
       };
     },
   },

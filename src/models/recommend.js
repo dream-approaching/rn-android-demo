@@ -1,5 +1,6 @@
 import { queryHotClassifyReq, submitXShareReq } from '@/services/recommend';
 import { searchReq } from '@/services/search';
+import Toast from '@/components/Toast';
 
 export default {
   namespace: 'recommend',
@@ -49,11 +50,14 @@ export default {
         console.log('err', err);
       }
     },
-    *submitXShareEffect({ payload }, { call, put }) {
+    *submitXShareEffect({ payload, successFn }, { call }) {
       try {
         const response = yield call(submitXShareReq, payload);
         if (response && response.code === 0) {
-          console.log('%cresponse:', 'color: #0e93e0;background: #aaefe5;', response, put);
+          Toast.show('发表成功');
+          successFn && successFn();
+        } else {
+          Toast.show(response.msg);
         }
       } catch (err) {
         console.log('err', err);

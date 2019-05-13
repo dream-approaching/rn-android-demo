@@ -62,14 +62,16 @@ class Search extends React.Component {
       search,
       search_type: searchType,
     };
+    // 搜索之前先清空上次的数据
+    dispatch({ type: 'search/saveSearchAll', payload: {} });
     dispatch({
       type: 'search/querySearchEffect',
       payload: data,
     });
   };
 
-  handleSelectClassify = item => {
-    this.handleChangeSearchKey(item.label);
+  handleSelectClassify = searchKey => {
+    this.handleChangeSearchKey(searchKey);
   };
 
   handleChangeSearchKey = value => {
@@ -109,7 +111,11 @@ class Search extends React.Component {
           <View style={styles.historyList}>
             {search.historySearchList.map(item => {
               return (
-                <TouchableOpacity style={styles.historyItem} key={item.id}>
+                <TouchableOpacity
+                  onPress={() => this.handleSelectClassify(item.content)}
+                  style={styles.historyItem}
+                  key={item.id}
+                >
                   <CommonText>{item.content}</CommonText>
                 </TouchableOpacity>
               );
@@ -122,7 +128,7 @@ class Search extends React.Component {
             {recommend.hotClassify.map(item => {
               return (
                 <TouchableOpacity
-                  onPress={() => this.handleSelectClassify(item)}
+                  onPress={() => this.handleSelectClassify(item.label)}
                   style={styles.hotItem}
                   key={item.id}
                 >

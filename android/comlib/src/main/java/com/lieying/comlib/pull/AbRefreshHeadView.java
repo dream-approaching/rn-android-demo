@@ -5,7 +5,7 @@ import android.view.Gravity;
 import android.widget.LinearLayout;
 
 /**
- * Created by ${ChenJC} on 2018/2/24.
+ * Created by ${liyi} on 2018/2/24.
  * 下拉刷新基类
  */
 

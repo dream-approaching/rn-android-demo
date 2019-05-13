@@ -4,7 +4,7 @@ import android.content.Context;
 import android.widget.LinearLayout;
 
 /**
- * Created by ${ChenJC} on 2018/2/24.
+ * Created by ${liyi} on 2018/2/24.
  * 上拉更多基类
  */
 

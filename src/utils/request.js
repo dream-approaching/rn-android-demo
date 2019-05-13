@@ -31,7 +31,7 @@ function checkStatus(response) {
   throw error;
 }
 
-function myFetch(fetchPromise, timeout = 15 * 1000) {
+function myFetch(fetchPromise, timeout = 25 * 1000) {
   const abortPromise = new Promise((resolve, reject) => {
     setTimeout(() => {
       const err = new Error('请求超时');
@@ -86,8 +86,6 @@ export default function request(url, options, time) {
     const globalParams = {
       // access_token: '3a93d69719f6e035bdb5c4d3b8a11547',
       // mobilephone: '13564587895',
-      // access_token: 'eb07f80389496cc665ffb93bc059263e',
-      // mobilephone: '13613033073',
       access_token: GetUserInfo.token,
       mobilephone: GetUserInfo.phone,
       app_ver: '1',

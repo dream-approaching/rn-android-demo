@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.lieying.comlib.bean.ExploreBean;
+import com.lieying.socialappstore.activity.SettingActivity;
 import com.lieying.socialappstore.bean.ReactParamsJson;
 import com.lieying.comlib.utils.ScreenUtils;
 import com.lieying.socialappstore.R;
@@ -87,13 +88,15 @@ public class IndexFragment extends BaseV4Fragment {
 
              @Override
              public void comments(ExploreBean exploreBean) {
-                 CommonReactActivity.startActivity(mContext , "MyReactNativeAppthree" ,"detailChat" , new ReactParamsJson.Builder().setContentID(exploreBean.getId()).setContentType(exploreBean.getType()).getRNParams());
-             }
+//                 CommonReactActivity.startActivity(mContext , "MyReactNativeAppthree" ,"detailChat" , new ReactParamsJson.Builder().setContentID(exploreBean.getId()).setContentType(exploreBean.getType()).getRNParams());
+                 SettingActivity.startActivity(mContext);
+            }
 
 
 
              @Override
              public void collection() {
+
              }
 
              @Override

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, AppState } from 'react-native';
 import SpringScrollView from '@/components/SpringScrollView';
 import SecondaryText from '@/components/AppText/SecondaryText';
 import { ChineseNormalFooter, ChineseNormalHeader } from 'react-native-spring-scrollview/Customize';
@@ -21,12 +21,28 @@ class Xshare extends React.Component {
   };
 
   componentDidMount() {
+    const { dispatch } = this.props;
+    this.defaultQueryList();
+    AppState.addEventListener('change', () => {
+      console.log(
+        '%cglobal.shouldXshareRefresh:',
+        'color: #0e93e0;background: #aaefe5;',
+        this.props.global.shouldXshareRefresh
+      );
+      if (this.props.global.shouldXshareRefresh) {
+        this.defaultQueryList();
+        dispatch({ type: 'global/toggleXshareRefreshEffect', payload: false });
+      }
+    });
+  }
+
+  defaultQueryList = () => {
     const data = {
       id: 0,
       isFirst: true,
     };
     this.queryXshareListDispatch(data);
-  }
+  };
 
   // 查询X友列表
   queryXshareListDispatch = params => {
@@ -105,8 +121,9 @@ class Xshare extends React.Component {
   }
 }
 
-const mapStateToProps = ({ xshare, loading }) => ({
+const mapStateToProps = ({ xshare, loading, global }) => ({
   xshare,
+  global,
   loading: loading.effects['xshare/queryXshareListEffect'],
 });
 

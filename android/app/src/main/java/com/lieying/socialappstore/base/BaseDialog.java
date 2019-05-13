@@ -6,7 +6,7 @@ import android.content.DialogInterface;
 import android.view.View;
 
 /**
- * Created by ${ChenJC} on 2018/2/8.
+ * Created by ${liyi} on 2018/2/8.
  */
 
 public abstract class BaseDialog extends Dialog implements DialogInterface.OnShowListener

@@ -12,7 +12,7 @@ import com.lieying.comlib.R;
 
 
 /**
- * Created by ${ChenJC} on 2018/2/24.
+ * Created by ${liyi} on 2018/2/24.
  * 下拉demo
  */
 

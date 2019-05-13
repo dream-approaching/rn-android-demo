@@ -1,5 +1,13 @@
 import React from 'react';
-import { View, StyleSheet, TouchableOpacity, TextInput, Image, Keyboard } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  TextInput,
+  Image,
+  Keyboard,
+  BackHandler,
+} from 'react-native';
 import Header from '@/components/Header';
 import CommonText from '@/components/AppText/CommonText';
 import { themeColor, themeLayout, scale, themeSize } from '@/config';
@@ -7,6 +15,8 @@ import myImages from '@/utils/myImages';
 import { connect } from '@/utils/dva';
 import { clearRepeatArr } from '@/utils/utils';
 import LabelBtn from './components/labelBtn';
+import Toast from '@/components/Toast';
+import Loading from '@/components/Loading/loading';
 
 class RecommendEdit extends React.Component {
   static navigationOptions = {
@@ -19,6 +29,8 @@ class RecommendEdit extends React.Component {
   };
 
   componentDidMount() {
+    const { navigation } = this.props;
+    this.id = navigation.getParam('id');
     this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this.keyboardDidShow);
     this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this.keyboardDidHide);
   }
@@ -52,13 +64,27 @@ class RecommendEdit extends React.Component {
 
   handleSubmitShare = () => {
     const { textValue } = this.state;
-    const { dispatch } = this.props;
-    const disabled = !textValue.length;
-    if (disabled) return null;
-    console.log('handleSubmitShare', 'handleSubmitShare');
+    const { dispatch, recommend } = this.props;
+    if (!textValue.length) return null;
+    if (!recommend.selectedLabel.length) return Toast.show('至少选择一个标签');
+    const label = [];
+    recommend.selectedLabel.map(item => label.push(item.label));
+    Keyboard.dismiss();
     dispatch({
       type: 'recommend/submitXShareEffect',
-      payload: '需要提交的数据',
+      payload: {
+        content: textValue,
+        app_info: this.id,
+        label: label.join(','),
+      },
+      successFn: () => {
+        dispatch({
+          type: 'global/toggleXshareRefreshEffect',
+          payload: true,
+          successFn: () => BackHandler.exitApp(),
+          // successFn: () => setTimeout(() => BackHandler.exitApp(), 100),
+        });
+      },
     });
   };
 
@@ -126,10 +152,11 @@ class RecommendEdit extends React.Component {
 
   render() {
     const { textValue, isShowKeyBoard } = this.state;
-    const { navigation } = this.props;
+    const { navigation, submitLoading } = this.props;
     return (
       <View style={styles.container}>
-        <Header navigation={navigation} title="提交" rightComponent={this.renderHeaderRight()} />
+        <Header navigation={navigation} title='提交' rightComponent={this.renderHeaderRight()} />
+        {submitLoading && <Loading />}
         <View style={styles.pageBody}>
           <TextInput
             selectable
@@ -138,8 +165,8 @@ class RecommendEdit extends React.Component {
             onChangeText={this.handleChangeText}
             value={textValue}
             multiline
-            placeholder="大家都在等着你的分享呢&#10;认真写下应用值得推荐的理由&#10;会更容易被推荐哦"
-            placeholderTextColor="#c5c5c5"
+            placeholder='大家都在等着你的分享呢&#10;认真写下应用值得推荐的理由&#10;会更容易被推荐哦'
+            placeholderTextColor='#c5c5c5'
           />
           {this.renderFooter()}
         </View>
@@ -148,7 +175,10 @@ class RecommendEdit extends React.Component {
   }
 }
 
-const mapStateToProps = ({ recommend }) => ({ recommend });
+const mapStateToProps = ({ recommend, loading }) => ({
+  recommend,
+  submitLoading: loading.effects['recommend/submitXShareEffect'],
+});
 
 export default connect(mapStateToProps)(RecommendEdit);
 

@@ -10,7 +10,7 @@ import com.lieying.socialappstore.R;
 
 
 /**
- * Created by ${ChenJC} on 2018/3/6.
+ * Created by ${liyi} on 2018/3/6.
  */
 
 public class DefaultNoMoreViewHolder extends RecyclerView.ViewHolder {

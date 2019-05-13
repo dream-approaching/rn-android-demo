@@ -12,10 +12,17 @@ import { LIKE_TYPE } from '@/config/constants';
 import { connect } from '@/utils/dva';
 import ImageWithDefault from '@/components/ImageWithDefault';
 
-class XshareItem extends React.PureComponent {
+class XshareItem extends React.Component {
   state = {
     mainBodyHeight: 0,
+    isAttention: false,
   };
+
+  componentDidMount() {
+    const { itemData } = this.props;
+    const isAttention = !itemData.is_add_friends;
+    this.setState({ isAttention });
+  }
 
   mainBodyLayout = ({ nativeEvent }) => {
     const { height } = nativeEvent.layout;
@@ -26,18 +33,20 @@ class XshareItem extends React.PureComponent {
 
   toggleAttention = () => {
     const { itemData, dispatch } = this.props;
+    const { isAttention } = this.state;
+    // itemData.is_add_friends ? '+关注' : '已关注'
     console.log('%citemData:', 'color: #0e93e0;background: #aaefe5;', itemData.attention);
     const data = {
-      mobilephone: itemData.mobilephone,
-      id: itemData.id,
-      real_name: itemData.commit_user,
-      head_image: itemData.head_image,
+      follow_mobilephone: itemData.mobilephone,
+      opt: isAttention ? 'del' : 'add',
     };
     dispatch({
       type: 'xshare/toggleAttentionEffect',
       payload: data,
       successFn: () => {
-        this.setState({});
+        this.setState({
+          isAttention: !isAttention,
+        });
       },
     });
   };
@@ -72,9 +81,10 @@ class XshareItem extends React.PureComponent {
   };
 
   render() {
-    const { itemData, noPress, origin } = this.props;
-    const { mainBodyHeight } = this.state;
+    const { itemData, noPress, origin, isDetail } = this.props;
+    const { mainBodyHeight, isAttention } = this.state;
     const isOwnPersonPage = origin === 'myPage';
+    const lineNumber = !isDetail ? { numberOfLines: 6 } : {};
     return (
       <View style={styles.container}>
         <TouchableOpacity activeOpacity={isOwnPersonPage ? 1 : 0.2} onPress={this.gotoPersonPage}>
@@ -90,8 +100,8 @@ class XshareItem extends React.PureComponent {
             <SecondaryText>{itemData.commit_user}</SecondaryText>
             {!isOwnPersonPage && (
               <TouchableOpacity onPress={this.toggleAttention}>
-                <SmallText style={styles.attenText(itemData.is_add_friends)}>
-                  {itemData.is_add_friends ? '+关注' : '已关注'}
+                <SmallText style={styles.attenText(!isAttention)}>
+                  {!isAttention ? '+关注' : '已关注'}
                 </SmallText>
               </TouchableOpacity>
             )}
@@ -104,9 +114,9 @@ class XshareItem extends React.PureComponent {
           >
             <Text
               ref={ref => (this.refText = ref)}
-              numberOfLines={6}
               onLayout={this.mainBodyLayout}
               style={styles.mainContext}
+              {...lineNumber}
             >
               {itemData.label &&
                 itemData.label.split(',').map(item => {
@@ -119,7 +129,7 @@ class XshareItem extends React.PureComponent {
               <CommonText>&nbsp;&nbsp;{itemData.content}</CommonText>
             </Text>
           </TouchableOpacity>
-          {mainBodyHeight >= 110 && (
+          {!isDetail && mainBodyHeight >= 110 && (
             <TouchableOpacity onPress={this.gotoXfriendDetail}>
               <Text style={styles.seeAllText}>查看详情</Text>
             </TouchableOpacity>
@@ -148,12 +158,16 @@ class XshareItem extends React.PureComponent {
           </View>
           <View style={styles.bottomBar}>
             <LikeBtn
-              type={LIKE_TYPE.comment}
+              type={LIKE_TYPE.share}
               itemData={itemData}
               size={16}
               textStyle={styles.bottomBarText}
             />
-            <TouchableOpacity style={styles.flexRowBetween} onPress={this.gotoXfriendDetail}>
+            <TouchableOpacity
+              activeOpacity={noPress ? 1 : 0.2}
+              style={styles.flexRowBetween}
+              onPress={this.gotoXfriendDetail}
+            >
               <Image style={styles.bottomBarIcon} source={{ uri: myImages.comment }} />
               <SmallText style={styles.bottomBarText}>{itemData.comment_num}</SmallText>
             </TouchableOpacity>

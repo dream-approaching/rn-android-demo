@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 /**
- * Created by ${ChenJC} on 2018/2/24.
+ * Created by ${liyi} on 2018/2/24.
  */
 
 public abstract class AbRefreshView extends LinearLayout {

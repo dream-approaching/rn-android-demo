@@ -94,7 +94,7 @@ class Mine extends React.Component {
     return (
       <View style={styles.container}>
         <SpringScrollView>
-          <ImageBackground resizeMode="cover" source={{ uri: myImages.bg }} style={styles.imgbg}>
+          <ImageBackground resizeMode='cover' source={{ uri: myImages.bg }} style={styles.imgbg}>
             <Avatar style={[styles.cardUser]} data={userData} />
           </ImageBackground>
           <View
@@ -105,18 +105,18 @@ class Mine extends React.Component {
             }}
           >
             <Button
-              title="登录"
+              title='登录'
               onPress={() => OpenActivity.open('com.lieying.content.social.login.ENTER')}
             />
-            <Button title="评论页" onPress={() => OpenRnActivity('comment')} />
+            <Button title='评论页' onPress={() => OpenRnActivity('comment')} />
             <Button
-              title="我的分享"
+              title='我的分享'
               onPress={() =>
                 OpenRnActivity('myShare', JSON.stringify({ phone: GetUserInfo.phone }))
               }
             />
             {/* <Button title='我要推荐' onPress={() => OpenRnActivity('recommend')} /> */}
-            <Button title="搜索" onPress={() => OpenRnActivity('search')} />
+            <Button title='搜索' onPress={() => OpenRnActivity('search')} />
           </View>
           <MenuCard style={[styles.cardCon, styles.cardMenu]} menu={cardMenu} />
           <MenuList style={[styles.cardCon, styles.listMenu]} menu={listMenu} />

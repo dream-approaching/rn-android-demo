@@ -63,7 +63,6 @@ export const navigateBeforeCheckLogin = action => {
   return OpenActivity.open('com.lieying.content.social.login.ENTER');
 };
 
-// 所有进程卡住
 export function sleep(ms) {
   const start = new Date().getTime();
   console.log(`休眠前：${start}`);

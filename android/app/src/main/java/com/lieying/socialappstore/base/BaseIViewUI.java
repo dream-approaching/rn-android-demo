@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 
 /**
- * Created by ${ChenJC} on 2018/1/26.
+ * Created by ${liyi} on 2018/1/26.
  */
 
 interface BaseIViewUI extends View.OnClickListener {

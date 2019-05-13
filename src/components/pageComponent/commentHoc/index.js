@@ -50,6 +50,7 @@ const commentHoc = Component => {
     handleChangeSort = async item => {
       await this.setState({
         activeTab: item.type,
+        allLoaded: false,
       });
       this.hocref.queryCommentDispatch({ isFirst: true });
     };
@@ -69,12 +70,17 @@ const commentHoc = Component => {
     };
 
     handleQueryNextPage = data => {
-      const { activeTab } = this.props;
+      const { activeTab } = this.state;
       const isHotSort = +activeTab === 1;
       const lastItem = lastArr(data);
-      this.hocref.queryCommentDispatch({
-        id: isHotSort ? lastItem.fabulous : lastItem.created_time,
-      });
+      const queryId = isHotSort ? lastItem.fabulous : lastItem.created_time;
+      if (+queryId === 0) {
+        this.setState({
+          allLoaded: true,
+        });
+        return this.hocref.refScrollView && this.hocref.refScrollView.endLoading();
+      }
+      this.hocref.queryCommentDispatch({ id: queryId });
     };
 
     handleSubmitComment = data => {
