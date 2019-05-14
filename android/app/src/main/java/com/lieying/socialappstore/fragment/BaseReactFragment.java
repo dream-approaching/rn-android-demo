@@ -45,6 +45,7 @@ public abstract class BaseReactFragment extends BaseV4Fragment implements Defaul
     protected void initReactInstanceManager(String jsPath , String moduleName , boolean debug , String bundleAssetName){
         Bundle bundle = new Bundle();
         bundle.putString("veiw_name" , jsPath);
+        mReactInstanceManager = MainApplication.getInstance().getReactNativeHost().getReactInstanceManager();
         mReactRootView.startReactApplication(mReactInstanceManager, moduleName, bundle);
         fragmentCallback.initReactManager(mReactInstanceManager);
     }

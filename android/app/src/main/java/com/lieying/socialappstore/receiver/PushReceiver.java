@@ -37,7 +37,7 @@ public class PushReceiver extends XGPushBaseReceiver {
         RetrofitUtils.getInstance(context).sendRequset(new Function<String, ObservableSource<ResponseData<Object>>>() {
             @Override
             public ObservableSource<ResponseData<Object>> apply(String s) throws Exception {
-                return RetrofitUtils.getInstance(context).getApiService().updateUserInfo(ReqBody.getReqString(map));
+                return RetrofitUtils.getInstance(context).getApiService().updateUserPushToken(ReqBody.getReqString(map));
             }
         }, new BaseObserver<ResponseData<Object>>() {
             @Override
@@ -84,6 +84,7 @@ public class PushReceiver extends XGPushBaseReceiver {
     @Override
     public void onNotifactionClickedResult(Context context, XGPushClickedResult xgPushClickedResult) {
         Log.e("myPush" , "onNotifactionClickedResult-------- "+xgPushClickedResult.toString());
+
     }
 
     @Override

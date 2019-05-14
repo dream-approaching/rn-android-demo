@@ -19,6 +19,18 @@ export const COMMENT_TYPE = {
   share: 5, // X友分享
 };
 
+export const ARTICLE_TYPE = {
+  chat: 1, // 互动话题
+  article: 2, // 数字生活研究所
+  recommend: 3, // 应用推荐
+};
+
+export const NOTICE_TYPE = {
+  comment: 1, // 评论
+  like: 2, // 点赞
+  system: 3, // 系统通知
+};
+
 export const COMMENT_SORT = {
   hot: 1, // 最热
   new: 2, // 最新

@@ -1,3 +1,4 @@
+// 互动话题内页
 import React from 'react';
 import { View, StyleSheet, StatusBar, BackHandler } from 'react-native';
 import CommentItem from '@/components/Comment/CommentItem';
@@ -10,7 +11,7 @@ import { scale, themeLayout } from '@/config';
 import { connect } from '@/utils/dva';
 import SpringScrollView from '@/components/SpringScrollView';
 import Header from './components/header';
-import { COMMENT_TYPE } from '@/config/constants';
+import { COMMENT_TYPE, ARTICLE_TYPE } from '@/config/constants';
 import commentHoc from '@/components/pageComponent/commentHoc';
 
 class DetailChat extends React.Component {
@@ -27,6 +28,7 @@ class DetailChat extends React.Component {
       isFirst: true,
     };
     this.queryCommentDispatch(data);
+    this.queryArticleDispatch();
   }
 
   componentWillUnmount() {
@@ -35,7 +37,22 @@ class DetailChat extends React.Component {
       payload: [],
       isFirstPage: true,
     });
+    this.props.dispatch({
+      type: 'xshare/saveArticleDetail',
+      payload: {},
+    });
   }
+
+  queryArticleDispatch = () => {
+    const data = {
+      type: ARTICLE_TYPE.chat,
+      id: this.contendId,
+    };
+    this.props.dispatch({
+      type: 'xshare/queryArticleDetailEffect',
+      payload: data,
+    });
+  };
 
   queryCommentDispatch = payload => {
     const data = {
@@ -88,6 +105,7 @@ class DetailChat extends React.Component {
       handleChangeSort,
       handleQueryNextPage,
       handleChangeText,
+      xshare,
     } = this.props;
     return (
       <View style={styles.container}>
@@ -98,7 +116,7 @@ class DetailChat extends React.Component {
           allLoaded={allLoaded}
           bounces
         >
-          <Header />
+          <Header data={xshare.articleDetail} />
           <View style={styles.commentTitle}>
             <SecondaryText style={styles.commentTotal}>
               {comment.commentListTotal}个回答
@@ -131,8 +149,9 @@ class DetailChat extends React.Component {
   }
 }
 
-const mapStateToProps = ({ comment, loading }) => ({
+const mapStateToProps = ({ comment, xshare, loading }) => ({
   comment,
+  xshare,
   loading: loading.effects['comment/queryXshareListEffect'],
 });
 

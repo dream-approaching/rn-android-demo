@@ -124,11 +124,22 @@ public interface RequestApiService {
      * 上传用户头像
      */
     @Multipart
-    @POST("http://192.168.0.200:1530/interface/v1/user/auth/upload_picture ")
+    @POST("http://192.168.0.200:1530/interface/v1/user/auth/upload_headimg")
     Observable<ResponseData<Object>> uploadHeadIcon(@Part MultipartBody.Part cmd, @Part MultipartBody.Part userID,
                                                            @Part MultipartBody.Part file, @Part MultipartBody.Part file2,
                                                            @Part MultipartBody.Part file3, @Part MultipartBody.Part file4,
-                                                           @Part MultipartBody.Part file5);
+                                                           @Part MultipartBody.Part file5 , @Part MultipartBody.Part file6);
+
+    /**
+     * 发送请求
+     * 上传用户头像
+     */
+    @Multipart
+    @POST("http://192.168.0.200:1530/interface/v1/user/auth/upload_picture ")
+    Observable<ResponseData<Object>> uploadpic(@Part MultipartBody.Part cmd, @Part MultipartBody.Part userID,
+                                                    @Part MultipartBody.Part file, @Part MultipartBody.Part file2,
+                                                    @Part MultipartBody.Part file3, @Part MultipartBody.Part file4,
+                                                    @Part MultipartBody.Part file5 , @Part MultipartBody.Part file6);
 
 
     /**
@@ -136,7 +147,7 @@ public interface RequestApiService {
      * date 2019/3/7 0007 11:38
      * @function:获取用户信息
      */
-    @GET("/interface/v1/user/auth/get_userinfo")
+    @GET("http://192.168.0.200:1530/interface/v1/user/auth/get_userinfo")
     Observable<ResponseData<UserInfoBean>> getUserInfo(@Query("params") String route);
 
     /**
@@ -155,5 +166,15 @@ public interface RequestApiService {
      */
     @GET("http://192.168.0.200:1230/interface/v1/app/push/update_xgpush_token")
     Observable<ResponseData<Object>> updateUserPushToken(@Query("params") String route);
+
+
+
+    /**
+     * @author liyi
+     * date 2019/3/7 0007 11:38
+     * @function:更新用户信息
+     */
+    @GET(" http://192.168.0.200:1230/interface/v1/app/content/commit_report")
+    Observable<ResponseData<Object>> report(@Query("params") String route);
 
 }

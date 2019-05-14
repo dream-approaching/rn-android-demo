@@ -1,24 +1,14 @@
 import React from 'react';
-import {
-  View,
-  StyleSheet,
-  TouchableOpacity,
-  TextInput,
-  Image,
-  Keyboard,
-  BackHandler,
-} from 'react-native';
+import { View, StyleSheet, TouchableOpacity, TextInput, Image, Keyboard, Text } from 'react-native';
 import Header from '@/components/Header';
 import CommonText from '@/components/AppText/CommonText';
 import { themeColor, themeLayout, scale, themeSize } from '@/config';
 import myImages from '@/utils/myImages';
 import { connect } from '@/utils/dva';
-import { clearRepeatArr } from '@/utils/utils';
-import LabelBtn from './components/labelBtn';
-import Toast from '@/components/Toast';
 import Loading from '@/components/Loading/loading';
+import SecondaryText from '@/components/AppText/SecondaryText';
 
-class RecommendEdit extends React.Component {
+class ReplyNotice extends React.Component {
   static navigationOptions = {
     header: null,
   };
@@ -29,8 +19,6 @@ class RecommendEdit extends React.Component {
   };
 
   componentDidMount() {
-    const { navigation } = this.props;
-    this.id = navigation.getParam('id');
     this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this.keyboardDidShow);
     this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this.keyboardDidHide);
   }
@@ -62,43 +50,25 @@ class RecommendEdit extends React.Component {
     });
   };
 
-  handleSubmitShare = () => {
+  handleSubmitReply = () => {
     const { textValue } = this.state;
-    const { dispatch, recommend } = this.props;
+    const { dispatch, navigation } = this.props;
+    const itemData = navigation.getParam('itemData');
     if (!textValue.length) return null;
-    if (!recommend.selectedLabel.length) return Toast.show('至少选择一个标签');
-    const label = [];
-    recommend.selectedLabel.map(item => label.push(item.label));
+    const data = {
+      type: itemData.type,
+      content_id: itemData.content_id,
+      content: textValue,
+    };
+    if (itemData.parent_id) {
+      data.parent_id = itemData.parent_id;
+    }
     Keyboard.dismiss();
     dispatch({
-      type: 'recommend/submitXShareEffect',
-      payload: {
-        content: textValue,
-        app_info: this.id,
-        label: label.join(','),
-      },
-      successFn: () => {
-        dispatch({
-          type: 'global/toggleXshareRefreshEffect',
-          payload: true,
-          successFn: () => BackHandler.exitApp(),
-          // successFn: () => setTimeout(() => BackHandler.exitApp(), 100),
-        });
-      },
+      type: 'comment/submitCommentEffect',
+      payload: data,
+      successFn: () => navigation.pop(),
     });
-  };
-
-  handleDeleteLabel = item => {
-    const { recommend, dispatch } = this.props;
-    dispatch({
-      type: 'recommend/saveSelectedLabelList',
-      payload: clearRepeatArr(recommend.selectedLabel, [item]),
-    });
-  };
-
-  gotoAddLabel = () => {
-    const { navigation } = this.props;
-    navigation.navigate('AddLabel');
   };
 
   renderHeaderRight = () => {
@@ -107,10 +77,10 @@ class RecommendEdit extends React.Component {
     return (
       <TouchableOpacity
         activeOpacity={disabled ? 0.5 : 0.2}
-        onPress={this.handleSubmitShare}
+        onPress={this.handleSubmitReply}
         style={[styles.headerTextCon]}
       >
-        <CommonText style={styles.headerText(disabled)}>发表</CommonText>
+        <CommonText style={styles.headerText(disabled)}>发送</CommonText>
       </TouchableOpacity>
     );
   };
@@ -120,42 +90,27 @@ class RecommendEdit extends React.Component {
     if (isShowKeyBoard) {
       return (
         <View style={styles.footerUp}>
-          <TouchableOpacity onPress={this.gotoAddLabel}>
-            <Image style={styles.bigLabel} source={{ uri: myImages.btnLabel }} />
-          </TouchableOpacity>
+          <TouchableOpacity />
           <TouchableOpacity>
             <Image style={styles.bigLabel} source={{ uri: myImages.btnFacial }} />
           </TouchableOpacity>
         </View>
       );
     }
-    const { recommend } = this.props;
-    return (
-      <View style={styles.footerCon}>
-        <View style={styles.footerTip}>
-          <Image style={styles.smallLabel} source={{ uri: myImages.btnLabel }} />
-          <CommonText style={styles.tipText}>添加标签（最多可添加3个）</CommonText>
-        </View>
-        <View style={styles.lableCon}>
-          {recommend.selectedLabel.map(item => {
-            return (
-              <LabelBtn pressAction={() => this.handleDeleteLabel(item)} key={item.id}>
-                {item.label}
-              </LabelBtn>
-            );
-          })}
-          {recommend.selectedLabel.length < 3 && <LabelBtn pressAction={this.gotoAddLabel} empty />}
-        </View>
-      </View>
-    );
   };
 
   render() {
     const { textValue, isShowKeyBoard } = this.state;
     const { navigation, submitLoading } = this.props;
+    console.log('%cnavigation:', 'color: #0e93e0;background: #aaefe5;', navigation);
+    const itemData = navigation.getParam('itemData');
     return (
       <View style={styles.container}>
-        <Header navigation={navigation} title='提交' rightComponent={this.renderHeaderRight()} />
+        <Header
+          navigation={navigation}
+          title='回复评论'
+          rightComponent={this.renderHeaderRight()}
+        />
         {submitLoading && <Loading />}
         <View style={styles.pageBody}>
           <TextInput
@@ -165,9 +120,15 @@ class RecommendEdit extends React.Component {
             onChangeText={this.handleChangeText}
             value={textValue}
             multiline
-            placeholder='大家都在等着你的分享呢&#10;认真写下应用值得推荐的理由&#10;会更容易被推荐哦'
+            placeholder='写评论'
             placeholderTextColor='#c5c5c5'
           />
+          <View style={styles.replyPersonCon}>
+            <Text numberOfLines={2} style={styles.replyPersonText}>
+              <CommonText style={styles.atText}>@{itemData.nick_name}:</CommonText>
+              <SecondaryText>{itemData.content}</SecondaryText>
+            </Text>
+          </View>
           {this.renderFooter()}
         </View>
       </View>
@@ -180,7 +141,7 @@ const mapStateToProps = ({ recommend, loading }) => ({
   submitLoading: loading.effects['recommend/submitXShareEffect'],
 });
 
-export default connect(mapStateToProps)(RecommendEdit);
+export default connect(mapStateToProps)(ReplyNotice);
 
 const styles = StyleSheet.create({
   container: {
@@ -204,21 +165,23 @@ const styles = StyleSheet.create({
       color: themeColor.font.black,
       fontSize: themeSize.font.common,
       height: isShowKeyBoard
-        ? themeSize.screenHeight - scale(400)
-        : themeSize.screenHeight - scale(200),
+        ? themeSize.screenHeight - scale(500)
+        : themeSize.screenHeight - scale(500),
       lineHeight: scale(22),
       textAlignVertical: 'top',
     };
   },
-  footerCon: {
-    bottom: 0,
-    left: scale(16),
-    right: scale(16),
-    height: scale(118),
-    position: 'absolute',
-    zIndex: 1000,
-    paddingTop: scale(10),
-    ...themeLayout.borderSide('Top', themeColor.borderColor, scale(2)),
+  replyPersonCon: {
+    ...themeLayout.flex('row', 'flex-start'),
+    backgroundColor: themeColor.bgColor,
+    ...themeLayout.padding(scale(9), scale(16), scale(10)),
+    maxHeight: scale(70),
+  },
+  replyPersonText: {
+    lineHeight: scale(24),
+  },
+  atText: {
+    color: themeColor.font.at,
   },
   footerUp: {
     ...themeLayout.flex('row', 'space-between'),
@@ -230,23 +193,8 @@ const styles = StyleSheet.create({
     height: scale(48),
     position: 'absolute',
   },
-  footerTip: {
-    ...themeLayout.flex('row', 'flex-start'),
-  },
-  smallLabel: {
-    width: scale(14),
-    height: scale(14),
-    marginRight: scale(5),
-  },
   bigLabel: {
     width: scale(29),
     height: scale(29),
-  },
-  tipText: {
-    color: themeColor.font.secondary,
-  },
-  lableCon: {
-    marginTop: scale(12),
-    ...themeLayout.flex('row', 'flex-start'),
   },
 });

@@ -14,6 +14,7 @@ import { scale, themeLayout, themeColor, themeSize } from '@/config';
 import { connect } from '@/utils/dva';
 import commentHoc from '@/components/pageComponent/commentHoc';
 import { COMMENT_TYPE } from '@/config/constants';
+import WithLoading from '@/components/Loading/WithLoading';
 
 class XshareDetail extends React.Component {
   static navigationOptions = {
@@ -28,6 +29,7 @@ class XshareDetail extends React.Component {
       id: 0,
       isFirst: true,
     }); // 请求评论列表
+    this.queryArticleDispatch();
   }
 
   componentWillUnmount() {
@@ -36,7 +38,21 @@ class XshareDetail extends React.Component {
       payload: [],
       isFirstPage: true,
     });
+    this.props.dispatch({
+      type: 'xshare/saveXshareDetail',
+      payload: {},
+    });
   }
+
+  queryArticleDispatch = () => {
+    const data = {
+      id: this.contendId,
+    };
+    this.props.dispatch({
+      type: 'xshare/queryXshareDetailEffect',
+      payload: data,
+    });
+  };
 
   queryCommentDispatch = payload => {
     const data = {
@@ -60,7 +76,6 @@ class XshareDetail extends React.Component {
 
   render() {
     const {
-      screenProps,
       comment,
       placeholder,
       textValue,
@@ -69,51 +84,57 @@ class XshareDetail extends React.Component {
       handleQueryNextPage,
       handleChangeSort,
       handleChangeText,
+      xshare,
+      detailLoading,
     } = this.props;
     return (
       <View style={styles.container}>
         <Header title='查看详情' />
-        <SpringScrollView
-          ref={ref => (this.refScrollView = ref)}
-          loadingFooter={ChineseNormalFooter}
-          onLoading={() => handleQueryNextPage(comment.allCommentList)}
-          allLoaded={allLoaded}
-          bounces
-        >
-          <XfriendItem isDetail noPress itemData={JSON.parse(screenProps.nativeProps.params)} />
-          <View style={styles.replyCon}>
-            <View style={styles.tabCon}>
-              <SecondaryText style={styles.commentTotal}>
-                {comment.allCommentListTotal}个回答
-              </SecondaryText>
-              <CommentSort
-                activeStyle={{ color: themeColor.font.secondary }}
-                activeTab={activeTab}
-                changeSortAction={handleChangeSort}
+        <WithLoading loading={detailLoading}>
+          <SpringScrollView
+            ref={ref => (this.refScrollView = ref)}
+            loadingFooter={ChineseNormalFooter}
+            onLoading={() => handleQueryNextPage(comment.allCommentList)}
+            allLoaded={allLoaded}
+            bounces
+          >
+            <XfriendItem isDetail noPress itemData={xshare.xshareDetail} />
+            <View style={styles.replyCon}>
+              <View style={styles.tabCon}>
+                <SecondaryText style={styles.commentTotal}>
+                  {comment.allCommentListTotal}个回答
+                </SecondaryText>
+                <CommentSort
+                  activeStyle={{ color: themeColor.font.secondary }}
+                  activeTab={activeTab}
+                  changeSortAction={handleChangeSort}
+                />
+              </View>
+              <FlatList
+                keyExtractor={item => `${item.id}`}
+                data={comment.allCommentList}
+                renderItem={this.renderCommentItem}
               />
             </View>
-            <FlatList
-              keyExtractor={item => `${item.id}`}
-              data={comment.allCommentList}
-              renderItem={this.renderCommentItem}
-            />
-          </View>
-        </SpringScrollView>
-        <CommentInput
-          ref={ref => (this.refInputCon = ref)}
-          handleChangeText={handleChangeText}
-          handleSubmitComment={this.handleSubmitComment}
-          textValue={textValue}
-          placeholder={placeholder}
-        />
+          </SpringScrollView>
+          <CommentInput
+            ref={ref => (this.refInputCon = ref)}
+            handleChangeText={handleChangeText}
+            handleSubmitComment={this.handleSubmitComment}
+            textValue={textValue}
+            placeholder={placeholder}
+          />
+        </WithLoading>
       </View>
     );
   }
 }
 
-const mapStateToProps = ({ comment, loading }) => ({
+const mapStateToProps = ({ comment, xshare, loading }) => ({
   comment,
+  xshare,
   loading: loading.effects['comment/queryAllCommentEffect'],
+  detailLoading: loading.effects['xshare/queryXshareDetailEffect'],
 });
 
 export default connect(mapStateToProps)(commentHoc(XshareDetail));

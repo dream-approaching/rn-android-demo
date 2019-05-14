@@ -60,6 +60,7 @@ public abstract class BaseActivity extends Activity implements BaseIViewUI {
 
     @Override
     protected void onDestroy() {
+        ActivityUtils.removeActivity(this);
         mControl.clearDisposables();
         super.onDestroy();
     }

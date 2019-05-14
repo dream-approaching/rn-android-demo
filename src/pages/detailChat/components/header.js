@@ -4,7 +4,6 @@ import { scale, themeLayout, themeSize } from '@/config';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import LargerText from '@/components/AppText/LargerText';
 import SecondaryText from '@/components/AppText/SecondaryText';
-import myImages from '@/utils/myImages';
 import ImageWithDefault from '@/components/ImageWithDefault';
 
 export default class CommentPage extends React.PureComponent {
@@ -13,14 +12,15 @@ export default class CommentPage extends React.PureComponent {
   };
 
   render() {
+    const { data } = this.props;
     return (
       <View style={styles.container}>
         <TouchableOpacity>
-          <ImageWithDefault style={styles.coverImg} source={{ uri: myImages.attention }} />
+          <ImageWithDefault style={styles.coverImg} source={{ uri: data.img }} />
         </TouchableOpacity>
         <View style={styles.titleCon}>
-          <LargerText style={styles.title}>有那些小众却不熟主流的音乐App</LargerText>
-          <SecondaryText style={styles.desc}>来，畅所欲言吧</SecondaryText>
+          <LargerText style={styles.title}>{data.title}</LargerText>
+          <SecondaryText style={styles.desc}>{data.content}</SecondaryText>
         </View>
       </View>
     );

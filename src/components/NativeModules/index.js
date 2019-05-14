@@ -18,5 +18,5 @@ export const GetUserInfo = {
   nickname: NativeModules.GetUserInfo.KEY_ONE_NICK,
   phone: NativeModules.GetUserInfo.KEY_ONE_PHONE,
   token: NativeModules.GetUserInfo.KEY_ONE_TOKEN,
-  avatar: '',
+  avatar: NativeModules.GetUserInfo.KEY_ONE_HEAD,
 };

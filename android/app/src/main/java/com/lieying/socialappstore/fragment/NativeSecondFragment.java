@@ -1,26 +1,17 @@
 package com.lieying.socialappstore.fragment;
 
 import android.content.Context;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Spannable;
-import android.text.SpannableStringBuilder;
-import android.text.TextUtils;
-import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.lieying.comlib.bean.AppListBean;
-import com.lieying.comlib.bean.ExploreBean;
 import com.lieying.comlib.constant.Constants;
 import com.lieying.comlib.pull.PullToRefreshListener;
 import com.lieying.comlib.pull.PullToRefreshRecyclerView;
@@ -241,7 +232,6 @@ public class NativeSecondFragment extends BaseV4Fragment implements PullToRefres
          * @Author: liyi
          */
         private void collection(String type, String collection, AppListBean bean , int position) {
-            Log.e("test" , "opt ---------  "+collection);
             HashMap<String, String> map = new HashMap<>();
             map.put("type", type);
             map.put("opt", collection);
@@ -257,11 +247,14 @@ public class NativeSecondFragment extends BaseV4Fragment implements PullToRefres
                 @Override
                 protected void onSuccees(ResponseData<Object> objectResponseData) {
                     if (objectResponseData.getStatus() == 0) {
-                        Log.e("test" , "22222222 pos"+ position+"             "+mApplist.get(position).getId()+"     "+mApplist.get(position).isIs_fabulous()+"    "+collection);
                         if (collection.equals("add")) {
                             ToastUtil.showToast("搜藏成功");
                             mApplist.get(position).setIs_fabulous(false);
+                            int count = Integer.parseInt(mApplist.get(position).getFabulous()) + 1;
+                            mApplist.get(position).setFabulous(count+"");
                         } else {
+                            int count = Integer.parseInt(mApplist.get(position).getFabulous()) - 1;
+                            mApplist.get(position).setFabulous(count+"");
                             ToastUtil.showToast("取消收藏成功");
                             mApplist.get(position).setIs_fabulous(true);
                         }

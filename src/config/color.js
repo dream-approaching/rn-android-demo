@@ -24,5 +24,6 @@ export const themeColor = {
     black: '#303030',
     secondary: '#707070',
     small: '#a7a7a7',
+    at: '#677eab',
   },
 };

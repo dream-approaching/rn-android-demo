@@ -16,7 +16,7 @@ export default class extends React.PureComponent {
   };
 
   render() {
-    const { itemData, showModalAction } = this.props;
+    const { itemData, showModalAction, gotoDetailAction, gotoReplyAction } = this.props;
     const isShowText = +itemData.type === COMMENT_TYPE.app || +itemData.type === COMMENT_TYPE.share;
     return (
       <View style={styles.container}>
@@ -31,20 +31,20 @@ export default class extends React.PureComponent {
         <View style={styles.centerBody}>
           <CommonText>{itemData.nick_name}</CommonText>
           <SmallText>{itemData.timestr}</SmallText>
-          <TouchableOpacity onPress={showModalAction}>
+          <TouchableOpacity onPress={() => showModalAction(itemData)}>
             <SecondaryText style={styles.textLineHeight(22)}>{itemData.content}</SecondaryText>
           </TouchableOpacity>
-          {itemData.base_content && (
+          {!!itemData.base_content && (
             <SecondaryText style={[styles.baseContent, styles.textLineHeight(22)]}>
               {itemData.base_content}
             </SecondaryText>
           )}
-          <TouchableOpacity style={styles.btnReplyCon}>
+          <TouchableOpacity onPress={() => gotoReplyAction(itemData)} style={styles.btnReplyCon}>
             <Image style={styles.replyIcon} source={{ uri: myImages.noticeReply }} />
             <SmallText style={styles.replyText}>回复</SmallText>
           </TouchableOpacity>
         </View>
-        <View style={styles.rightBody}>
+        <TouchableOpacity onPress={() => gotoDetailAction(itemData)} style={styles.rightBody}>
           {(isShowText && (
             <View style={styles.rightTextCon}>
               <SmallText numberOfLines={4}>{itemData.title}</SmallText>
@@ -55,7 +55,7 @@ export default class extends React.PureComponent {
               source={{ uri: itemData.title || myImages.defaultHeader }}
             />
           )}
-        </View>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -113,6 +113,7 @@ const styles = StyleSheet.create({
   replyText: {
     fontSize: scale(10),
     color: '#677eab',
+    marginLeft: scale(3),
   },
   btnReplyCon: {
     ...themeLayout.flex('row', 'flex-start'),

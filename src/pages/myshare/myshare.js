@@ -6,7 +6,7 @@ import { scale, themeLayout } from '@/config';
 import XfriendItem from '@/components/pageComponent/xfriendItem';
 import { lastArr, navigateBeforeCheckLogin } from '@/utils/utils';
 import { connect } from '@/utils/dva';
-import { OpenRnActivity } from '@/components/NativeModules';
+import { OpenRnActivity, GetUserInfo } from '@/components/NativeModules';
 import Loading from '@/components/Loading/loading';
 
 class MyXshare extends React.Component {
@@ -28,10 +28,10 @@ class MyXshare extends React.Component {
 
   // 查询X友列表
   queryOthershareListDispatch = params => {
-    const { dispatch, screenProps } = this.props;
+    const { dispatch } = this.props;
     const data = {
       pagesize: 20,
-      othermobilephone: JSON.parse(screenProps.nativeProps.params).phone,
+      othermobilephone: GetUserInfo.phone,
       ...params,
     };
     dispatch({

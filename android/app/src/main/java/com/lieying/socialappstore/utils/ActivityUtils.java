@@ -10,7 +10,7 @@ import java.util.List;
  */
 
 public class ActivityUtils {
-    private static List<Activity> activityList;
+    private volatile static List<Activity> activityList;
 
     public static boolean addActivity(Activity activity) {
         if (activityList == null) {
@@ -52,4 +52,12 @@ public class ActivityUtils {
         }
         return state;
     }
+    //关闭所有activity
+    public static Activity getShowingActivity() {
+        if (activityList != null && activityList.size() > 0) {
+           return activityList.get(activityList.size()-1);
+        }
+        return null;
+    }
+
 }

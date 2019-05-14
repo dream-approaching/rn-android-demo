@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -13,6 +15,7 @@ import android.widget.TextView;
 
 import com.gyf.immersionbar.ImmersionBar;
 import com.lieying.comlib.bean.AppDetailsBean;
+import com.lieying.comlib.bean.DownBean;
 import com.lieying.comlib.constant.Constants;
 import com.lieying.socialappstore.R;
 import com.lieying.socialappstore.base.BaseActivity;
@@ -22,6 +25,7 @@ import com.lieying.socialappstore.network.BaseObserver;
 import com.lieying.socialappstore.network.ReqBody;
 import com.lieying.socialappstore.network.ResponseData;
 import com.lieying.socialappstore.network.RetrofitUtils;
+import com.lieying.socialappstore.service.UpdateService;
 import com.lieying.socialappstore.utils.GlideUtils;
 import com.lieying.socialappstore.utils.ToastUtil;
 
@@ -176,7 +180,11 @@ public class AppDetailsActivity extends BaseActivity {
         findViewById(R.id.ll_app_details_download).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                if(TextUtils.isEmpty(appDetailsBean.getApp_down_url())){
+                    ToastUtil.showToast("下载地址不存在");
+                    return;
+                }
+                startFxService();
             }
         });
     }
@@ -227,6 +235,20 @@ public class AppDetailsActivity extends BaseActivity {
                 }
             }
         });
+    }
+
+    /**
+     * 启动下载服务
+     */
+    private void startFxService() {
+        Intent intent = new Intent(this, UpdateService.class);
+        DownBean downBean = new DownBean();
+        downBean.setName(appDetailsBean.getApp_name_cn());
+        downBean.setDownPath(appDetailsBean.getApp_down_url());
+        String[] name = appDetailsBean.getApp_down_url().split("/");
+        downBean.setFileName(name[name.length-1]);
+        intent.putExtra("appURL", downBean);
+        this.startService(intent);
     }
 
 }

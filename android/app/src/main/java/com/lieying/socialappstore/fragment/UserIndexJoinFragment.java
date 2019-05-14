@@ -75,7 +75,7 @@ public class UserIndexJoinFragment extends BaseV4Fragment implements PullToRefre
 
     @Override
     public void initData() {
-
+        getAppData(true);
     }
 
     @Override

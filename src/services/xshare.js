@@ -12,3 +12,17 @@ export async function queryOthershareListReq(params) {
     data: params,
   });
 }
+
+// 查询互动话题、数字生活研究所、应用推荐内页
+export async function queryArticleDetailReq(params) {
+  return request(`${config.baseUrl2}/interface/v1/app/content/get_app_recommend_detail`, {
+    data: params,
+  });
+}
+
+// 查询X友分享内页
+export async function queryXshareDetailReq(params) {
+  return request(`${config.baseUrl2}/interface/v1/app/content/get_app_share_detail`, {
+    data: params,
+  });
+}

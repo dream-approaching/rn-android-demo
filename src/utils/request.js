@@ -3,6 +3,7 @@ import 'whatwg-fetch';
 import { GetUserInfo } from '@/components/NativeModules';
 // import { stringify } from 'qs';
 
+console.log(GetUserInfo);
 const codeMessage = {
   200: '服务器成功返回请求的数据。',
   201: '新建或修改数据成功。',
@@ -84,10 +85,10 @@ export default function request(url, options, time) {
 
   if (newOptions.method === 'GET') {
     const globalParams = {
-      // access_token: '3a93d69719f6e035bdb5c4d3b8a11547',
-      // mobilephone: '13564587895',
-      access_token: GetUserInfo.token,
-      mobilephone: GetUserInfo.phone,
+      access_token: '6b3597f7e7adaa11646896cf41b68681',
+      mobilephone: '18256478952',
+      // access_token: GetUserInfo.token,
+      // mobilephone: GetUserInfo.phone,
       app_ver: '1',
       app_ver_code: '1',
       ch: '1',

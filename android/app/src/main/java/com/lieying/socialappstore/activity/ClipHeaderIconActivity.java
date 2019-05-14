@@ -10,14 +10,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 
+import com.gyf.immersionbar.ImmersionBar;
 import com.lieying.socialappstore.R;
+import com.lieying.socialappstore.base.BaseActivity;
 import com.lieying.socialappstore.widget.ClipViewLayout;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 
-public class ClipHeaderIconActivity extends AppCompatActivity implements View.OnClickListener {
+public class ClipHeaderIconActivity extends BaseActivity implements View.OnClickListener {
     private static final String TAG = "ClipImageActivity";
     private ClipViewLayout clipViewLayout1;
     private ClipViewLayout clipViewLayout2;
@@ -30,15 +32,18 @@ public class ClipHeaderIconActivity extends AppCompatActivity implements View.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_clip_header_icon);
-        type = getIntent().getIntExtra("type", 1);
-        initView();
+
     }
 
-    /**
-     * 初始化组件
-     */
-    public void initView() {
+    @Override
+    protected void setContentView(Bundle savedInstanceState) {
+        ImmersionBar.with(this).statusBarDarkFont(false).init();
+        setContentView(R.layout.activity_clip_header_icon);
+    }
+
+    @Override
+    public void findView() {
+
         clipViewLayout1 = (ClipViewLayout) findViewById(R.id.clipViewLayout1);
         clipViewLayout2 = (ClipViewLayout) findViewById(R.id.clipViewLayout2);
         back = (ImageView) findViewById(R.id.iv_back);
@@ -48,6 +53,20 @@ public class ClipHeaderIconActivity extends AppCompatActivity implements View.On
         back.setOnClickListener(this);
         btnCancel.setOnClickListener(this);
         btnOk.setOnClickListener(this);
+    }
+
+    public void initView() {
+
+    }
+
+    @Override
+    public void initData() {
+        type = getIntent().getIntExtra("type", 1);
+    }
+
+    @Override
+    public void initListener() {
+
     }
 
     @Override

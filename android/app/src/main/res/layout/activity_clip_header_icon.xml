@@ -4,12 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/black"
+    android:fitsSystemWindows="true"
     android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="#173070">
+        android:background="#000000">
 
         <ImageView
             android:id="@+id/iv_back"
@@ -35,7 +36,7 @@
         app:clipType="circle"         ： 裁剪框类型为圆形
         app:mHorizontalPadding="30dp" ：裁剪框距离左右边距为30dp
      -->
-    <com.weiwang.wepush.widget.ClipViewLayout
+    <com.lieying.socialappstore.widget.ClipViewLayout
         android:id="@+id/clipViewLayout1"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -45,7 +46,7 @@
         app:mHorizontalPadding="30dp" />
 
     <!--矩形裁剪框示例 -->
-    <com.weiwang.wepush.widget.ClipViewLayout
+    <com.lieying.socialappstore.widget.ClipViewLayout
         android:id="@+id/clipViewLayout2"
         android:layout_width="match_parent"
         android:layout_height="0dp"

@@ -9,13 +9,18 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.widget.TextView;
+
+import com.facebook.react.ReactInstanceManager;
 import com.gyf.immersionbar.ImmersionBar;
 import com.lieying.comlib.bean.UserIndexInfoBean;
 import com.lieying.socialappstore.R;
 import com.lieying.socialappstore.base.BaseFragmentActivity;
 import com.lieying.socialappstore.base.BaseV4Fragment;
+import com.lieying.socialappstore.callback.FragmentCallback;
+import com.lieying.socialappstore.fragment.CommentReactFragment;
 import com.lieying.socialappstore.fragment.UserIndexJoinFragment;
 import com.lieying.socialappstore.fragment.UserIndexShareFragment;
+import com.lieying.socialappstore.fragment.XFriendShareFragment;
 import com.lieying.socialappstore.manager.UserManager;
 import com.lieying.socialappstore.network.BaseObserver;
 import com.lieying.socialappstore.network.ReqBody;
@@ -29,7 +34,7 @@ import java.util.HashMap;
 import io.reactivex.ObservableSource;
 import io.reactivex.functions.Function;
 
-public class UserIndexActivity extends BaseFragmentActivity {
+public class UserIndexActivity extends BaseFragmentActivity implements FragmentCallback {
     private static String KEY_USER_PHONE = "KEY_USER_PHONE";
     NiceImageView mIVUserHeadIcon;
     TextView mTVUserName;
@@ -70,8 +75,9 @@ public class UserIndexActivity extends BaseFragmentActivity {
     public void initView() {
         mTabLayout.setupWithViewPager(mViewPager);
         ArrayList<BaseV4Fragment> a = new ArrayList<>();
-        f1= UserIndexShareFragment.newInstance();
-        f2= UserIndexJoinFragment.newInstance();
+        f1= CommentReactFragment.newInstance("myShare", "MyReactNativeAppthree", false, "tab3.bundle");
+        ((CommentReactFragment) f1).setFragmentCallback(this);
+        f2 = UserIndexJoinFragment.newInstance();
         a.add(f1);
         a.add(f2);
         mAdapter = new MyAdapter(getSupportFragmentManager(), a);
@@ -117,6 +123,16 @@ public class UserIndexActivity extends BaseFragmentActivity {
         mTVUserName.setText(userIndexInfoBean.getUserinfo().getNick_name());
         mTVUserFollowCount.setText(userIndexInfoBean.getUserinfo().getGuan()+"   关  注");
         mTVUserFansCount.setText(userIndexInfoBean.getUserinfo().getFen()+"   粉  丝");
+    }
+
+    @Override
+    public void initReactManager(ReactInstanceManager reactInstanceManager) {
+
+    }
+
+    @Override
+    public void fragmentBack() {
+
     }
 
     private class MyAdapter extends FragmentPagerAdapter {

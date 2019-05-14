@@ -3,11 +3,9 @@ package com.lieying.socialappstore.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.facebook.react.modules.core.DeviceEventManagerModule;
@@ -29,7 +27,6 @@ import com.lieying.socialappstore.network.RetrofitUtils;
 import com.lieying.socialappstore.utils.DialogUtils;
 import com.lieying.socialappstore.utils.GlideUtils;
 import com.lieying.socialappstore.utils.SharedPreferencesUtil;
-import com.lieying.socialappstore.utils.ToastUtil;
 import com.lieying.socialappstore.widget.TitleView;
 import com.lieying.socialappstore.widget.citypicker.AddressPickTask;
 import com.lieying.socialappstore.widget.citypicker.City;
@@ -113,6 +110,10 @@ public class UserDataActivity extends BaseActivity {
 
     @Override
     public void onUnDoubleClickView(View v) {
+        if(UserManager.getInstance().NoUserLogin()){
+            LoginActivity.startActivity(mContext);
+            return;
+        }
         switch (v.getId()) {
             case R.id.rl_user_data_header:
                 DialogUtils.showBottomDialog(mContext, "拍照", "从相册选择", "取消", new DialogClickCallback() {
@@ -121,7 +122,7 @@ public class UserDataActivity extends BaseActivity {
                         switch (postion){
                             case 1:
                                 break;
-                            case 2:  //拍照
+                            case 2:  //从相册选择
                                 Matisse.from(UserDataActivity.this)
                                         .choose(MimeType.ofImage())
                                         .theme(R.style.Matisse_Dracula)
@@ -283,8 +284,6 @@ public class UserDataActivity extends BaseActivity {
             protected void onSuccees(ResponseData<UserInfoBean> objectResponseData) {
                 if (objectResponseData.getStatus() == 0 && objectResponseData.getData() != null) {
                     UserManager.getInstance().setCurrentUser(objectResponseData.getData());
-                    String userInfo = new Gson().toJson(objectResponseData.getData());
-                    SharedPreferencesUtil.getInstance().putString(Constants.SP_KEY_USER_INFO, userInfo);
                     setView();
                 } else {
                     showToast(objectResponseData.getMsg());
@@ -306,7 +305,7 @@ public class UserDataActivity extends BaseActivity {
         if (UserManager.getCurrentUser() != null && UserManager.getCurrentUser().getUserinfo() != null) {
             GlideUtils.loadCircleImageForUrl(mContext, R.drawable.ic_default_header, mIvHeaderIcon, UserManager.getCurrentUser().getUserinfo().getHead_image());
             mTvNick.setText(UserManager.getCurrentUser().getUserinfo().getNick_name());
-            mTvSex.setText(UserManager.getCurrentUser().getUserinfo().getSex().equals("m") ? "男" : "女");
+            mTvSex.setText(UserManager.getCurrentUser().getUserinfo().getSex() == null ? "未知" : (UserManager.getCurrentUser().getUserinfo().getSex().equals("m") ? "男" : "女"));
             mTvOccupation.setText(UserManager.getCurrentUser().getUserinfo().getCareer());
             mTvCity.setText(UserManager.getCurrentUser().getUserinfo().getLocation());
             mTvBrief.setText(UserManager.getCurrentUser().getUserinfo().getProfile());
@@ -328,6 +327,7 @@ public class UserDataActivity extends BaseActivity {
             protected void onSuccees(ResponseData<Object> objectResponseData) {
                 if (objectResponseData.getStatus() == 0 && objectResponseData.getData() != null) {
                     if(params.equals("sex")){
+                        UserManager.getCurrentUser().getUserinfo().setSex(msg);
                         switch (msg){
                             case "m":
                                 mTvSex.setText("男");
@@ -338,7 +338,9 @@ public class UserDataActivity extends BaseActivity {
                         }
                     }else{
                         mTvCity.setText(msg);
+                        UserManager.getCurrentUser().getUserinfo().setLocation(msg);
                     }
+                    UserManager.getInstance().saveUserData();
                 } else {
                     showToast(objectResponseData.getMsg());
                 }
@@ -368,6 +370,6 @@ public class UserDataActivity extends BaseActivity {
                 update("location" ,  city.getAreaName());
             }
         });
-        task.execute("四川", "阿坝");
+        task.execute("广东", "深圳");
     }
 }

@@ -21,6 +21,7 @@ import CollectApp from '@/pages/myCollect/collectApp';
 import CollectChat from '@/pages/myCollect/collectChat';
 import ClaimApp from '@/pages/claimApp/claimApp';
 import MyNotice from '@/pages/myNotice/myNotice';
+import ReplyNotice from '@/pages/myNotice/replyNotice';
 import MyAttention from '@/pages/myAttention/myAttention';
 import MyFans from '@/pages/myFans/myFans';
 import MyFeedback from '@/pages/myFeedback/myFeedback';
@@ -82,7 +83,10 @@ const CollectArticleNav = createStackNavigator(
 const CollectAppNav = createStackNavigator({ CollectApp }, { initialRouteName: 'CollectApp' });
 const CollectChatNav = createStackNavigator({ CollectChat }, { initialRouteName: 'CollectChat' });
 const ClaimAppNav = createStackNavigator({ ClaimApp }, { initialRouteName: 'ClaimApp' });
-const MyNoticeNav = createStackNavigator({ MyNotice }, { initialRouteName: 'MyNotice' });
+const MyNoticeNav = createStackNavigator(
+  { MyNotice, ReplyNotice },
+  { initialRouteName: 'MyNotice' }
+);
 const MyAttentionNav = createStackNavigator({ MyAttention }, { initialRouteName: 'MyAttention' });
 const MyFansNav = createStackNavigator({ MyFans }, { initialRouteName: 'MyFans' });
 const SettingNav = createStackNavigator({ Setting }, { initialRouteName: 'Setting' });

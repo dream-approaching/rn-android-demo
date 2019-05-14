@@ -138,7 +138,7 @@ public class RetrofitUtils {
         sendRequset(new Function<String, ObservableSource<ResponseData<Object>>>() {
             @Override
             public ObservableSource<ResponseData<Object>> apply(String s) throws Exception {
-                return apiService.uploadHeadIcon(image_size,access_token , ch , app_ver , app_ver_code , image_type  ,body);
+                return apiService.uploadHeadIcon(image_size ,access_token , ch , app_ver , app_ver_code , image_type  ,body , channel_id);
             }
         }, subscriber);
     }

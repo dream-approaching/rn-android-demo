@@ -10,3 +10,8 @@ export async function toggleLikeReq(params) {
 export async function toggleAttentionReq(params) {
   return request(`${config.baseUrl3}/interface/v1/app/follow/set_follow`, { data: params });
 }
+
+// 通知列表
+export async function queryNoticeListReq(params) {
+  return request(`${config.baseUrl}/interface/v1/app/fabulous/get_fabulous_list`, { data: params });
+}

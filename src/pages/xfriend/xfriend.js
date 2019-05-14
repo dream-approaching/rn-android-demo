@@ -24,11 +24,6 @@ class Xshare extends React.Component {
     const { dispatch } = this.props;
     this.defaultQueryList();
     AppState.addEventListener('change', () => {
-      console.log(
-        '%cglobal.shouldXshareRefresh:',
-        'color: #0e93e0;background: #aaefe5;',
-        this.props.global.shouldXshareRefresh
-      );
       if (this.props.global.shouldXshareRefresh) {
         this.defaultQueryList();
         dispatch({ type: 'global/toggleXshareRefreshEffect', payload: false });

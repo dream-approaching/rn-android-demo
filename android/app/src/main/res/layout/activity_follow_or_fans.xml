@@ -14,7 +14,7 @@
         app:back_image="@drawable/icon_back"
         app:line_bg_color="@color/color_eeeeee"
         app:right_spacing="12dp"
-        app:title="收藏APP应用"
+        app:title="我的粉丝"
         app:title_color="@color/color_303030"
         app:title_size="@dimen/dimens_19sp" />
 

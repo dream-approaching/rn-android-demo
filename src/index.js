@@ -7,12 +7,13 @@ import recommendModel from '@/models/recommend';
 import commentModel from '@/models/comment';
 import xshareModel from '@/models/xshare';
 import searchModel from '@/models/search';
+import noticeModel from '@/models/notice';
 // import createLogger from 'redux-logger';
 import Router from './router';
 
 const app = dva({
   initialState: {},
-  models: [globalModel, recommendModel, commentModel, xshareModel, searchModel],
+  models: [globalModel, recommendModel, commentModel, xshareModel, searchModel, noticeModel],
   onError(e) {
     console.log('onError', e);
   },

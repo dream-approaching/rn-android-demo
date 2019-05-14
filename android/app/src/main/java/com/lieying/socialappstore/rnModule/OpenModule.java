@@ -10,6 +10,8 @@ import com.lieying.socialappstore.activity.CollectionActivity;
 import com.lieying.socialappstore.activity.UserDataActivity;
 import com.lieying.socialappstore.activity.UserIndexActivity;
 import com.lieying.socialappstore.manager.UserManager;
+import com.lieying.socialappstore.utils.ActivityUtils;
+import com.lieying.socialappstore.utils.DialogUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -79,4 +81,13 @@ public class OpenModule extends ReactContextBaseJavaModule {
     public void openAppDetails(String app_id) {
         AppDetailsActivity.startActivity(getReactApplicationContext() ,app_id);
     }
+
+    /**
+     * 打开举报对话框
+     */
+    @ReactMethod
+    public void openReportDialog(String contentID ) {
+        DialogUtils.showReportDialog(ActivityUtils.getShowingActivity() , contentID);
+    }
+
 }

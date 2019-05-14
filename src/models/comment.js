@@ -23,8 +23,6 @@ export default {
     *queryAllCommentEffect({ payload, successFn, finallyFn }, { call, put }) {
       try {
         const response = yield call(queryAllCommentReq, payload);
-        console.log('%cpayload:', 'color: #0e93e0;background: #aaefe5;', payload);
-        console.log('%cresponse:', 'color: #0e93e0;background: #aaefe5;', response);
         if (response && response.code === 0) {
           yield put({
             type: 'saveAllCommentList',
@@ -44,7 +42,6 @@ export default {
     *queryCommentEffect({ payload, successFn, finallyFn }, { call, put }) {
       try {
         const response = yield call(queryCommentReq, payload);
-        console.log('%cresponse:', 'color: #0e93e0;background: #aaefe5;', response);
         if (response && response.code === 0) {
           yield put({
             type: 'saveCommentList',
@@ -64,11 +61,6 @@ export default {
     *queryChildCommentEffect({ payload, successFn, finallyFn }, { call, put }) {
       try {
         const response = yield call(queryChildCommentReq, payload);
-        console.log(
-          '%cqueryChildCommentReq response:',
-          'color: #0e93e0;background: #aaefe5;',
-          response
-        );
         if (response && response.code === 0) {
           yield put({
             type: 'saveChildCommentList',
@@ -88,7 +80,6 @@ export default {
     *submitCommentEffect({ payload, successFn, failedFn, finallyFn }, { call }) {
       try {
         const response = yield call(submitCommentReq, payload);
-        console.log('%cresponse:', 'color: #0e93e0;background: #aaefe5;', response);
         if (response && response.code === 0) {
           successFn && successFn();
         } else {

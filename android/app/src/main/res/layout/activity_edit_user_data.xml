@@ -10,7 +10,7 @@
     <com.lieying.socialappstore.widget.TitleView
         android:id="@+id/view_title"
         android:layout_width="match_parent"
-        android:layout_height="44dp"
+        android:layout_height="50dp"
         android:focusableInTouchMode="true"
         app:back_image="@drawable/icon_back"
         app:line_bg_color="@color/color_eeeeee"

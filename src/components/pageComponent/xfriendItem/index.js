@@ -60,7 +60,9 @@ class XshareItem extends React.Component {
 
   gotoXfriendDetail = () => {
     const { noPress, itemData } = this.props;
-    return noPress ? () => {} : OpenRnActivity('xFriendDetail', JSON.stringify(itemData));
+    return noPress
+      ? () => {}
+      : OpenRnActivity('xFriendDetail', JSON.stringify({ id: itemData.id }));
   };
 
   gotoAppDetail = () => {
@@ -169,11 +171,11 @@ class XshareItem extends React.Component {
               onPress={this.gotoXfriendDetail}
             >
               <Image style={styles.bottomBarIcon} source={{ uri: myImages.comment }} />
-              <SmallText style={styles.bottomBarText}>{itemData.comment_num}</SmallText>
+              <SmallText style={styles.bottomBarText}>{+itemData.comment_num || ''}</SmallText>
             </TouchableOpacity>
             <TouchableOpacity style={styles.flexRowBetween}>
               <Image style={styles.bottomBarIcon} source={{ uri: myImages.share }} />
-              <SmallText style={styles.bottomBarText}>{itemData.forward_num}</SmallText>
+              <SmallText style={styles.bottomBarText}>{+itemData.forward_num || ''}</SmallText>
             </TouchableOpacity>
             <TouchableOpacity onPress={this.handleRightBottomAction} style={styles.btnEtc}>
               {(origin === 'myPage' && <SmallText style={styles.delText}>删除</SmallText>) || (

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Socialappstore</string>
+    <string name="app_name">树莓</string>
     <string name="string_login_or_register">登陆/注册</string>
     <string name="string_agree_register_protocol">登陆注册表示同意</string>
     <string name="string_us_protocol">树莓用户使用协议、隐私政策</string>
@@ -24,4 +24,12 @@
     <string name="string_report_weifa">违法有害信息</string>
     <string name="string_report_chaoxi">内容涉嫌抄袭/盗用</string>
     <string name="string_report_other">其他</string>
+
+    <string name="tip_downloading">正在下载小财神最新版</string>
+    <string name="download_s">下载完成</string>
+    <string name="string_download_progress">正在下载%1$s</string>
+    <string name="p_download">准备下载</string>
+    <string name="tip_downloadfaild">文件下载失败</string>
+    <string name="no_rom_p">SD卡读写权限被禁</string>
+    <string name="app_up_v">%1$s更新</string>
 </resources>

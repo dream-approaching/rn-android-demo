@@ -31,7 +31,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.NoticeConfigActivity"></activity>
+        <activity android:name=".activity.FollowOrFansActivity"></activity>
+        <activity android:name=".activity.NoticeConfigActivity" />
         <activity android:name=".activity.SettingActivity" />
         <activity android:name=".activity.EditUserDataActivity" />
         <activity android:name=".activity.UserDataActivity" />
@@ -87,6 +88,9 @@
             android:name="notch.config"
             android:value="portrait|landscape" />
 
+        <service
+            android:name=".service.UpdateService"
+            android:exported="false" /> <!-- 信鸽推送部分 -->
         <receiver
             android:name="com.tencent.android.tpush.XGPushReceiver"
             android:process=":xg_service_v4">
@@ -155,6 +159,16 @@
         <meta-data
             android:name="XG_V2_ACCESS_KEY"
             android:value="AS5X1T49X5RE" />
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.lieying.socialappstore.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
     </application>
 
 </manifest>

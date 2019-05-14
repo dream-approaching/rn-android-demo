@@ -88,8 +88,7 @@ public class IndexFragment extends BaseV4Fragment {
 
              @Override
              public void comments(ExploreBean exploreBean) {
-//                 CommonReactActivity.startActivity(mContext , "MyReactNativeAppthree" ,"detailChat" , new ReactParamsJson.Builder().setContentID(exploreBean.getId()).setContentType(exploreBean.getType()).getRNParams());
-                 SettingActivity.startActivity(mContext);
+                 CommonReactActivity.startActivity(mContext , "MyReactNativeAppthree" ,"detailChat" , new ReactParamsJson.Builder().setContentID(exploreBean.getId()).setContentType(exploreBean.getType()).getRNParams());
             }
 
 

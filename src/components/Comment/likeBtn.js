@@ -52,7 +52,7 @@ class LikeBtn extends React.Component {
           style={styles.likeIcon(size)}
           source={{ uri: isLike ? myImages.thumbO : myImages.thumb }}
         />
-        <SmallText style={textStyle}>{likeNum}</SmallText>
+        <SmallText style={textStyle}>{+likeNum || ''}</SmallText>
       </TouchableOpacity>
     );
   }
