@@ -20,6 +20,7 @@
     "react-native-code-push": "^5.6.0",
     "react-native-device-info": "^1.5.0",
     "react-native-gesture-handler": "^1.1.0",
+    "react-native-modal": "^11.0.0",
     "react-native-pull": "^2.0.2",
     "react-native-scrollable-tab-view": "^0.10.0",
     "react-native-spring-scrollview": "^2.0.20",

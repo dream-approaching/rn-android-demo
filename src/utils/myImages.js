@@ -29,6 +29,7 @@ export default {
   danger: 'ic_danger',
   success: 'ic_success',
   defaultHeader: 'ic_default_header',
+  noticeReply: 'ic_reply',
 
   btnClear: 'btn_clear',
   btnDel: 'btn_del',

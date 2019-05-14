@@ -1,7 +1,6 @@
 import React from 'react';
-import { View, StyleSheet, Image } from 'react-native';
+import { View, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { scale, themeLayout, themeColor } from '@/config';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import { OpenRnActivity } from '@/components/NativeModules';
 import ImageWithDefault from '@/components/ImageWithDefault';
 import myImages from '@/utils/myImages';
@@ -17,7 +16,7 @@ export default class extends React.PureComponent {
   };
 
   render() {
-    const { itemData } = this.props;
+    const { itemData, showModalAction } = this.props;
     const isShowText = +itemData.type === COMMENT_TYPE.app || +itemData.type === COMMENT_TYPE.share;
     return (
       <View style={styles.container}>
@@ -32,10 +31,18 @@ export default class extends React.PureComponent {
         <View style={styles.centerBody}>
           <CommonText>{itemData.nick_name}</CommonText>
           <SmallText>{itemData.timestr}</SmallText>
-          <SecondaryText>{itemData.content}</SecondaryText>
+          <TouchableOpacity onPress={showModalAction}>
+            <SecondaryText style={styles.textLineHeight(22)}>{itemData.content}</SecondaryText>
+          </TouchableOpacity>
           {itemData.base_content && (
-            <SecondaryText style={styles.baseContent}>{itemData.base_content}</SecondaryText>
+            <SecondaryText style={[styles.baseContent, styles.textLineHeight(22)]}>
+              {itemData.base_content}
+            </SecondaryText>
           )}
+          <TouchableOpacity style={styles.btnReplyCon}>
+            <Image style={styles.replyIcon} source={{ uri: myImages.noticeReply }} />
+            <SmallText style={styles.replyText}>回复</SmallText>
+          </TouchableOpacity>
         </View>
         <View style={styles.rightBody}>
           {(isShowText && (
@@ -56,7 +63,7 @@ export default class extends React.PureComponent {
 
 const styles = StyleSheet.create({
   container: {
-    ...themeLayout.padding(scale(16)),
+    ...themeLayout.padding(scale(16), scale(16), scale(11)),
     ...themeLayout.flex('row', 'center', 'flex-start'),
     ...themeLayout.borderSide(),
   },
@@ -98,5 +105,18 @@ const styles = StyleSheet.create({
   rightImg: {
     width: scale(50),
     height: scale(50),
+  },
+  replyIcon: {
+    width: scale(11),
+    height: scale(11),
+  },
+  replyText: {
+    fontSize: scale(10),
+    color: '#677eab',
+  },
+  btnReplyCon: {
+    ...themeLayout.flex('row', 'flex-start'),
+    width: scale(60),
+    ...themeLayout.padding(scale(5), scale(10), scale(5), 0),
   },
 });
