@@ -1,7 +1,6 @@
 import React from 'react';
-import { StyleSheet, StatusBar } from 'react-native';
+import { StatusBar } from 'react-native';
 import Modal from 'react-native-modal';
-import { scale, themeLayout, themeSize } from '@/config';
 
 class MyModal extends React.Component {
   static defaultProps = {
@@ -30,7 +29,6 @@ class MyModal extends React.Component {
         onModalWillShow={this.onModalWillShow}
         onModalWillHide={this.onModalWillHide}
         isVisible={modalVisible}
-        style={styles.bottomModal}
         {...rest}
       >
         {children}
@@ -40,20 +38,3 @@ class MyModal extends React.Component {
 }
 
 export default MyModal;
-
-const styles = StyleSheet.create({
-  bottomModal: {
-    justifyContent: 'flex-end',
-    margin: 0,
-  },
-  modalBtn: isCancel => {
-    const style = {
-      backgroundColor: '#fff',
-      width: themeSize.screenWidth,
-      height: scale(61),
-      ...themeLayout.flex(),
-      ...themeLayout.borderSide('Top'),
-    };
-    return isCancel ? { ...style, marginTop: scale(5) } : style;
-  },
-});

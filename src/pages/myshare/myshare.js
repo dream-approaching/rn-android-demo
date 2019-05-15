@@ -27,12 +27,14 @@ class MyXshare extends React.Component {
   }
 
   // 查询X友列表
-  queryOthershareListDispatch = params => {
-    const { dispatch } = this.props;
+  queryOthershareListDispatch = payload => {
+    const { dispatch, screenProps } = this.props;
+    const { params } = screenProps.nativeProps;
+    const phone = params ? JSON.parse(params).phone : GetUserInfo.phone;
     const data = {
       pagesize: 20,
-      othermobilephone: GetUserInfo.phone,
-      ...params,
+      othermobilephone: phone,
+      ...payload,
     };
     dispatch({
       type: 'xshare/queryOtherShareListEffect',
@@ -90,7 +92,7 @@ class MyXshare extends React.Component {
           allLoaded={allLoaded}
         >
           {xshare.otherShareList.map(item => {
-            return <XfriendItem origin='myPage' key={item.id} itemData={item} />;
+            return <XfriendItem origin="myPage" key={item.id} itemData={item} />;
           })}
         </SpringScrollView>
       </View>

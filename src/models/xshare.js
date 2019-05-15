@@ -3,6 +3,7 @@ import {
   queryOthershareListReq,
   queryArticleDetailReq,
   queryXshareDetailReq,
+  deleteXshareReq,
 } from '@/services/xshare';
 import { toggleAttentionReq } from '@/services/common';
 import Toast from '@/components/Toast';
@@ -67,6 +68,19 @@ export default {
         console.log('err', err);
       }
     },
+    // 删除自己的X友分享
+    *deleteXshareEffect({ payload, successFn }, { call }) {
+      try {
+        const response = yield call(deleteXshareReq, payload);
+        if (response && response.code === 0) {
+          successFn && successFn();
+        } else {
+          Toast.show(response.msg);
+        }
+      } catch (err) {
+        console.log('err', err);
+      }
+    },
     // 互动话题、数字生活研究所、应用推荐内页
     *queryArticleDetailEffect({ payload, successFn }, { call, put }) {
       try {
@@ -88,7 +102,6 @@ export default {
     *queryXshareDetailEffect({ payload, successFn }, { call, put }) {
       try {
         const response = yield call(queryXshareDetailReq, payload);
-        console.log('%cresponse:', 'color: #0e93e0;background: #aaefe5;', response);
         if (response && response.code === 0) {
           yield put({
             type: 'saveXshareDetail',

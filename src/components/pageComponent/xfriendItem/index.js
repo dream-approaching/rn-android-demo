@@ -11,11 +11,13 @@ import { OpenRnActivity, OpenActivity } from '@/components/NativeModules';
 import { LIKE_TYPE } from '@/config/constants';
 import { connect } from '@/utils/dva';
 import ImageWithDefault from '@/components/ImageWithDefault';
+import MyModal from '@/components/Modal';
 
 class XshareItem extends React.Component {
   state = {
     mainBodyHeight: 0,
     isAttention: false,
+    modalVisible: false,
   };
 
   componentDidMount() {
@@ -51,11 +53,34 @@ class XshareItem extends React.Component {
     });
   };
 
+  handleShowModal = () => {
+    this.setState({
+      modalVisible: true,
+    });
+  };
+
+  handleHideModal = () => {
+    this.setState({
+      modalVisible: false,
+    });
+  };
+
   handleRightBottomAction = () => {
     const { origin } = this.props;
     if (origin === 'myPage') {
-      // showModal
+      this.handleShowModal();
     }
+    // 举报
+    OpenActivity.openReportDialog();
+  };
+
+  handleConfirmDelete = () => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'xshare/deleteXshareEffect',
+      payload: 'data',
+      successFn: () => {},
+    });
   };
 
   gotoXfriendDetail = () => {
@@ -70,9 +95,7 @@ class XshareItem extends React.Component {
     OpenActivity.openAppDetails(
       itemData.mydata
         ? itemData.mydata.id
-        : itemData.appdata
-        ? itemData.appdata.id
-        : itemData.app_info
+        : itemData.appdata ? itemData.appdata.id : itemData.app_info
     );
   };
 
@@ -84,7 +107,7 @@ class XshareItem extends React.Component {
 
   render() {
     const { itemData, noPress, origin, isDetail } = this.props;
-    const { mainBodyHeight, isAttention } = this.state;
+    const { mainBodyHeight, isAttention, modalVisible } = this.state;
     const isOwnPersonPage = origin === 'myPage';
     const lineNumber = !isDetail ? { numberOfLines: 6 } : {};
     return (
@@ -131,11 +154,12 @@ class XshareItem extends React.Component {
               <CommonText>&nbsp;&nbsp;{itemData.content}</CommonText>
             </Text>
           </TouchableOpacity>
-          {!isDetail && mainBodyHeight >= 110 && (
-            <TouchableOpacity onPress={this.gotoXfriendDetail}>
-              <Text style={styles.seeAllText}>查看详情</Text>
-            </TouchableOpacity>
-          )}
+          {!isDetail &&
+            mainBodyHeight >= 110 && (
+              <TouchableOpacity onPress={this.gotoXfriendDetail}>
+                <Text style={styles.seeAllText}>查看详情</Text>
+              </TouchableOpacity>
+            )}
           <View style={styles.flexRowBetween}>
             <TouchableOpacity onPress={this.gotoAppDetail} style={styles.appCon}>
               <ImageWithDefault
@@ -143,17 +167,13 @@ class XshareItem extends React.Component {
                 source={{
                   uri: itemData.mydata
                     ? itemData.mydata.img
-                    : itemData.appdata
-                    ? itemData.appdata.app_logo
-                    : itemData.app_logo,
+                    : itemData.appdata ? itemData.appdata.app_logo : itemData.app_logo,
                 }}
               />
               <SmallText style={styles.appName}>
                 {itemData.mydata
                   ? itemData.mydata.title
-                  : itemData.appdata
-                  ? itemData.appdata.app_short_desc
-                  : itemData.app_name_cn}
+                  : itemData.appdata ? itemData.appdata.app_short_desc : itemData.app_name_cn}
               </SmallText>
             </TouchableOpacity>
             <View />
@@ -184,6 +204,31 @@ class XshareItem extends React.Component {
             </TouchableOpacity>
           </View>
         </View>
+        <MyModal
+          backdropOpacity={0.8}
+          animationIn="zoomInDown"
+          animationOut="zoomOutUp"
+          animationInTiming={600}
+          animationOutTiming={600}
+          backdropTransitionInTiming={600}
+          backdropTransitionOutTiming={600}
+          hideModalAction={this.handleHideModal}
+          isVisible={modalVisible}
+        >
+          <View style={styles.modalCon}>
+            <View style={styles.modelTip}>
+              <CommonText style={styles.modalBtnText('#303030')}>确定删除吗</CommonText>
+            </View>
+            <View style={styles.modalBtnCon}>
+              <TouchableOpacity style={styles.modalBtn(false)} onPress={this.handleHideModal}>
+                <CommonText style={styles.modalBtnText('#2f94ea')}>取消</CommonText>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.modalBtn(true)} onPress={this.handleConfirmDelete}>
+                <CommonText style={styles.modalBtnText('#fb716b')}>确定</CommonText>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </MyModal>
       </View>
     );
   }
@@ -286,5 +331,36 @@ const styles = StyleSheet.create({
     color: themeColor.primaryColor,
     fontSize: scale(11),
     ...themeLayout.borderSide('Bottom', themeColor.primaryColor),
+  },
+  modalCon: {
+    width: scale(242),
+    height: scale(107),
+    ...themeLayout.flex('column'),
+    alignSelf: 'center',
+    backgroundColor: '#fff',
+    borderRadius: scale(10),
+  },
+  modelTip: {
+    height: scale(54),
+    ...themeLayout.flex(),
+  },
+  modalBtnCon: {
+    width: '100%',
+    ...themeLayout.flex(),
+    ...themeLayout.borderSide('Top'),
+  },
+  modalBtn: showBorder => {
+    const style = {
+      flex: 1,
+      ...themeLayout.flex(),
+      height: scale(54),
+    };
+    return showBorder ? { ...style, ...themeLayout.borderSide('Left') } : style;
+  },
+  modalBtnText: color => {
+    return {
+      fontSize: scale(19),
+      color,
+    };
   },
 });

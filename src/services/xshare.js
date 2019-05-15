@@ -26,3 +26,10 @@ export async function queryXshareDetailReq(params) {
     data: params,
   });
 }
+
+// 删除自己的X友分享
+export async function deleteXshareReq(params) {
+  return request(`${config.baseUrl2}/interface/v1/app/content/get_app_share_detail`, {
+    data: params,
+  });
+}

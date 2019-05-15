@@ -1,40 +1,35 @@
 # AppMatrix_RN
 
 #### 介绍
-应用社交产品矩阵RN模块
+
+应用社交产品矩阵 RN 模块
 
 #### 软件架构
-软件架构说明
 
+软件架构说明
 
 #### 安装教程
 
-1. xxxx
-2. xxxx
-3. xxxx
+1.  xxxx
+2.  xxxx
+3.  xxxx
 
 #### 使用说明
 
-1. 安装依赖，推荐使用`yarn`，或者使用`npm install`
-2. 启动项目：
-    * 开启一个模拟器，或者使用usb连接真机设备
+1.  安装依赖，推荐使用`yarn`，或者使用`npm install`
+2.  启动项目：
+    * 开启一个模拟器，或者使用 usb 连接真机设备
     * 运行：
-      * 方式1：启动服务(`npm run start` / `react-native start` ) + Android Studio `Run app`
-      * 方式2：`react-native run-android --variant CESHIDebug`
-
-#### 参与贡献
-
-1. Fork 本仓库
-2. 新建 Feat_xxx 分支
-3. 提交代码
-4. 新建 Pull Request
-
-
-#### 码云特技
-
-1. 使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2. 码云官方博客 [blog.gitee.com](https://blog.gitee.com)
-3. 你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解码云上的优秀开源项目
-4. [GVP](https://gitee.com/gvp) 全称是码云最有价值开源项目，是码云综合评定出的优秀开源项目
-5. 码云官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6. 码云封面人物是一档用来展示码云会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
+      * 方式 1：启动服务(`npm run start` / `react-native start` ) + Android Studio `Run app`
+      * 方式 2：`npm run dev` + `npm run debug`(debug 模式)
+3.  打包命令：`npm run bundleTab3`
+4.  RN 和本地对应的路由：  
+    路由 | 对应界面
+    ---|---
+    fragment3 | 个人中心
+    myShare | 个人页面的分享
+    fragment4 | X 友分享列表
+    xFriendDetail | X 友分享内页
+    comment | 评论
+    detailChat | 互动话题内页
+    search | 搜索
