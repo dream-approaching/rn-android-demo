@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, TextInput, StyleSheet, Image } from 'react-native';
 import { scale, themeLayout, themeColor } from '@/config';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import TouchableNativeFeedback from '@/components/Touchable/TouchableNativeFeedback';
 import myImages from '@/utils/myImages';
 import CommonText from '@/components/AppText/CommonText';
 
@@ -31,14 +31,16 @@ export default class CommentPage extends React.PureComponent {
             placeholderTextColor={themeColor.placeholderColor}
           />
           {searchKey.length > 0 && (
-            <TouchableOpacity onPress={cleanTextAction}>
+            <TouchableNativeFeedback onPress={cleanTextAction}>
               <Image style={styles.rightIcon} source={{ uri: myImages.btnDel }} />
-            </TouchableOpacity>
+            </TouchableNativeFeedback>
           )}
         </View>
-        <TouchableOpacity style={styles.cancelBtn} onPress={cancelSearchAction}>
-          <CommonText style={styles.cancelText}>取消</CommonText>
-        </TouchableOpacity>
+        <TouchableNativeFeedback onPress={cancelSearchAction}>
+          <View style={styles.cancelBtn}>
+            <CommonText style={styles.cancelText}>取消</CommonText>
+          </View>
+        </TouchableNativeFeedback>
       </View>
     );
   }

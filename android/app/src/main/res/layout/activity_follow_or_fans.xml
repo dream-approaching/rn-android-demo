@@ -8,7 +8,7 @@
     android:orientation="vertical">
 
     <com.lieying.socialappstore.widget.TitleView
-        android:id="@+id/view_title"
+        android:id="@+id/title_fans_title"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         app:back_image="@drawable/icon_back"

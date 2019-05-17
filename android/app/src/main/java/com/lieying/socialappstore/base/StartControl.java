@@ -18,7 +18,7 @@ import io.reactivex.disposables.Disposable;
 
 public class StartControl {
     private Activity mActivity;
-    private BaseDialog mDialog;
+    private BaseDialogActivity mDialog;
 
         private List<Disposable> mDisposables;
 
@@ -39,10 +39,10 @@ public class StartControl {
         return mDisposables;
     }
 
-    public void setDialog(Class<? extends BaseDialog> dialogClass) {
+    public void setDialog(Class<? extends BaseDialogActivity> dialogClass) {
         try {
             Constructor st = dialogClass.getConstructor(Context.class);
-            this.mDialog = (BaseDialog) st.newInstance(mActivity);
+            this.mDialog = (BaseDialogActivity) st.newInstance(mActivity);
         } catch (InstantiationException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
@@ -54,7 +54,7 @@ public class StartControl {
         }
     }
 
-    public BaseDialog getDialog() {
+    public BaseDialogActivity getDialog() {
         return mDialog;
     }
 

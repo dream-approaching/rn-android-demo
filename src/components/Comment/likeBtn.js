@@ -1,32 +1,18 @@
 import React from 'react';
-import { StyleSheet, Image } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { StyleSheet, Image, View } from 'react-native';
+import TouchableNativeFeedback from '@/components/Touchable/TouchableNativeFeedback';
 import { scale, themeLayout } from '@/config';
 import SmallText from '@/components/AppText/SmallText';
 import myImages from '@/utils/myImages';
 import { connect } from '@/utils/dva';
+import { actionBeforeCheckLogin } from '@/utils/utils';
 
 class LikeBtn extends React.Component {
-  state = {
-    likeNum: 0,
-    isLike: false,
-  };
-
-  componentDidMount() {
-    const { itemData } = this.props;
-    this.setState({
-      likeNum: itemData.fabulous,
-      isLike: !itemData.is_fabulous,
-    });
-  }
-
   handleToggleLike = () => {
-    const { dispatch, itemData, type } = this.props;
-    const { likeNum, isLike } = this.state;
+    const { dispatch, itemData, type, toggleCallback = () => {} } = this.props;
     const data = {
-      mobilephone: itemData.mobilephone,
       type,
-      opt: isLike ? 'del' : 'add',
+      opt: !itemData.is_fabulous ? 'del' : 'add',
       id: itemData.id,
       real_name: itemData.commit_user,
       head_image: itemData.head_image,
@@ -35,25 +21,23 @@ class LikeBtn extends React.Component {
       type: 'comment/toggleLikeEffect',
       payload: data,
       successFn: () => {
-        this.setState({
-          likeNum: isLike ? likeNum - 1 : +likeNum + 1,
-          isLike: !isLike,
-        });
+        toggleCallback();
       },
     });
   };
 
   render() {
-    const { size = 14, textStyle } = this.props;
-    const { likeNum, isLike } = this.state;
+    const { size = 14, textStyle, itemData } = this.props;
     return (
-      <TouchableOpacity onPress={this.handleToggleLike} style={styles.likeCon}>
-        <Image
-          style={styles.likeIcon(size)}
-          source={{ uri: isLike ? myImages.thumbO : myImages.thumb }}
-        />
-        <SmallText style={textStyle}>{+likeNum || ''}</SmallText>
-      </TouchableOpacity>
+      <TouchableNativeFeedback onPress={() => actionBeforeCheckLogin(this.handleToggleLike)}>
+        <View style={styles.likeCon}>
+          <Image
+            style={styles.likeIcon(size)}
+            source={{ uri: !itemData.is_fabulous ? myImages.thumbO : myImages.thumb }}
+          />
+          <SmallText style={textStyle}>{+itemData.fabulous || ''}</SmallText>
+        </View>
+      </TouchableNativeFeedback>
     );
   }
 }

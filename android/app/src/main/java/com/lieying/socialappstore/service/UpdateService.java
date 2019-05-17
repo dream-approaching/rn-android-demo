@@ -126,7 +126,6 @@ public class UpdateService extends Service {
 
     // 下载更新文件
     private void downFile() {
-        Log.e("test" , isDownloading+"           "+downLoadList.size());
         if(isDownloading){
             return;
         }

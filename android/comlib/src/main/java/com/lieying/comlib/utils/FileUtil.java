@@ -14,7 +14,8 @@ import java.io.File;
  * 文件工具类
  */
 public class FileUtil {
-    private static final String ROOT_NAME = "xcs";
+    private static final String ROOT_NAME = "shumei";
+    private static final String APP_DOWNLOAD_PATH = "/myDownLoad";
     /**
      * 根据Uri返回文件绝对路径
      * 兼容了file:///开头的 和 content://开头的情况
@@ -64,7 +65,7 @@ public class FileUtil {
      * @return
      */
     public static File getRootDir() {
-        File rootFile = new File(Environment.getExternalStorageDirectory(), ROOT_NAME);
+        File rootFile = new File(Environment.getExternalStorageDirectory(), ROOT_NAME + APP_DOWNLOAD_PATH);
         if (rootFile == null) {
             return null;
         }

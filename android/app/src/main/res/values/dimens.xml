@@ -131,4 +131,5 @@
     <dimen name="dimens_42dp">42dp</dimen>
     <dimen name="dimens_56dp">56dp</dimen>
     <dimen name="dimens_51dp">51dp</dimen>
+    <dimen name="dimens_61dp">61dp</dimen>
 </resources>

@@ -6,6 +6,7 @@ import com.lieying.comlib.bean.AppDetailsBean;
 import com.lieying.comlib.bean.AppListBean;
 import com.lieying.comlib.bean.CollectionBean;
 import com.lieying.comlib.bean.ExploreBean;
+import com.lieying.comlib.bean.OtherUserBean;
 import com.lieying.comlib.bean.TopicBean;
 import com.lieying.comlib.bean.UserIndexInfoBean;
 import com.lieying.comlib.bean.UserInfoBean;
@@ -120,6 +121,14 @@ public interface RequestApiService {
     Observable<ResponseData<List<CollectionBean>>> getCollectionList(@Query("params") String route);
 
     /**
+     * @author liyi
+     * date 2019/3/7 0007 11:38
+     * @function:获取粉丝或者关注列表
+     */
+    @GET("http://192.168.0.200:1230/interface/v1/app/follow/get_follow_list")
+    Observable<ResponseData<List<OtherUserBean>>> getFollowOrFansList(@Query("params") String route);
+
+    /**
      * 发送请求
      * 上传用户头像
      */
@@ -176,5 +185,21 @@ public interface RequestApiService {
      */
     @GET(" http://192.168.0.200:1230/interface/v1/app/content/commit_report")
     Observable<ResponseData<Object>> report(@Query("params") String route);
+
+    /**
+     * @author liyi
+     * date 2019/3/7 0007 11:38
+     * @function:更新用户信息
+     */
+    @GET("http://192.168.0.200:1230/interface/v1/app/follow/set_fun")
+    Observable<ResponseData<Object>> deleteFans(@Query("params") String route);
+
+    /**
+     * @author liyi
+     * date 2019/3/7 0007 11:38
+     * @function:更新用户信息
+     */
+    @GET("http://192.168.0.200:1230/interface/v1/app/push/update_user_push")
+    Observable<ResponseData<Object>> setNoticeConfig(@Query("params") String route);
 
 }

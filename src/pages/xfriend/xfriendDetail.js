@@ -14,7 +14,9 @@ import { scale, themeLayout, themeColor, themeSize } from '@/config';
 import { connect } from '@/utils/dva';
 import commentHoc from '@/components/pageComponent/commentHoc';
 import { COMMENT_TYPE } from '@/config/constants';
-import WithLoading from '@/components/Loading/WithLoading';
+import FirstLoading from '@/components/Loading/FirstLoading';
+import LoadingUpContent from '@/components/Loading/LoadingUpContent';
+import NoData from '@/components/NoData';
 
 class XshareDetail extends React.Component {
   static navigationOptions = {
@@ -86,11 +88,12 @@ class XshareDetail extends React.Component {
       handleChangeText,
       xshare,
       detailLoading,
+      commentLoading,
     } = this.props;
     return (
       <View style={styles.container}>
         <Header title='查看详情' />
-        <WithLoading loading={detailLoading}>
+        <FirstLoading loading={(detailLoading || commentLoading) && !xshare.xshareDetail.id}>
           <SpringScrollView
             ref={ref => (this.refScrollView = ref)}
             loadingFooter={ChineseNormalFooter}
@@ -98,7 +101,12 @@ class XshareDetail extends React.Component {
             allLoaded={allLoaded}
             bounces
           >
-            <XfriendItem isDetail noPress itemData={xshare.xshareDetail} />
+            <XfriendItem
+              attentionCallback={this.queryArticleDispatch}
+              isDetail
+              noPress
+              itemData={xshare.xshareDetail}
+            />
             <View style={styles.replyCon}>
               <View style={styles.tabCon}>
                 <SecondaryText style={styles.commentTotal}>
@@ -110,11 +118,15 @@ class XshareDetail extends React.Component {
                   changeSortAction={handleChangeSort}
                 />
               </View>
-              <FlatList
-                keyExtractor={item => `${item.id}`}
-                data={comment.allCommentList}
-                renderItem={this.renderCommentItem}
-              />
+              <LoadingUpContent loading={commentLoading}>
+                {(comment.allCommentList.length && (
+                  <FlatList
+                    keyExtractor={item => `${item.id}`}
+                    data={comment.allCommentList}
+                    renderItem={this.renderCommentItem}
+                  />
+                )) || <NoData text='暂无评论' />}
+              </LoadingUpContent>
             </View>
           </SpringScrollView>
           <CommentInput
@@ -124,7 +136,7 @@ class XshareDetail extends React.Component {
             textValue={textValue}
             placeholder={placeholder}
           />
-        </WithLoading>
+        </FirstLoading>
       </View>
     );
   }
@@ -133,7 +145,7 @@ class XshareDetail extends React.Component {
 const mapStateToProps = ({ comment, xshare, loading }) => ({
   comment,
   xshare,
-  loading: loading.effects['comment/queryAllCommentEffect'],
+  commentLoading: loading.effects['comment/queryAllCommentEffect'],
   detailLoading: loading.effects['xshare/queryXshareDetailEffect'],
 });
 
@@ -150,7 +162,9 @@ const styles = StyleSheet.create({
     ...themeLayout.border(),
   },
   replyCon: {
+    flex: 1,
     backgroundColor: themeColor.bgF4,
+    minHeight: scale(400),
   },
   commentTotal: {
     fontSize: themeSize.font.common,

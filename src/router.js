@@ -1,11 +1,12 @@
 import React from 'react';
-// import { Easing, Animated } from 'react-native';
+import { DeviceEventEmitter } from 'react-native';
 import { createStackNavigator, createAppContainer } from 'react-navigation';
+import { GetUserInfo } from '@/components/NativeModules';
+import { connect } from '@/utils/dva';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import NavigationService from '@/utils/NavigationService';
 import Empty from '@/pages/empty';
 import Mine from '@/pages/mine/mine';
-import Setting from '@/pages/setting/setting';
 import Recommend from '@/pages/recommend/recommend';
 import RecommendEdit from '@/pages/recommend/recommendEdit';
 import AddLabel from '@/pages/recommend/addLabel';
@@ -22,8 +23,6 @@ import CollectChat from '@/pages/myCollect/collectChat';
 import ClaimApp from '@/pages/claimApp/claimApp';
 import MyNotice from '@/pages/myNotice/myNotice';
 import ReplyNotice from '@/pages/myNotice/replyNotice';
-import MyAttention from '@/pages/myAttention/myAttention';
-import MyFans from '@/pages/myFans/myFans';
 import MyFeedback from '@/pages/myFeedback/myFeedback';
 import MyShare from '@/pages/myshare/myshare';
 import PersonPage from '@/pages/personPage/personPage';
@@ -87,9 +86,6 @@ const MyNoticeNav = createStackNavigator(
   { MyNotice, ReplyNotice },
   { initialRouteName: 'MyNotice' }
 );
-const MyAttentionNav = createStackNavigator({ MyAttention }, { initialRouteName: 'MyAttention' });
-const MyFansNav = createStackNavigator({ MyFans }, { initialRouteName: 'MyFans' });
-const SettingNav = createStackNavigator({ Setting }, { initialRouteName: 'Setting' });
 const MyFeedbackNav = createStackNavigator({ MyFeedback }, { initialRouteName: 'MyFeedback' });
 const MyShareNav = createStackNavigator({ MyShare }, { initialRouteName: 'MyShare' });
 const PersonPageNav = createStackNavigator({ PersonPage }, { initialRouteName: 'PersonPage' });
@@ -108,21 +104,19 @@ const CollectAppContainer = createAppContainer(CollectAppNav);
 const CollectChatContainer = createAppContainer(CollectChatNav);
 const ClaimAppContainer = createAppContainer(ClaimAppNav);
 const MyNoticeContainer = createAppContainer(MyNoticeNav);
-const MyAttentionContainer = createAppContainer(MyAttentionNav);
-const MyFansContainer = createAppContainer(MyFansNav);
-const SettingContainer = createAppContainer(SettingNav);
 const MyFeedbackContainer = createAppContainer(MyFeedbackNav);
 const MyShareContainer = createAppContainer(MyShareNav);
 const PersonPageContainer = createAppContainer(PersonPageNav);
 const SearchContainer = createAppContainer(SearchNav);
 
-export default class Router extends React.Component {
+class Router extends React.Component {
   state = {
     App: createAppContainer(EmptyNav),
   };
 
   componentDidMount() {
-    const { nativeProps } = this.props;
+    // 配置activity
+    const { nativeProps } = this.props.screenProps;
     const { veiw_name: viewName } = nativeProps;
     const app = {
       fragment4: XFriendContainer,
@@ -137,9 +131,6 @@ export default class Router extends React.Component {
       collectChat: CollectChatContainer,
       claimApp: ClaimAppContainer,
       myNotice: MyNoticeContainer,
-      myAttention: MyAttentionContainer,
-      myFans: MyFansContainer,
-      setting: SettingContainer,
       myFeedback: MyFeedbackContainer,
       myShare: MyShareContainer,
       personPage: PersonPageContainer,
@@ -149,6 +140,37 @@ export default class Router extends React.Component {
     this.setState({
       App: app[viewName],
     });
+
+    // 读取本地的用户信息设置到global model
+    const { dispatch } = this.props;
+    GetUserInfo.getUserInfoString(res => {
+      if (res) {
+        dispatch({
+          type: 'global/saveUserInfo',
+          payload: JSON.parse(res),
+        });
+      }
+    });
+
+    // 监听登录事件，重写global的userInfo
+    DeviceEventEmitter.addListener('UserLogin', () => {
+      console.log('监听到登录成功');
+      GetUserInfo.getUserInfoString(res => {
+        dispatch({
+          type: 'global/saveUserInfo',
+          payload: JSON.parse(res),
+        });
+      });
+    });
+
+    // 监听退出登录事件，清空global的userInfo
+    DeviceEventEmitter.addListener('UserExit', () => {
+      console.log('监听到退出登录');
+      dispatch({
+        type: 'global/saveUserInfo',
+        payload: null,
+      });
+    });
   }
 
   render() {
@@ -156,12 +178,16 @@ export default class Router extends React.Component {
     return (
       <ErrorBoundary>
         <App
+          screenProps={this.props.screenProps}
           ref={navigatorRef => {
             NavigationService.setTopLevelNavigator(navigatorRef);
           }}
-          screenProps={this.props}
         />
       </ErrorBoundary>
     );
   }
 }
+
+const mapStateToProps = ({ global }) => ({ global });
+
+export default connect(mapStateToProps)(Router);

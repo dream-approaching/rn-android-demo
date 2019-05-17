@@ -19,6 +19,7 @@ import com.lieying.comlib.bean.DownBean;
 import com.lieying.comlib.constant.Constants;
 import com.lieying.socialappstore.R;
 import com.lieying.socialappstore.base.BaseActivity;
+import com.lieying.socialappstore.base.BaseLoadingActivity;
 import com.lieying.socialappstore.bean.ReactParamsJson;
 import com.lieying.socialappstore.manager.UserManager;
 import com.lieying.socialappstore.network.BaseObserver;
@@ -35,7 +36,7 @@ import java.util.List;
 import io.reactivex.ObservableSource;
 import io.reactivex.functions.Function;
 
-public class AppDetailsActivity extends BaseActivity {
+public class AppDetailsActivity extends BaseLoadingActivity {
     public static String APP_ID = "app_id";
     ImageView mIVLogo;
     TextView mTVTitle;
@@ -45,9 +46,6 @@ public class AppDetailsActivity extends BaseActivity {
     LinearLayout mLLLikes;
     TextView mTVCollection;
     TextView mTVRecommend;
-    LinearLayout mLlComments;
-    LinearLayout mLlCollections;
-    LinearLayout mLlDownLoad;
     AppDetailsBean appDetailsBean;
     private int[] bgs = {R.drawable.bg_app_tag_one, R.drawable.bg_app_tag_two, R.drawable.bg_app_tag_three};
 
@@ -83,6 +81,7 @@ public class AppDetailsActivity extends BaseActivity {
 
     @Override
     public void initData() {
+        showLoading();
         String id = getIntent().getStringExtra(APP_ID);
         HashMap<String, String> map = new HashMap<>();
         map.put("id", id);
@@ -96,6 +95,7 @@ public class AppDetailsActivity extends BaseActivity {
         }, new BaseObserver<ResponseData<AppDetailsBean>>() {
             @Override
             protected void onSuccees(ResponseData<AppDetailsBean> objectResponseData) {
+                dissMissDialog();
                 if (objectResponseData.getStatus() == 0 && objectResponseData.getData() != null) {
                     appDetailsBean = objectResponseData.getData();
                     parseData(objectResponseData.getData());
@@ -104,6 +104,7 @@ public class AppDetailsActivity extends BaseActivity {
 
             @Override
             protected void onFailure(Throwable e, boolean isNetWorkError) {
+                dissMissDialog();
                 if (isNetWorkError) {
                     ToastUtil.showToast("请求失败");
                 }

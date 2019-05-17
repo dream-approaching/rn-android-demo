@@ -1,8 +1,8 @@
 import React from 'react';
 import { View, StyleSheet, Image } from 'react-native';
 import { themeLayout, scale } from '@/config';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import { navigateBeforeCheckLogin } from '@/utils/utils';
+import TouchableNativeFeedback from '@/components/Touchable/TouchableNativeFeedback';
+import { actionBeforeCheckLogin } from '@/utils/utils';
 import CommonText from '@/components/AppText/CommonText';
 
 const styles = StyleSheet.create({
@@ -23,13 +23,13 @@ const styles = StyleSheet.create({
 export default class MenuItem extends React.PureComponent {
   handlePressButton = () => {
     const { item } = this.props;
-    item.onPressAction && navigateBeforeCheckLogin(item.onPressAction);
+    item.onPressAction && item.onPressAction();
   };
 
   render() {
     const { item } = this.props;
     return (
-      <TouchableOpacity onPress={this.handlePressButton}>
+      <TouchableNativeFeedback onPress={() => actionBeforeCheckLogin(this.handlePressButton)}>
         <View style={[styles.menuItemCon]}>
           {(item.icon && (
             <Image resizeMode='stretch' style={styles.iconStyle} source={{ uri: item.icon }} />
@@ -37,7 +37,7 @@ export default class MenuItem extends React.PureComponent {
             null}
           <CommonText style={styles.menuTitle}>{item.title}</CommonText>
         </View>
-      </TouchableOpacity>
+      </TouchableNativeFeedback>
     );
   }
 }

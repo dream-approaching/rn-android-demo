@@ -1,20 +1,19 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import TouchableNativeFeedback from '@/components/Touchable/TouchableNativeFeedback';
 import { scale, themeLayout, themeColor } from '@/config';
 import SecondaryText from '@/components/AppText/SecondaryText';
 import CommonText from '@/components/AppText/CommonText';
 import SmallText from '@/components/AppText/SmallText';
-import moment from '@/components/moment';
 import LikeBtn from '@/components/Comment/likeBtn';
-import { OpenRnActivity } from '@/components/NativeModules';
+import { OpenActivity } from '@/components/NativeModules';
 import { LIKE_TYPE } from '@/config/constants';
 import ImageWithDefault from '../ImageWithDefault';
 
 export default class ChildItem extends React.Component {
   gotoPersonPage = () => {
     const { itemData } = this.props;
-    OpenRnActivity('myShare', JSON.stringify({ phone: itemData.mobilephone }));
+    OpenActivity.openUserIndex(itemData.mobilephone);
   };
 
   render() {
@@ -22,9 +21,9 @@ export default class ChildItem extends React.Component {
     const isMain = type === 'main';
     return (
       <View style={[styles.mainComment, { backgroundColor: isMain ? '#fff' : 'transparent' }]}>
-        <TouchableOpacity onPress={this.gotoPersonPage}>
+        <TouchableNativeFeedback onPress={this.gotoPersonPage}>
           <ImageWithDefault style={styles.avatar(isMain)} source={{ uri: itemData.head_image }} />
-        </TouchableOpacity>
+        </TouchableNativeFeedback>
         <View style={styles.rightBody(isMain)}>
           <View style={styles.userBar}>
             <SecondaryText style={{ color: isMain ? '#303030' : '#707070' }}>
@@ -32,12 +31,12 @@ export default class ChildItem extends React.Component {
             </SecondaryText>
             <LikeBtn type={LIKE_TYPE.comment} itemData={itemData} size={isMain ? 15 : 13} />
           </View>
-          <SmallText>{moment(itemData.created_time * 1000).fromNow(true)}</SmallText>
-          <TouchableOpacity onPress={() => replyAction(itemData)}>
+          <SmallText>{itemData.timestr}</SmallText>
+          <TouchableNativeFeedback onPress={() => replyAction(itemData)}>
             <CommonText style={[styles.replyText, styles.textLineHeight(20)]}>
               {itemData.content}
             </CommonText>
-          </TouchableOpacity>
+          </TouchableNativeFeedback>
         </View>
       </View>
     );

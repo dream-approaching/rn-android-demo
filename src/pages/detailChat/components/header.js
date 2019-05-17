@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { scale, themeLayout, themeSize } from '@/config';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import TouchableNativeFeedback from '@/components/Touchable/TouchableNativeFeedback';
 import LargerText from '@/components/AppText/LargerText';
 import SecondaryText from '@/components/AppText/SecondaryText';
 import ImageWithDefault from '@/components/ImageWithDefault';
@@ -15,9 +15,9 @@ export default class CommentPage extends React.PureComponent {
     const { data } = this.props;
     return (
       <View style={styles.container}>
-        <TouchableOpacity>
+        <TouchableNativeFeedback>
           <ImageWithDefault style={styles.coverImg} source={{ uri: data.img }} />
-        </TouchableOpacity>
+        </TouchableNativeFeedback>
         <View style={styles.titleCon}>
           <LargerText style={styles.title}>{data.title}</LargerText>
           <SecondaryText style={styles.desc}>{data.content}</SecondaryText>

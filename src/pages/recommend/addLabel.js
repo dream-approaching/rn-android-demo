@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet } from 'react-native';
+import TouchableNativeFeedback from '@/components/Touchable/TouchableNativeFeedback';
 import SpringScrollView from '@/components/SpringScrollView';
 import Header from '@/components/Header';
 import SectionTitle from '@/components/SectionTitle';
@@ -51,6 +52,14 @@ class AddLabel extends React.Component {
     });
   };
 
+  clearAppList = () => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'recommend/saveAppList',
+      payload: [],
+    });
+  };
+
   handleChangeText = value => {
     this.setState({
       textValue: value,
@@ -98,9 +107,11 @@ class AddLabel extends React.Component {
     const { isSearching } = this.state;
     if (isSearching) return null;
     return (
-      <TouchableOpacity onPress={this.handleSubmitLabel} style={[styles.headerTextCon]}>
-        <CommonText style={styles.headerText}>完成</CommonText>
-      </TouchableOpacity>
+      <TouchableNativeFeedback onPress={this.handleSubmitLabel}>
+        <View style={[styles.headerTextCon]}>
+          <CommonText style={styles.headerText}>完成</CommonText>
+        </View>
+      </TouchableNativeFeedback>
     );
   };
 
@@ -111,14 +122,15 @@ class AddLabel extends React.Component {
       <View style={styles.searchListCon}>
         {searchList.map(item => {
           return (
-            <TouchableOpacity
+            <TouchableNativeFeedback
               onPress={() => this.handleSelectSearchLabel(item)}
-              style={styles.searchListItem}
               key={item.id}
             >
-              <CommonText>#{item.label}</CommonText>
-              <SecondaryText style={styles.searchCnt}>{item.cnt}人用过</SecondaryText>
-            </TouchableOpacity>
+              <View style={styles.searchListItem}>
+                <CommonText>#{item.label}</CommonText>
+                <SecondaryText style={styles.searchCnt}>{item.cnt}人用过</SecondaryText>
+              </View>
+            </TouchableNativeFeedback>
           );
         })}
       </View>
@@ -145,13 +157,14 @@ class AddLabel extends React.Component {
             {recommend.hotClassify.map(item => {
               const disabled = new Set(selectedLabel).has(item);
               return (
-                <TouchableOpacity
+                <TouchableNativeFeedback
                   onPress={() => (disabled ? null : this.handleAddLabel(item))}
-                  style={styles.hotItem(disabled)}
                   key={item.id}
                 >
-                  <CommonText style={styles.hotItemText(disabled)}>{item.label}</CommonText>
-                </TouchableOpacity>
+                  <View style={styles.hotItem(disabled)}>
+                    <CommonText style={styles.hotItemText(disabled)}>{item.label}</CommonText>
+                  </View>
+                </TouchableNativeFeedback>
               );
             })}
           </View>

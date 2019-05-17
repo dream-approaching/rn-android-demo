@@ -32,7 +32,7 @@ public class PushReceiver extends XGPushBaseReceiver {
     public void onRegisterResult(Context context, int i, XGPushRegisterResult xgPushRegisterResult) {
         HashMap<String, String> map = new HashMap<>();
         map.put("access_token", UserManager.getCurrentUser().getAccessToken());
-        map.put("xgpush_token" , "xgPushRegisterResult.getToken()");
+        map.put("xgpush_token" , xgPushRegisterResult.getToken());
         map.put("mobilephone", UserManager.getCurrentUser().getPhone());
         RetrofitUtils.getInstance(context).sendRequset(new Function<String, ObservableSource<ResponseData<Object>>>() {
             @Override

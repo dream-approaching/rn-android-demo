@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.lieying.comlib.R;
@@ -17,9 +18,9 @@ import com.lieying.comlib.R;
  */
 
 public class SimpleRefreshHeadView extends AbRefreshHeadView {
-    private ImageView mIvAnim;
+    private ProgressBar mIvAnim;
     private TextView mTvTip;
-    private AnimationDrawable mAnim;
+//    private AnimationDrawable mAnim;
 
     public SimpleRefreshHeadView(Context context) {
         super(context);
@@ -37,7 +38,7 @@ public class SimpleRefreshHeadView extends AbRefreshHeadView {
 
     @Override
     protected void initView() {
-        mIvAnim = (ImageView) findViewFromId(R.id.iv_refreshing);
+        mIvAnim = (ProgressBar) findViewFromId(R.id.iv_refreshing);
         mTvTip = (TextView) findViewFromId(R.id.tv_tip);
     }
 
@@ -51,24 +52,26 @@ public class SimpleRefreshHeadView extends AbRefreshHeadView {
     }
 
     public void stopRefreshingAnimation() {
-        if (mAnim != null) {
-            mAnim.stop();
-            mAnim = null;
-        }
+//        if (mAnim != null) {
+//            mAnim.stop();
+//            mAnim = null;
+//        }
+        mIvAnim.setVisibility(GONE);
     }
 
     public void startRefreshingAnimation() {
-        if (mAnim == null) {
-            mIvAnim.setBackgroundResource(R.drawable.anim_list_refresh);
-            mAnim = (AnimationDrawable) mIvAnim.getBackground();
-        }
-        mAnim.start();
+//        if (mAnim == null) {
+////            mIvAnim.setBackgroundResource(R.drawable.anim_list_refresh);
+////            mAnim = (AnimationDrawable) mIvAnim.getBackground();
+//        }
+//        mAnim.start();
+        mIvAnim.setVisibility(VISIBLE);
     }
 
     @Override
     protected void onPullingDown() {
         mTvTip.setVisibility(GONE);
-        mIvAnim.setBackgroundResource(R.drawable.icon_rf_13);
+//        mIvAnim.setBackgroundResource(R.drawable.icon_rf_13);
         mIvAnim.setVisibility(VISIBLE);
     }
 

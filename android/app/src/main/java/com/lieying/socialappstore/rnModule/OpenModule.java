@@ -7,6 +7,8 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.lieying.socialappstore.activity.AppDetailsActivity;
 import com.lieying.socialappstore.activity.CollectionActivity;
+import com.lieying.socialappstore.activity.FollowOrFansActivity;
+import com.lieying.socialappstore.activity.SettingActivity;
 import com.lieying.socialappstore.activity.UserDataActivity;
 import com.lieying.socialappstore.activity.UserIndexActivity;
 import com.lieying.socialappstore.manager.UserManager;
@@ -63,7 +65,7 @@ public class OpenModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void openUserIndex( String phone) {
-        UserIndexActivity.startActivity(getReactApplicationContext() , UserManager.getCurrentUser().getPhone());
+        UserIndexActivity.startActivity(getReactApplicationContext() , phone);
     }
 
     /**
@@ -88,6 +90,23 @@ public class OpenModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void openReportDialog(String contentID ) {
         DialogUtils.showReportDialog(ActivityUtils.getShowingActivity() , contentID);
+    }
+
+    /**
+     * 打开我的粉丝或者我的关注
+     * type ： 1（我的关注）   2（我的粉丝）
+     */
+    @ReactMethod
+    public void openFansOrFollow(String type) {
+        FollowOrFansActivity.startActivity(getReactApplicationContext() , type);
+    }
+
+    /**
+     * 打开我的设置
+     */
+    @ReactMethod
+    public void openSetting() {
+        SettingActivity.startActivity(getReactApplicationContext());
     }
 
 }

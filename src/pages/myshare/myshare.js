@@ -1,13 +1,15 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import SpringScrollView from '@/components/SpringScrollView';
-import { ChineseNormalFooter, ChineseNormalHeader } from 'react-native-spring-scrollview/Customize';
-import { scale, themeLayout } from '@/config';
+import { ChineseNormalFooter } from 'react-native-spring-scrollview/Customize';
+import SimpleHeader from '@/components/ScrollHeader/SimpleHeader';
 import XfriendItem from '@/components/pageComponent/xfriendItem';
-import { lastArr, navigateBeforeCheckLogin } from '@/utils/utils';
+import { lastArr, actionBeforeCheckLogin, clearRepeatArr } from '@/utils/utils';
 import { connect } from '@/utils/dva';
-import { OpenRnActivity, GetUserInfo } from '@/components/NativeModules';
-import Loading from '@/components/Loading/loading';
+import { OpenRnActivity } from '@/components/NativeModules';
+import deleteModalHoc from '@/components/pageComponent/deleteModalHoc';
+import FirstLoading from '@/components/Loading/FirstLoading';
+import NoData from '@/components/NoData';
 
 class MyXshare extends React.Component {
   static navigationOptions = {
@@ -16,35 +18,49 @@ class MyXshare extends React.Component {
 
   state = {
     allLoaded: false,
+    isFirstTime: true,
   };
 
   componentDidMount() {
+    this.defaultQueryList();
+  }
+
+  componentWillUnmount() {
+    this.props.dispatch({
+      type: 'saveOthershareList',
+      payload: [],
+      isFirstPage: true,
+    });
+  }
+
+  defaultQueryList = () => {
     const data = {
       id: 0,
       isFirst: true,
     };
     this.queryOthershareListDispatch(data);
-  }
+  };
 
   // 查询X友列表
-  queryOthershareListDispatch = payload => {
+  queryOthershareListDispatch = data => {
     const { dispatch, screenProps } = this.props;
     const { params } = screenProps.nativeProps;
-    const phone = params ? JSON.parse(params).phone : GetUserInfo.phone;
-    const data = {
+    const phone = params ? JSON.parse(params).userPhone : '';
+    const payload = {
       pagesize: 20,
       othermobilephone: phone,
-      ...payload,
+      ...data,
     };
     dispatch({
       type: 'xshare/queryOtherShareListEffect',
-      payload: data,
+      payload,
       successFn: response => {
         if (response.length === 0) {
           this.setState({
             allLoaded: true,
           });
         }
+        this.setState({ isFirstTime: false });
       },
       finallyFn: () => {
         if (data.isFirst) {
@@ -68,33 +84,51 @@ class MyXshare extends React.Component {
   handleQueryNextPage = () => {
     const { xshare } = this.props;
     const lastItem = lastArr(xshare.otherShareList);
-    console.log('%cxshare:', 'color: #0e93e0;background: #aaefe5;', lastItem);
     this.queryOthershareListDispatch({ id: lastItem.id });
   };
 
+  handleDeleteCallBack = itemData => {
+    const { xshare, dispatch } = this.props;
+    dispatch({
+      type: 'xshare/saveOthershareList',
+      payload: clearRepeatArr(xshare.otherShareList, [itemData]),
+      isFirstPage: true,
+    });
+  };
+
   gotoShare = () => {
-    return navigateBeforeCheckLogin(() => OpenRnActivity('recommend'));
+    return actionBeforeCheckLogin(() => OpenRnActivity('recommend'));
   };
 
   render() {
-    const { allLoaded } = this.state;
-    const { xshare, loading } = this.props;
-    if (loading && !xshare.otherShareList.length) return <Loading />;
+    const { allLoaded, isFirstTime } = this.state;
+    const { xshare, loading, handleShowDeleteModal, handleConfirmDelete } = this.props;
     return (
       <View style={styles.container}>
-        <SpringScrollView
-          ref={ref => (this.refScrollView = ref)}
-          bounces
-          loadingFooter={ChineseNormalFooter}
-          onLoading={this.handleQueryNextPage}
-          refreshHeader={ChineseNormalHeader}
-          onRefresh={this.handleRefreshList}
-          allLoaded={allLoaded}
-        >
-          {xshare.otherShareList.map(item => {
-            return <XfriendItem origin="myPage" key={item.id} itemData={item} />;
-          })}
-        </SpringScrollView>
+        <FirstLoading loading={loading && isFirstTime}>
+          <SpringScrollView
+            ref={ref => (this.refScrollView = ref)}
+            bounces
+            loadingFooter={ChineseNormalFooter}
+            onLoading={this.handleQueryNextPage}
+            refreshHeader={SimpleHeader}
+            onRefresh={this.handleRefreshList}
+            allLoaded={allLoaded}
+          >
+            {(!!xshare.otherShareList.length &&
+              xshare.otherShareList.map(item => {
+                return (
+                  <XfriendItem
+                    handleShowDeleteModal={handleShowDeleteModal}
+                    handleConfirmDelete={handleConfirmDelete}
+                    key={item.id}
+                    itemData={item}
+                    origin='myShare'
+                  />
+                );
+              })) || <NoData text='暂无分享' />}
+          </SpringScrollView>
+        </FirstLoading>
       </View>
     );
   }
@@ -103,30 +137,13 @@ class MyXshare extends React.Component {
 const mapStateToProps = ({ xshare, loading }) => ({
   xshare,
   loading: loading.effects['xshare/queryOtherShareListEffect'],
+  deleteLoading: loading.effects['xshare/deleteXshareEffect'],
 });
 
-export default connect(mapStateToProps)(MyXshare);
+export default connect(mapStateToProps)(deleteModalHoc(MyXshare));
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  shareCon: {
-    ...themeLayout.flex('row'),
-    ...themeLayout.border(scale(1)),
-    ...themeLayout.padding(scale(5), 0),
-    borderRadius: scale(6),
-    width: scale(260),
-    alignSelf: 'center',
-    // elevation: themeSize.minBorder,
-    marginTop: scale(16),
-    marginBottom: scale(10),
-  },
-  avatar: {
-    width: scale(28),
-    height: scale(28),
-    backgroundColor: 'lightblue',
-    borderRadius: scale(14),
-    marginRight: scale(10),
   },
 });

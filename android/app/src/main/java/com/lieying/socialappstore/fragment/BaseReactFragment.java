@@ -26,8 +26,7 @@ import java.util.List;
 public abstract class BaseReactFragment extends BaseV4Fragment implements DefaultHardwareBackBtnHandler {
     protected static final String ARG_PARAM_JSMAINMODULE_PATH = "param1";
     protected static final String ARG_PARAM_MODULE_NAME = "param2";
-    protected static final String ARG_PARAM_MODULE_DEBUG = "param3";
-    protected static final String ARG_PARAM_MODULE_BUNDLE_NAME = "param4";
+    public static String KEY_BUNDLE_ENTER_PARAMS = "bundle_name_params";
     protected RNGestureHandlerEnabledRootView mReactRootView;
 
     public void setFragmentCallback(FragmentCallback fragmentCallback) {
@@ -42,9 +41,10 @@ public abstract class BaseReactFragment extends BaseV4Fragment implements Defaul
         this.mReactInstanceManager = mReactInstanceManager;
     }
 
-    protected void initReactInstanceManager(String jsPath , String moduleName , boolean debug , String bundleAssetName){
+    protected void initReactInstanceManager(String jsPath , String moduleName ,String params){
         Bundle bundle = new Bundle();
         bundle.putString("veiw_name" , jsPath);
+        bundle.putString("params" , params);
         mReactInstanceManager = MainApplication.getInstance().getReactNativeHost().getReactInstanceManager();
         mReactRootView.startReactApplication(mReactInstanceManager, moduleName, bundle);
         fragmentCallback.initReactManager(mReactInstanceManager);
@@ -96,9 +96,8 @@ public abstract class BaseReactFragment extends BaseV4Fragment implements Defaul
         Bundle args = getArguments();
         String jsPath = (String) args.get(ARG_PARAM_JSMAINMODULE_PATH);
         String moduleName = (String)args.get(ARG_PARAM_MODULE_NAME);
-        boolean debug = (boolean)args.get(ARG_PARAM_MODULE_DEBUG);
-        String bundleAssetName = args.getString(ARG_PARAM_MODULE_BUNDLE_NAME);
-        initReactInstanceManager(jsPath , moduleName ,debug , bundleAssetName);
+        String params = args.getString(KEY_BUNDLE_ENTER_PARAMS);
+        initReactInstanceManager(jsPath , moduleName ,params);
         return mReactRootView;
     }
 

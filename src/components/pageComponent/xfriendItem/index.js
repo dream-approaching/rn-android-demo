@@ -1,6 +1,6 @@
 import React from 'react';
-import { View, Image, StyleSheet, Text, TouchableOpacity } from 'react-native';
-// import { TouchableOpacity } from 'react-native-gesture-handler';
+import { View, Image, StyleSheet, Text } from 'react-native';
+import TouchableNativeFeedback from '@/components/Touchable/TouchableNativeFeedback';
 import { themeLayout, scale, themeColor, themeSize } from '@/config';
 import SecondaryText from '@/components/AppText/SecondaryText';
 import SmallText from '@/components/AppText/SmallText';
@@ -11,19 +11,16 @@ import { OpenRnActivity, OpenActivity } from '@/components/NativeModules';
 import { LIKE_TYPE } from '@/config/constants';
 import { connect } from '@/utils/dva';
 import ImageWithDefault from '@/components/ImageWithDefault';
-import MyModal from '@/components/Modal';
+import { actionBeforeCheckLogin } from '@/utils/utils';
 
 class XshareItem extends React.Component {
-  state = {
-    mainBodyHeight: 0,
-    isAttention: false,
-    modalVisible: false,
-  };
-
-  componentDidMount() {
-    const { itemData } = this.props;
-    const isAttention = !itemData.is_add_friends;
-    this.setState({ isAttention });
+  constructor(props) {
+    super(props);
+    this.state = {
+      mainBodyHeight: 0,
+    };
+    const { userInfo } = props.global;
+    this.isOwn = userInfo && props.itemData.commit_user === userInfo.nick_name;
   }
 
   mainBodyLayout = ({ nativeEvent }) => {
@@ -34,53 +31,27 @@ class XshareItem extends React.Component {
   };
 
   toggleAttention = () => {
-    const { itemData, dispatch } = this.props;
-    const { isAttention } = this.state;
-    // itemData.is_add_friends ? '+关注' : '已关注'
-    console.log('%citemData:', 'color: #0e93e0;background: #aaefe5;', itemData.attention);
+    const { itemData, dispatch, attentionLikeCallback = () => {} } = this.props;
     const data = {
       follow_mobilephone: itemData.mobilephone,
-      opt: isAttention ? 'del' : 'add',
+      opt: !itemData.is_add_friends ? 'del' : 'add',
     };
     dispatch({
       type: 'xshare/toggleAttentionEffect',
       payload: data,
       successFn: () => {
-        this.setState({
-          isAttention: !isAttention,
-        });
+        attentionLikeCallback();
       },
     });
   };
 
-  handleShowModal = () => {
-    this.setState({
-      modalVisible: true,
-    });
-  };
-
-  handleHideModal = () => {
-    this.setState({
-      modalVisible: false,
-    });
-  };
-
   handleRightBottomAction = () => {
-    const { origin } = this.props;
-    if (origin === 'myPage') {
-      this.handleShowModal();
+    const { itemData } = this.props;
+    if (this.isOwn) {
+      return this.props.handleShowDeleteModal(itemData);
     }
     // 举报
-    OpenActivity.openReportDialog();
-  };
-
-  handleConfirmDelete = () => {
-    const { dispatch } = this.props;
-    dispatch({
-      type: 'xshare/deleteXshareEffect',
-      payload: 'data',
-      successFn: () => {},
-    });
+    OpenActivity.openReportDialog(itemData.id);
   };
 
   gotoXfriendDetail = () => {
@@ -95,48 +66,46 @@ class XshareItem extends React.Component {
     OpenActivity.openAppDetails(
       itemData.mydata
         ? itemData.mydata.id
-        : itemData.appdata ? itemData.appdata.id : itemData.app_info
+        : itemData.appdata
+        ? itemData.appdata.id
+        : itemData.app_info
     );
   };
 
   gotoPersonPage = () => {
-    const { origin, itemData } = this.props;
-    if (origin === 'myPage') return null;
-    OpenRnActivity('myShare', JSON.stringify({ phone: itemData.mobilephone }));
+    const { itemData, origin } = this.props;
+    if (this.isOwn || origin === 'myShare') return null;
+    OpenActivity.openUserIndex(itemData.mobilephone);
   };
 
   render() {
-    const { itemData, noPress, origin, isDetail } = this.props;
-    const { mainBodyHeight, isAttention, modalVisible } = this.state;
-    const isOwnPersonPage = origin === 'myPage';
+    const { itemData, isDetail, origin } = this.props;
+    const { mainBodyHeight } = this.state;
     const lineNumber = !isDetail ? { numberOfLines: 6 } : {};
+    const notShowAttention = this.isOwn || origin === 'myShare';
     return (
       <View style={styles.container}>
-        <TouchableOpacity activeOpacity={isOwnPersonPage ? 1 : 0.2} onPress={this.gotoPersonPage}>
+        <TouchableNativeFeedback color onPress={this.gotoPersonPage}>
           <View style={styles.avatarCon}>
             <ImageWithDefault style={styles.avatar} source={{ uri: itemData.head_image }} />
             {+itemData.is_big_v === 2 && (
               <Image style={styles.bigV} source={{ uri: myImages.approve }} />
             )}
           </View>
-        </TouchableOpacity>
+        </TouchableNativeFeedback>
         <View style={styles.itemRight}>
           <View style={styles.flexRowBetween}>
             <SecondaryText>{itemData.commit_user}</SecondaryText>
-            {!isOwnPersonPage && (
-              <TouchableOpacity onPress={this.toggleAttention}>
-                <SmallText style={styles.attenText(!isAttention)}>
-                  {!isAttention ? '+关注' : '已关注'}
+            {!notShowAttention && (
+              <TouchableNativeFeedback onPress={() => actionBeforeCheckLogin(this.toggleAttention)}>
+                <SmallText style={styles.attenText(itemData.is_add_friends)}>
+                  {itemData.is_add_friends ? '+关注' : '已关注'}
                 </SmallText>
-              </TouchableOpacity>
+              </TouchableNativeFeedback>
             )}
           </View>
           <SmallText>{itemData.timestr || itemData.created_time}</SmallText>
-          <TouchableOpacity
-            activeOpacity={noPress ? 1 : 0.2}
-            onPress={this.gotoXfriendDetail}
-            style={styles.mainBody}
-          >
+          <TouchableNativeFeedback onPress={this.gotoXfriendDetail}>
             <Text
               ref={ref => (this.refText = ref)}
               onLayout={this.mainBodyLayout}
@@ -153,29 +122,34 @@ class XshareItem extends React.Component {
                 })}
               <CommonText>&nbsp;&nbsp;{itemData.content}</CommonText>
             </Text>
-          </TouchableOpacity>
-          {!isDetail &&
-            mainBodyHeight >= 110 && (
-              <TouchableOpacity onPress={this.gotoXfriendDetail}>
-                <Text style={styles.seeAllText}>查看详情</Text>
-              </TouchableOpacity>
-            )}
+          </TouchableNativeFeedback>
+          {!isDetail && mainBodyHeight >= 110 && (
+            <TouchableNativeFeedback onPress={this.gotoXfriendDetail}>
+              <Text style={styles.seeAllText}>查看详情</Text>
+            </TouchableNativeFeedback>
+          )}
           <View style={styles.flexRowBetween}>
-            <TouchableOpacity onPress={this.gotoAppDetail} style={styles.appCon}>
-              <ImageWithDefault
-                style={styles.appIcon}
-                source={{
-                  uri: itemData.mydata
-                    ? itemData.mydata.img
-                    : itemData.appdata ? itemData.appdata.app_logo : itemData.app_logo,
-                }}
-              />
-              <SmallText style={styles.appName}>
-                {itemData.mydata
-                  ? itemData.mydata.title
-                  : itemData.appdata ? itemData.appdata.app_short_desc : itemData.app_name_cn}
-              </SmallText>
-            </TouchableOpacity>
+            <TouchableNativeFeedback onPress={this.gotoAppDetail}>
+              <View style={styles.appCon}>
+                <ImageWithDefault
+                  style={styles.appIcon}
+                  source={{
+                    uri: itemData.mydata
+                      ? itemData.mydata.img
+                      : itemData.appdata
+                      ? itemData.appdata.app_logo
+                      : itemData.app_logo,
+                  }}
+                />
+                <SmallText style={styles.appName}>
+                  {itemData.mydata
+                    ? itemData.mydata.title
+                    : itemData.appdata
+                    ? itemData.appdata.app_short_desc
+                    : itemData.app_name_cn}
+                </SmallText>
+              </View>
+            </TouchableNativeFeedback>
             <View />
           </View>
           <View style={styles.bottomBar}>
@@ -184,57 +158,37 @@ class XshareItem extends React.Component {
               itemData={itemData}
               size={16}
               textStyle={styles.bottomBarText}
+              // toggleCallback={}
             />
-            <TouchableOpacity
-              activeOpacity={noPress ? 1 : 0.2}
-              style={styles.flexRowBetween}
-              onPress={this.gotoXfriendDetail}
+            <TouchableNativeFeedback onPress={this.gotoXfriendDetail}>
+              <View style={styles.flexRowBetween}>
+                <Image style={styles.bottomBarIcon} source={{ uri: myImages.comment }} />
+                <SmallText style={styles.bottomBarText}>{+itemData.comment_num || ''}</SmallText>
+              </View>
+            </TouchableNativeFeedback>
+            <TouchableNativeFeedback>
+              <View style={styles.flexRowBetween}>
+                <Image style={styles.bottomBarIcon} source={{ uri: myImages.share }} />
+                <SmallText style={styles.bottomBarText}>{+itemData.forward_num || ''}</SmallText>
+              </View>
+            </TouchableNativeFeedback>
+            <TouchableNativeFeedback
+              onPress={() => actionBeforeCheckLogin(this.handleRightBottomAction)}
             >
-              <Image style={styles.bottomBarIcon} source={{ uri: myImages.comment }} />
-              <SmallText style={styles.bottomBarText}>{+itemData.comment_num || ''}</SmallText>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.flexRowBetween}>
-              <Image style={styles.bottomBarIcon} source={{ uri: myImages.share }} />
-              <SmallText style={styles.bottomBarText}>{+itemData.forward_num || ''}</SmallText>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={this.handleRightBottomAction} style={styles.btnEtc}>
-              {(origin === 'myPage' && <SmallText style={styles.delText}>删除</SmallText>) || (
-                <Image style={styles.bottomBarIcon} source={{ uri: myImages.btnEtc }} />
-              )}
-            </TouchableOpacity>
+              <View style={styles.btnEtc}>
+                {(this.isOwn && <SmallText style={styles.delText}>删除</SmallText>) || (
+                  <Image style={styles.bottomBarIcon} source={{ uri: myImages.btnEtc }} />
+                )}
+              </View>
+            </TouchableNativeFeedback>
           </View>
         </View>
-        <MyModal
-          backdropOpacity={0.8}
-          animationIn="zoomInDown"
-          animationOut="zoomOutUp"
-          animationInTiming={600}
-          animationOutTiming={600}
-          backdropTransitionInTiming={600}
-          backdropTransitionOutTiming={600}
-          hideModalAction={this.handleHideModal}
-          isVisible={modalVisible}
-        >
-          <View style={styles.modalCon}>
-            <View style={styles.modelTip}>
-              <CommonText style={styles.modalBtnText('#303030')}>确定删除吗</CommonText>
-            </View>
-            <View style={styles.modalBtnCon}>
-              <TouchableOpacity style={styles.modalBtn(false)} onPress={this.handleHideModal}>
-                <CommonText style={styles.modalBtnText('#2f94ea')}>取消</CommonText>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.modalBtn(true)} onPress={this.handleConfirmDelete}>
-                <CommonText style={styles.modalBtnText('#fb716b')}>确定</CommonText>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </MyModal>
       </View>
     );
   }
 }
 
-const mapStateToProps = ({ xshare }) => ({ xshare });
+const mapStateToProps = ({ xshare, global }) => ({ xshare, global });
 
 export default connect(mapStateToProps)(XshareItem);
 
@@ -248,6 +202,7 @@ const styles = StyleSheet.create({
   avatarCon: {
     width: scale(49),
     height: scale(49),
+    borderRadius: scale(25),
   },
   avatar: {
     width: scale(49),
@@ -331,36 +286,5 @@ const styles = StyleSheet.create({
     color: themeColor.primaryColor,
     fontSize: scale(11),
     ...themeLayout.borderSide('Bottom', themeColor.primaryColor),
-  },
-  modalCon: {
-    width: scale(242),
-    height: scale(107),
-    ...themeLayout.flex('column'),
-    alignSelf: 'center',
-    backgroundColor: '#fff',
-    borderRadius: scale(10),
-  },
-  modelTip: {
-    height: scale(54),
-    ...themeLayout.flex(),
-  },
-  modalBtnCon: {
-    width: '100%',
-    ...themeLayout.flex(),
-    ...themeLayout.borderSide('Top'),
-  },
-  modalBtn: showBorder => {
-    const style = {
-      flex: 1,
-      ...themeLayout.flex(),
-      height: scale(54),
-    };
-    return showBorder ? { ...style, ...themeLayout.borderSide('Left') } : style;
-  },
-  modalBtnText: color => {
-    return {
-      fontSize: scale(19),
-      color,
-    };
   },
 });

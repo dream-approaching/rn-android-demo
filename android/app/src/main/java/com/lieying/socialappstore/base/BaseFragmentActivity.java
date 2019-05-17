@@ -129,7 +129,7 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements B
     }
 
     @Override
-    public void setDialog(Class<? extends BaseDialog> dialogClass) {
+    public void setDialog(Class<? extends BaseDialogActivity> dialogClass) {
         mControl.setDialog(dialogClass);
     }
 

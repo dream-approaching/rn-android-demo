@@ -71,7 +71,6 @@ class MoreSearch extends React.Component {
   queryNextPage = () => {
     const { search } = this.props;
     const lastItem = lastArr(search.searchList);
-    console.log('%clastItem:', 'color: #0e93e0;background: #aaefe5;', lastItem);
     this.querySearchDispatch({ id: lastItem.id });
   };
 

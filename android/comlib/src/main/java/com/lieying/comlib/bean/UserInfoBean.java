@@ -16,19 +16,19 @@ public class UserInfoBean {
 
     public String getAccessToken(){
         if(userinfo == null){
-            return "c3c4db657e05f684f696096ec6f06371";
+            return "";
         }
         return userinfo.access_token;
     }
     public String getPhone(){
         if(userinfo == null){
-            return "18503068868";
+            return "";
         }
         return userinfo.mobilephone;
     }
     public String getName(){
         if(userinfo == null){
-            return "liyi";
+            return "";
         }
         return userinfo.nick_name;
     }

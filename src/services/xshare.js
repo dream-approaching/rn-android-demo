@@ -29,7 +29,7 @@ export async function queryXshareDetailReq(params) {
 
 // 删除自己的X友分享
 export async function deleteXshareReq(params) {
-  return request(`${config.baseUrl2}/interface/v1/app/content/get_app_share_detail`, {
+  return request(`${config.baseUrl2}/interface/v1/app/content/del_app_share`, {
     data: params,
   });
 }

@@ -25,6 +25,7 @@
         android:layout_height="1px"></View>
 
     <RelativeLayout
+        android:background="@drawable/selected_normal_click_bg"
         android:id="@+id/rl_setting_notice"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -57,6 +58,7 @@
 
     <RelativeLayout
         android:id="@+id/rl_setting_update"
+        android:background="@drawable/selected_normal_click_bg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -102,6 +104,7 @@
 
     <RelativeLayout
         android:id="@+id/rl_setting_cache"
+        android:background="@drawable/selected_normal_click_bg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -136,6 +139,7 @@
 
     <RelativeLayout
         android:id="@+id/rl_setting_policy"
+        android:background="@drawable/selected_normal_click_bg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -166,6 +170,7 @@
 
     <RelativeLayout
         android:id="@+id/rl_setting_value"
+        android:background="@drawable/selected_normal_click_bg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -196,6 +201,7 @@
 
     <TextView
         android:id="@+id/tv_setting_out_account"
+        android:background="@drawable/selected_normal_click_bg"
         android:gravity="center"
         android:text="退出当前账号"
         android:textColor="@color/color_fb716b"

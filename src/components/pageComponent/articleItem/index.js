@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet } from 'react-native';
+import TouchableNativeFeedback from '@/components/Touchable/TouchableNativeFeedback';
 import { themeLayout, scale, themeColor } from '@/config';
 import CommonText from '@/components/AppText/CommonText';
 import ImageWithDefault from '@/components/ImageWithDefault';
@@ -8,14 +9,16 @@ export default class extends React.PureComponent {
   render() {
     const { itemData, islastOne } = this.props;
     return (
-      <TouchableOpacity style={styles.container(islastOne)}>
-        <ImageWithDefault style={styles.leftImg} source={{ uri: itemData.img }} />
-        <View style={styles.itemRight}>
-          <CommonText numberOfLines={2} style={styles.articleTitle}>
-            {itemData.title}
-          </CommonText>
+      <TouchableNativeFeedback>
+        <View style={styles.container(islastOne)}>
+          <ImageWithDefault style={styles.leftImg} source={{ uri: itemData.img }} />
+          <View style={styles.itemRight}>
+            <CommonText numberOfLines={2} style={styles.articleTitle}>
+              {itemData.title}
+            </CommonText>
+          </View>
         </View>
-      </TouchableOpacity>
+      </TouchableNativeFeedback>
     );
   }
 }

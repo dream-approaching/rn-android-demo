@@ -1,4 +1,6 @@
-import { OpenActivity, GetUserInfo } from '@/components/NativeModules';
+import { OpenActivity } from '@/components/NativeModules';
+import { store } from '../index';
+import { NATIVE_ROUTE } from '@/config/constants';
 
 // debounce 防抖
 export const debounce = (fn, ms = 300) => {
@@ -50,17 +52,19 @@ export const spiltHighlightText = (text, highlightKey) => {
   return arr;
 };
 
-export const checkLogin = () => {
-  const { nickname, phone, token } = GetUserInfo;
-  console.log('%cGetUserInfo:', 'color: #0e93e0;background: #aaefe5;', GetUserInfo);
-  return !!(nickname && phone && token);
+export const isLogin = () => {
+  const state = store.getState();
+  const { userInfo } = state.global;
+  return !!userInfo;
 };
 
-export const navigateBeforeCheckLogin = action => {
-  if (checkLogin()) {
-    return action();
+export const gotoLogin = () => OpenActivity.open(NATIVE_ROUTE.LOGIN);
+
+export const actionBeforeCheckLogin = action => {
+  if (!isLogin()) {
+    return OpenActivity.open(NATIVE_ROUTE.LOGIN);
   }
-  return OpenActivity.open('com.lieying.content.social.login.ENTER');
+  return action();
 };
 
 export function sleep(ms) {

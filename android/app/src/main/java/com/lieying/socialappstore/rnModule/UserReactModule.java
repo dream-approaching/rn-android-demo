@@ -2,15 +2,21 @@ package com.lieying.socialappstore.rnModule;
 
 import android.content.Intent;
 
+import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.lieying.socialappstore.manager.UserManager;
+import com.lieying.socialappstore.utils.GsonUtil;
+import com.lieying.socialappstore.utils.SharedPreferencesUtil;
+import com.lieying.socialappstore.utils.ToastUtil;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.Nonnull;
+
+import static com.lieying.comlib.constant.Constants.SP_KEY_USER_INFO;
 
 public class UserReactModule extends ReactContextBaseJavaModule {
 
@@ -28,25 +34,21 @@ public class UserReactModule extends ReactContextBaseJavaModule {
     public String getName() {
         return "GetUserInfo";
     }
-    @Override
-    public Map<String, Object> getConstants() {
-        final Map<String, Object> constants = new HashMap<>();
-        constants.put(DURATION_SHORT_KEY_TOKEN, UserManager.getCurrentUser().getAccessToken());
-        constants.put(DURATION_SHORT_KEY_PHONE, UserManager.getCurrentUser().getPhone());
-        constants.put(DURATION_SHORT_KEY_NICK, UserManager.getCurrentUser().getName());
-        if( UserManager.getCurrentUser().getUserinfo()!=null){
-            constants.put(DURATION_SHORT_KEY_HEAD, UserManager.getCurrentUser().getUserinfo().getHead_image());
-        }
-        return constants;
-    }
 
-
-    /**
-     * @param message
-     * com.lieying.content.social.ENTER
-     */
     @ReactMethod
-    public void open(String message) {
+    public void getUserInfoString(Callback successCallback) {
+        if(UserManager.getCurrentUser().getUserinfo()!=null){
+            successCallback.invoke(GsonUtil.GsonString(UserManager.getCurrentUser().getUserinfo()));
+        }else{
+            successCallback.invoke("");
+        }
     }
 
+
+    @ReactMethod
+    public void exitLogin() {
+        UserManager.getCurrentUser().setUserinfo(null);
+        SharedPreferencesUtil.getInstance().removeSP(SP_KEY_USER_INFO);
+        ToastUtil.showToast("退出成功");
+    }
 }

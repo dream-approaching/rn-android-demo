@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import { View, StyleSheet, StatusBar, BackHandler } from 'react-native';
 import SpringScrollView from '@/components/SpringScrollView';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import TouchableNativeFeedback from '@/components/Touchable/TouchableNativeFeedback';
 import SectionTitle from '@/components/SectionTitle';
 import { themeLayout, scale, themeColor, themeSize } from '@/config';
 import CommonText from '@/components/AppText/CommonText';
@@ -10,7 +10,9 @@ import AppItem from '@/components/pageComponent/appItem';
 import ArticleItem from '@/components/pageComponent/articleItem';
 import { connect } from '@/utils/dva';
 import SearchBar from './components/searchBar';
-import Loading from '@/components/Loading/loading';
+import NoData from '@/components/NoData';
+import SecondaryText from '@/components/AppText/SecondaryText';
+import LoadingUpContent from '@/components/Loading/LoadingUpContent';
 
 class Search extends React.Component {
   static navigationOptions = {
@@ -35,7 +37,7 @@ class Search extends React.Component {
       type: 'search/queryHistorySearchEffect',
       payload: {
         id: 0,
-        pagesize: 10, // 只显示10条历史搜索
+        pagesize: 6, // 只显示6条历史搜索
       },
     });
   };
@@ -100,40 +102,43 @@ class Search extends React.Component {
   };
 
   renderDidNotSearch = () => {
-    const { search, recommend } = this.props;
+    const { search, recommend, historyLoading, hotLoading } = this.props;
     return (
       <Fragment>
         <View style={[styles.historyCon, styles.sectionCon]}>
           <SectionTitle
             title='历史搜索'
+            showLoading={historyLoading}
             type={search.historySearchList.length > 0 ? 'del' : null}
           />
           <View style={styles.historyList}>
             {search.historySearchList.map(item => {
               return (
-                <TouchableOpacity
+                <TouchableNativeFeedback
                   onPress={() => this.handleSelectClassify(item.content)}
-                  style={styles.historyItem}
                   key={item.id}
                 >
-                  <CommonText>{item.content}</CommonText>
-                </TouchableOpacity>
+                  <View style={styles.historyItem}>
+                    <SecondaryText>{item.content}</SecondaryText>
+                  </View>
+                </TouchableNativeFeedback>
               );
             })}
           </View>
         </View>
         <View style={[styles.hotCon, styles.sectionCon]}>
-          <SectionTitle title='热门分类' />
+          <SectionTitle title='热门分类' showLoading={hotLoading} />
           <View style={styles.hotList}>
             {recommend.hotClassify.map(item => {
               return (
-                <TouchableOpacity
+                <TouchableNativeFeedback
                   onPress={() => this.handleSelectClassify(item.label)}
-                  style={styles.hotItem}
                   key={item.id}
                 >
-                  <CommonText>{item.label}</CommonText>
-                </TouchableOpacity>
+                  <View style={styles.hotItem}>
+                    <CommonText>{item.label}</CommonText>
+                  </View>
+                </TouchableNativeFeedback>
               );
             })}
           </View>
@@ -145,8 +150,8 @@ class Search extends React.Component {
   renderSearchResult = () => {
     const { search, searchLoading } = this.props;
     const { app, recommend, topic, share } = search.searchAll;
-    if (searchLoading) return <Loading />;
-    if (!app && !recommend && !topic && !share) return <CommonText>暂无相关内容</CommonText>;
+    // if (searchLoading) return <Loading />;
+    if (!app && !recommend && !topic && !share) return <NoData text='暂无相关内容' />;
     const { black } = themeColor.font;
     const sectionList = [
       {
@@ -192,20 +197,22 @@ class Search extends React.Component {
     ];
     return (
       <Fragment>
-        {sectionList.map(item => {
-          if (!item.data) return null;
-          return (
-            <View key={item.title} style={[styles.searchSectionCon, styles.sectionCon]}>
-              <SectionTitle
-                color={black}
-                title={item.title}
-                type='more'
-                rightAction={() => this.handleGotoMore(item)}
-              />
-              <View style={styles.searchSectionList}>{item.bodyRender()}</View>
-            </View>
-          );
-        })}
+        <LoadingUpContent loading={searchLoading}>
+          {sectionList.map(item => {
+            if (!item.data) return null;
+            return (
+              <View key={item.title} style={[styles.searchSectionCon, styles.sectionCon]}>
+                <SectionTitle
+                  color={black}
+                  title={item.title}
+                  type='more'
+                  rightAction={() => this.handleGotoMore(item)}
+                />
+                <View style={styles.searchSectionList}>{item.bodyRender()}</View>
+              </View>
+            );
+          })}
+        </LoadingUpContent>
       </Fragment>
     );
   };
@@ -232,8 +239,9 @@ class Search extends React.Component {
 const mapStateToProps = ({ search, recommend, loading }) => ({
   search,
   recommend,
-  loading: loading.effects['search/queryXshareListEffect'],
+  historyLoading: loading.effects['search/queryHistorySearchEffect'],
   searchLoading: loading.effects['search/querySearchEffect'],
+  hotLoading: loading.effects['recommend/queryHotClassifyEffect'],
 });
 
 export default connect(mapStateToProps)(Search);

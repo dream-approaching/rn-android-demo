@@ -21,6 +21,7 @@
 
     <RelativeLayout
         android:id="@+id/rl_user_data_header"
+        android:background="@drawable/selected_normal_click_bg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -60,6 +61,7 @@
 
     <RelativeLayout
         android:id="@+id/rl_user_data_nick"
+        android:background="@drawable/selected_normal_click_bg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -101,6 +103,7 @@
 
     <RelativeLayout
         android:id="@+id/rl_user_data_sex"
+        android:background="@drawable/selected_normal_click_bg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -142,6 +145,7 @@
 
     <RelativeLayout
         android:id="@+id/rl_user_data_occupation"
+        android:background="@drawable/selected_normal_click_bg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -183,6 +187,7 @@
 
     <RelativeLayout
         android:id="@+id/rl_user_data_city"
+        android:background="@drawable/selected_normal_click_bg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -224,6 +229,7 @@
 
     <RelativeLayout
         android:id="@+id/rl_user_data_brief"
+        android:background="@drawable/selected_normal_click_bg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 

@@ -125,11 +125,10 @@ public class CollectionActivity extends BaseActivity implements PullToRefreshLis
                         list.addAll(objectResponseData.getData());
                         int start = list.size() - objectResponseData.getData().size();
                         myAdapter.notifyItemRangeInserted(start, objectResponseData.getData().size());
-                        boolean hasMore = (objectResponseData.getData().size() == Constants.DEFAULT_PAGE_SIZE);
-                        pullToRefreshRecyclerView.setCanLoadMore(hasMore);
-                        myAdapter.setExitsMore(hasMore);
                     }
-
+                    boolean hasMore = (objectResponseData.getData().size() == Constants.DEFAULT_PAGE_SIZE);
+                    pullToRefreshRecyclerView.setCanLoadMore(hasMore);
+                    myAdapter.setExitsMore(hasMore);
                 }
             }
 
@@ -211,7 +210,11 @@ public class CollectionActivity extends BaseActivity implements PullToRefreshLis
             } if (holder instanceof ArticleHolder) {
                 ((DraftHolder) holder).setData(position, list.get(position));
             } else if (holder instanceof DefaultNoMoreViewHolder) {
-                ((DefaultNoMoreViewHolder) holder).setTip(mContext.getString(R.string.app_no_more));
+                if(list.size()<=0 ){
+                    ((DefaultNoMoreViewHolder) holder).setTip( "暂无该收藏");
+                }else {
+                    ((DefaultNoMoreViewHolder) holder).setTip("没有更多数据了");
+                }
             }
         }
 
@@ -270,6 +273,7 @@ public class CollectionActivity extends BaseActivity implements PullToRefreshLis
                 itemView.findViewById(R.id.tv_item_collection_delete).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+
                     }
                 });
             }

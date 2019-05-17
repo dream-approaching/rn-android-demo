@@ -17,6 +17,8 @@
         app:line_bg_color="@color/color_eeeeee"
         app:right_spacing="12dp"
         app:right_text_size="@dimen/dimens_16sp"
+        app:right_text="完成"
+        app:right_text_color="@color/color_fb716b"
         app:title="推送通知设置"
         app:title_size="@dimen/title_size" />
 

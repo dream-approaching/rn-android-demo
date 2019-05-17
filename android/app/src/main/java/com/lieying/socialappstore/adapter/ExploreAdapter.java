@@ -15,6 +15,7 @@ import com.lieying.comlib.constant.Constants;
 import com.lieying.socialappstore.MainApplication;
 import com.lieying.socialappstore.R;
 import com.lieying.socialappstore.activity.CommonReactActivity;
+import com.lieying.socialappstore.activity.LoginActivity;
 import com.lieying.socialappstore.base.BaseViewHolder;
 import com.lieying.socialappstore.bean.ReactParamsJson;
 import com.lieying.socialappstore.manager.UserManager;
@@ -115,6 +116,11 @@ public class ExploreAdapter extends RecyclerView.Adapter<ExploreAdapter.VH> {
             mIVCollection.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if(UserManager.getCurrentUser().getUserinfo() == null){
+                        LoginActivity.startActivity(mContext);
+                        ToastUtil.showToast("请先登陆账号");
+                        return;
+                    }
                     collection(list.get(position).getType(), list.get(position).isIs_favorites() ?"del" : "add", position);
                 }
             });
@@ -156,11 +162,14 @@ public class ExploreAdapter extends RecyclerView.Adapter<ExploreAdapter.VH> {
                         if (collection.equals("add")) {
                             ToastUtil.showToast("搜藏成功");
                             list.get(position).setIs_favorites(true);
+                            mIVCollection.setImageResource(list.get(position).isIs_favorites() ? R.drawable.ic_card_index_collection_s : R.drawable.ic_card_index_collection);
                         } else {
                             ToastUtil.showToast("取消收藏成功");
                             list.get(position).setIs_favorites(false);
+                            mIVCollection.setImageResource(list.get(position).isIs_favorites() ? R.drawable.ic_card_index_collection_s : R.drawable.ic_card_index_collection);
                         }
-                        notifyItemChanged(position);
+                    }else {
+                        ToastUtil.showToast("操作失败"+objectResponseData.getMsg());
                     }
                 }
 

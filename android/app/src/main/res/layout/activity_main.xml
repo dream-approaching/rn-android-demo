@@ -33,7 +33,7 @@
             android:src="@drawable/ic_home_top_search" />
     </RelativeLayout>
 
-    <android.support.v4.view.ViewPager
+    <com.lieying.socialappstore.widget.CustomViewPager
         android:id="@+id/main_viewpager"
         android:layout_weight="1"
         android:layout_width="wrap_content"
@@ -46,7 +46,6 @@
         android:layout_height="60dp"
         android:background="@color/colorPrimary"
         app:itemIconTint="@color/color_home_nav"
-        app:itemTextColor="@color/color_home_nav"
-        app:labelVisibilityMode="labeled"
+        app:labelVisibilityMode="unlabeled"
         app:menu="@menu/navigation" />
 </LinearLayout>

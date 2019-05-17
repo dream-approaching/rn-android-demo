@@ -1,7 +1,8 @@
 import React from 'react';
-import { View, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Image } from 'react-native';
+import TouchableNativeFeedback from '@/components/Touchable/TouchableNativeFeedback';
 import { scale, themeLayout, themeColor } from '@/config';
-import { OpenRnActivity } from '@/components/NativeModules';
+import { OpenActivity } from '@/components/NativeModules';
 import ImageWithDefault from '@/components/ImageWithDefault';
 import myImages from '@/utils/myImages';
 import { COMMENT_TYPE } from '@/config/constants';
@@ -12,7 +13,7 @@ import SecondaryText from '@/components/AppText/SecondaryText';
 export default class extends React.PureComponent {
   gotoPersonPage = () => {
     const { itemData } = this.props;
-    OpenRnActivity('myShare', JSON.stringify({ phone: itemData.mobilephone }));
+    OpenActivity.openUserIndex(itemData.mobilephone);
   };
 
   render() {
@@ -20,42 +21,46 @@ export default class extends React.PureComponent {
     const isShowText = +itemData.type === COMMENT_TYPE.app || +itemData.type === COMMENT_TYPE.share;
     return (
       <View style={styles.container}>
-        <TouchableOpacity onPress={this.gotoPersonPage}>
+        <TouchableNativeFeedback onPress={this.gotoPersonPage}>
           <View style={styles.avatarCon}>
             <ImageWithDefault style={styles.avatar} source={{ uri: itemData.head_image }} />
             {+itemData.is_big_v === 2 && (
               <Image style={styles.bigV} source={{ uri: myImages.approve }} />
             )}
           </View>
-        </TouchableOpacity>
+        </TouchableNativeFeedback>
         <View style={styles.centerBody}>
           <CommonText>{itemData.nick_name}</CommonText>
           <SmallText>{itemData.timestr}</SmallText>
-          <TouchableOpacity onPress={() => showModalAction(itemData)}>
+          <TouchableNativeFeedback onPress={() => showModalAction(itemData)}>
             <SecondaryText style={styles.textLineHeight(22)}>{itemData.content}</SecondaryText>
-          </TouchableOpacity>
+          </TouchableNativeFeedback>
           {!!itemData.base_content && (
             <SecondaryText style={[styles.baseContent, styles.textLineHeight(22)]}>
               {itemData.base_content}
             </SecondaryText>
           )}
-          <TouchableOpacity onPress={() => gotoReplyAction(itemData)} style={styles.btnReplyCon}>
-            <Image style={styles.replyIcon} source={{ uri: myImages.noticeReply }} />
-            <SmallText style={styles.replyText}>回复</SmallText>
-          </TouchableOpacity>
-        </View>
-        <TouchableOpacity onPress={() => gotoDetailAction(itemData)} style={styles.rightBody}>
-          {(isShowText && (
-            <View style={styles.rightTextCon}>
-              <SmallText numberOfLines={4}>{itemData.title}</SmallText>
+          <TouchableNativeFeedback onPress={() => gotoReplyAction(itemData)}>
+            <View style={styles.btnReplyCon}>
+              <Image style={styles.replyIcon} source={{ uri: myImages.noticeReply }} />
+              <SmallText style={styles.replyText}>回复</SmallText>
             </View>
-          )) || (
-            <Image
-              style={styles.rightImg}
-              source={{ uri: itemData.title || myImages.defaultHeader }}
-            />
-          )}
-        </TouchableOpacity>
+          </TouchableNativeFeedback>
+        </View>
+        <TouchableNativeFeedback onPress={() => gotoDetailAction(itemData)}>
+          <View style={styles.rightBody}>
+            {(isShowText && (
+              <View style={styles.rightTextCon}>
+                <SmallText numberOfLines={4}>{itemData.title}</SmallText>
+              </View>
+            )) || (
+              <Image
+                style={styles.rightImg}
+                source={{ uri: itemData.title || myImages.defaultHeader }}
+              />
+            )}
+          </View>
+        </TouchableNativeFeedback>
       </View>
     );
   }

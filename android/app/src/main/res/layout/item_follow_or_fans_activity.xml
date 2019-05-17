@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.lieying.socialappstore.widget.SwipeItemLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        app:layout_itemType="main"
+        android:background="@drawable/selected_normal_click_bg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.lieying.socialappstore.widget.NiceImageView
+            android:id="@+id/iv_item_fans_head_icon"
+            android:layout_width="@dimen/dimens_61dp"
+            android:layout_height="@dimen/dimens_61dp"
+            android:layout_marginLeft="@dimen/dimens_16dp"
+            android:layout_marginTop="@dimen/dimens_16dp"
+            android:src="@drawable/ic_default_header"
+            app:is_circle="true" />
+
+        <TextView
+            android:id="@+id/tv_item_fans_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dimens_20dp"
+            android:layout_marginTop="@dimen/dimens_18dp"
+            android:layout_toRightOf="@+id/iv_item_fans_head_icon"
+            android:text="即刻"
+            android:textColor="@color/color_303030"
+            android:textSize="@dimen/dimens_16sp" />
+
+        <TextView
+            android:id="@+id/tv_item_fans_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_item_fans_title"
+            android:layout_marginLeft="@dimen/dimens_20dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="12dp"
+            android:layout_toLeftOf="@+id/ll_item_praise"
+            android:layout_toRightOf="@+id/iv_item_fans_head_icon"
+            android:text="aaaaaaaaaaaaaaaaaaaa"
+            android:maxLines="1"
+            android:maxEms="12"
+            android:ellipsize="end"
+            android:textColor="@color/color_707070"
+            android:textSize="@dimen/dimens_13sp" />
+
+        <TextView
+            android:id="@+id/tv_item_fans_fans"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_item_fans_content"
+            android:layout_marginLeft="@dimen/dimens_20dp"
+            android:layout_marginTop="5dp"
+            android:layout_toLeftOf="@+id/ll_item_praise"
+            android:layout_toRightOf="@+id/iv_item_fans_head_icon"
+            android:text="aaaaaaaaaaaaaaaaaaaa"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:textColor="@color/color_a7a7a7"
+            android:textSize="@dimen/dimens_11sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_below="@+id/iv_item_fans_head_icon"
+            android:layout_alignLeft="@+id/iv_item_fans_head_icon"
+            android:layout_marginTop="@dimen/dimens_16dp"
+            android:background="@color/color_eeeeee" />
+
+        <ImageView
+            android:id="@+id/tv_item_fans_follow_stutas"
+            android:layout_marginRight="@dimen/dimens_16dp"
+            android:layout_marginTop="37dp"
+            android:src="@drawable/ic_stutas_follow"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_item_fans_follow_shield"
+        android:layout_width="70dp"
+        android:layout_height="match_parent"
+        android:background="@color/color_f2f2f2"
+        android:gravity="center"
+        android:text="屏蔽"
+        android:textColor="@color/color_707070"
+        android:textSize="@dimen/dimens_16sp"
+        app:layout_itemType="menu" />
+
+    <TextView
+        android:id="@+id/tv_item_fans_follow_delete"
+        android:layout_width="70dp"
+        android:layout_height="match_parent"
+        android:background="@color/color_fb716b"
+        android:gravity="center"
+        android:text="删除"
+        android:textColor="@color/white"
+        android:textSize="@dimen/dimens_16sp"
+        app:layout_itemType="menu" />
+
+</com.lieying.socialappstore.widget.SwipeItemLayout>

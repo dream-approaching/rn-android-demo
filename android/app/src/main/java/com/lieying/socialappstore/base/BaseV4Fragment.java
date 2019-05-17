@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 
 import com.lieying.socialappstore.utils.ClickEventUtils;
 
-import java.util.Arrays;
 import java.util.List;
 
 import io.reactivex.disposables.Disposable;
@@ -157,7 +156,7 @@ public abstract class BaseV4Fragment extends Fragment implements BaseIViewUI {
     }
 
     @Override
-    public void setDialog(Class<? extends BaseDialog> dialogClass) {
+    public void setDialog(Class<? extends BaseDialogActivity> dialogClass) {
         mControl.setDialog(dialogClass);
     }
 

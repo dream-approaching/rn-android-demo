@@ -7,20 +7,19 @@ package com.lieying.comlib.bean;
  */
 public class UserJoinBean {
 
-
     /**
-     * id : 61
+     * id : 90
      * type : 1
      * content_id : 11
      * mobilephone : 18503068868
-     * created_time : 1557309548
-     * head_image : http://192.168.0.200:8060/uploads_cms_images/1552617692930_2304.jpg
+     * created_time : 1558059670
+     * commit_user : adxDIY139111944
+     * head_image : http://192.168.0.200:1530/uploads_cms_images/1557805777360_95854.png
      * is_big_v : 1
      * nick_name : adxDIY139111944
-     * mydata : {"title":"543444330000333rerttr34344","img":"http://192.168.0.200:1130/uploads_cms_images/15554894766938817.jpg","type":"3","id":"11","detail_type":"1","my_content":""}
+     * mydata : {"title":"543444330000333rerttr34344","img":"http://192.168.0.200:1130/uploads_cms_images/15554894766938817.jpg","type":"3","id":"11","detail_type":"3","my_content":"543444330000333rerttr34344","content_commit_user":""}
      * mytype : 3
-     * listtype : 3
-     * timestr : 23分钟前
+     * timestr : 0分钟前
      */
 
     private String id;
@@ -28,12 +27,12 @@ public class UserJoinBean {
     private String content_id;
     private String mobilephone;
     private String created_time;
+    private String commit_user;
     private String head_image;
     private String is_big_v;
     private String nick_name;
     private MydataBean mydata;
     private String mytype;
-    private int listtype;
     private String timestr;
 
     public String getId() {
@@ -76,6 +75,14 @@ public class UserJoinBean {
         this.created_time = created_time;
     }
 
+    public String getCommit_user() {
+        return commit_user;
+    }
+
+    public void setCommit_user(String commit_user) {
+        this.commit_user = commit_user;
+    }
+
     public String getHead_image() {
         return head_image;
     }
@@ -116,14 +123,6 @@ public class UserJoinBean {
         this.mytype = mytype;
     }
 
-    public int getListtype() {
-        return listtype;
-    }
-
-    public void setListtype(int listtype) {
-        this.listtype = listtype;
-    }
-
     public String getTimestr() {
         return timestr;
     }
@@ -138,8 +137,9 @@ public class UserJoinBean {
          * img : http://192.168.0.200:1130/uploads_cms_images/15554894766938817.jpg
          * type : 3
          * id : 11
-         * detail_type : 1
-         * my_content :
+         * detail_type : 3
+         * my_content : 543444330000333rerttr34344
+         * content_commit_user :
          */
 
         private String title;
@@ -148,6 +148,7 @@ public class UserJoinBean {
         private String id;
         private String detail_type;
         private String my_content;
+        private String content_commit_user;
 
         public String getTitle() {
             return title;
@@ -195,6 +196,14 @@ public class UserJoinBean {
 
         public void setMy_content(String my_content) {
             this.my_content = my_content;
+        }
+
+        public String getContent_commit_user() {
+            return content_commit_user;
+        }
+
+        public void setContent_commit_user(String content_commit_user) {
+            this.content_commit_user = content_commit_user;
         }
     }
 }

@@ -1,14 +1,17 @@
 import React from 'react';
-import { View, StyleSheet, TouchableOpacity, AppState } from 'react-native';
+import { View, StyleSheet, AppState } from 'react-native';
+import TouchableNativeFeedback from '@/components/Touchable/TouchableNativeFeedback';
 import SpringScrollView from '@/components/SpringScrollView';
 import SecondaryText from '@/components/AppText/SecondaryText';
-import { ChineseNormalFooter, ChineseNormalHeader } from 'react-native-spring-scrollview/Customize';
+import { ChineseNormalFooter } from 'react-native-spring-scrollview/Customize';
+import SimpleHeader from '@/components/ScrollHeader/SimpleHeader';
 import { scale, themeLayout } from '@/config';
 import XfriendItem from '@/components/pageComponent/xfriendItem';
-import { lastArr, navigateBeforeCheckLogin } from '@/utils/utils';
+import { lastArr, actionBeforeCheckLogin, clearRepeatArr } from '@/utils/utils';
 import { connect } from '@/utils/dva';
 import { OpenRnActivity } from '@/components/NativeModules';
 import Loading from '@/components/Loading/loading';
+import deleteModalHoc from '@/components/pageComponent/deleteModalHoc';
 import ImageWithDefault from '@/components/ImageWithDefault';
 
 class Xshare extends React.Component {
@@ -78,19 +81,54 @@ class Xshare extends React.Component {
   handleQueryNextPage = () => {
     const { xshare } = this.props;
     const lastItem = lastArr(xshare.xshareList);
-    console.log('%cxshare:', 'color: #0e93e0;background: #aaefe5;', lastItem);
     this.queryXshareListDispatch({ id: lastItem.id });
   };
 
-  gotoShare = () => {
-    return navigateBeforeCheckLogin(() => OpenRnActivity('recommend'));
+  handleDeleteCallBack = itemData => {
+    const { xshare, dispatch } = this.props;
+    dispatch({
+      type: 'xshare/saveXshareList',
+      payload: clearRepeatArr(xshare.xshareList, [itemData]),
+      isFirstPage: true,
+    });
   };
+
+  handleRefreshCallback = () => {
+    const { xshare } = this.props;
+    this.queryXshareListDispatch({
+      id: 0,
+      isFirst: true,
+      pagesize: xshare.xshareList.length,
+    });
+  };
+
+  gotoShare = () => OpenRnActivity('recommend');
+
+  // // 测试用
+  // gotoShare = () => {
+  //   const { dispatch } = this.props;
+  //   const label = ['工具'];
+  //   dispatch({
+  //     type: 'recommend/submitXShareEffect',
+  //     payload: {
+  //       content: 'textValue',
+  //       app_info: '10617',
+  //       label: label.join(','),
+  //     },
+  //     successFn: () => {
+  //       dispatch({
+  //         type: 'global/toggleXshareRefreshEffect',
+  //         payload: true,
+  //         successFn: () => this.defaultQueryList(),
+  //       });
+  //     },
+  //   });
+  // };
 
   render() {
     const { allLoaded } = this.state;
-    const { xshare, loading } = this.props;
-    const avatar =
-      'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1298508432,4221755458&fm=26&gp=0.jpg';
+    const { xshare, loading, handleShowDeleteModal, handleConfirmDelete, global } = this.props;
+    const { userInfo } = global;
     if (loading && !xshare.xshareList.length) return <Loading />;
     return (
       <View style={styles.container}>
@@ -99,16 +137,29 @@ class Xshare extends React.Component {
           bounces
           loadingFooter={ChineseNormalFooter}
           onLoading={this.handleQueryNextPage}
-          refreshHeader={ChineseNormalHeader}
+          refreshHeader={SimpleHeader}
           onRefresh={this.handleRefreshList}
           allLoaded={allLoaded}
         >
-          <TouchableOpacity onPress={this.gotoShare} style={styles.shareCon}>
-            <ImageWithDefault style={styles.avatar} source={{ uri: avatar }} />
-            <SecondaryText>点击这里分享你喜爱的应用吧~ </SecondaryText>
-          </TouchableOpacity>
+          <TouchableNativeFeedback notOut onPress={() => actionBeforeCheckLogin(this.gotoShare)}>
+            <View style={styles.shareCon}>
+              <ImageWithDefault
+                style={styles.avatar}
+                source={{ uri: userInfo ? userInfo.head_image : '' }}
+              />
+              <SecondaryText>点击这里分享你喜爱的应用吧~ </SecondaryText>
+            </View>
+          </TouchableNativeFeedback>
           {xshare.xshareList.map(item => {
-            return <XfriendItem key={item.id} itemData={item} />;
+            return (
+              <XfriendItem
+                handleShowDeleteModal={handleShowDeleteModal}
+                handleConfirmDelete={handleConfirmDelete}
+                attentionLikeCallback={this.handleRefreshCallback}
+                key={item.id}
+                itemData={item}
+              />
+            );
           })}
         </SpringScrollView>
       </View>
@@ -120,9 +171,10 @@ const mapStateToProps = ({ xshare, loading, global }) => ({
   xshare,
   global,
   loading: loading.effects['xshare/queryXshareListEffect'],
+  deleteLoading: loading.effects['xshare/deleteXshareEffect'],
 });
 
-export default connect(mapStateToProps)(Xshare);
+export default connect(mapStateToProps)(deleteModalHoc(Xshare));
 
 const styles = StyleSheet.create({
   container: {

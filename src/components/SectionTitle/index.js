@@ -1,30 +1,40 @@
 import React from 'react';
 import { View, StyleSheet, Image } from 'react-native';
 import { scale, themeLayout, themeColor } from '@/config';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import TouchableNativeFeedback from '@/components/Touchable/TouchableNativeFeedback';
 import myImages from '@/utils/myImages';
 import CommonText from '@/components/AppText/CommonText';
 import SecondaryText from '@/components/AppText/SecondaryText';
+import ActivityIndicator from '../ActivityIndicator';
 
 export default class extends React.PureComponent {
   render() {
-    const { title, type, rightAction = () => {}, color = themeColor.font.secondary } = this.props;
+    const {
+      title,
+      type,
+      rightAction = () => {},
+      color = themeColor.font.secondary,
+      showLoading,
+    } = this.props;
     return (
       <View style={styles.container}>
         <View style={styles.titleCon}>
           <View style={styles.leftBlock} />
           <CommonText style={[styles.titleText, { color }]}>{title}</CommonText>
+          {showLoading && <ActivityIndicator size={12} />}
         </View>
         {type === 'more' && (
-          <TouchableOpacity style={styles.moreCon} onPress={rightAction}>
-            <SecondaryText>查看更多</SecondaryText>
-            <Image style={styles.rightIcon} source={{ uri: myImages.next }} />
-          </TouchableOpacity>
+          <TouchableNativeFeedback onPress={rightAction}>
+            <View style={styles.moreCon}>
+              <SecondaryText>查看更多</SecondaryText>
+              <Image style={styles.rightIcon} source={{ uri: myImages.next }} />
+            </View>
+          </TouchableNativeFeedback>
         )}
         {type === 'del' && (
-          <TouchableOpacity style={styles.cancelBtn} onPress={rightAction}>
+          <TouchableNativeFeedback onPress={rightAction}>
             <Image style={styles.clearIcon} source={{ uri: myImages.btnClear }} />
-          </TouchableOpacity>
+          </TouchableNativeFeedback>
         )}
       </View>
     );
@@ -55,5 +65,8 @@ const styles = StyleSheet.create({
   clearIcon: {
     width: scale(22),
     height: scale(22),
+  },
+  titleText: {
+    marginRight: scale(5),
   },
 });

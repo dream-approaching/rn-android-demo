@@ -26,6 +26,7 @@ allprojects {
             // All of React Native (JS, Android binaries) is installed from npm
             url 'https://jitpack.io'
         }
+        maven { url 'https://dl.bintray.com/umsdk/release' }
     }
 }
 

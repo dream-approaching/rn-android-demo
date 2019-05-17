@@ -1,7 +1,7 @@
 import React from 'react';
 import { Keyboard } from 'react-native';
 import { COMMENT_SORT } from '@/config/constants';
-import { lastArr } from '@/utils/utils';
+import { lastArr, isLogin } from '@/utils/utils';
 
 const commentHoc = Component => {
   return class Hoc extends React.Component {
@@ -56,7 +56,7 @@ const commentHoc = Component => {
     };
 
     replyAction = item => {
-      console.log('%citem:', 'color: #0e93e0;background: #aaefe5;', item);
+      if (!isLogin()) return false;
       this.hocref.refInputCon.refInput.focus();
       this.setState({
         atSomeone: {

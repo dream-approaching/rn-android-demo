@@ -4,9 +4,10 @@ import LargerText from '@/components/AppText/LargerText';
 import SecondaryText from '@/components/AppText/SecondaryText';
 import myImages from '@/utils/myImages';
 import { scale, themeLayout } from '@/config';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import TouchableNativeFeedback from '@/components/Touchable/TouchableNativeFeedback';
 import { OpenActivity } from '@/components/NativeModules';
 import ImageWithDefault from '@/components/ImageWithDefault';
+import { actionBeforeCheckLogin } from '@/utils/utils';
 
 export default class extends React.PureComponent {
   gotoEditUser = () => {
@@ -14,28 +15,33 @@ export default class extends React.PureComponent {
   };
 
   gotoPersonPage = () => {
-    OpenActivity.openUserIndex('18845299535');
+    const { userInfo } = this.props;
+    OpenActivity.openUserIndex(userInfo.mobilephone);
   };
 
   render() {
-    const { style, data } = this.props;
+    const { style, data, userInfo } = this.props;
     return (
       <View style={[style, styles.container]}>
-        <TouchableOpacity onPress={this.gotoPersonPage}>
+        <TouchableNativeFeedback onPress={() => actionBeforeCheckLogin(this.gotoPersonPage)}>
           <ImageWithDefault style={styles.avatar} source={{ uri: data.avatar }} />
-        </TouchableOpacity>
+        </TouchableNativeFeedback>
         <View style={styles.userData}>
           <View style={styles.textCon}>
-            <TouchableOpacity onPress={this.gotoPersonPage}>
+            <TouchableNativeFeedback onPress={() => actionBeforeCheckLogin(this.gotoPersonPage)}>
               <LargerText style={styles.nameText}>{data.name}</LargerText>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={this.gotoEditUser}>
-              <SecondaryText style={styles.editText}>编辑个人资料</SecondaryText>
-            </TouchableOpacity>
+            </TouchableNativeFeedback>
+            <TouchableNativeFeedback onPress={() => actionBeforeCheckLogin(this.gotoEditUser)}>
+              <SecondaryText style={styles.editText}>
+                {userInfo ? '编辑个人资料' : '登录体验更多功能'}
+              </SecondaryText>
+            </TouchableNativeFeedback>
           </View>
-          <TouchableOpacity style={styles.iconCon} onPress={this.gotoPersonPage}>
-            <Image style={styles.iconRight} source={{ uri: myImages.nextWhite }} />
-          </TouchableOpacity>
+          <TouchableNativeFeedback onPress={() => actionBeforeCheckLogin(this.gotoPersonPage)}>
+            <View style={styles.iconCon}>
+              <Image style={styles.iconRight} source={{ uri: myImages.nextWhite }} />
+            </View>
+          </TouchableNativeFeedback>
         </View>
       </View>
     );

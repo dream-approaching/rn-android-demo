@@ -13,17 +13,20 @@ import com.facebook.react.common.LifecycleState;
 import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler;
 import com.facebook.react.shell.MainReactPackage;
 import com.gyf.immersionbar.ImmersionBar;
-import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.lieying.comlib.utils.EmptyUtil;
 import com.lieying.socialappstore.BuildConfig;
 import com.lieying.socialappstore.CustomToastPackage;
 import com.lieying.socialappstore.MainApplication;
 import com.lieying.socialappstore.R;
 import com.lieying.socialappstore.base.BaseActivity;
+import com.lieying.socialappstore.bean.NoticeBean;
 import com.lieying.socialappstore.fragment.BaseReactFragment;
+import com.lieying.socialappstore.utils.GsonUtil;
 import com.lieying.socialappstore.utils.ToastUtil;
 import com.swmansion.gesturehandler.react.RNGestureHandlerEnabledRootView;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
+import com.tencent.android.tpush.XGPushClickedResult;
+import com.tencent.android.tpush.XGPushManager;
 
 import java.util.Arrays;
 import java.util.List;
@@ -32,8 +35,8 @@ public class CommonReactActivity extends BaseActivity implements DefaultHardware
     private RNGestureHandlerEnabledRootView mReactRootView;
     private ReactInstanceManager mReactInstanceManager;
     public static String KEY_BUNDLE_PATH = "bundle_path";
-    public static String KEY_BUNDLE_ENTER_NAME = "bundle_name";
-    public static String KEY_BUNDLE_ENTER_PARAMS = "bundle_name_params";
+    public static String KEY_BUNDLE_ENTER_NAME = "bundle_router_name";
+    public static String KEY_BUNDLE_ENTER_PARAMS = "bundle_params";
 
     /**
      * @param context
@@ -67,6 +70,17 @@ public class CommonReactActivity extends BaseActivity implements DefaultHardware
         String bundle_path = getIntent().getStringExtra(KEY_BUNDLE_PATH);
         String bundle_enter = getIntent().getStringExtra(KEY_BUNDLE_ENTER_NAME);
         String bundle_params = getIntent().getStringExtra(KEY_BUNDLE_ENTER_PARAMS);
+
+        XGPushClickedResult clickedResult = XGPushManager.onActivityStarted(this);
+        if(clickedResult!=null){
+            String ster = clickedResult.getCustomContent();
+            NoticeBean noticeBean = GsonUtil.GsonToBean(ster , NoticeBean.class);
+            bundle_path = noticeBean.getBundle_path();
+            bundle_enter = noticeBean.getBundle_router_name();
+            bundle_params = noticeBean.getBundle_params();
+        }
+
+
         if(EmptyUtil.isEmpty(bundle_path)){
             ToastUtil.showToast("react native bundle 不存在");
             finish();
@@ -85,7 +99,6 @@ public class CommonReactActivity extends BaseActivity implements DefaultHardware
         return Arrays.<ReactPackage>asList(
                 new MainReactPackage(),
                 new RNGestureHandlerPackage(),
-                new RNDeviceInfo(),
                 new CustomToastPackage());
     }
 

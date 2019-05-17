@@ -116,13 +116,11 @@ public class UserIndexShareFragment extends BaseV4Fragment implements PullToRefr
                     }else {
                         mApplist.addAll(objectResponseData.getData());
                         int start = mApplist.size() - objectResponseData.getData().size();
-
                         myAdapter.notifyItemRangeInserted(start, objectResponseData.getData().size());
-                        boolean hasMore = (objectResponseData.getData().size() == Constants.DEFAULT_PAGE_SIZE);
-                        refreshRecyclerView.setCanLoadMore(hasMore);
-                        myAdapter.setExitsMore(hasMore);
                     }
-
+                    boolean hasMore = (objectResponseData.getData().size() == Constants.DEFAULT_PAGE_SIZE);
+                    refreshRecyclerView.setCanLoadMore(hasMore);
+                    myAdapter.setExitsMore(hasMore);
                 }
             }
 

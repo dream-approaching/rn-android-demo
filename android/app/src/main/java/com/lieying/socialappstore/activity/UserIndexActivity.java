@@ -8,6 +8,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.facebook.react.ReactInstanceManager;
@@ -15,7 +17,9 @@ import com.gyf.immersionbar.ImmersionBar;
 import com.lieying.comlib.bean.UserIndexInfoBean;
 import com.lieying.socialappstore.R;
 import com.lieying.socialappstore.base.BaseFragmentActivity;
+import com.lieying.socialappstore.base.BaseLoadingFragmentActivity;
 import com.lieying.socialappstore.base.BaseV4Fragment;
+import com.lieying.socialappstore.bean.ReactParamsJson;
 import com.lieying.socialappstore.callback.FragmentCallback;
 import com.lieying.socialappstore.fragment.CommentReactFragment;
 import com.lieying.socialappstore.fragment.UserIndexJoinFragment;
@@ -34,7 +38,7 @@ import java.util.HashMap;
 import io.reactivex.ObservableSource;
 import io.reactivex.functions.Function;
 
-public class UserIndexActivity extends BaseFragmentActivity implements FragmentCallback {
+public class UserIndexActivity extends BaseLoadingFragmentActivity implements FragmentCallback {
     private static String KEY_USER_PHONE = "KEY_USER_PHONE";
     NiceImageView mIVUserHeadIcon;
     TextView mTVUserName;
@@ -46,6 +50,8 @@ public class UserIndexActivity extends BaseFragmentActivity implements FragmentC
     private BaseV4Fragment f1;
     private BaseV4Fragment f2;
     private MyAdapter mAdapter;
+    private String phone;
+    private ImageView mIvVip;
 
     public static void startActivity(Context context , String userPhone) {
         Intent intent = new Intent(context, UserIndexActivity.class);
@@ -69,13 +75,16 @@ public class UserIndexActivity extends BaseFragmentActivity implements FragmentC
         mTVUserPosition = findViewById(R.id.tv_user_index_user_position);
         mTVUserFollowCount = findViewById(R.id.tv_user_index_follow_count);
         mTVUserFansCount = findViewById(R.id.tv_user_index_fans_count);
+        mIvVip = findViewById(R.id.iv_user_index_vip);
     }
 
     @Override
     public void initView() {
+        phone = getIntent().getStringExtra(KEY_USER_PHONE);
         mTabLayout.setupWithViewPager(mViewPager);
         ArrayList<BaseV4Fragment> a = new ArrayList<>();
-        f1= CommentReactFragment.newInstance("myShare", "MyReactNativeAppthree", false, "tab3.bundle");
+        String params = new ReactParamsJson.Builder().setUserPhone(phone).getRNParams();
+        f1= CommentReactFragment.newInstance("myShare", "MyReactNativeAppthree", params);
         ((CommentReactFragment) f1).setFragmentCallback(this);
         f2 = UserIndexJoinFragment.newInstance();
         a.add(f1);
@@ -87,9 +96,10 @@ public class UserIndexActivity extends BaseFragmentActivity implements FragmentC
 
     @Override
     public void initData() {
+        showLoading();
         HashMap<String, String> map = new HashMap<>();
         map.put("mobilephone", UserManager.getCurrentUser().getPhone());
-        map.put("othermobilephone", "18503068868");
+        map.put("othermobilephone", phone);
         map.put("access_token", UserManager.getCurrentUser().getAccessToken());
         RetrofitUtils.getInstance(mContext).sendRequset(new Function<String, ObservableSource<ResponseData<UserIndexInfoBean>>>() {
             @Override
@@ -99,6 +109,7 @@ public class UserIndexActivity extends BaseFragmentActivity implements FragmentC
         } , new BaseObserver<ResponseData<UserIndexInfoBean>>() {
             @Override
             protected void onSuccees(ResponseData<UserIndexInfoBean> objectResponseData) {
+                dissMissDialog();
                 if(objectResponseData.getStatus()==0 && objectResponseData.getData() != null){
                     parseData(objectResponseData.getData());
                 }
@@ -106,6 +117,7 @@ public class UserIndexActivity extends BaseFragmentActivity implements FragmentC
 
             @Override
             protected void onFailure(Throwable e, boolean isNetWorkError) {
+                dissMissDialog();
                 if(isNetWorkError){
                     ToastUtil.showToast("请求失败");
                 }
@@ -115,7 +127,12 @@ public class UserIndexActivity extends BaseFragmentActivity implements FragmentC
 
     @Override
     public void initListener() {
-
+        findViewById(R.id.iv_user_index_back).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     private void parseData(UserIndexInfoBean userIndexInfoBean){
@@ -123,6 +140,7 @@ public class UserIndexActivity extends BaseFragmentActivity implements FragmentC
         mTVUserName.setText(userIndexInfoBean.getUserinfo().getNick_name());
         mTVUserFollowCount.setText(userIndexInfoBean.getUserinfo().getGuan()+"   关  注");
         mTVUserFansCount.setText(userIndexInfoBean.getUserinfo().getFen()+"   粉  丝");
+        mIvVip.setVisibility(userIndexInfoBean.getUserinfo().getIs_big_v().equals("1") ? View.GONE : View.VISIBLE);
     }
 
     @Override

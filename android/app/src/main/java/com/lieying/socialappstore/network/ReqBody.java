@@ -55,7 +55,7 @@ public class ReqBody {
             jsonObject.put("app_ver", BuildConfig.APP_VER);
             jsonObject.put("app_ver_code", BuildConfig.APP_VER_CODE);
             jsonObject.put("ch", BuildConfig.CN);
-            map.put("access_token", UserManager.getCurrentUser().getAccessToken());
+            jsonObject.put("access_token", UserManager.getCurrentUser().getAccessToken());
         } catch (JSONException e) {
             e.printStackTrace();
         }

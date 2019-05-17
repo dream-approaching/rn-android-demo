@@ -12,6 +12,7 @@ import { ChineseNormalFooter } from 'react-native-spring-scrollview/Customize';
 import Header from '@/components/Header';
 import { COMMENT_TYPE } from '@/config/constants';
 import commentHoc from '@/components/pageComponent/commentHoc';
+import FirstLoading from '@/components/Loading/FirstLoading';
 
 class CommentPage extends React.Component {
   static navigationOptions = {
@@ -78,41 +79,44 @@ class CommentPage extends React.Component {
       handleChangeSort,
       handleQueryNextPage,
       handleChangeText,
+      commentLoading,
     } = this.props;
     console.log('comment.childCommentList', comment.childCommentList);
     return (
       <View style={styles.container}>
         <Header navigation={navigation} title={`${this.total}条评论`} />
-        <SpringScrollView
-          ref={ref => (this.refScrollView = ref)}
-          loadingFooter={ChineseNormalFooter}
-          onLoading={() => handleQueryNextPage(comment.childCommentList)}
-          allLoaded={allLoaded}
-          bounces
-        >
-          <ChildItem
-            type='main'
-            replyAction={this.replyAction}
-            itemData={comment.commentList[this.parentIndex]}
-          />
-          <View style={styles.replyCon}>
-            <View style={styles.tabCon}>
-              <CommentSort activeTab={activeTab} changeSortAction={handleChangeSort} />
-            </View>
-            <FlatList
-              keyExtractor={item => `${item.id}`}
-              data={comment.childCommentList}
-              renderItem={this.renderCommentItem}
+        <FirstLoading loading={commentLoading}>
+          <SpringScrollView
+            ref={ref => (this.refScrollView = ref)}
+            loadingFooter={ChineseNormalFooter}
+            onLoading={() => handleQueryNextPage(comment.childCommentList)}
+            allLoaded={allLoaded}
+            bounces
+          >
+            <ChildItem
+              type='main'
+              replyAction={this.replyAction}
+              itemData={comment.commentList[this.parentIndex]}
             />
-          </View>
-        </SpringScrollView>
-        <CommentInput
-          ref={ref => (this.refInputCon = ref)}
-          handleChangeText={handleChangeText}
-          handleSubmitComment={this.handleSubmitComment}
-          textValue={textValue}
-          placeholder={placeholder}
-        />
+            <View style={styles.replyCon}>
+              <View style={styles.tabCon}>
+                <CommentSort activeTab={activeTab} changeSortAction={handleChangeSort} />
+              </View>
+              <FlatList
+                keyExtractor={item => `${item.id}`}
+                data={comment.childCommentList}
+                renderItem={this.renderCommentItem}
+              />
+            </View>
+          </SpringScrollView>
+          <CommentInput
+            ref={ref => (this.refInputCon = ref)}
+            handleChangeText={handleChangeText}
+            handleSubmitComment={this.handleSubmitComment}
+            textValue={textValue}
+            placeholder={placeholder}
+          />
+        </FirstLoading>
       </View>
     );
   }
@@ -121,6 +125,7 @@ class CommentPage extends React.Component {
 const mapStateToProps = ({ comment, loading }) => ({
   comment,
   loading: loading.effects['comment/submitCommentEffect'],
+  commentLoading: loading.effects['comment/queryChildCommentEffect'],
 });
 
 export default connect(mapStateToProps)(commentHoc(CommentPage));
@@ -128,7 +133,7 @@ export default connect(mapStateToProps)(commentHoc(CommentPage));
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: themeColor.bgF4,
+    // backgroundColor: themeColor.bgF4,
   },
   tabCon: {
     height: scale(31),

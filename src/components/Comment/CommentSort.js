@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import TouchableNativeFeedback from '@/components/Touchable/TouchableNativeFeedback';
 import { scale, themeLayout } from '@/config';
 import SmallText from '@/components/AppText/SmallText';
 
@@ -26,9 +26,11 @@ export default class CommentPage extends React.Component {
               : {};
           return (
             <Fragment key={item.text}>
-              <TouchableOpacity style={styles.tabText} onPress={() => changeSortAction(item)}>
-                <SmallText style={activeStyled}>{item.text}</SmallText>
-              </TouchableOpacity>
+              <TouchableNativeFeedback onPress={() => changeSortAction(item)}>
+                <View style={styles.tabText}>
+                  <SmallText style={activeStyled}>{item.text}</SmallText>
+                </View>
+              </TouchableNativeFeedback>
               {(index !== tab.length - 1 && <SmallText style={styles.tabText}>|</SmallText>) ||
                 null}
             </Fragment>

@@ -162,7 +162,7 @@ public abstract class BaseFragment extends Fragment implements BaseIViewUI {
     }
 
     @Override
-    public void setDialog(Class<? extends BaseDialog> dialogClass) {
+    public void setDialog(Class<? extends BaseDialogActivity> dialogClass) {
         mControl.setDialog(dialogClass);
     }
 

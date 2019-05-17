@@ -12,7 +12,7 @@ public class Constants {
 
     public static final String COLLECTION_TYPE_APP = "3";//搜藏类型 ： App
 
-    public static final String COLLECTION_TYPE_APP_DETAILS = "4";//搜藏类型 ： App
+    public static final String COLLECTION_TYPE_APP_DETAILS = "4";//搜藏类型 ： App详情
 
     public static final String JOIN_TYPE_PRAISE = "1";   //参与互动类型：点赞
 
@@ -28,11 +28,20 @@ public class Constants {
 
 
     public static final String COMMENT_TYPE_TOPIC = "1";//打开公共评论页的内容类型：互动话题
-    public static final String COMMENT_TYPE_SHUZI = "2";//打开公共评论页的内容类型：互动话题
+    public static final String COMMENT_TYPE_SHUZI = "2";//打开公共评论页的内容类型：数字生活研究所
     public static final String COMMENT_TYPE_APP = "3";//打开公共评论页的内容类型：应用推荐
     public static final String COMMENT_TYPE_APP_DETAILS= "4";//打开公共评论页的内容类型：APP详情
     public static final String COMMENT_TYPE_XFRIEND = "5";//打开公共评论页的内容类型：X友分享
 
+    public static final String USER_TYPE_FOLLOWS = "1";//用户类型:我的关注
+    public static final String USER_TYPE_FANS = "2";//用户类型:我的粉丝
+
     //请求截图
     public static final int REQUEST_CROP_PHOTO = 102;
+
+
+    /**----------广播flag-----------*/
+    public static final String BROADCAST_FLAG_REFRESH_MAIN = "main_date_refresh";
+
+    public static String KEY_WEB_URL = "key_web_url";
 }

@@ -1,10 +1,12 @@
 import React from 'react';
-import { View, StyleSheet, StatusBar, TouchableOpacity, InteractionManager } from 'react-native';
+import { View, StyleSheet, StatusBar, InteractionManager } from 'react-native';
+import TouchableNativeFeedback from '@/components/Touchable/TouchableNativeFeedback';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 import CommonText from '@/components/AppText/CommonText';
 import { FlatList } from 'react-native-gesture-handler';
 import SpringScrollView from '@/components/SpringScrollView';
-import { ChineseNormalHeader, ChineseNormalFooter } from 'react-native-spring-scrollview/Customize';
+import { ChineseNormalFooter } from 'react-native-spring-scrollview/Customize';
+import SimpleHeader from '@/components/ScrollHeader/SimpleHeader';
 import Header from '@/components/Header';
 // import { notice } from '@/config/fakeData';
 import CommentLikeItem from './components/commentLikeItem';
@@ -16,7 +18,8 @@ import { lastArr } from '@/utils/utils';
 import Toast from '@/components/Toast';
 import MyModal from '@/components/Modal';
 import { connect } from '@/utils/dva';
-import WithLoading from '@/components/Loading/WithLoading';
+import FirstLoading from '@/components/Loading/FirstLoading';
+import NoData from '@/components/NoData';
 
 class MyNotice extends React.Component {
   static navigationOptions = {
@@ -30,6 +33,7 @@ class MyNotice extends React.Component {
     modalVisible: false,
     selectedItem: {},
     avtiveTab: '1',
+    isFirstTime: true,
   };
 
   componentDidMount() {
@@ -62,6 +66,7 @@ class MyNotice extends React.Component {
             [`allLoaded_${data.notice_type}`]: true,
           });
         }
+        this.setState({ isFirstTime: false });
       },
       finallyFn: () => {
         if (data.isFirst) {
@@ -104,7 +109,6 @@ class MyNotice extends React.Component {
     const { commentList, likeList, systemList } = notice;
     const dataSource = +avtiveTab === 1 ? commentList : +avtiveTab === 2 ? likeList : systemList;
     const lastItem = lastArr(dataSource);
-    console.log('%cxshare:', 'color: #0e93e0;background: #aaefe5;', lastItem);
     this.queryNoticeListDispatch({ id: lastItem.id, notice_type: avtiveTab });
   };
 
@@ -149,7 +153,6 @@ class MyNotice extends React.Component {
   };
 
   gotoDetail = selectedItem => {
-    console.log('%cselectedItem:', 'color: #0e93e0;background: #aaefe5;', selectedItem);
     this.handleHideModal();
     switch (+selectedItem.type) {
       case COMMENT_TYPE.app:
@@ -174,7 +177,7 @@ class MyNotice extends React.Component {
   };
 
   render() {
-    const { modalVisible, selectedItem } = this.state;
+    const { modalVisible, selectedItem, isFirstTime } = this.state;
     const { notice, loading } = this.props;
     const modalBtn = [
       {
@@ -198,16 +201,19 @@ class MyNotice extends React.Component {
         tabLabel: '评论',
         data: notice.commentList,
         type: '1',
+        noDataText: '还未收到评论',
       },
       {
         tabLabel: '点赞',
         data: notice.likeList,
         type: '2',
+        noDataText: '还未收到点赞',
       },
       {
         tabLabel: '系统通知',
         data: notice.systemList,
         type: '3',
+        noDataText: '收到的系统消息会出现在这里',
       },
     ];
     return (
@@ -218,7 +224,7 @@ class MyNotice extends React.Component {
             return (
               <SpringScrollView
                 ref={ref => (this[`refScrollView_${tabItem.type}`] = ref)}
-                refreshHeader={ChineseNormalHeader}
+                refreshHeader={SimpleHeader}
                 loadingFooter={ChineseNormalFooter}
                 onLoading={this.handleQueryNextPage}
                 onRefresh={this.handleRefresh}
@@ -228,13 +234,15 @@ class MyNotice extends React.Component {
                 type={tabItem.type}
                 allLoaded={this.state[`allLoaded_${tabItem.type}`]}
               >
-                <WithLoading loading={loading && !tabItem.data.length}>
-                  <FlatList
-                    keyExtractor={item => `${item.id}`}
-                    data={tabItem.data}
-                    renderItem={this.renderCommentItem}
-                  />
-                </WithLoading>
+                <FirstLoading loading={loading && isFirstTime}>
+                  {(!!tabItem.data.length && (
+                    <FlatList
+                      keyExtractor={item => `${item.id}`}
+                      data={tabItem.data}
+                      renderItem={this.renderCommentItem}
+                    />
+                  )) || <NoData text={tabItem.noDataText} />}
+                </FirstLoading>
               </SpringScrollView>
             );
           })}
@@ -246,14 +254,11 @@ class MyNotice extends React.Component {
         >
           {modalBtn.map(item => {
             return (
-              <TouchableOpacity
-                key={item.text}
-                activeOpacity={1}
-                style={styles.modalBtn(item.hasMargin)}
-                onPress={item.pressAction}
-              >
-                <CommonText>{item.text}</CommonText>
-              </TouchableOpacity>
+              <TouchableNativeFeedback key={item.text} onPress={item.pressAction}>
+                <View style={styles.modalBtn(item.hasMargin)}>
+                  <CommonText>{item.text}</CommonText>
+                </View>
+              </TouchableNativeFeedback>
             );
           })}
         </MyModal>

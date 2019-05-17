@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, StyleSheet, TouchableOpacity, TextInput, Image, Keyboard, Text } from 'react-native';
+import { View, StyleSheet, TextInput, Image, Keyboard, Text } from 'react-native';
+import TouchableNativeFeedback from '@/components/Touchable/TouchableNativeFeedback';
 import Header from '@/components/Header';
 import CommonText from '@/components/AppText/CommonText';
 import { themeColor, themeLayout, scale, themeSize } from '@/config';
@@ -75,13 +76,11 @@ class ReplyNotice extends React.Component {
     const { textValue } = this.state;
     const disabled = !textValue.length;
     return (
-      <TouchableOpacity
-        activeOpacity={disabled ? 0.5 : 0.2}
-        onPress={this.handleSubmitReply}
-        style={[styles.headerTextCon]}
-      >
-        <CommonText style={styles.headerText(disabled)}>发送</CommonText>
-      </TouchableOpacity>
+      <TouchableNativeFeedback onPress={this.handleSubmitReply}>
+        <View style={[styles.headerTextCon]}>
+          <CommonText style={styles.headerText(disabled)}>发送</CommonText>
+        </View>
+      </TouchableNativeFeedback>
     );
   };
 
@@ -90,10 +89,12 @@ class ReplyNotice extends React.Component {
     if (isShowKeyBoard) {
       return (
         <View style={styles.footerUp}>
-          <TouchableOpacity />
-          <TouchableOpacity>
+          <TouchableNativeFeedback>
+            <View />
+          </TouchableNativeFeedback>
+          <TouchableNativeFeedback>
             <Image style={styles.bigLabel} source={{ uri: myImages.btnFacial }} />
-          </TouchableOpacity>
+          </TouchableNativeFeedback>
         </View>
       );
     }
@@ -102,7 +103,6 @@ class ReplyNotice extends React.Component {
   render() {
     const { textValue, isShowKeyBoard } = this.state;
     const { navigation, submitLoading } = this.props;
-    console.log('%cnavigation:', 'color: #0e93e0;background: #aaefe5;', navigation);
     const itemData = navigation.getParam('itemData');
     return (
       <View style={styles.container}>

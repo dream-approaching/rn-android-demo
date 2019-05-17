@@ -5,7 +5,7 @@ import {
   queryXshareDetailReq,
   deleteXshareReq,
 } from '@/services/xshare';
-import { toggleAttentionReq } from '@/services/common';
+import { toggleAttentionReq, toggleArticleCollectReq } from '@/services/common';
 import Toast from '@/components/Toast';
 
 export default {
@@ -28,6 +28,10 @@ export default {
             type: 'saveXshareList',
             payload: response.data || [],
             isFirstPage: payload.isFirst,
+          });
+          yield put({
+            type: 'global/saveXshareData',
+            payload: response.data || [],
           });
           successFn && successFn(response.data);
         }
@@ -72,6 +76,19 @@ export default {
     *deleteXshareEffect({ payload, successFn }, { call }) {
       try {
         const response = yield call(deleteXshareReq, payload);
+        if (response && response.code === 0) {
+          successFn && successFn();
+        } else {
+          Toast.show(response.msg);
+        }
+      } catch (err) {
+        console.log('err', err);
+      }
+    },
+    // 互动话题、数字生活研究所、应用推荐 切换收藏
+    *toggleArticleCollectEffect({ payload, successFn }, { call }) {
+      try {
+        const response = yield call(toggleArticleCollectReq, payload);
         if (response && response.code === 0) {
           successFn && successFn();
         } else {

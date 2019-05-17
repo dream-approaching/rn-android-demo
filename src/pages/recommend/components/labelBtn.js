@@ -1,5 +1,6 @@
 import React from 'react';
-import { StyleSheet, Image, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Image, View } from 'react-native';
+import TouchableNativeFeedback from '@/components/Touchable/TouchableNativeFeedback';
 import CommonText from '@/components/AppText/CommonText';
 import myImages from '@/utils/myImages';
 import { scale, themeLayout, themeColor } from '@/config';
@@ -8,12 +9,12 @@ export default class extends React.Component {
   render() {
     const { children, empty, pressAction = () => {} } = this.props;
     return (
-      <TouchableOpacity onPress={pressAction}>
+      <TouchableNativeFeedback onPress={pressAction}>
         <View style={styles.imgbg}>
           <CommonText style={styles.btnText}>{empty ? '+More' : children}</CommonText>
           {!empty && <Image style={styles.delImg} source={{ uri: myImages.btnDel }} />}
         </View>
-      </TouchableOpacity>
+      </TouchableNativeFeedback>
     );
   }
 }

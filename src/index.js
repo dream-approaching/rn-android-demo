@@ -9,7 +9,7 @@ import xshareModel from '@/models/xshare';
 import searchModel from '@/models/search';
 import noticeModel from '@/models/notice';
 // import createLogger from 'redux-logger';
-import Router from './router';
+import Main from './main';
 
 const app = dva({
   initialState: {},
@@ -25,7 +25,7 @@ const codePushOptions = {
   installMode: codePush.InstallMode.ON_NEXT_RESTART,
 };
 
-const Root = codePush(codePushOptions)(Router);
+const Root = codePush(codePushOptions)(Main);
 
 /* eslint no-undef: 0 */
 // if (__DEV__) {
@@ -42,5 +42,7 @@ class Apps extends React.Component {
     return <App />;
   }
 }
+
+export const store = app.getStore();
 
 export default Apps;

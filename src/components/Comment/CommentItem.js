@@ -1,69 +1,65 @@
 import React from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import { scale, themeLayout, themeColor } from '@/config';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import TouchableNativeFeedback from '@/components/Touchable/TouchableNativeFeedback';
 import SecondaryText from '@/components/AppText/SecondaryText';
 import CommonText from '@/components/AppText/CommonText';
 import SmallText from '@/components/AppText/SmallText';
-import moment from '@/components/moment';
 import LikeBtn from '@/components/Comment/likeBtn';
-import { OpenRnActivity } from '@/components/NativeModules';
+import { OpenActivity } from '@/components/NativeModules';
 import { LIKE_TYPE } from '@/config/constants';
 import ImageWithDefault from '../ImageWithDefault';
 
 export default class extends React.PureComponent {
   gotoPersonPage = () => {
     const { itemData } = this.props;
-    console.log('%citemData:', 'color: #0e93e0;background: #aaefe5;', itemData);
-    OpenRnActivity('myShare', JSON.stringify({ phone: itemData.mobilephone }));
+    OpenActivity.openUserIndex(itemData.mobilephone);
   };
 
   render() {
     const { itemData, replyAction, seeAllChildAction, index } = this.props;
+
     return (
       <View style={styles.container}>
-        <TouchableOpacity onPress={this.gotoPersonPage}>
+        <TouchableNativeFeedback onPress={this.gotoPersonPage}>
           <ImageWithDefault style={styles.avatar} source={{ uri: itemData.head_image }} />
-        </TouchableOpacity>
+        </TouchableNativeFeedback>
         <View style={styles.rightBody}>
           <SecondaryText>{itemData.commit_user}</SecondaryText>
-          <TouchableOpacity onPress={() => replyAction(itemData)}>
+          <TouchableNativeFeedback onPress={() => replyAction(itemData)}>
             <CommonText style={[styles.replyText, styles.textLineHeight(20)]}>
               {itemData.content}
             </CommonText>
-          </TouchableOpacity>
+          </TouchableNativeFeedback>
           {!!itemData.detailtwo.length && (
             <View style={styles.replyCon}>
               {itemData.detailtwo.map(item => {
                 return (
-                  <TouchableOpacity
-                    key={item.id}
-                    style={{ marginTop: scale(3) }}
-                    onPress={() => replyAction(item)}
-                  >
-                    <Text style={[styles.textLineHeight(18), { flexWrap: 'wrap' }]}>
-                      <SecondaryText style={[styles.replyTitle]}>
-                        {item.commit_user}：
-                      </SecondaryText>
-                      <SecondaryText>{item.content}</SecondaryText>
-                    </Text>
-                  </TouchableOpacity>
+                  <TouchableNativeFeedback key={item.id} onPress={() => replyAction(item)}>
+                    <View style={{ marginTop: scale(3) }}>
+                      <Text style={[styles.textLineHeight(18), { flexWrap: 'wrap' }]}>
+                        <SecondaryText style={[styles.replyTitle]}>
+                          {item.commit_user}：
+                        </SecondaryText>
+                        <SecondaryText>{item.content}</SecondaryText>
+                      </Text>
+                    </View>
+                  </TouchableNativeFeedback>
                 );
               })}
               {+itemData.count > 2 && (
-                <TouchableOpacity
-                  onPress={() => seeAllChildAction(itemData, index)}
-                  style={{ marginTop: scale(3) }}
-                >
-                  <SecondaryText style={[styles.replyTitle, styles.textLineHeight(18)]}>
-                    {`共${itemData.count}条回复＞`}
-                  </SecondaryText>
-                </TouchableOpacity>
+                <TouchableNativeFeedback onPress={() => seeAllChildAction(itemData, index)}>
+                  <View style={{ marginTop: scale(3) }}>
+                    <SecondaryText style={[styles.replyTitle, styles.textLineHeight(18)]}>
+                      {`共${itemData.count}条回复＞`}
+                    </SecondaryText>
+                  </View>
+                </TouchableNativeFeedback>
               )}
             </View>
           )}
           <View style={styles.bottomBar}>
-            <SmallText>{moment(itemData.created_time * 1000).fromNow(true)}</SmallText>
+            <SmallText>{itemData.timestr}</SmallText>
             <LikeBtn
               type={LIKE_TYPE.comment}
               itemData={itemData}

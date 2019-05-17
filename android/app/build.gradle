@@ -66,7 +66,7 @@ android {
             minifyEnabled false
             debuggable true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            buildConfigField("String", "UMENG_APP_KEY", "\"5c7e2b032036573c490017af\"")
+            buildConfigField("String", "UMENG_APP_KEY", "\"5cdd4375570df301b1000d02\"")
             buildConfigField("String", "UMENG_SECRET", "\"1\"")
             buildConfigField("String", "WECHAT_APPKEY", "\"wxdc1e388c3822c80b\"")
             buildConfigField("String", "WECHAT_SECRET", "\"815bba5db8e2825432479294bd2a0f6b\"")
@@ -96,7 +96,7 @@ android {
             matchingFallbacks = ['release', 'debug']
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            buildConfigField("String", "UMENG_APP_KEY", "\"5c7e2b032036573c490017af\"")
+            buildConfigField("String", "UMENG_APP_KEY", "\"5cdd4375570df301b1000d02\"")
             buildConfigField("String", "UMENG_SECRET", "\"1\"")
             buildConfigField("String", "WECHAT_APPKEY", "\"wxdc1e388c3822c80b\"")
             buildConfigField("String", "WECHAT_SECRET", "\"815bba5db8e2825432479294bd2a0f6b\"")
@@ -125,7 +125,7 @@ android {
 
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            buildConfigField("String", "UMENG_APP_KEY", "\"5c7e2b032036573c490017af\"")
+            buildConfigField("String", "UMENG_APP_KEY", "\"5cdd4375570df301b1000d02\"")
             buildConfigField("String", "UMENG_SECRET", "\"1\"")
             buildConfigField("String", "WECHAT_APPKEY", "\"wx50dc5d8f5df68ac5\"")
             buildConfigField("String", "WECHAT_SECRET", "\"815bba5db8e2825432479294bd2a0f6b\"")
@@ -177,7 +177,6 @@ dependencies {
     implementation project(':react-native-spring-scrollview')
     implementation project(':react-native-code-push')
     implementation project(':react-native-gesture-handler')
-    implementation project(':react-native-device-info')
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "com.android.support:appcompat-v7:${rootProject.ext.support}"
     implementation "com.android.support:design:${rootProject.ext.support}"
@@ -212,5 +211,13 @@ dependencies {
     implementation 'com.tencent.jg:jg:1.1'
     implementation 'com.tencent.wup:wup:1.0.0.E-Release'
     implementation 'com.tencent.mid:mid:4.0.7-Release'
+
+    implementation files('libs/umeng-common-2.0.1.jar')
+    implementation files('libs/umeng-analytics-8.0.0.jar')
+    implementation files('libs/umeng-share-core-6.9.4.jar')
+    implementation files('libs/umeng-share-QQ-simplify-6.9.4.jar')
+    implementation files('libs/umeng-share-sina-simplify-6.9.4.jar')
+    implementation files('libs/umeng-share-wechat-simplify-6.9.4.jar')
+    implementation files('libs/umeng-sharetool-6.9.4.jar')
 
 }

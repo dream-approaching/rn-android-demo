@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.lieying.comlib.R;
@@ -17,9 +18,8 @@ import com.lieying.comlib.R;
  */
 
 public class SimpleRefreshMoreView extends AbRefreshMoreView {
-    private ImageView mIvAnim;
+    private ProgressBar mIvAnim;
     private TextView mTvTip;
-    private ValueAnimator mAnim;
 
     public SimpleRefreshMoreView(Context context) {
         super(context);
@@ -60,23 +60,11 @@ public class SimpleRefreshMoreView extends AbRefreshMoreView {
     }
 
     private void startAnimation() {
-        mAnim = ValueAnimator.ofFloat(mIvAnim.getRotation(), mIvAnim.getRotation() + 359);
-        mAnim.setInterpolator(new LinearInterpolator());
-        mAnim.setRepeatCount(ValueAnimator.INFINITE);
-        mAnim.setDuration(1000);
-        mAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                mIvAnim.setRotation((Float) animation.getAnimatedValue());
-            }
-        });
-        mAnim.start();
+        mIvAnim.setVisibility(VISIBLE);
     }
 
     public void stopAnimation() {
-        if (mAnim != null) {
-            mAnim.end();
-        }
+        mIvAnim.setVisibility(GONE);
     }
 
     @Override
@@ -86,7 +74,7 @@ public class SimpleRefreshMoreView extends AbRefreshMoreView {
 
     @Override
     protected void initView() {
-        mIvAnim = (ImageView) findViewFromId(R.id.iv_anim);
+        mIvAnim = (ProgressBar) findViewFromId(R.id.iv_anim);
         mTvTip = (TextView) findViewFromId(R.id.tv_tip);
     }
 }

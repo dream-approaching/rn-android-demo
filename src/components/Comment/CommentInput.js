@@ -1,9 +1,10 @@
 import React from 'react';
 import { ImageBackground, StyleSheet, Image, TextInput, Keyboard } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import TouchableNativeFeedback from '@/components/Touchable/TouchableNativeFeedback';
 import { scale, themeLayout, themeColor } from '@/config';
 import myImages from '@/utils/myImages';
 import CommonText from '../AppText/CommonText';
+import { isLogin, actionBeforeCheckLogin, gotoLogin } from '@/utils/utils';
 
 export default class CommentPage extends React.Component {
   static defaultProps = {
@@ -12,9 +13,13 @@ export default class CommentPage extends React.Component {
     handleChangeText: () => {},
   };
 
-  state = {
-    keyboardShow: false,
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      keyboardShow: false,
+      isCollect: props.xshare ? props.xshare.articleDetail.is_favorites : false,
+    };
+  }
 
   componentDidMount() {
     this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this.keyboardDidShow);
@@ -38,18 +43,47 @@ export default class CommentPage extends React.Component {
     });
   };
 
+  onfocus = () => {
+    if (!isLogin()) {
+      this.refInput.blur();
+      gotoLogin();
+    }
+  };
+
+  handleShare = () => {
+    console.log('handleShare');
+  };
+
+  handleToggleCollect = () => {
+    const { dispatch, xshare } = this.props;
+    const { isCollect } = this.state;
+    dispatch({
+      type: 'xshare/toggleArticleCollectEffect',
+      payload: {
+        type: xshare.articleDetail.type,
+        opt: !isCollect ? 'add' : 'del',
+        info_id: xshare.articleDetail.id,
+      },
+      successFn: () => {
+        this.setState({
+          isCollect: !isCollect,
+        });
+      },
+    });
+  };
+
   render() {
     const {
       textValue,
       handleChangeText,
       placeholder,
       showLeftIcon,
-      showCollection,
       showShare,
       handleSubmitComment,
       leftIconAction,
+      showCollection,
     } = this.props;
-    const { keyboardShow } = this.state;
+    const { keyboardShow, isCollect } = this.state;
     const disabled = textValue.length === 0;
     return (
       <ImageBackground
@@ -58,37 +92,41 @@ export default class CommentPage extends React.Component {
         style={styles.inputCon}
       >
         {showLeftIcon && (
-          <TouchableOpacity onPress={leftIconAction}>
+          <TouchableNativeFeedback onPress={leftIconAction}>
             <Image style={styles.leftIcon} source={{ uri: myImages.leftBack }} />
-          </TouchableOpacity>
+          </TouchableNativeFeedback>
         )}
         <TextInput
           ref={ref => (this.refInput = ref)}
           style={styles.inputStyle}
           onChangeText={handleChangeText}
+          onFocus={this.onfocus}
           value={textValue}
           multiline
           placeholder={placeholder}
           placeholderTextColor={themeColor.placeholderColor}
         />
         {showCollection && !keyboardShow && (
-          <TouchableOpacity>
-            <Image style={styles.rightIcon} source={{ uri: myImages.commentCollection }} />
-          </TouchableOpacity>
+          <TouchableNativeFeedback onPress={() => actionBeforeCheckLogin(this.handleToggleCollect)}>
+            {isCollect ? (
+              <Image style={styles.rightIcon} source={{ uri: myImages.commentCollectiono }} />
+            ) : (
+              <Image style={styles.rightIcon} source={{ uri: myImages.commentCollection }} />
+            )}
+          </TouchableNativeFeedback>
         )}
         {showShare && !keyboardShow && (
-          <TouchableOpacity>
+          <TouchableNativeFeedback onPress={this.handleShare}>
             <Image style={styles.rightIcon} source={{ uri: myImages.share }} />
-          </TouchableOpacity>
+          </TouchableNativeFeedback>
         )}
         {keyboardShow && (
-          <TouchableOpacity
+          <TouchableNativeFeedback
             style={styles.submitBtn}
-            activeOpacity={disabled ? 1 : 0.2}
             onPress={disabled ? () => {} : handleSubmitComment}
           >
             <CommonText style={styles.submitText(disabled)}>发送</CommonText>
-          </TouchableOpacity>
+          </TouchableNativeFeedback>
         )}
       </ImageBackground>
     );

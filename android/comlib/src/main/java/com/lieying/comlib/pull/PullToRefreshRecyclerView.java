@@ -620,7 +620,6 @@ public class PullToRefreshRecyclerView extends RecyclerView {
 
         @Override
         public void onItemRangeInserted(int positionStart, int itemCount) {
-            Log.e("bug", "--------onItemRangeInserted");
             pullToRefreshRecyclerViewAdapter.notifyItemRangeInserted(isExistRefreshView() ?
                     positionStart + 1 : positionStart, itemCount);
         }

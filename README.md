@@ -24,12 +24,14 @@
       * 方式 2：`npm run dev` + `npm run debug`(debug 模式)
 3.  打包命令：`npm run bundleTab3`
 4.  RN 和本地对应的路由：  
-    路由 | 对应界面
-    ---|---
-    fragment3 | 个人中心
-    myShare | 个人页面的分享
-    fragment4 | X 友分享列表
-    xFriendDetail | X 友分享内页
-    comment | 评论
-    detailChat | 互动话题内页
-    search | 搜索
+    | 路由          | 对应界面       |
+    | ------------- | -------------- |
+    | fragment3     | 个人中心       |
+    | myShare       | 个人页面的分享 |
+    | fragment4     | X 友分享列表   |
+    | xFriendDetail | X 友分享内页   |
+    | comment       | 评论           |
+    | detailChat    | 互动话题内页   |
+    | search        | 搜索           |
+    | myNotice      | 通知           |
+    | recommend     | 我要推荐       |

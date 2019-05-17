@@ -1,9 +1,8 @@
 // import fetch from 'whatwg-fetch';
 import 'whatwg-fetch';
-import { GetUserInfo } from '@/components/NativeModules';
+import { store } from '../index';
 // import { stringify } from 'qs';
 
-console.log(GetUserInfo);
 const codeMessage = {
   200: '服务器成功返回请求的数据。',
   201: '新建或修改数据成功。',
@@ -42,7 +41,6 @@ function myFetch(fetchPromise, timeout = 25 * 1000) {
   });
 
   const abortablePromise = Promise.race([fetchPromise, abortPromise]);
-  console.log('333');
 
   return abortablePromise;
 }
@@ -84,11 +82,13 @@ export default function request(url, options, time) {
   let fetchUrl;
 
   if (newOptions.method === 'GET') {
+    const state = store.getState();
+    const { userInfo } = state.global;
     const globalParams = {
-      access_token: '6b3597f7e7adaa11646896cf41b68681',
-      mobilephone: '18256478952',
-      // access_token: GetUserInfo.token,
-      // mobilephone: GetUserInfo.phone,
+      // access_token: '6b3597f7e7adaa11646896cf41b68681',
+      // mobilephone: '18256478952',
+      access_token: userInfo ? userInfo.access_token : '',
+      mobilephone: userInfo ? userInfo.mobilephone : '',
       app_ver: '1',
       app_ver_code: '1',
       ch: '1',

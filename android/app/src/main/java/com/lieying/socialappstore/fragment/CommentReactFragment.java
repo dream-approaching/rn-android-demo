@@ -8,13 +8,18 @@ import android.os.Bundle;
  * @CreateDate: 2019/5/14 0014 17:53
  */
 public class CommentReactFragment extends BaseReactFragment{
-    public static CommentReactFragment newInstance(String param1, String param2 , boolean debug , String bundle) {
+    /**
+      * @Description:   React Native Fragment
+      * @PARAMS:         routeName：路由名   module：对应app.json里的"name": "MyReactNativeAppthree"   params：带入RN的参数json格式
+      * @Author:         liyi
+      * @CreateDate:     2019/5/15 0015 10:28
+     */
+    public static CommentReactFragment newInstance(String routeName, String module , String params) {
         CommentReactFragment fragment = new CommentReactFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM_JSMAINMODULE_PATH, param1);
-        args.putString(ARG_PARAM_MODULE_NAME, param2);
-        args.putBoolean(ARG_PARAM_MODULE_DEBUG, debug);
-        args.putString(ARG_PARAM_MODULE_BUNDLE_NAME , bundle);
+        args.putString(ARG_PARAM_JSMAINMODULE_PATH, routeName);
+        args.putString(ARG_PARAM_MODULE_NAME, module);
+        args.putString(KEY_BUNDLE_ENTER_PARAMS , params);
         fragment.setArguments(args);
         return fragment;
     }

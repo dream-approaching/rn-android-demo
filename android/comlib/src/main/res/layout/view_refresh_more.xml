@@ -8,20 +8,18 @@
         android:layout_height="49dp"
         android:gravity="center">
 
-        <ImageView
+        <ProgressBar
             android:id="@+id/iv_anim"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="5dp"
-            android:src="@drawable/icon_load_more"
-            android:visibility="gone"/>
+            android:indeterminateTint="#707070"
+            android:layout_width="25dp"
+            android:layout_height="25dp" />
 
         <TextView
             android:id="@+id/tv_tip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/up_load_more"
-            android:textColor="#0b98f2"
+            android:textColor="#fb716b"
             android:textSize="14dp" />
     </LinearLayout>
 </RelativeLayout>

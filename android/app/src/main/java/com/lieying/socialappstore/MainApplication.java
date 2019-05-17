@@ -13,7 +13,6 @@ import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.bridge.JSIModulePackage;
 import com.facebook.react.shell.MainReactPackage;
-import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.lieying.comlib.pull.PullToRefreshRecyclerView;
 import com.lieying.comlib.pull.SimpleRefreshHeadView;
 import com.lieying.comlib.pull.SimpleRefreshMoreView;
@@ -23,6 +22,9 @@ import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import com.tencent.android.tpush.XGIOperateCallback;
 import com.tencent.android.tpush.XGPushConfig;
 import com.tencent.android.tpush.XGPushManager;
+import com.umeng.analytics.MobclickAgent;
+import com.umeng.commonsdk.UMConfigure;
+import com.umeng.socialize.PlatformConfig;
 
 import java.util.Arrays;
 import java.util.List;
@@ -40,7 +42,7 @@ public class MainApplication extends Application implements ReactApplication {
 
         @Override
         protected String getJSBundleFile() {
-            return CodePush.getJSBundleFile("tab3.bundle");
+            return CodePush.getJSBundleFile("index.android.bundle");
         }
 
         @Override
@@ -55,7 +57,6 @@ public class MainApplication extends Application implements ReactApplication {
             new SpringScrollViewPackage(),
                     new CodePush(BuildConfig.CODEPUSH_KEY, getApplicationContext(), BuildConfig.DEBUG),
                     new RNGestureHandlerPackage(),
-                    new RNDeviceInfo(),
                     new CustomToastPackage()
 
             );
@@ -64,7 +65,7 @@ public class MainApplication extends Application implements ReactApplication {
         @Nullable
         @Override
         protected String getBundleAssetName() {
-            return "tab3.bundle";
+            return "index.android.bundle";
         }
 
         @Override
@@ -91,14 +92,29 @@ public class MainApplication extends Application implements ReactApplication {
         XGPushManager.registerPush(this, new XGIOperateCallback() {
             @Override
             public void onSuccess(Object data, int flag) {
-//token在设备卸载重装的时候有可能会变
-                Log.d("TPush", "注册成功，设备token为：" + data);
+                Log.e("TPush", "注册成功，设备token为：" + data);
             }
             @Override
             public void onFail(Object data, int errCode, String msg) {
-                Log.d("TPush", "注册失败，错误码：" + errCode + ",错误信息：" + msg);
+                Log.e("TPush", "注册失败，错误码：" + errCode + ",错误信息：" + msg);
             }
         });
+        umengInit();
+    }
+    /**
+     * 设置友盟初始化
+     */
+    private void umengInit() {
+        UMConfigure.setLogEnabled(BuildConfig.DEBUG);
+        UMConfigure.init(this, BuildConfig.UMENG_APP_KEY, "channel", UMConfigure.DEVICE_TYPE_PHONE, null);
+        MobclickAgent.setSecret(this, BuildConfig.UMENG_SECRET);
+        // 选用MANUAL页面采集模式
+        MobclickAgent.setPageCollectionMode(MobclickAgent.PageMode.MANUAL);
+        {
+            PlatformConfig.setWeixin(BuildConfig.WECHAT_APPKEY, BuildConfig.WECHAT_SECRET);
+            PlatformConfig.setSinaWeibo(BuildConfig.SINA_APPKEY, BuildConfig.SINA_SECRET, "http://sns.whalecloud.com");
+            PlatformConfig.setQQZone(BuildConfig.QQ_APPKEY, BuildConfig.QQ_SECRET);
+        }
     }
 
     @Override

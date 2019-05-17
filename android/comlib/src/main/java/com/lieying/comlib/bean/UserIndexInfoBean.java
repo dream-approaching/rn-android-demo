@@ -7,8 +7,9 @@ package com.lieying.comlib.bean;
  */
 public class UserIndexInfoBean {
 
+
     /**
-     * userinfo : {"id":"12","channel_id":"1","nick_name":"adxDIY139111944","refresh_token":"61f981bcc85acd2486a9a32e7d61f1b4","access_token":"b1d387fc54e3af1b7efdf495729c2187","mobilephone":"18503068868","expires_in":"1559702886","head_image":"http://192.168.0.200:8060/uploads_cms_images/1552617692930_2304.jpg","sex":"","user_title":"","user_type":"0","career":"","location":"","profile":"","age":"0","guan":"1","fen":"2","is_add_friends":false}
+     * userinfo : {"id":"12","channel_id":"1","nick_name":"adxDIY139111944","refresh_token":"24819ee2c3997c3a6d607fa7373f1de4","access_token":"7825b36b298dfdfaff34af202d6ac18e","mobilephone":"18503068868","expires_in":"1560419686","head_image":"http://192.168.0.200:1530/uploads_cms_images/1557805777360_95854.png","sex":"","user_title":"","user_type":"0","career":"msg","location":"武汉市","profile":"","age":"0","is_big_v":"1","guan":"1","fen":"2","is_add_friends":true}
      */
 
     private UserinfoBean userinfo;
@@ -26,21 +27,22 @@ public class UserIndexInfoBean {
          * id : 12
          * channel_id : 1
          * nick_name : adxDIY139111944
-         * refresh_token : 61f981bcc85acd2486a9a32e7d61f1b4
-         * access_token : b1d387fc54e3af1b7efdf495729c2187
+         * refresh_token : 24819ee2c3997c3a6d607fa7373f1de4
+         * access_token : 7825b36b298dfdfaff34af202d6ac18e
          * mobilephone : 18503068868
-         * expires_in : 1559702886
-         * head_image : http://192.168.0.200:8060/uploads_cms_images/1552617692930_2304.jpg
+         * expires_in : 1560419686
+         * head_image : http://192.168.0.200:1530/uploads_cms_images/1557805777360_95854.png
          * sex :
          * user_title :
          * user_type : 0
-         * career :
-         * location :
+         * career : msg
+         * location : 武汉市
          * profile :
          * age : 0
+         * is_big_v : 1
          * guan : 1
          * fen : 2
-         * is_add_friends : false
+         * is_add_friends : true
          */
 
         private String id;
@@ -58,6 +60,7 @@ public class UserIndexInfoBean {
         private String location;
         private String profile;
         private String age;
+        private String is_big_v;
         private String guan;
         private String fen;
         private boolean is_add_friends;
@@ -180,6 +183,14 @@ public class UserIndexInfoBean {
 
         public void setAge(String age) {
             this.age = age;
+        }
+
+        public String getIs_big_v() {
+            return is_big_v;
+        }
+
+        public void setIs_big_v(String is_big_v) {
+            this.is_big_v = is_big_v;
         }
 
         public String getGuan() {

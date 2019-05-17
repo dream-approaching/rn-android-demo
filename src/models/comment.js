@@ -110,21 +110,23 @@ export default {
     saveAllCommentList(state, { payload, isFirstPage }) {
       return {
         ...state,
-        allCommentList: isFirstPage ? payload.list : [...state.allCommentList, ...payload.list],
-        allCommentListTotal: payload.cnt,
+        allCommentList: isFirstPage
+          ? payload.list || []
+          : [...state.allCommentList, ...payload.list],
+        allCommentListTotal: payload.cnt || 0,
       };
     },
     saveCommentList(state, { payload, isFirstPage }) {
       return {
         ...state,
-        commentList: isFirstPage ? payload.list : [...state.commentList, ...payload.list],
-        commentListTotal: payload.cnt,
+        commentList: isFirstPage ? payload.list || [] : [...state.commentList, ...payload.list],
+        commentListTotal: payload.cnt || 0,
       };
     },
     saveChildCommentList(state, { payload, isFirstPage }) {
       return {
         ...state,
-        childCommentList: isFirstPage ? payload : [...state.childCommentList, ...payload],
+        childCommentList: isFirstPage ? payload || [] : [...state.childCommentList, ...payload],
       };
     },
   },

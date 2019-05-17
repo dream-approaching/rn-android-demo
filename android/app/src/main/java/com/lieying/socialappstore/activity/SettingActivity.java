@@ -7,11 +7,19 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import com.facebook.react.modules.core.DeviceEventManagerModule;
+import com.google.gson.Gson;
 import com.gyf.immersionbar.ImmersionBar;
 import com.lieying.socialappstore.BuildConfig;
+import com.lieying.socialappstore.MainApplication;
 import com.lieying.socialappstore.R;
 import com.lieying.socialappstore.base.BaseActivity;
+import com.lieying.socialappstore.manager.UserManager;
+import com.lieying.socialappstore.utils.SharedPreferencesUtil;
+import com.lieying.socialappstore.utils.ToastUtil;
 import com.lieying.socialappstore.widget.TitleView;
+
+import static com.lieying.comlib.constant.Constants.SP_KEY_USER_INFO;
 
 public class SettingActivity extends BaseActivity {
     TextView mTvVersion;
@@ -75,6 +83,11 @@ public class SettingActivity extends BaseActivity {
             case R.id.rl_setting_value:
                 break;
             case R.id.tv_setting_out_account:
+                UserManager.getCurrentUser().setUserinfo(null);
+                SharedPreferencesUtil.getInstance().removeSP(SP_KEY_USER_INFO);
+                ToastUtil.showToast("退出成功");
+                MainApplication.getInstance().getReactNativeHost().getReactInstanceManager().getCurrentReactContext().getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                        .emit("UserExit", null);
                 break;
         }
     }

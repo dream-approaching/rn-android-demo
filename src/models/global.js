@@ -5,6 +5,8 @@ export default {
 
   state: {
     shouldXshareRefresh: false,
+    userInfo: null,
+    xshareData: null,
   },
 
   effects: {
@@ -26,6 +28,19 @@ export default {
       return {
         ...state,
         shouldXshareRefresh: payload,
+      };
+    },
+    saveUserInfo(state, { payload }) {
+      return {
+        ...state,
+        userInfo: payload,
+      };
+    },
+    saveXshareData(state, { payload }) {
+      // if (state.xshareData[payload.id]) return state;)
+      return {
+        ...state,
+        xshareData: [...state.xshareData, ...payload],
       };
     },
   },

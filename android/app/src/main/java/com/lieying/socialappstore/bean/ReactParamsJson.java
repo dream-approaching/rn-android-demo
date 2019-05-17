@@ -10,6 +10,7 @@ import com.lieying.socialappstore.utils.GsonUtil;
 public class ReactParamsJson {
     String contentId;
     String userID;
+    String userPhone;
     String contentType;
 
     public static class Builder {
@@ -30,6 +31,12 @@ public class ReactParamsJson {
             mReactParamsJson.userID = userID;
             return this;
         }
+
+        public Builder setUserPhone(String phone) {
+            mReactParamsJson.userPhone = phone;
+            return this;
+        }
+
         public Builder setContentType(String contentType) {
             mReactParamsJson.contentType = contentType;
             return this;

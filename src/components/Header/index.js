@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, Image, StyleSheet, TouchableOpacity, BackHandler } from 'react-native';
+import { View, Image, StyleSheet, BackHandler } from 'react-native';
+import TouchableNativeFeedback from '@/components/Touchable/TouchableNativeFeedback';
 import { scale, themeLayout, themeSize } from '@/config';
 import LargerText from '@/components/AppText/LargerText';
 import myImages from '@/utils/myImages';
@@ -29,9 +30,11 @@ export default class CommentPage extends React.PureComponent {
     const { showLeftIcon, title, centerComponent, rightComponent } = this.props;
     return (
       <View style={styles.container}>
-        <TouchableOpacity onPress={this.handleBack} style={styles.leftIconCon}>
-          {showLeftIcon && <Image style={styles.leftIcon} source={{ uri: myImages.leftBack }} />}
-        </TouchableOpacity>
+        <TouchableNativeFeedback onPress={this.handleBack}>
+          <View style={styles.leftIconCon}>
+            {showLeftIcon && <Image style={styles.leftIcon} source={{ uri: myImages.leftBack }} />}
+          </View>
+        </TouchableNativeFeedback>
         <View style={styles.titleCon}>
           {centerComponent || <LargerText style={styles.title}>{title}</LargerText>}
         </View>

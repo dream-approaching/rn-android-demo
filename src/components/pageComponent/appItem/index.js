@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, ImageBackground, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, ImageBackground, StyleSheet } from 'react-native';
+import TouchableNativeFeedback from '@/components/Touchable/TouchableNativeFeedback';
 import { themeLayout, scale, themeColor } from '@/config';
 import SecondaryText from '@/components/AppText/SecondaryText';
 import SmallText from '@/components/AppText/SmallText';
@@ -16,29 +17,28 @@ export default class extends React.PureComponent {
   render() {
     const { itemData, islastOne } = this.props;
     return (
-      <TouchableOpacity
-        onPress={() => this.gotoAppDetail(itemData)}
-        style={styles.container(islastOne)}
-      >
-        <ImageWithDefault style={styles.appIcon} source={{ uri: itemData.app_logo }} />
-        <View style={styles.itemRight}>
-          <CommonText style={styles.appTitle}>{itemData.app_name_cn}</CommonText>
-          <SecondaryText style={styles.desc} numberOfLines={1}>
-            {itemData.app_short_desc}
-          </SecondaryText>
-          <View>
-            {itemData.is_high_quality && (
-              <ImageBackground
-                resizeMode='contain'
-                source={{ uri: myImages.bgLabel }}
-                style={styles.bgLabel}
-              >
-                <SmallText style={styles.labelText}>精品</SmallText>
-              </ImageBackground>
-            )}
+      <TouchableNativeFeedback onPress={() => this.gotoAppDetail(itemData)}>
+        <View style={styles.container(islastOne)}>
+          <ImageWithDefault style={styles.appIcon} source={{ uri: itemData.app_logo }} />
+          <View style={styles.itemRight}>
+            <CommonText style={styles.appTitle}>{itemData.app_name_cn}</CommonText>
+            <SecondaryText style={styles.desc} numberOfLines={1}>
+              {itemData.app_short_desc}
+            </SecondaryText>
+            <View>
+              {itemData.is_high_quality && (
+                <ImageBackground
+                  resizeMode='contain'
+                  source={{ uri: myImages.bgLabel }}
+                  style={styles.bgLabel}
+                >
+                  <SmallText style={styles.labelText}>精品</SmallText>
+                </ImageBackground>
+              )}
+            </View>
           </View>
         </View>
-      </TouchableOpacity>
+      </TouchableNativeFeedback>
     );
   }
 }

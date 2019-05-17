@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.ContextCompat;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -19,6 +20,7 @@ import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.google.gson.Gson;
 import com.gyf.immersionbar.ImmersionBar;
 import com.lieying.comlib.bean.UserInfoBean;
+import com.lieying.comlib.constant.Constants;
 import com.lieying.comlib.utils.ButtonWaiting;
 import com.lieying.comlib.utils.MatcheUtils;
 import com.lieying.comlib.utils.ViewUtil;
@@ -177,7 +179,7 @@ public class LoginActivity extends BaseActivity implements  ButtonWaiting.OnWait
             }
         });
 
-        mEtPhone.setText("18503068868");
+        mEtPhone.setText("18256478952");
         mEtVertifyCode.setText("123456");
     }
 
@@ -269,6 +271,7 @@ public class LoginActivity extends BaseActivity implements  ButtonWaiting.OnWait
                     SharedPreferencesUtil.getInstance().putString(SP_KEY_USER_INFO, new Gson().toJson(objectResponseData.getData()));
                     MainApplication.getInstance().getReactNativeHost().getReactInstanceManager().getCurrentReactContext().getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
                             .emit("UserLogin", null);
+                    LocalBroadcastManager.getInstance(mContext).sendBroadcast(new Intent(Constants.BROADCAST_FLAG_REFRESH_MAIN));
                     ToastUtil.showToast("登陆成功!");
                     finish();
                 }else{

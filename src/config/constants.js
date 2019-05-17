@@ -1,3 +1,7 @@
+export const NATIVE_ROUTE = {
+  LOGIN: 'com.lieying.content.social.login.ENTER',
+};
+
 export const SEARCH_TYPE = {
   all: 1, // '全部'
   app: 2, // 'APP应用'

@@ -1,13 +1,6 @@
 import React from 'react';
-import {
-  View,
-  StyleSheet,
-  TouchableOpacity,
-  TextInput,
-  Image,
-  Keyboard,
-  BackHandler,
-} from 'react-native';
+import { View, StyleSheet, TextInput, Image, Keyboard, BackHandler } from 'react-native';
+import TouchableNativeFeedback from '@/components/Touchable/TouchableNativeFeedback';
 import Header from '@/components/Header';
 import CommonText from '@/components/AppText/CommonText';
 import { themeColor, themeLayout, scale, themeSize } from '@/config';
@@ -105,13 +98,11 @@ class RecommendEdit extends React.Component {
     const { textValue } = this.state;
     const disabled = !textValue.length;
     return (
-      <TouchableOpacity
-        activeOpacity={disabled ? 0.5 : 0.2}
-        onPress={this.handleSubmitShare}
-        style={[styles.headerTextCon]}
-      >
-        <CommonText style={styles.headerText(disabled)}>发表</CommonText>
-      </TouchableOpacity>
+      <TouchableNativeFeedback onPress={this.handleSubmitShare}>
+        <View style={[styles.headerTextCon]}>
+          <CommonText style={styles.headerText(disabled)}>发表</CommonText>
+        </View>
+      </TouchableNativeFeedback>
     );
   };
 
@@ -120,12 +111,12 @@ class RecommendEdit extends React.Component {
     if (isShowKeyBoard) {
       return (
         <View style={styles.footerUp}>
-          <TouchableOpacity onPress={this.gotoAddLabel}>
+          <TouchableNativeFeedback onPress={this.gotoAddLabel}>
             <Image style={styles.bigLabel} source={{ uri: myImages.btnLabel }} />
-          </TouchableOpacity>
-          <TouchableOpacity>
+          </TouchableNativeFeedback>
+          <TouchableNativeFeedback>
             <Image style={styles.bigLabel} source={{ uri: myImages.btnFacial }} />
-          </TouchableOpacity>
+          </TouchableNativeFeedback>
         </View>
       );
     }

@@ -8,20 +8,18 @@
     "debug": "react-native run-android --variant=ceshiDebug",
     "releaseStaging": "react-native run-android --variant=ceshiReleaseStaging",
     "release": "react-native run-android --variant=ceshiRelease",
-    "clean": " watchman watch-del-all && rm -rf $TMPDIR/react-native-packager-cache-* && rm -rf $TMPDIR/metro-* && rm -rf node_modules/ && rm -rf $TMPDIR/haste-map-* && npm cache clean --force && yarn",
-    "bundleTab3": "rm -rf android/app/src/main/assets/tab3.bundle && react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/tab3.bundle"
+    "clean": "watchman watch-del-all && rm -rf $TMPDIR/react-native-packager-cache-* && rm -rf $TMPDIR/metro-* && rm -rf node_modules/ && rm -rf $TMPDIR/haste-map-* && npm cache clean --force && yarn",
+    "bundle": "rm -rf android/app/src/main/assets/index.android.bundle && react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle",
+    "codePushStaging": "code-push release-react AppMatrix-myTab android -e index.js --noDuplicateReleaseError -b index.android.bundle -d Staging"
   },
   "dependencies": {
     "dva-core": "^1.4.0",
     "dva-loading": "^3.0.2",
-    "moment": "^2.24.0",
     "react": "16.8.3",
     "react-native": "^0.59.4",
     "react-native-code-push": "^5.6.0",
-    "react-native-device-info": "^1.5.0",
     "react-native-gesture-handler": "^1.1.0",
     "react-native-modal": "^11.0.0",
-    "react-native-pull": "^2.0.2",
     "react-native-scrollable-tab-view": "^0.10.0",
     "react-native-spring-scrollview": "^2.0.20",
     "react-navigation": "3.8.1",

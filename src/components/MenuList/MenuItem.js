@@ -1,21 +1,24 @@
 import React from 'react';
 import { View, StyleSheet, Image } from 'react-native';
 import { themeLayout, scale } from '@/config';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import myImages from '@/utils/myImages';
 import CommonText from '@/components/AppText/CommonText';
-import { navigateBeforeCheckLogin } from '@/utils/utils';
+import { actionBeforeCheckLogin } from '@/utils/utils';
+import TouchableNativeFeedback from '@/components/Touchable/TouchableNativeFeedback';
 
 export default class MenuItem extends React.PureComponent {
   handlePressButton = () => {
     const { item } = this.props;
-    item.onPressAction && navigateBeforeCheckLogin(item.onPressAction);
+    item.onPressAction && item.onPressAction();
   };
 
   render() {
     const { item } = this.props;
     return (
-      <TouchableOpacity onPress={this.handlePressButton}>
+      <TouchableNativeFeedback
+        notOut
+        onPress={() => actionBeforeCheckLogin(this.handlePressButton)}
+      >
         <View style={[styles.menuItemCon]}>
           <View style={styles.menuLeft}>
             {(item.icon && (
@@ -26,7 +29,7 @@ export default class MenuItem extends React.PureComponent {
           </View>
           <Image style={styles.iconRight} source={{ uri: myImages.next }} />
         </View>
-      </TouchableOpacity>
+      </TouchableNativeFeedback>
     );
   }
 }

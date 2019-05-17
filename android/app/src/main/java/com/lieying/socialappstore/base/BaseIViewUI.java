@@ -67,7 +67,7 @@ interface BaseIViewUI extends View.OnClickListener {
      */
     void startActivity(Class<?> targetActivity, Bundle bundle, int requestCode, int... flag);
 
-    void setDialog(Class<? extends BaseDialog> dialogClass);
+    void setDialog(Class<? extends BaseDialogActivity> dialogClass);
 
     boolean onShowDialog();
 

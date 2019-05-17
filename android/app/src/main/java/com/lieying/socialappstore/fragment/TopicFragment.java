@@ -102,7 +102,6 @@ public class TopicFragment extends BaseV4Fragment implements PullToRefreshListen
         }, new BaseObserver<ResponseData<List<TopicBean>>>() {
             @Override
             protected void onSuccees(ResponseData<List<TopicBean>> objectResponseData) {
-                Log.e("test" ,"~~~~~~~~~~~~~~~" +objectResponseData.getData().size() );
                 if (refreshRecyclerView.isRefresh()) {
                     refreshRecyclerView.onPullComplete();
                 }
@@ -117,13 +116,11 @@ public class TopicFragment extends BaseV4Fragment implements PullToRefreshListen
                     }else {
                         mApplist.addAll(objectResponseData.getData());
                         int start = mApplist.size() - objectResponseData.getData().size();
-
                         myAdapter.notifyItemRangeInserted(start, objectResponseData.getData().size());
-                        boolean hasMore = (objectResponseData.getData().size() == Constants.DEFAULT_PAGE_SIZE);
-                        refreshRecyclerView.setCanLoadMore(hasMore);
-                        myAdapter.setExitsMore(hasMore);
                     }
-
+                    boolean hasMore = (objectResponseData.getData().size() == Constants.DEFAULT_PAGE_SIZE);
+                    refreshRecyclerView.setCanLoadMore(hasMore);
+                    myAdapter.setExitsMore(hasMore);
                 }
             }
 
@@ -174,7 +171,11 @@ public class TopicFragment extends BaseV4Fragment implements PullToRefreshListen
                 TopicBean bean = mApplist.get(position);
                 ((MsgHolder) holder).initData(bean, position);
             } else if (holder instanceof DefaultNoMoreViewHolder) {
-                ((DefaultNoMoreViewHolder) holder).setTip("我是有底线的");
+                if(mApplist.size()<=0 ){
+                    ((DefaultNoMoreViewHolder) holder).setTip( "暂无数据");
+                }else {
+                    ((DefaultNoMoreViewHolder) holder).setTip("我是有底线的");
+                }
             }
         }
 
@@ -224,7 +225,6 @@ public class TopicFragment extends BaseV4Fragment implements PullToRefreshListen
                     public void onClick(View v) {
                         ReactParamsJson reactParamsJson = new ReactParamsJson.Builder().setContentID(mApplist.get(position).getId()).build();
                         String params = GsonUtil.GsonString(reactParamsJson);
-                        Log.e("test" , "params : ---------  "+params);
                         CommonReactActivity.startActivity(mContext , "MyReactNativeAppthree" ,"detailChat" , params);
                     }
                 });

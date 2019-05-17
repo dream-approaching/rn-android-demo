@@ -4,93 +4,111 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     android:orientation="vertical"
     tools:context=".activity.UserIndexActivity">
 
     <RelativeLayout
-        android:paddingTop="40dp"
-        android:background="@drawable/bg_bnt_download"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_user_index_top">
 
         <com.lieying.socialappstore.widget.NiceImageView
             android:id="@+id/iv_user_index_head_icon"
-            android:layout_centerHorizontal="true"
             android:layout_width="74dp"
             android:layout_height="74dp"
+            android:layout_centerHorizontal="true"
             android:layout_marginTop="58dp"
+            android:src="@drawable/ic_default_header"
             app:is_circle="true" />
+
+        <ImageView
+            android:id="@+id/iv_user_index_vip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignRight="@+id/iv_user_index_head_icon"
+            android:layout_alignBottom="@+id/iv_user_index_head_icon"
+            android:src="@drawable/ic_user_vip_big" />
 
         <TextView
             android:id="@+id/tv_user_index_user_nick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_below="@+id/iv_user_index_head_icon"
+            android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/dimens_14dp"
             android:text="夏东东"
-            android:textSize="@dimen/dimens_19sp"
             android:textColor="@color/white"
-            android:layout_centerHorizontal="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:textSize="@dimen/dimens_19sp" />
 
         <TextView
             android:id="@+id/tv_user_index_user_position"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_below="@+id/tv_user_index_user_nick"
+            android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/dimens_8dp"
-            android:textSize="@dimen/dimens_9dp"
             android:text="深圳-网页设计师"
             android:textColor="@color/white"
-            android:layout_centerHorizontal="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:textSize="@dimen/dimens_9dp" />
 
         <TextView
             android:id="@+id/tv_user_index_user_dignity"
-            android:layout_below="@+id/tv_user_index_user_position"
-            android:layout_marginTop="@dimen/dimens_8dp"
-            android:textSize="@dimen/dimens_12sp"
-            android:textColor="@color/white"
-            android:text="官方认证:树莓开发者"
-            android:layout_centerHorizontal="true"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_user_index_user_position"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/dimens_8dp"
+            android:text="官方认证:树莓开发者"
+            android:textColor="@color/white"
+            android:textSize="@dimen/dimens_12sp" />
+
         <LinearLayout
-            android:orientation="horizontal"
-            android:background="#77FFFFFF"
-            android:layout_marginTop="@dimen/dimens_20dp"
-            android:layout_below="@+id/tv_user_index_user_dignity"
             android:layout_width="match_parent"
+            android:layout_height="@dimen/dimens_42dp"
+            android:layout_below="@+id/tv_user_index_user_dignity"
+            android:layout_marginTop="@dimen/dimens_20dp"
+            android:background="#22FFFFFF"
             android:gravity="center_vertical"
-            android:layout_height="@dimen/dimens_42dp">
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/tv_user_index_follow_count"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:gravity="center"
                 android:text="关  注"
                 android:textColor="@color/white"
-                android:textSize="@dimen/dimens_13sp"
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content" />
+                android:textSize="@dimen/dimens_13sp" />
+
             <TextView
                 android:id="@+id/tv_user_index_fans_count"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:gravity="center"
                 android:text="粉  丝"
                 android:textColor="@color/white"
-                android:textSize="@dimen/dimens_13sp"
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content" />
+                android:textSize="@dimen/dimens_13sp" />
         </LinearLayout>
+
+        <ImageView
+            android:id="@+id/iv_user_index_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimens_40dp"
+            android:layout_marginLeft="@dimen/dimens_15dp"
+            android:padding="@dimen/dimens_10dp"
+            android:src="@drawable/ic_back_white" />
     </RelativeLayout>
 
     <android.support.design.widget.TabLayout
         android:id="@+id/tab_user_index"
         android:layout_width="match_parent"
-        android:layout_marginLeft="84dp"
-        android:layout_marginRight="84dp"
         android:layout_height="38dp"
+        android:layout_marginLeft="84dp"
         android:layout_marginTop="@dimen/dimens_40dp"
+        android:layout_marginRight="84dp"
         android:minWidth="200dp"
         app:tabIndicator="@drawable/ic_tab_indicator"
         app:tabIndicatorColor="@color/colorCommonRed"
@@ -98,11 +116,12 @@
         app:tabSelectedTextColor="@color/text_color_normal"
         app:tabTextAppearance="@style/TabLayoutTextStyle"
         app:tabTextColor="@color/text_color_gray" />
+
     <View
-        android:layout_marginTop="@dimen/dimens_5dp"
-        android:background="@color/color_eeeeee"
         android:layout_width="match_parent"
-        android:layout_height="4dp"></View>
+        android:layout_height="4dp"
+        android:layout_marginTop="@dimen/dimens_5dp"
+        android:background="@color/color_eeeeee"></View>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/vp_user_index"
@@ -111,7 +130,6 @@
         android:background="@color/white"
         android:fillViewport="true"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-
 
 
 </LinearLayout>

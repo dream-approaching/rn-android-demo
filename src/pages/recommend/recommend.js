@@ -9,9 +9,9 @@ import { debounce, lastArr } from '@/utils/utils';
 import { scale, themeLayout, themeColor } from '@/config';
 import SecondaryText from '@/components/AppText/SecondaryText';
 import { ChineseNormalFooter } from 'react-native-spring-scrollview/Customize';
-// import { TouchableOpacity } from 'react-native-gesture-handler';
 import SearchItem from './components/searchItem';
 import Loading from '@/components/Loading/loading';
+import NoData from '@/components/NoData';
 
 class Recommend extends React.Component {
   static navigationOptions = {
@@ -78,7 +78,6 @@ class Recommend extends React.Component {
     const { textValue } = this.state;
     const { recommend } = this.props;
     const lastItem = lastArr(recommend.appList);
-    console.log('%clastItem:', 'color: #0e93e0;background: #aaefe5;', textValue, lastItem);
     const data = {
       id: lastItem.id,
       search: textValue,
@@ -102,7 +101,6 @@ class Recommend extends React.Component {
     const { textValue, allLoaded } = this.state;
     const { recommend, loading } = this.props;
     const { appList } = recommend;
-    // console.log('%cappList:', 'color: #0e93e0;background: #aaefe5;', appList);
     const noSearch = !textValue.length;
     const noList = textValue.length && !appList.length && !loading;
     return (
@@ -115,9 +113,6 @@ class Recommend extends React.Component {
           value={textValue}
           placeholder='输入你想推荐的应用'
         />
-        {/* <TouchableOpacity onPress={() => this.gotoRecommendEdit({ id: 78 })}>
-          <SecondaryText style={styles.searchTitle}>点击进入提交页面</SecondaryText>
-        </TouchableOpacity> */}
         {!noSearch && (
           <View style={styles.searchCon}>
             <View style={styles.searchTitleCon}>
@@ -131,7 +126,7 @@ class Recommend extends React.Component {
               allLoaded={allLoaded}
               loadingFooter={ChineseNormalFooter}
             >
-              {(noList && <SecondaryText>没有结果</SecondaryText>) ||
+              {(noList && <NoData text='没有结果' />) ||
                 appList.map(item => {
                   return (
                     <SearchItem
