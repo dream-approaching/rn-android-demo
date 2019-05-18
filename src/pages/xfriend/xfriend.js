@@ -13,6 +13,7 @@ import { OpenRnActivity } from '@/components/NativeModules';
 import Loading from '@/components/Loading/loading';
 import deleteModalHoc from '@/components/pageComponent/deleteModalHoc';
 import ImageWithDefault from '@/components/ImageWithDefault';
+// import { xshare as XSHARE } from '@/config/fakeData';
 
 class Xshare extends React.Component {
   static navigationOptions = {
@@ -155,7 +156,7 @@ class Xshare extends React.Component {
               <XfriendItem
                 handleShowDeleteModal={handleShowDeleteModal}
                 handleConfirmDelete={handleConfirmDelete}
-                attentionLikeCallback={this.handleRefreshCallback}
+                toggleAttentionCallback={this.handleRefreshCallback}
                 key={item.id}
                 itemData={item}
               />

@@ -6,13 +6,16 @@ import SmallText from '@/components/AppText/SmallText';
 import myImages from '@/utils/myImages';
 import { connect } from '@/utils/dva';
 import { actionBeforeCheckLogin } from '@/utils/utils';
+import { LIKE_TYPE } from '@/config/constants';
 
 class LikeBtn extends React.Component {
   handleToggleLike = () => {
-    const { dispatch, itemData, type, toggleCallback = () => {} } = this.props;
+    const { dispatch, itemData, type } = this.props;
+    const isLike = !itemData.is_fabulous;
+    const likeNum = +itemData.fabulous;
     const data = {
       type,
-      opt: !itemData.is_fabulous ? 'del' : 'add',
+      opt: isLike ? 'del' : 'add',
       id: itemData.id,
       real_name: itemData.commit_user,
       head_image: itemData.head_image,
@@ -21,7 +24,17 @@ class LikeBtn extends React.Component {
       type: 'comment/toggleLikeEffect',
       payload: data,
       successFn: () => {
-        toggleCallback();
+        if (type === LIKE_TYPE.share) {
+          const setXshareData = {
+            ...itemData,
+            fabulous: isLike ? likeNum - 1 : likeNum + 1,
+            is_fabulous: isLike,
+          };
+          dispatch({
+            type: 'global/saveXshareData',
+            payload: setXshareData,
+          });
+        }
       },
     });
   };

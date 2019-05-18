@@ -31,7 +31,7 @@ class XshareItem extends React.Component {
   };
 
   toggleAttention = () => {
-    const { itemData, dispatch, attentionLikeCallback = () => {} } = this.props;
+    const { itemData, dispatch, toggleAttentionCallback = () => {} } = this.props;
     const data = {
       follow_mobilephone: itemData.mobilephone,
       opt: !itemData.is_add_friends ? 'del' : 'add',
@@ -40,7 +40,7 @@ class XshareItem extends React.Component {
       type: 'xshare/toggleAttentionEffect',
       payload: data,
       successFn: () => {
-        attentionLikeCallback();
+        toggleAttentionCallback();
       },
     });
   };
@@ -66,9 +66,7 @@ class XshareItem extends React.Component {
     OpenActivity.openAppDetails(
       itemData.mydata
         ? itemData.mydata.id
-        : itemData.appdata
-        ? itemData.appdata.id
-        : itemData.app_info
+        : itemData.appdata ? itemData.appdata.id : itemData.app_info
     );
   };
 
@@ -79,7 +77,12 @@ class XshareItem extends React.Component {
   };
 
   render() {
-    const { itemData, isDetail, origin } = this.props;
+    const { isDetail, origin, global } = this.props;
+    let { itemData } = this.props;
+    const { xshareData } = global;
+    if (xshareData[itemData.id]) {
+      itemData = xshareData[itemData.id];
+    }
     const { mainBodyHeight } = this.state;
     const lineNumber = !isDetail ? { numberOfLines: 6 } : {};
     const notShowAttention = this.isOwn || origin === 'myShare';
@@ -123,11 +126,12 @@ class XshareItem extends React.Component {
               <CommonText>&nbsp;&nbsp;{itemData.content}</CommonText>
             </Text>
           </TouchableNativeFeedback>
-          {!isDetail && mainBodyHeight >= 110 && (
-            <TouchableNativeFeedback onPress={this.gotoXfriendDetail}>
-              <Text style={styles.seeAllText}>查看详情</Text>
-            </TouchableNativeFeedback>
-          )}
+          {!isDetail &&
+            mainBodyHeight >= 110 && (
+              <TouchableNativeFeedback onPress={this.gotoXfriendDetail}>
+                <Text style={styles.seeAllText}>查看详情</Text>
+              </TouchableNativeFeedback>
+            )}
           <View style={styles.flexRowBetween}>
             <TouchableNativeFeedback onPress={this.gotoAppDetail}>
               <View style={styles.appCon}>
@@ -136,17 +140,13 @@ class XshareItem extends React.Component {
                   source={{
                     uri: itemData.mydata
                       ? itemData.mydata.img
-                      : itemData.appdata
-                      ? itemData.appdata.app_logo
-                      : itemData.app_logo,
+                      : itemData.appdata ? itemData.appdata.app_logo : itemData.app_logo,
                   }}
                 />
                 <SmallText style={styles.appName}>
                   {itemData.mydata
                     ? itemData.mydata.title
-                    : itemData.appdata
-                    ? itemData.appdata.app_short_desc
-                    : itemData.app_name_cn}
+                    : itemData.appdata ? itemData.appdata.app_short_desc : itemData.app_name_cn}
                 </SmallText>
               </View>
             </TouchableNativeFeedback>
@@ -158,7 +158,6 @@ class XshareItem extends React.Component {
               itemData={itemData}
               size={16}
               textStyle={styles.bottomBarText}
-              // toggleCallback={}
             />
             <TouchableNativeFeedback onPress={this.gotoXfriendDetail}>
               <View style={styles.flexRowBetween}>

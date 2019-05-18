@@ -7,6 +7,7 @@ import {
 } from '@/services/xshare';
 import { toggleAttentionReq, toggleArticleCollectReq } from '@/services/common';
 import Toast from '@/components/Toast';
+import { storeXshare } from '@/utils/utils';
 
 export default {
   namespace: 'xshare',
@@ -20,7 +21,7 @@ export default {
 
   effects: {
     // X友分享列表
-    *queryXshareListEffect({ payload, successFn, finallyFn }, { call, put }) {
+    *queryXshareListEffect({ payload, successFn, finallyFn }, { call, put, select }) {
       try {
         const response = yield call(queryXshareListReq, payload);
         if (response && response.code === 0) {
@@ -29,9 +30,13 @@ export default {
             payload: response.data || [],
             isFirstPage: payload.isFirst,
           });
+          let storeXshareObj = {};
+          yield select(state => {
+            storeXshareObj = storeXshare(response.data, state);
+          });
           yield put({
             type: 'global/saveXshareData',
-            payload: response.data || [],
+            payload: storeXshareObj,
           });
           successFn && successFn(response.data);
         }
@@ -42,7 +47,7 @@ export default {
       }
     },
     // 个人页的X友分享列表
-    *queryOtherShareListEffect({ payload, successFn, finallyFn }, { call, put }) {
+    *queryOtherShareListEffect({ payload, successFn, finallyFn }, { call, put, select }) {
       try {
         const response = yield call(queryOthershareListReq, payload);
         if (response && response.code === 0) {
@@ -50,6 +55,14 @@ export default {
             type: 'saveOthershareList',
             payload: response.data || [],
             isFirstPage: payload.isFirst,
+          });
+          let storeXshareObj = {};
+          yield select(state => {
+            storeXshareObj = storeXshare(response.data, state);
+          });
+          yield put({
+            type: 'global/saveXshareData',
+            payload: storeXshareObj,
           });
           successFn && successFn(response.data);
         }
@@ -116,13 +129,21 @@ export default {
       }
     },
     // X友分享内页
-    *queryXshareDetailEffect({ payload, successFn }, { call, put }) {
+    *queryXshareDetailEffect({ payload, successFn }, { call, put, select }) {
       try {
         const response = yield call(queryXshareDetailReq, payload);
         if (response && response.code === 0) {
           yield put({
             type: 'saveXshareDetail',
-            payload: response.data || [],
+            payload: response.data || {},
+          });
+          let storeXshareObj = {};
+          yield select(state => {
+            storeXshareObj = storeXshare([response.data], state);
+          });
+          yield put({
+            type: 'global/saveXshareData',
+            payload: storeXshareObj,
           });
           successFn && successFn();
         } else {

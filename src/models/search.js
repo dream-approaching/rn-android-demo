@@ -1,4 +1,5 @@
 import { queryHistorySearchReq, searchReq } from '@/services/search';
+import { storeXshare } from '@/utils/utils';
 
 export default {
   namespace: 'search',
@@ -23,7 +24,7 @@ export default {
         console.log('err', err);
       }
     },
-    *querySearchEffect({ payload, finallyFn, successFn }, { call, put }) {
+    *querySearchEffect({ payload, finallyFn, successFn }, { call, put, select }) {
       try {
         const response = yield call(searchReq, payload);
         if (response && response.code === 0) {
@@ -32,12 +33,32 @@ export default {
               type: 'saveSearchAll',
               payload: response.data || {},
             });
+            if (response.data.share) {
+              let storeXshareObj = {};
+              yield select(state => {
+                storeXshareObj = storeXshare(response.data.share, state);
+              });
+              yield put({
+                type: 'global/saveXshareData',
+                payload: storeXshareObj,
+              });
+            }
           } else {
             yield put({
               type: 'saveSearchList',
               payload: response.data || [],
               isFirstPage: payload.isFirst,
             });
+            if (payload.search_type === 5) {
+              let storeXshareObj = {};
+              yield select(state => {
+                storeXshareObj = storeXshare(response.data, state);
+              });
+              yield put({
+                type: 'global/saveXshareData',
+                payload: storeXshareObj,
+              });
+            }
           }
           successFn && successFn(response.data);
         }

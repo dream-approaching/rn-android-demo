@@ -78,3 +78,19 @@ export function sleep(ms) {
   }
   console.log(`休眠后：${new Date().getTime()}`);
 }
+
+export const storeXshare = (payload = [], state) => {
+  let shouldStoreArr = [];
+  const shouldStoreObj = {};
+  const { xshareData } = state.global;
+  shouldStoreArr = payload.filter(item => {
+    if (!xshareData[item.id]) {
+      return item;
+    }
+  });
+  shouldStoreArr.map(item => {
+    shouldStoreObj[item.id] = item;
+  });
+  console.log('%cshouldStoreObj:', 'color: #0e93e0;background: #aaefe5;', shouldStoreObj);
+  return shouldStoreObj;
+};
