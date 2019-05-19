@@ -24,7 +24,7 @@ class LikeBtn extends React.Component {
       type: 'comment/toggleLikeEffect',
       payload: data,
       successFn: () => {
-        if (type === LIKE_TYPE.share) {
+        if (+type === LIKE_TYPE.share) {
           const setXshareData = {
             ...itemData,
             fabulous: isLike ? likeNum - 1 : likeNum + 1,

@@ -133,7 +133,7 @@ class XshareItem extends React.Component {
               </TouchableNativeFeedback>
             )}
           <View style={styles.flexRowBetween}>
-            <TouchableNativeFeedback onPress={this.gotoAppDetail}>
+            <TouchableNativeFeedback tapArea={1} onPress={this.gotoAppDetail}>
               <View style={styles.appCon}>
                 <ImageWithDefault
                   style={styles.appIcon}
