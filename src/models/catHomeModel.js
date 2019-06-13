@@ -7,7 +7,7 @@ export default {
   state: {
     catHomeList: [],
     catHomeListTotal: 0,
-    articleDetail: { img: '' },
+    articleDetail: { img: '', detailtwo: [] },
   },
 
   effects: {
@@ -54,7 +54,7 @@ export default {
               'http://192.168.0.200:1230/uploads_cms_images/1560137435195_34691.jpg,http://192.168.0.200:1230/uploads_cms_images/1560137436024_51992.jpg,http://192.168.0.200:1230/uploads_cms_images/1560137436024_51992.jpg',
             title: '333',
             mill_created_time: '0',
-            location: '',
+            location: '西藏',
             head_image: 'http://192.168.0.200:8060/uploads_cms_images/1552617692930_2304.jpg',
             is_big_v: '1',
             is_add_friends: true,

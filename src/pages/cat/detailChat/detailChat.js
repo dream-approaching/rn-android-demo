@@ -1,6 +1,14 @@
 // 互动话题内页
 import React from 'react';
-import { View, StyleSheet, StatusBar, BackHandler } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  StatusBar,
+  BackHandler,
+  Image,
+  TouchableWithoutFeedback,
+  Text,
+} from 'react-native';
 import CommentItem from '@/components/Comment/CommentItem';
 import CommentInput from '@/components/Comment/Cat/CommentInput';
 import { scale, themeLayout, themeCatColor, themeCatSize } from '@/config';
@@ -17,6 +25,7 @@ import SecondaryText from '@/components/AppText/SecondaryText';
 import ImageWithDefault from '@/components/ImageWithDefault';
 import Swiper from 'react-native-swiper';
 import CommonText from '@/components/AppText/Cat/CommonText';
+import myImages from '@/utils/myImages';
 
 class DetailChat extends React.Component {
   static navigationOptions = {
@@ -123,6 +132,7 @@ class DetailChat extends React.Component {
     console.log('%carticleDetail:', 'color: #0e93e0;background: #aaefe5;', articleDetail);
     return (
       <View style={styles.container}>
+        <SmallText>123</SmallText>
         <FirstLoading loading={loading || !articleDetail.id}>
           <LeftHeader
             leftComponent={this.renderHeaderLeft()}
@@ -147,6 +157,78 @@ class DetailChat extends React.Component {
             <View style={styles.titleCon}>
               <SecondaryText style={styles.desc}>{articleDetail.content}</SecondaryText>
             </View>
+            <View style={styles.timeBar}>
+              <SmallText style={styles.barText}>{articleDetail.timestr}</SmallText>
+              <View style={styles.addressCon}>
+                <Image style={styles.addressIcon} source={{ uri: myImages.approve }} />
+                <SmallText style={styles.barText}>{articleDetail.location}</SmallText>
+              </View>
+            </View>
+            <View style={styles.actionBar}>
+              <View style={styles.actionBarItem}>
+                <Image style={styles.actionIcon} source={{ uri: myImages.approve }} />
+                <SmallText style={styles.barText}>打赏</SmallText>
+              </View>
+              <View style={styles.actionBarItem}>
+                <Image style={styles.actionIcon} source={{ uri: myImages.approve }} />
+                <SmallText style={styles.barText}>{+articleDetail.fabulous || ''}</SmallText>
+              </View>
+              <View style={styles.actionBarItem}>
+                <Image style={styles.actionIcon} source={{ uri: myImages.approve }} />
+                <SmallText style={styles.barText}>{+articleDetail.comment_num || ''}</SmallText>
+              </View>
+              <View style={styles.actionBarItem}>
+                <Image style={styles.actionIcon} source={{ uri: myImages.approve }} />
+                <SmallText style={styles.barText}>{+articleDetail.forward_num || ''}</SmallText>
+              </View>
+            </View>
+            {!!articleDetail.detailtwo.length && (
+              <View style={styles.replyCon}>
+                {articleDetail.detailtwo.map(item => {
+                  console.log('%citem:', 'color: #0e93e0;background: #aaefe5;', item);
+                  if (!item.path) return;
+                  const pathArr = item.path.split('-');
+                  const isThirdLevel = pathArr.length >= 3;
+                  return (
+                    <TouchableWithoutFeedback key={item.id}>
+                      <View style={{ marginTop: 3 }}>
+                        <Text style={[styles.textLineHeight(18), { flexWrap: 'wrap' }]}>
+                          <TouchableWithoutFeedback
+                            onPress={() => this.gotoPersonPage(item.mobilephone)}
+                          >
+                            <CommonText style={[styles.replyTitle]}>{item.commit_user}</CommonText>
+                          </TouchableWithoutFeedback>
+                          {isThirdLevel && (
+                            <CommonText style={styles.replayText}>
+                              回复
+                              <TouchableWithoutFeedback
+                                onPress={() => this.gotoPersonPage(item.pidinfo.mobilephone)}
+                              >
+                                <CommonText style={[styles.replyTitle]}>
+                                  {item.pidinfo.nick_name}
+                                </CommonText>
+                              </TouchableWithoutFeedback>
+                            </CommonText>
+                          )}
+                          <TouchableWithoutFeedback>
+                            <CommonText>：{item.content}</CommonText>
+                          </TouchableWithoutFeedback>
+                        </Text>
+                      </View>
+                    </TouchableWithoutFeedback>
+                  );
+                })}
+                {+articleDetail.count > 2 && (
+                  <TouchableNativeFeedback tapArea={1}>
+                    <View style={{ marginTop: 3 }}>
+                      <SecondaryText style={[styles.replyTitle, styles.textLineHeight(18)]}>
+                        {`共${articleDetail.count}条回复＞`}
+                      </SecondaryText>
+                    </View>
+                  </TouchableNativeFeedback>
+                )}
+              </View>
+            )}
           </MyScrollView>
           <CommentInput
             {...this.props}
@@ -218,12 +300,6 @@ const styles = StyleSheet.create({
   titleCon: {
     ...themeLayout.padding(scale(12), scale(14), scale(12), scale(16)),
   },
-  title: {
-    marginTop: scale(6),
-    marginBottom: scale(6),
-    fontSize: scale(21),
-    lineHeight: scale(30),
-  },
   desc: {
     fontSize: scale(15),
     marginTop: scale(6),
@@ -231,8 +307,58 @@ const styles = StyleSheet.create({
     marginBottom: scale(20),
     textAlign: 'justify',
   },
+  timeBar: {
+    ...themeLayout.flex('row', 'flex-start'),
+    ...themeLayout.padding(0, 16),
+  },
+  actionBar: {
+    ...themeLayout.flex('row', 'space-between'),
+    ...themeLayout.padding(0, 26),
+    marginTop: 18,
+  },
+  actionBarItem: {
+    ...themeLayout.flex('row'),
+    minWidth: 30,
+  },
+  actionIcon: {
+    width: scale(16),
+    height: scale(16),
+    marginRight: scale(4),
+  },
+  addressCon: {
+    ...themeLayout.flex('row'),
+    marginLeft: scale(26),
+  },
+  addressIcon: {
+    width: scale(11),
+    height: scale(11),
+    marginRight: scale(2),
+  },
+  barText: {
+    fontSize: 11,
+    color: '#999',
+  },
+  actionText: {
+    fontSize: 12,
+    color: '#999',
+  },
   swiperWrapper: {
     width: themeCatSize.screenWidth,
     height: scale(211),
   },
+  replyCon: {
+    ...themeLayout.padding(5, 8),
+    ...themeLayout.margin(8, 15),
+    backgroundColor: themeCatColor.bgF4,
+    borderRadius: 8,
+  },
+  replyText: {
+    marginTop: 3,
+  },
+  replyTitle: {
+    color: '#39536C',
+  },
+  textLineHeight: num => ({
+    lineHeight: num,
+  }),
 });
