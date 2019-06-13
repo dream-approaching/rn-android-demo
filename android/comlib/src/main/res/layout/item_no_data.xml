@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="#ffffff"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tv_no_data_tip"
+        android:layout_marginTop="200dp"
+        android:layout_centerHorizontal="true"
+        android:text="暂无数据"
+        android:gravity="center"
+        android:textColor="#707070"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/tv_no_data_bnt"
+        android:textSize="13sp"
+        android:textColor="#fb716b"
+        android:padding="3dp"
+        android:gravity="center"
+        android:layout_marginTop="17dp"
+        android:layout_below="@+id/tv_no_data_tip"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+</RelativeLayout>

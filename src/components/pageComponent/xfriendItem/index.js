@@ -1,53 +1,79 @@
 import React from 'react';
 import { View, Image, StyleSheet, Text } from 'react-native';
 import TouchableNativeFeedback from '@/components/Touchable/TouchableNativeFeedback';
-import { themeLayout, scale, themeColor, themeSize } from '@/config';
-import SecondaryText from '@/components/AppText/SecondaryText';
-import SmallText from '@/components/AppText/SmallText';
-import CommonText from '@/components/AppText/CommonText';
-import LikeBtn from '@/components/Comment/likeBtn';
+import { themeLayout, themeCatColor, themeCatSize } from '@/config';
+import SecondaryText from '@/components/AppText/Cat/SecondaryText';
+import SmallText from '@/components/AppText/Cat/SmallText';
+import CommonText from '@/components/AppText/Cat/CommonText';
+import LikeBtn from '@/components/Comment/Cat/likeBtn';
 import myImages from '@/utils/myImages';
 import { OpenRnActivity, OpenActivity } from '@/components/NativeModules';
-import { LIKE_TYPE } from '@/config/constants';
+import { LIKE_TYPE, immediateTimer } from '@/config/constants';
 import { connect } from '@/utils/dva';
 import ImageWithDefault from '@/components/ImageWithDefault';
 import { actionBeforeCheckLogin } from '@/utils/utils';
 
 class XshareItem extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      mainBodyHeight: 0,
-    };
-    const { userInfo } = props.global;
-    this.isOwn = userInfo && props.itemData.commit_user === userInfo.nick_name;
+  mainBodyHeight = 0;
+
+  state = {
+    numberofLines: null,
+    showMore: false,
+  };
+
+  componentDidMount() {
+    this.lineTimer = setTimeout(() => {
+      this.setState({
+        numberofLines: 6,
+      });
+    }, 100);
   }
 
-  mainBodyLayout = ({ nativeEvent }) => {
+  componentWillUnmount() {
+    // this.timer && clearTimeout(this.timer);
+    this.lineTimer && clearTimeout(this.lineTimer);
+  }
+
+  mainBodyLayout = async ({ nativeEvent }) => {
     const { height } = nativeEvent.layout;
-    this.setState({
-      mainBodyHeight: height,
-    });
+    if (!this.mainBodyHeight) {
+      this.mainBodyHeight = height;
+    } else if (this.mainBodyHeight > height) {
+      this.setState({
+        showMore: true,
+      });
+    }
   };
 
   toggleAttention = () => {
-    const { itemData, dispatch, toggleAttentionCallback = () => {} } = this.props;
+    const { itemData, dispatch, global } = this.props;
     const data = {
       follow_mobilephone: itemData.mobilephone,
       opt: !itemData.is_add_friends ? 'del' : 'add',
     };
-    dispatch({
-      type: 'xshare/toggleAttentionEffect',
-      payload: data,
-      successFn: () => {
-        toggleAttentionCallback();
-      },
+    const obj = {};
+    Object.values(global.xshareData).map(item => {
+      if (item.mobilephone === itemData.mobilephone) {
+        item.is_add_friends = !item.is_add_friends;
+        obj[item.id] = item;
+      }
     });
+    dispatch({
+      type: 'global/saveXshareData',
+      payload: obj,
+    });
+    if (this.timer) clearTimeout(this.timer);
+    this.timer = setTimeout(() => {
+      dispatch({
+        type: 'xshare/toggleAttentionEffect',
+        payload: data,
+      });
+    }, immediateTimer);
   };
 
   handleRightBottomAction = () => {
-    const { itemData } = this.props;
-    if (this.isOwn) {
+    const { itemData, userInfo } = this.props;
+    if (userInfo && itemData.commit_user === userInfo.nick_name) {
       return this.props.handleShowDeleteModal(itemData);
     }
     // 举报
@@ -58,7 +84,7 @@ class XshareItem extends React.Component {
     const { noPress, itemData } = this.props;
     return noPress
       ? () => {}
-      : OpenRnActivity('xFriendDetail', JSON.stringify({ id: itemData.id }));
+      : OpenRnActivity('xFriendDetail', JSON.stringify({ contentId: itemData.id }));
   };
 
   gotoAppDetail = () => {
@@ -66,29 +92,32 @@ class XshareItem extends React.Component {
     OpenActivity.openAppDetails(
       itemData.mydata
         ? itemData.mydata.id
-        : itemData.appdata ? itemData.appdata.id : itemData.app_info
+        : itemData.appdata
+        ? itemData.appdata.id
+        : itemData.app_info
     );
   };
 
   gotoPersonPage = () => {
-    const { itemData, origin } = this.props;
-    if (this.isOwn || origin === 'myShare') return null;
+    const { itemData, origin, userInfo } = this.props;
+    const isOwn = userInfo && itemData.commit_user === userInfo.nick_name;
+    if (isOwn || origin === 'myShare') return null;
     OpenActivity.openUserIndex(itemData.mobilephone);
   };
 
   render() {
-    const { isDetail, origin, global } = this.props;
+    const { isDetail, origin, global, userInfo, islastOne } = this.props;
     let { itemData } = this.props;
     const { xshareData } = global;
     if (xshareData[itemData.id]) {
       itemData = xshareData[itemData.id];
     }
-    const { mainBodyHeight } = this.state;
-    const lineNumber = !isDetail ? { numberOfLines: 6 } : {};
-    const notShowAttention = this.isOwn || origin === 'myShare';
+    const { showMore } = this.state;
+    const isOwn = userInfo && itemData.commit_user === userInfo.nick_name;
+    const notShowAttention = isOwn || origin === 'myShare';
     return (
       <View style={styles.container}>
-        <TouchableNativeFeedback color onPress={this.gotoPersonPage}>
+        <TouchableNativeFeedback onPress={this.gotoPersonPage}>
           <View style={styles.avatarCon}>
             <ImageWithDefault style={styles.avatar} source={{ uri: itemData.head_image }} />
             {+itemData.is_big_v === 2 && (
@@ -96,9 +125,11 @@ class XshareItem extends React.Component {
             )}
           </View>
         </TouchableNativeFeedback>
-        <View style={styles.itemRight}>
+        <View style={styles.itemRight(islastOne)}>
           <View style={styles.flexRowBetween}>
-            <SecondaryText>{itemData.commit_user}</SecondaryText>
+            <TouchableNativeFeedback tapArea={1} onPress={this.gotoPersonPage}>
+              <SecondaryText>{itemData.commit_user}</SecondaryText>
+            </TouchableNativeFeedback>
             {!notShowAttention && (
               <TouchableNativeFeedback onPress={() => actionBeforeCheckLogin(this.toggleAttention)}>
                 <SmallText style={styles.attenText(itemData.is_add_friends)}>
@@ -107,46 +138,49 @@ class XshareItem extends React.Component {
               </TouchableNativeFeedback>
             )}
           </View>
-          <SmallText>{itemData.timestr || itemData.created_time}</SmallText>
-          <TouchableNativeFeedback onPress={this.gotoXfriendDetail}>
-            <Text
-              ref={ref => (this.refText = ref)}
-              onLayout={this.mainBodyLayout}
-              style={styles.mainContext}
-              {...lineNumber}
-            >
-              {itemData.label &&
-                itemData.label.split(',').map(item => {
-                  return (
-                    <CommonText style={styles.labelText} key={item}>
-                      #{item}{' '}
-                    </CommonText>
-                  );
-                })}
-              <CommonText>&nbsp;&nbsp;{itemData.content}</CommonText>
-            </Text>
+          <SmallText style={[styles.marginTop(1), styles.superText]}>
+            {itemData.timestr || itemData.created_time}
+          </SmallText>
+          <TouchableNativeFeedback tapArea={5} onPress={this.gotoXfriendDetail}>
+            <View>
+              <Text
+                ref={ref => (this.refText = ref)}
+                onLayout={this.mainBodyLayout}
+                style={styles.mainContext}
+                // numberOfLines={isDetail ? null : 3}
+                numberOfLines={this.state.numberofLines}
+              >
+                {itemData.label &&
+                  itemData.label.split(',').map(item => {
+                    return (
+                      <CommonText style={styles.labelText} key={item}>
+                        #{item}{' '}
+                      </CommonText>
+                    );
+                  })}
+                <CommonText>&nbsp;&nbsp;{itemData.content}</CommonText>
+              </Text>
+            </View>
           </TouchableNativeFeedback>
-          {!isDetail &&
-            mainBodyHeight >= 110 && (
-              <TouchableNativeFeedback onPress={this.gotoXfriendDetail}>
-                <Text style={styles.seeAllText}>查看详情</Text>
-              </TouchableNativeFeedback>
-            )}
+          {!isDetail && showMore && (
+            <TouchableNativeFeedback onPress={this.gotoXfriendDetail}>
+              <Text style={styles.seeAllText}>查看详情</Text>
+            </TouchableNativeFeedback>
+          )}
           <View style={styles.flexRowBetween}>
             <TouchableNativeFeedback tapArea={1} onPress={this.gotoAppDetail}>
               <View style={styles.appCon}>
                 <ImageWithDefault
                   style={styles.appIcon}
                   source={{
-                    uri: itemData.mydata
-                      ? itemData.mydata.img
-                      : itemData.appdata ? itemData.appdata.app_logo : itemData.app_logo,
+                    uri:
+                      (itemData.mydata && itemData.mydata.img) ||
+                      (itemData.appdata && itemData.appdata.app_logo),
                   }}
                 />
-                <SmallText style={styles.appName}>
-                  {itemData.mydata
-                    ? itemData.mydata.title
-                    : itemData.appdata ? itemData.appdata.app_short_desc : itemData.app_name_cn}
+                <SmallText numberOfLines={1} style={styles.appName}>
+                  {(itemData.mydata && itemData.mydata.app_name_cn) ||
+                    (itemData.appdata && itemData.appdata.app_name_cn)}
                 </SmallText>
               </View>
             </TouchableNativeFeedback>
@@ -174,11 +208,13 @@ class XshareItem extends React.Component {
             <TouchableNativeFeedback
               onPress={() => actionBeforeCheckLogin(this.handleRightBottomAction)}
             >
-              <View style={styles.btnEtc}>
-                {(this.isOwn && <SmallText style={styles.delText}>删除</SmallText>) || (
-                  <Image style={styles.bottomBarIcon} source={{ uri: myImages.btnEtc }} />
-                )}
-              </View>
+              {(origin !== 'detail' && (
+                <View style={styles.btnEtc}>
+                  {(isOwn && <SmallText style={styles.delText}>删除</SmallText>) || (
+                    <Image style={styles.bottomBarIcon} source={{ uri: myImages.btnEtc }} />
+                  )}
+                </View>
+              )) || <View style={styles.btnEtc} />}
             </TouchableNativeFeedback>
           </View>
         </View>
@@ -187,7 +223,7 @@ class XshareItem extends React.Component {
   }
 }
 
-const mapStateToProps = ({ xshare, global }) => ({ xshare, global });
+const mapStateToProps = ({ xshare, global }) => ({ xshare, global, userInfo: global.userInfo });
 
 export default connect(mapStateToProps)(XshareItem);
 
@@ -195,95 +231,106 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     ...themeLayout.flex('row', 'space-between', 'flex-start'),
-    ...themeLayout.padding(0, scale(16)),
-    marginTop: scale(17),
+    ...themeLayout.padding(0),
+    marginTop: 17,
+  },
+  marginTop: num => {
+    return {
+      marginTop: num,
+    };
+  },
+  superText: {
+    fontSize: 10,
   },
   avatarCon: {
-    width: scale(49),
-    height: scale(49),
-    borderRadius: scale(25),
+    width: 46,
+    height: 46,
+    borderRadius: 25,
   },
   avatar: {
-    width: scale(49),
-    height: scale(49),
-    borderRadius: scale(25),
-    backgroundColor: themeColor.bgF4,
+    width: 46,
+    height: 46,
+    borderRadius: 25,
+    backgroundColor: themeCatColor.bgF4,
   },
   bigV: {
     position: 'absolute',
     bottom: 0,
     right: 0,
     zIndex: 1000,
-    width: scale(14),
-    height: scale(14),
+    width: 14,
+    height: 14,
   },
-  itemRight: {
-    flex: 1,
-    marginLeft: scale(12),
-    paddingBottom: scale(14),
-    ...themeLayout.borderSide(),
+  itemRight: isLastOne => {
+    const obj = {
+      flex: 1,
+      marginLeft: 12,
+      paddingBottom: 14,
+    };
+    return isLastOne ? obj : { ...obj, ...themeLayout.borderSide() };
   },
   flexRowBetween: {
     ...themeLayout.flex('row', 'space-between'),
   },
   attenText: attention => {
     return {
-      fontSize: scale(11),
-      color: !attention ? themeColor.font.secondary : themeColor.primaryColor,
+      fontSize: 13,
+      color: !attention ? themeCatColor.font.secondary : themeCatColor.primaryColor,
     };
   },
   mainContext: {
-    lineHeight: scale(20),
+    lineHeight: 22,
+    marginTop: 5,
   },
   labelText: {
-    color: themeColor.font.secondary,
+    color: themeCatColor.font.secondary,
   },
   appCon: {
-    height: scale(22),
+    height: 22,
     ...themeLayout.flex('row'),
-    ...themeLayout.padding(0, scale(10)),
-    backgroundColor: themeColor.bgF4,
-    borderRadius: scale(10),
-    marginTop: scale(8),
+    ...themeLayout.padding(0, 10),
+    backgroundColor: themeCatColor.bgF4,
+    borderRadius: 10,
+    marginTop: 10,
   },
   appIcon: {
-    width: scale(17),
-    height: scale(17),
-    borderRadius: scale(9),
+    width: 17,
+    height: 17,
+    borderRadius: 9,
   },
   appName: {
-    color: themeColor.primaryColor,
-    marginLeft: scale(6),
+    color: themeCatColor.primaryColor,
+    marginLeft: 6,
     // fontWeight: '500',
   },
   bottomBar: {
     ...themeLayout.flex('row', 'space-between'),
-    marginTop: scale(12),
+    marginTop: 13,
   },
   bottomBarText: {
-    fontSize: scale(11),
-    color: themeColor.font.small,
-    marginLeft: scale(5),
+    fontSize: 11,
+    color: themeCatColor.font.small,
+    marginLeft: 5,
   },
   bottomBarIcon: {
-    width: scale(16),
-    height: scale(16),
+    width: 16,
+    height: 16,
   },
   btnEtc: {
-    marginLeft: scale(30),
+    marginLeft: 30,
   },
   etcIcon: {
-    width: scale(18),
-    height: scale(18),
+    width: 18,
+    height: 18,
   },
   seeAllText: {
     color: '#2c5b93',
-    fontSize: themeSize.font.secondary,
-    marginTop: scale(5),
+    fontSize: themeCatSize.font.secondary,
+    marginTop: 5,
   },
   delText: {
-    color: themeColor.primaryColor,
-    fontSize: scale(11),
-    ...themeLayout.borderSide('Bottom', themeColor.primaryColor),
+    color: themeCatColor.primaryColor,
+    fontSize: 11,
+    ...themeLayout.borderSide('Bottom', themeCatColor.primaryColor),
   },
 });

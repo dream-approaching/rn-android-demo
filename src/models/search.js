@@ -1,4 +1,4 @@
-import { queryHistorySearchReq, searchReq } from '@/services/search';
+import { queryHistorySearchReq, searchReq, deleteHistorySearchReq } from '@/services/search';
 import { storeXshare } from '@/utils/utils';
 
 export default {
@@ -18,6 +18,19 @@ export default {
           yield put({
             type: 'saveHistorySearchList',
             payload: response.data || [],
+          });
+        }
+      } catch (err) {
+        console.log('err', err);
+      }
+    },
+    *deleteHistorySearchEffect(_, { call, put }) {
+      try {
+        const response = yield call(deleteHistorySearchReq);
+        if (response && response.code === 0) {
+          yield put({
+            type: 'saveHistorySearchList',
+            payload: [],
           });
         }
       } catch (err) {

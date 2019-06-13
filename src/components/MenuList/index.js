@@ -7,8 +7,8 @@ export default class MenuList extends React.PureComponent {
     const { menu, style } = this.props;
     return (
       <View style={style}>
-        {menu.map(item => {
-          return <MenuItem key={item.title} item={item} />;
+        {menu.map((item, index) => {
+          return <MenuItem key={item.title} item={item} islast={index === menu.length - 1} />;
         })}
       </View>
     );

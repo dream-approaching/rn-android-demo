@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { themeLayout } from '@/config';
 import ActivityIndicator from '@/components/ActivityIndicator';
 
@@ -8,7 +8,7 @@ export default class FirstLoading extends React.PureComponent {
     const { loading, children } = this.props;
     if (loading) {
       return (
-        <View style={{ position: 'absolute', width: '100%', top: 80, ...themeLayout.flex() }}>
+        <View style={styles.loadingCon}>
           <ActivityIndicator />
         </View>
       );
@@ -16,3 +16,7 @@ export default class FirstLoading extends React.PureComponent {
     return children;
   }
 }
+
+const styles = StyleSheet.create({
+  loadingCon: { position: 'absolute', width: '100%', top: 80, ...themeLayout.flex() },
+});

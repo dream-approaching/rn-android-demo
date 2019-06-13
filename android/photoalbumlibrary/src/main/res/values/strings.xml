@@ -17,7 +17,7 @@
 <resources
     xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="MissingTranslation">
-    <string name="album_name_all">全部</string>
+    <string name="album_name_all">所有照片</string>
 
     <string name="button_preview">预览</string>
     <string name="button_apply_default">使用</string>

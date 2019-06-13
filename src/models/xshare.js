@@ -14,13 +14,13 @@ export default {
 
   state: {
     articleDetail: {}, // 互动话题内页
-    xshareDetail: {}, // X友分享内页
+    xshareDetail: {}, // 莓友分享内页
     xshareList: [],
     otherShareList: [],
   },
 
   effects: {
-    // X友分享列表
+    // 莓友分享列表
     *queryXshareListEffect({ payload, successFn, finallyFn }, { call, put, select }) {
       try {
         const response = yield call(queryXshareListReq, payload);
@@ -46,7 +46,7 @@ export default {
         finallyFn && finallyFn();
       }
     },
-    // 个人页的X友分享列表
+    // 个人页的莓友分享列表
     *queryOtherShareListEffect({ payload, successFn, finallyFn }, { call, put, select }) {
       try {
         const response = yield call(queryOthershareListReq, payload);
@@ -85,7 +85,7 @@ export default {
         console.log('err', err);
       }
     },
-    // 删除自己的X友分享
+    // 删除自己的莓友分享
     *deleteXshareEffect({ payload, successFn }, { call }) {
       try {
         const response = yield call(deleteXshareReq, payload);
@@ -128,7 +128,7 @@ export default {
         console.log('err', err);
       }
     },
-    // X友分享内页
+    // 莓友分享内页
     *queryXshareDetailEffect({ payload, successFn }, { call, put, select }) {
       try {
         const response = yield call(queryXshareDetailReq, payload);

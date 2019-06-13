@@ -7,24 +7,24 @@
     android:fitsSystemWindows="true"
     android:orientation="vertical">
 
-    <com.lieying.socialappstore.widget.TitleView
+    <com.lieying.petcat.widget.TitleView
         android:id="@+id/view_title"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="@dimen/dimens_50dp"
         android:focusableInTouchMode="true"
-        app:back_image="@drawable/icon_back"
+        app:back_image="@drawable/ic_input_back"
         app:line_bg_color="@color/color_eeeeee"
-        app:right_spacing="12dp"
+        app:right_spacing="@dimen/dimens_12dp"
         app:right_text="完成"
         app:right_text_color="@color/color_94fb716b"
         app:right_text_size="@dimen/dimens_15sp"
-        app:title="完善资料"
+        app:title="@string/string_complete_data"
         app:title_size="@dimen/title_size" />
 
     <View
         android:background="@color/color_eeeeee"
         android:layout_width="match_parent"
-        android:layout_height="1px"></View>
+        android:layout_height="@dimen/dimens_1px"></View>
 
     <RelativeLayout
         android:layout_margin="@dimen/dimens_20dp"

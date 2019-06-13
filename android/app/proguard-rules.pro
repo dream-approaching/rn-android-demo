@@ -79,6 +79,7 @@ public static final int *;
 -keep class com.lieying.socialappstore.utils.**{*;} # 自定义数据模型的bean目录
 -keep class com.lieying.socialappstore.widget.**{*;} # 自定义数据模型的bean目录
 -keep class com.lieying.comlib.bean.**{*;} # 自定义数据模型的bean目录
+-keep class com.lieying.socialappstore.bean.**{*;}
 #---------------------retrofit-----------------------#
 # Platform calls Class.forName on types which do not exist on Android to determine platform.
 -dontnote retrofit2.Platform

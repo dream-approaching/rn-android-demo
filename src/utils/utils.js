@@ -2,8 +2,39 @@ import { OpenActivity } from '@/components/NativeModules';
 import { store } from '../index';
 import { NATIVE_ROUTE } from '@/config/constants';
 
+export function debounce2(func = () => {}, wait = 300, immediate = true) {
+  let timer;
+  let context;
+  let args;
+
+  const later = () =>
+    setTimeout(() => {
+      timer = null;
+      if (!immediate) {
+        func.apply(context, args);
+        args = null;
+        context = null;
+      }
+    }, wait);
+
+  return function(...params) {
+    if (!timer) {
+      timer = later();
+      if (immediate) {
+        func.apply(this, params);
+      } else {
+        context = this;
+        args = params;
+      }
+    } else {
+      clearTimeout(timer);
+      timer = later();
+    }
+  };
+}
+
 // debounce 防抖
-export const debounce = (fn, ms = 300) => {
+export const debounce = (fn = () => {}, ms = 300) => {
   let timeoutId;
   return function(...args) {
     if (timeoutId) clearTimeout(timeoutId);
@@ -12,7 +43,7 @@ export const debounce = (fn, ms = 300) => {
 };
 
 // throttle 节流
-export const throttle = (fn, wait) => {
+export const throttle = (fn = () => {}, wait = 300) => {
   let inThrottle;
   let lastFn;
   let lastTime;
@@ -94,3 +125,37 @@ export const storeXshare = (payload = [], state) => {
   console.log('%cshouldStoreObj:', 'color: #0e93e0;background: #aaefe5;', shouldStoreObj);
   return shouldStoreObj;
 };
+
+// omit({ a: 1, b: '2', c: 3 }, ['b']); // { 'a': 1, 'c': 3 }
+export const omit = (obj, arr) =>
+  Object.keys(obj)
+    .filter(k => !arr.includes(k))
+    .reduce((acc, key) => ((acc[key] = obj[key]), acc), {}); // eslint-disable-line
+
+export function filterUsefulProp(obj, filterFields = []) {
+  const newObj = {};
+  const keys = Object.keys(obj);
+  const newKeys = keys.filter(key => filterFields.indexOf(key) === -1);
+  for (const key of newKeys) {
+    newObj[key] = obj[key];
+  }
+  return newObj;
+}
+
+export function removeArrIndex(arr, index) {
+  const arrBackups = arr;
+  arr = arrBackups.slice(0, index);
+  arr = arr.concat(arrBackups.slice(index + 1));
+  return arr;
+}
+
+export function getParamsString(params) {
+  let paramsString = '';
+  const paramsArr = Object.keys(params);
+  const lastOneIndex = paramsArr.length - 1;
+  paramsArr.map((item, index) => {
+    paramsString += `${item}=${params[item]}${index === lastOneIndex ? '' : '&'}`;
+    return paramsString;
+  });
+  return paramsString;
+}

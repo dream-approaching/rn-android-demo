@@ -37,6 +37,7 @@ import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.gyf.immersionbar.ImmersionBar;
 import com.weiwang.photoalbumlibrary.R;
 import com.weiwang.photoalbumlibrary.matisse.internal.entity.Album;
 import com.weiwang.photoalbumlibrary.matisse.internal.entity.Item;
@@ -55,6 +56,7 @@ import com.weiwang.photoalbumlibrary.matisse.internal.ui.widget.IncapableDialog;
 import com.weiwang.photoalbumlibrary.matisse.internal.utils.MediaStoreCompat;
 import com.weiwang.photoalbumlibrary.matisse.internal.utils.PathUtils;
 import com.weiwang.photoalbumlibrary.matisse.internal.utils.PhotoMetadataUtils;
+import com.weiwang.photoalbumlibrary.matisse.xiaohongshu.XiaohongshuFragment;
 
 import java.util.ArrayList;
 
@@ -64,7 +66,7 @@ import java.util.ArrayList;
  */
 public class MatisseActivity extends AppCompatActivity implements
         AlbumCollection.AlbumCallbacks, AdapterView.OnItemSelectedListener,
-        MediaSelectionFragment.SelectionProvider, View.OnClickListener,
+        XiaohongshuFragment.SelectionProvider, View.OnClickListener,
         AlbumMediaAdapter.CheckStateListener, AlbumMediaAdapter.OnMediaClickListener,
         AlbumMediaAdapter.OnPhotoCapture {
 
@@ -93,6 +95,7 @@ public class MatisseActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         // programmatically set theme before super.onCreate()
+        ImmersionBar.with(this).statusBarDarkFont(true).init();
         mSpec = SelectionSpec.getInstance();
         setTheme(mSpec.themeId);
         super.onCreate(savedInstanceState);
@@ -118,12 +121,12 @@ public class MatisseActivity extends AppCompatActivity implements
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayShowTitleEnabled(false);
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        Drawable navigationIcon = toolbar.getNavigationIcon();
-        TypedArray ta = getTheme().obtainStyledAttributes(new int[]{R.attr.album_element_color});
-        int color = ta.getColor(0, 0);
-        ta.recycle();
-        navigationIcon.setColorFilter(color, PorterDuff.Mode.SRC_IN);
+        actionBar.setDisplayHomeAsUpEnabled(false);
+//        Drawable navigationIcon = toolbar.getNavigationIcon();
+//        TypedArray ta = getTheme().obtainStyledAttributes(new int[]{R.attr.album_element_color});
+//        int color = ta.getColor(0, 0);
+//        ta.recycle();
+//        navigationIcon.setColorFilter(color, PorterDuff.Mode.SRC_IN);
 
         mButtonPreview = (TextView) findViewById(R.id.button_preview);
         mButtonApply = (TextView) findViewById(R.id.button_apply);
@@ -150,6 +153,12 @@ public class MatisseActivity extends AppCompatActivity implements
         mAlbumCollection.onCreate(this, this);
         mAlbumCollection.onRestoreInstanceState(savedInstanceState);
         mAlbumCollection.loadAlbums();
+        findViewById(R.id.iv_album_close).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
     }
 
     @Override
@@ -384,10 +393,10 @@ public class MatisseActivity extends AppCompatActivity implements
         } else {
             mContainer.setVisibility(View.VISIBLE);
             mEmptyView.setVisibility(View.GONE);
-            Fragment fragment = MediaSelectionFragment.newInstance(album);
+            Fragment fragment = XiaohongshuFragment.newInstance(album);
             getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.container, fragment, MediaSelectionFragment.class.getSimpleName())
+                    .replace(R.id.container, fragment, XiaohongshuFragment.class.getSimpleName())
                     .commitAllowingStateLoss();
         }
     }
@@ -411,6 +420,11 @@ public class MatisseActivity extends AppCompatActivity implements
         intent.putExtra(BasePreviewActivity.EXTRA_DEFAULT_BUNDLE, mSelectedCollection.getDataWithBundle());
         intent.putExtra(BasePreviewActivity.EXTRA_RESULT_ORIGINAL_ENABLE, mOriginalEnable);
         startActivityForResult(intent, REQUEST_CODE_PREVIEW);
+    }
+
+    @Override
+    public void onCheakClick(Album album, Item item, int adapterPosition, boolean cheack) {
+
     }
 
     @Override

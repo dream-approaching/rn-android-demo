@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="291dp"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_dialog_upload_progress">
+
+    <com.lieying.petcat.widget.NiceImageView
+        android:id="@+id/iv_upgrade_dialog_top_bg"
+        android:layout_width="match_parent"
+        android:layout_height="99dp"
+        app:corner_radius="@dimen/dimens_12dp"
+        android:background="@drawable/bg_upgrade_top" />
+
+    <TextView
+        android:id="@+id/tv_upgrade_dialog_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/dimens_20dp"
+        android:text="@string/string_have_new_version"
+        android:textColor="@color/white"
+        android:textSize="@dimen/dimens_19sp" />
+
+    <TextView
+        android:id="@+id/tv_upgrade_dialog_version"
+        android:layout_below="@+id/tv_upgrade_dialog_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="12dp"
+        android:text="@string/string_have_new_version"
+        android:textColor="@color/white"
+        android:textSize="@dimen/dimens_16sp" />
+
+    <LinearLayout
+        android:id="@+id/ll_upgrade_dialog_version_tip"
+        android:orientation="vertical"
+        android:layout_below="@+id/iv_upgrade_dialog_top_bg"
+        android:layout_marginTop="@dimen/dimens_20dp"
+        android:layout_marginLeft="@dimen/dimens_20dp"
+        android:layout_marginRight="@dimen/dimens_20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_upgrade_dialog_download"
+        android:background="@drawable/bg_bnt_download"
+        android:textColor="@color/white"
+        android:textSize="@dimen/dimens_16sp"
+        android:layout_marginBottom="@dimen/dimens_30dp"
+        android:layout_marginTop="@dimen/dimens_30dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/ll_upgrade_dialog_version_tip"
+        android:text="@string/string_have_new_version"
+        android:gravity="center"
+        android:layout_width="138dp"
+        android:layout_height="@dimen/dimens_30dp" />
+
+</RelativeLayout>

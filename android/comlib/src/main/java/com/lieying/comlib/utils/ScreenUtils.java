@@ -64,4 +64,26 @@ public class ScreenUtils {
         windowManager.getDefaultDisplay().getMetrics(dm);
         return dm;
     }
+
+    /**
+     * 获取屏幕宽
+     *
+     * @return
+     */
+    public static int getScreenWidth(Context context) {
+        if (context == null) return 0;
+        DisplayMetrics dm = context.getResources().getDisplayMetrics();
+        return dm.widthPixels;
+    }
+
+    /**
+     * 获取屏幕高度
+     *
+     * @return
+     */
+    public static int getScreenHeight(Context context) {
+        if (context == null) return 0;
+        DisplayMetrics dm = context.getResources().getDisplayMetrics();
+        return dm.heightPixels;
+    }
 }

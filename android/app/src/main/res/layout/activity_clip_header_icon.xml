@@ -10,14 +10,14 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="#000000">
+        android:background="@color/black">
 
         <ImageView
             android:id="@+id/iv_back"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
-            android:src="@drawable/icon_back" />
+            android:src="@drawable/ic_input_back" />
 
         <TextView
             android:id="@+id/stock_name"
@@ -26,34 +26,29 @@
             android:layout_centerInParent="true"
             android:gravity="center"
             android:text="移动和缩放"
-            android:textColor="#ffffff"
-            android:textSize="20sp" />
+            android:textColor="@color/white"
+            android:textSize="@dimen/dimens_20sp" />
 
     </RelativeLayout>
 
-    <!--圆形裁剪框示例
-        app:clipBorderWidth="5dp"     ： 裁剪框边框宽度
-        app:clipType="circle"         ： 裁剪框类型为圆形
-        app:mHorizontalPadding="30dp" ：裁剪框距离左右边距为30dp
-     -->
-    <com.lieying.socialappstore.widget.ClipViewLayout
+    <com.lieying.petcat.widget.ClipViewLayout
         android:id="@+id/clipViewLayout1"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        app:clipBorderWidth="2dp"
+        app:clipBorderWidth="@dimen/dimens_2dp"
         app:clipType="circle"
-        app:mHorizontalPadding="30dp" />
+        app:mHorizontalPadding="@dimen/dimens_30dp" />
 
     <!--矩形裁剪框示例 -->
-    <com.lieying.socialappstore.widget.ClipViewLayout
+    <com.lieying.petcat.widget.ClipViewLayout
         android:id="@+id/clipViewLayout2"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         app:clipBorderWidth="2dp"
         app:clipType="rectangle"
-        app:mHorizontalPadding="30dp"
+        app:mHorizontalPadding="@dimen/dimens_30dp"
         android:visibility="gone"
         />
 
@@ -75,7 +70,7 @@
             android:paddingLeft="15dp"
             android:paddingRight="0dp"
             android:paddingStart="15dp"
-            android:text="取消"
+            android:text="@string/string_cancle"
             android:textColor="#ffffff"
             android:textSize="16sp" />
 

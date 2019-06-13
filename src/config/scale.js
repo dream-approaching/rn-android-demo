@@ -6,7 +6,7 @@
 import { Dimensions, Platform } from 'react-native';
 
 const deviceWidthDp = Dimensions.get('window').width;
-const uiWidthPx = 360;
+const uiWidthPx = 375;
 
 export function scale(elementWidth) {
   const transferNumb = (elementWidth * deviceWidthDp) / uiWidthPx;

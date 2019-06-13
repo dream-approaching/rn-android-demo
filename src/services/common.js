@@ -8,7 +8,7 @@ export async function toggleLikeReq(params) {
 
 // 关注
 export async function toggleAttentionReq(params) {
-  return request(`${config.baseUrl3}/interface/v1/app/follow/set_follow`, { data: params });
+  return request(`${config.baseUrl}/interface/v1/app/follow/set_follow`, { data: params });
 }
 
 // 互动话题、数字生活研究所、应用推荐 切换收藏

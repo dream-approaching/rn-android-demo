@@ -1,11 +1,11 @@
 import React from 'react';
 import { Text, StyleSheet } from 'react-native';
-import { themeColor, themeSize } from '@/config';
+import { themeCatColor, themeCatSize } from '@/config';
 
 const styles = StyleSheet.create({
   textStyle: {
-    color: themeColor.font.secondary, // #707070
-    fontSize: themeSize.font.secondary, // 13
+    color: themeCatColor.font.secondary, // #707070
+    fontSize: themeCatSize.font.secondary, // 13
   },
 });
 

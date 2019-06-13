@@ -1,8 +1,8 @@
 import React from 'react';
 import { View, StyleSheet, Image } from 'react-native';
-import { themeLayout, scale } from '@/config';
+import { themeLayout } from '@/config';
 import myImages from '@/utils/myImages';
-import CommonText from '@/components/AppText/CommonText';
+import CommonText from '@/components/AppText/Cat/CommonText';
 import { actionBeforeCheckLogin } from '@/utils/utils';
 import TouchableNativeFeedback from '@/components/Touchable/TouchableNativeFeedback';
 
@@ -12,14 +12,20 @@ export default class MenuItem extends React.PureComponent {
     item.onPressAction && item.onPressAction();
   };
 
-  render() {
+  pressMenu = () => {
     const { item } = this.props;
+    if (item.notNeedAuth) {
+      this.handlePressButton();
+    } else {
+      actionBeforeCheckLogin(this.handlePressButton);
+    }
+  };
+
+  render() {
+    const { item, islast } = this.props;
     return (
-      <TouchableNativeFeedback
-        notOut
-        onPress={() => actionBeforeCheckLogin(this.handlePressButton)}
-      >
-        <View style={[styles.menuItemCon]}>
+      <TouchableNativeFeedback tapArea={1} notOut onPress={this.pressMenu}>
+        <View style={[styles.menuItemCon(islast)]}>
           <View style={styles.menuLeft}>
             {(item.icon && (
               <Image resizeMode='contain' style={styles.iconLeft} source={{ uri: item.icon }} />
@@ -35,24 +41,26 @@ export default class MenuItem extends React.PureComponent {
 }
 
 const styles = StyleSheet.create({
-  menuItemCon: {
-    ...themeLayout.flex('row', 'space-between', 'center'),
-    ...themeLayout.borderSide('Bottom'),
-    ...themeLayout.padding(0, scale(24), 0, scale(12)),
-    height: scale(50),
+  menuItemCon: islast => {
+    const obj = {
+      ...themeLayout.flex('row', 'space-between', 'center'),
+      ...themeLayout.padding(0, 24, 0, 12),
+      height: 56,
+    };
+    return islast ? obj : { ...obj, ...themeLayout.borderSide('Bottom') };
   },
   menuLeft: {
     ...themeLayout.flex('row', 'flex-start', 'center'),
   },
   menuTitle: {
-    marginLeft: scale(12),
+    marginLeft: 12,
   },
   iconLeft: {
-    width: scale(18),
-    height: scale(18),
+    width: 18,
+    height: 18,
   },
   iconRight: {
-    width: scale(15),
-    height: scale(15),
+    width: 15,
+    height: 15,
   },
 });

@@ -7,25 +7,26 @@ package com.lieying.comlib.bean;
  */
 public class UserShareBean {
 
+
     /**
-     * id : 8
+     * id : 85
      * channel_id : 1
-     * commit_user : chxFKL347170615
-     * mobilephone : 18503068868
-     * fabulous : 0
-     * label : 工具,旅游
-     * content : 11发达的方式
-     * app_info : 8
-     * comment_num : 0
-     * created_time : 1556088283
+     * commit_user : 李毅
+     * mobilephone : 18602741534
+     * fabulous : 11
+     * label : 工具
+     * content : 每天早晨，和怪物闹钟一起起床~
+     * app_info : 10679
+     * comment_num : 15
+     * created_time : 1559032550
      * forward_num : 0
-     * head_image : http://192.168.0.200:8060/uploads_cms_images/1552617692930_2304.jpg
+     * head_image : http://api.user.lynav.com/uploads_cms_images/1558594500190_68905.png
      * is_big_v : 1
-     * nick_name : adxDIY139111944
+     * nick_name : 李毅
      * is_add_friends : true
-     * appdata : {"id":"8","app_short_desc":"最温馨好玩的语音交友社区。","app_down_url":"http://192.168.0.200:1130/uploads_cms_images/15554904004146916.apk","app_logo":"http://192.168.0.200:1130/uploads_cms_images/15554904006273519.png"}
+     * appdata : {"app_name_cn":"怪物闹钟","id":"10679","app_short_desc":"","app_down_url":"http://mobile.d.appchina.com/McDonald/r/6439928/com.malangstudio.alarmmon.vapk","app_logo":"http://api.appstore.lynav.com/uploads_cms_images/75.png"}
      * is_fabulous : true
-     * timestr : 2019-04
+     * timestr : 前天
      */
 
     private String id;
@@ -193,16 +194,26 @@ public class UserShareBean {
 
     public static class AppdataBean {
         /**
-         * id : 8
-         * app_short_desc : 最温馨好玩的语音交友社区。
-         * app_down_url : http://192.168.0.200:1130/uploads_cms_images/15554904004146916.apk
-         * app_logo : http://192.168.0.200:1130/uploads_cms_images/15554904006273519.png
+         * app_name_cn : 怪物闹钟
+         * id : 10679
+         * app_short_desc :
+         * app_down_url : http://mobile.d.appchina.com/McDonald/r/6439928/com.malangstudio.alarmmon.vapk
+         * app_logo : http://api.appstore.lynav.com/uploads_cms_images/75.png
          */
 
+        private String app_name_cn;
         private String id;
         private String app_short_desc;
         private String app_down_url;
         private String app_logo;
+
+        public String getApp_name_cn() {
+            return app_name_cn;
+        }
+
+        public void setApp_name_cn(String app_name_cn) {
+            this.app_name_cn = app_name_cn;
+        }
 
         public String getId() {
             return id;

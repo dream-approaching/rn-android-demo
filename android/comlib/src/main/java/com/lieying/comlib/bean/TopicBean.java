@@ -8,17 +8,19 @@ package com.lieying.comlib.bean;
 public class TopicBean {
 
     /**
-     * title : 54rere3444330000333rerttr34344
-     * img : http://192.168.0.200:1130/uploads_cms_images/15554894766938817.jpg
+     * title : 如果手机里只能留一个APP 你会留哪个
+     * img : http://192.168.0.200:1130/uploads_cms_images/7111.jpg
      * type : 1
-     * id : 8
-     * join_people : 3
+     * id : 18
+     * short_content : 互联网的高速发展催生了无数个手机应用，很多APP在还没有被大众认识的情况下就下...
+     * join_people : 0
      */
 
     private String title;
     private String img;
     private String type;
     private String id;
+    private String short_content;
     private int join_people;
 
     public String getTitle() {
@@ -51,6 +53,14 @@ public class TopicBean {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getShort_content() {
+        return short_content;
+    }
+
+    public void setShort_content(String short_content) {
+        this.short_content = short_content;
     }
 
     public int getJoin_people() {

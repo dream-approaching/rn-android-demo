@@ -4,12 +4,45 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".activity.AppDetailsActivity">
+
+    <RelativeLayout
+        android:id="@+id/rl_app_details_top"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimens_80dp">
+
+        <ImageView
+            android:id="@+id/iv_app_details_close"
+            android:layout_width="@dimen/dimens_30dp"
+            android:layout_height="@dimen/dimens_30dp"
+            android:layout_marginLeft="@dimen/dimens_25dp"
+            android:layout_marginTop="@dimen/dimens_40dp"
+            android:padding="@dimen/dimens_5dp"
+            android:src="@drawable/ic_button_del" />
+
+        <ImageView
+            android:id="@+id/iv_app_details_share"
+            android:layout_width="@dimen/dimens_30dp"
+            android:layout_height="@dimen/dimens_30dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="@dimen/dimens_40dp"
+            android:layout_marginRight="@dimen/dimens_25dp"
+            android:padding="@dimen/dimens_5dp"
+            android:src="@drawable/ic_app_details_share" />
+        <View
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/color_eeeeee"
+            />
+    </RelativeLayout>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/ll_app_details_bottom"
+        android:layout_below="@+id/rl_app_details_top"
         tools:context=".activity.AppDetailsActivity">
 
         <LinearLayout
@@ -18,44 +51,15 @@
             android:orientation="vertical">
 
             <RelativeLayout
-                android:layout_marginTop="@dimen/dimens_20dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <ImageView
-                    android:id="@+id/iv_app_details_close"
-                    android:layout_width="@dimen/dimens_30dp"
-                    android:layout_height="@dimen/dimens_30dp"
-                    android:layout_margin="@dimen/dimens_20dp"
-                    android:padding="@dimen/dimens_10dp"
-                    android:src="@drawable/ic_button_del" />
-
-                <ImageView
-                    android:id="@+id/iv_app_details_share"
-                    android:layout_width="@dimen/dimens_30dp"
-                    android:layout_height="@dimen/dimens_30dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_margin="@dimen/dimens_20dp"
-                    android:padding="@dimen/dimens_5dp"
-                    android:src="@drawable/ic_app_details_share" />
-            </RelativeLayout>
-
-            <View
-                android:id="@+id/view_line"
-                android:layout_width="match_parent"
-                android:layout_height="1px"
-                android:layout_below="@+id/iv_app_details_share"
-                android:background="@color/color_eeeeee" />
-
-            <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
-                <com.lieying.socialappstore.widget.NiceImageView
+                <com.lieying.petcat.widget.NiceImageView
                     android:id="@+id/iv_app_details_logo"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-                    android:layout_margin="17dp"
+                    android:layout_margin="16dp"
+                    android:transitionName="appIcon"
                     app:corner_radius="@dimen/dimens_20dp" />
 
                 <TextView
@@ -63,9 +67,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignTop="@+id/iv_app_details_logo"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="2dp"
                     android:layout_toRightOf="@+id/iv_app_details_logo"
-                    android:text="即刻-找到自己人"
                     android:textColor="@color/color_303030"
                     android:textSize="@dimen/dimens_25sp"
                     android:textStyle="bold" />
@@ -76,8 +79,11 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tv_app_details_title"
                     android:layout_alignLeft="@+id/tv_app_details_title"
-                    android:layout_marginTop="@dimen/dimens_8dp"
-                    android:text="好用的App" />
+                    android:layout_marginTop="@dimen/dimens_9dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:maxEms="14"
+                    />
 
                 <LinearLayout
                     android:id="@+id/ll_app_details_tag_list"
@@ -85,7 +91,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tv_app_details_describe"
                     android:layout_alignLeft="@+id/tv_app_details_describe"
-                    android:layout_marginTop="@dimen/dimens_8dp"
+                    android:layout_marginTop="@dimen/dimens_14dp"
                     android:orientation="horizontal"
                     tools:layout_height="wrap_content"
                     tools:layout_width="match_parent" />
@@ -96,7 +102,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dimens_15dp"
-                android:layout_marginTop="@dimen/dimens_28dp">
+                android:layout_marginTop="@dimen/dimens_4dp">
 
                 <LinearLayout
                     android:id="@+id/ll_app_details_big_imgs_list"
@@ -105,64 +111,42 @@
                     android:orientation="horizontal"></LinearLayout>
             </HorizontalScrollView>
 
-            <LinearLayout
-                android:layout_width="match_parent"
+
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dimens_16dp"
-                android:layout_marginTop="@dimen/dimens_16dp"
-                android:gravity="center_vertical">
-
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="@dimen/dimens_17dp"
-                    android:background="@color/color_fb716b"></View>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/dimens_8dp"
-                    android:text="推荐语"
-                    android:textColor="@color/color_303030"
-                    android:textSize="@dimen/dimens_20sp" />
-            </LinearLayout>
+                android:layout_marginTop="@dimen/dimens_34dp"
+                android:text="推荐语"
+                android:textColor="@color/color_303030"
+                android:textSize="@dimen/dimens_18sp" />
 
             <TextView
                 android:id="@+id/tv_app_details_recommend"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dimens_35dp"
+                android:layout_marginLeft="@dimen/dimens_16dp"
                 android:layout_marginTop="@dimen/dimens_17dp"
                 android:layout_marginRight="@dimen/dimens_20dp"
                 android:lineSpacingExtra="4dp"
                 android:textColor="@color/color_707070" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dimens_16dp"
-                android:layout_marginTop="@dimen/dimens_16dp"
-                android:gravity="center_vertical">
-
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="@dimen/dimens_17dp"
-                    android:background="@color/color_fb716b"></View>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/dimens_8dp"
-                    android:text="你可能喜欢"
-                    android:textColor="@color/color_303030"
-                    android:textSize="@dimen/dimens_20sp" />
-            </LinearLayout>
+                android:layout_marginTop="@dimen/dimens_34dp"
+                android:text="你可能喜欢"
+                android:textColor="@color/color_303030"
+                android:textSize="@dimen/dimens_18sp" />
 
             <HorizontalScrollView
                 android:id="@+id/sv_app_details_like_list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/dimens_28dp"
-                android:layout_marginBottom="@dimen/dimens_20dp">
+                android:layout_marginLeft="@dimen/dimens_16dp"
+                android:layout_marginTop="@dimen/dimens_20dp"
+                android:layout_marginBottom="@dimen/dimens_34dp">
 
                 <LinearLayout
                     android:id="@+id/ll_app_details_like_list"
@@ -170,24 +154,34 @@
                     android:layout_height="match_parent"
                     android:orientation="horizontal"></LinearLayout>
             </HorizontalScrollView>
+
         </LinearLayout>
     </ScrollView>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_above="@+id/ll_app_details_bottom"
+        android:background="@color/color_eeeeee"></View>
+
     <LinearLayout
         android:id="@+id/ll_app_details_bottom"
-        android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimens_56dp"
         android:layout_alignParentBottom="true"
         android:layout_gravity="center_vertical"
+        android:background="@color/white"
         android:orientation="horizontal">
-        <LinearLayout
+
+        <RelativeLayout
             android:id="@+id/ll_app_details_comments"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center">
+
             <TextView
+                android:id="@+id/tv_app_details_comment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawableLeft="@drawable/ic_comments"
@@ -195,14 +189,23 @@
                 android:gravity="center"
                 android:text="@string/string_comments"
                 android:textColor="@color/color_707070"
+                android:textSize="@dimen/dimens_16sp" />
+
+            <TextView
+                android:id="@+id/tv_app_details_comments_counts"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/tv_app_details_comment"
+                android:layout_toRightOf="@+id/tv_app_details_comment"
+                android:textColor="@color/color_707070"
                 android:textSize="@dimen/dimens_11sp" />
-        </LinearLayout>
+        </RelativeLayout>
 
         <View
             android:layout_width="1dp"
-            android:layout_height="@dimen/dimens_35dp"
+            android:layout_height="@dimen/dimens_23dp"
             android:layout_gravity="center_vertical"
-            android:background="@color/color_707070" />
+            android:background="@color/color_dddddd" />
 
         <LinearLayout
             android:id="@+id/ll_app_details_collection"
@@ -221,14 +224,14 @@
                 android:gravity="center"
                 android:text="@string/string_collection"
                 android:textColor="@color/color_707070"
-                android:textSize="@dimen/dimens_11sp" />
+                android:textSize="@dimen/dimens_16sp" />
         </LinearLayout>
 
         <View
             android:layout_width="1dp"
-            android:layout_height="@dimen/dimens_35dp"
+            android:layout_height="@dimen/dimens_23dp"
             android:layout_gravity="center_vertical"
-            android:background="@color/color_707070" />
+            android:background="@color/color_dddddd" />
 
         <LinearLayout
             android:id="@+id/ll_app_details_download"
@@ -241,12 +244,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:drawableLeft="@drawable/ic_comments"
+                android:drawableLeft="@drawable/ic_download"
                 android:drawablePadding="@dimen/dimens_6dp"
                 android:gravity="center"
                 android:text="@string/string_download"
                 android:textColor="@color/color_707070"
-                android:textSize="@dimen/dimens_11sp" />
+                android:textSize="@dimen/dimens_16sp" />
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

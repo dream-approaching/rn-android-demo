@@ -1,48 +1,59 @@
 import React from 'react';
 import { StyleSheet, TextInput, View, Image } from 'react-native';
-import { themeLayout, themeColor, scale } from '@/config';
+import { themeLayout, themeCatColor } from '@/config';
+import TouchableNativeFeedback from '../Touchable/TouchableNativeFeedback';
 
-export default class CommentPage extends React.Component {
+export default class MyTextInput extends React.Component {
   focus = () => this.refInput.focus();
 
+  blur = () => this.refInput.blur();
+
   render() {
-    const { style, leftIcon, rightIcon, conStyle, ...rest } = this.props;
+    const {
+      style,
+      leftIcon,
+      rightIcon,
+      conStyle,
+      rightIconAction = () => {},
+      ...rest
+    } = this.props;
     return (
       <View style={[styles.inputCon, conStyle]}>
         {leftIcon && <Image style={styles.leftIcon} source={{ uri: leftIcon }} />}
         <TextInput
           ref={ref => (this.refInput = ref)}
           style={[styles.inputStyle, style]}
-          placeholderTextColor={themeColor.placeholderColor}
+          placeholderTextColor={themeCatColor.placeholderColor}
           {...rest}
         />
-        {rightIcon && <Image style={styles.rightIcon} source={{ uri: rightIcon }} />}
+        {rightIcon && (
+          <TouchableNativeFeedback onPress={rightIconAction} notOut tapArea={2}>
+            <Image style={styles.rightIcon} source={{ uri: rightIcon }} />
+          </TouchableNativeFeedback>
+        )}
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
   inputCon: {
     ...themeLayout.flex('row', 'flex-start'),
     backgroundColor: '#fff',
-    paddingRight: scale(20),
+    paddingRight: 15,
   },
   leftIcon: {
-    width: scale(24),
-    height: scale(24),
-    marginLeft: scale(8),
-    marginRight: scale(4),
+    width: 24,
+    height: 24,
+    marginLeft: 8,
+    marginRight: 4,
   },
   rightIcon: {
-    width: scale(12),
-    height: scale(12),
+    width: 14,
+    height: 14,
   },
   inputStyle: {
-    color: themeColor.font.secondary,
+    color: themeCatColor.font.black,
     flex: 1,
   },
 });

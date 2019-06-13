@@ -7,6 +7,7 @@
     <color name="colorWindow">#f7f8fa</color>
 
     <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
 
     <color name="black_overlay">#66000000</color>
     <!--文字主色-->
@@ -32,16 +33,76 @@
     <color name="color_aaaaaa">#aaaaaa</color>
 
     <color name="color_303030">#303030</color>
+    <color name="color_2f94ea">#2f94ea</color>
+    <color name="color_222222">#222222</color>
+    <color name="color_777777">#777777</color>
     <color name="color_a7a7a7">#a7a7a7</color>
     <color name="color_707070">#707070</color>
+    <color name="color_8f8f8f">#8f8f8f</color>
+    <color name="color_dddddd">#dddddd</color>
     <color name="color_f2f2f2">#f2f2f2</color>
     <color name="color_1296db">#1296db</color>
     <color name="color_94fb716b">#94fb716b</color>
     <color name="color_fb716b">#fb716b</color>
     <color name="transparent">#00000000</color>
-    <color name="color_eeeeee">#eeeeee</color>
+    <color name="color_eeeeee">#dddddd</color>
     <color name="color_75d59a">#75d59a</color>
     <color name="color_fb6b80">#fb6b80</color>
     <color name="color_4f9cea">#4f9cea</color>
     <color name="color_f98a86">#f98a86</color>
+    <color name="color_f3f3f3">#f3f3f3</color>
+    <color name="color_575757">#575757</color>
+
+
+
+    <color name="record_progress_bg">#66000000</color> <!-- 40%不透明度 -->
+    <color name="record_progress">#ff584c</color>
+    <color name="record_progress_pending">#a8002d</color>
+
+    <color name="record_speed_text_normal">#ffffff</color>
+    <color name="record_speed_text_select">#00f5ac</color>
+
+    <color name="record_settings_tip">#999999</color>
+    <color name="input_text_color">#00f5ac</color>
+    <color name="paster_activity_background_color">#0d0d0d</color>
+    <color name="bubble_panel_background_color">#0d0d0d</color>
+    <color name="colorRed2">#FF584C</color>
+
+    <!--动态滤镜的颜色-->
+    <color name="spirit_out_color">#EC5F9B</color>
+    <color name="spirit_out_color_press">#B21FC0CC</color>
+
+    <color name="screen_split">#EC8435</color>
+    <color name="screen_split_press">#B2FFBB00</color>
+
+    <color name="light_wave">#1FBCB6</color>
+    <color name="light_wave_press">#B2655CE6</color>
+
+    <color name="dark_illusion">#449FF3</color>
+    <color name="dark_illusion_press">#B2006EFF</color>
+
+    <color name="win_shaddow_color">#FF6EA745</color>
+    <color name="win_shaddow_color_press">#CC6EA745</color>
+
+    <color name="ghost_shaddow_color">#FF47A9B2</color>
+    <color name="ghost_shaddow_color_press">#CC47A9B2</color>
+    <!--7-->
+    <color name="phantom_shaddow_color">#FF4368BC</color>
+    <color name="phantom_shaddow_color_press">#CC4368BC</color>
+    <!--8-->
+    <color name="ghost_color">#FF6A3FC6</color>
+    <color name="ghost_color_press">#CC6A3FC6</color>
+
+    <color name="lightning_color">#FFC73AD1</color>
+    <color name="lightning_color_press">#CCC73AD1</color>
+    <!--10-->
+    <color name="mirror_color">#FFDB347F</color>
+    <color name="mirror_color_press">#CCDB347F</color>
+    <!--11-->
+    <color name="illusion_color">#FF7F554C</color>
+    <color name="illusion_color_press">#CC7F554C</color>
+
+    <color name="colorAccentTransparent30">#B2FF584C</color>
+
+    <color name="editer_bottom">#1F2531</color>
 </resources>

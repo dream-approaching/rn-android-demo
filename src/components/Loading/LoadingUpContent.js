@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
-import { View } from 'react-native';
-import { themeLayout } from '@/config';
+import { View, StyleSheet } from 'react-native';
+import { themeLayout, themeCatSize } from '@/config';
 import ActivityIndicator from '@/components/ActivityIndicator';
 
 export default class LoadingUpContent extends React.PureComponent {
@@ -9,7 +9,7 @@ export default class LoadingUpContent extends React.PureComponent {
     return (
       <Fragment>
         {loading && (
-          <View style={{ position: 'absolute', width: '100%', top: 80, ...themeLayout.flex() }}>
+          <View style={styles.loadingCon}>
             <ActivityIndicator />
           </View>
         )}
@@ -18,3 +18,13 @@ export default class LoadingUpContent extends React.PureComponent {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  loadingCon: {
+    position: 'absolute',
+    width: themeCatSize.screenWidth,
+    top: 80,
+    left: 0,
+    ...themeLayout.flex(),
+  },
+});

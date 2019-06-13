@@ -167,27 +167,36 @@ public class AlbumMediaAdapter extends
 
     @Override
     public void onCheckViewClicked(CheckView checkView, Item item, RecyclerView.ViewHolder holder) {
+        boolean cheak = false;
         if (mSelectionSpec.countable) {
             int checkedNum = mSelectedCollection.checkedNumOf(item);
             if (checkedNum == CheckView.UNCHECKED) {
                 if (assertAddSelection(holder.itemView.getContext(), item)) {
                     mSelectedCollection.add(item);
+                    cheak = true ;
                     notifyCheckStateChanged();
                 }
             } else {
                 mSelectedCollection.remove(item);
+                cheak = false ;
                 notifyCheckStateChanged();
             }
         } else {
             if (mSelectedCollection.isSelected(item)) {
                 mSelectedCollection.remove(item);
+                cheak = false ;
                 notifyCheckStateChanged();
             } else {
                 if (assertAddSelection(holder.itemView.getContext(), item)) {
                     mSelectedCollection.add(item);
+                    cheak = true ;
                     notifyCheckStateChanged();
                 }
             }
+        }
+
+        if (mOnMediaClickListener != null) {
+            mOnMediaClickListener.onCheakClick(null, item, holder.getAdapterPosition() , cheak);
         }
     }
 
@@ -263,6 +272,7 @@ public class AlbumMediaAdapter extends
 
     public interface OnMediaClickListener {
         void onMediaClick(Album album, Item item, int adapterPosition);
+        void onCheakClick(Album album, Item item, int adapterPosition , boolean cheack);
     }
 
     public interface OnPhotoCapture {

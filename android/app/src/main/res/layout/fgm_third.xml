@@ -7,42 +7,49 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
         <android.support.design.widget.TabLayout
             android:id="@+id/tab_third_fragment_progress"
             android:layout_width="wrap_content"
             android:layout_height="38dp"
-            android:layout_marginLeft="@dimen/dimens_20dp"
-            android:layout_marginTop="@dimen/dimens_40dp"
+            android:layout_marginLeft="@dimen/dimens_14dp"
+            android:layout_marginTop="@dimen/dimens_35dp"
             android:minWidth="200dp"
-            app:tabIndicatorColor="@color/colorCommonRed"
+            app:tabIndicator="@drawable/ic_tab_indicator"
             app:tabIndicatorHeight="@dimen/dimens_2dp"
-            app:tabSelectedTextColor="@color/text_color_normal"
-            app:tabTextAppearance="@style/TabLayoutTextStyle"
+            app:tabSelectedTextColor="@color/color_303030"
+            app:tabTextAppearance="@style/TabLayoutTextStyleFgTwo"
+            app:labelVisibilityMode="unlabeled"
             app:tabTextColor="@color/text_color_gray" />
+
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/vp_fragment_progress"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/dimens_7dp"
+            android:background="@color/white"
+            android:fillViewport="true"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/iv_main_search"
+        android:layout_width="@dimen/dimens_35dp"
+        android:layout_height="@dimen/dimens_35dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="@dimen/dimens_38dp"
+        android:layout_marginRight="@dimen/dimens_25dp"
+
+        android:padding="@dimen/dimens_5dp"
+        android:src="@drawable/ic_home_top_search" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1px"
-        android:layout_marginTop="@dimen/dimens_5dp"
+        android:layout_marginTop="79dp"
         android:background="@color/color_eeeeee" />
-
-    <android.support.v4.view.ViewPager
-        android:id="@+id/vp_fragment_progress"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/white"
-        android:fillViewport="true"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-    </LinearLayout>
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_marginTop="@dimen/dimens_42dp"
-        android:layout_marginRight="@dimen/dimens_25dp"
-        android:src="@drawable/ic_home_top_search" />
 </RelativeLayout>

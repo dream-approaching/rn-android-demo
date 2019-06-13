@@ -3,19 +3,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     android:background="@color/white"
     android:orientation="vertical">
 
-    <com.lieying.socialappstore.widget.TitleView
+    <com.lieying.petcat.widget.TitleView
         android:id="@+id/view_title"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        app:back_image="@drawable/icon_back"
+        android:visibility="gone"
+        app:back_image="@drawable/ic_input_back"
         app:right_spacing="@dimen/dimens_12dp"
         app:title_color="@color/color_303030"
         app:title_size="@dimen/title_size" />
 
-    <com.lieying.socialappstore.widget.web.CommonWebView
+    <com.lieying.petcat.widget.web.CommonWebView
         android:id="@+id/web_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

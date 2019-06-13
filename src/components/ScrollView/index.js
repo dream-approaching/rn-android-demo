@@ -1,7 +1,7 @@
 import React from 'react';
 import { ScrollView } from 'react-native-gesture-handler';
 
-export default class extends React.PureComponent {
+export default class MyScrollView extends React.PureComponent {
   render() {
     const { style, children, ...rest } = this.props;
     return (

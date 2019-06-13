@@ -1,10 +1,10 @@
 import React, { Fragment } from 'react';
 import { View, StyleSheet } from 'react-native';
 import TouchableNativeFeedback from '@/components/Touchable/TouchableNativeFeedback';
-import { scale, themeLayout } from '@/config';
-import SmallText from '@/components/AppText/SmallText';
+import { themeLayout } from '@/config';
+import SmallText from '@/components/AppText/Cat/SmallText';
 
-export default class CommentPage extends React.Component {
+export default class CommentSort extends React.Component {
   render() {
     const tab = [
       {
@@ -22,11 +22,11 @@ export default class CommentPage extends React.Component {
         {tab.map((item, index) => {
           const activeStyled =
             activeTab === item.type
-              ? { color: '#303030', fontSize: scale(15), ...activeStyle }
+              ? { color: '#707070', fontSize: 15, ...activeStyle }
               : {};
           return (
             <Fragment key={item.text}>
-              <TouchableNativeFeedback onPress={() => changeSortAction(item)}>
+              <TouchableNativeFeedback tapArea={5} onPress={() => changeSortAction(item)}>
                 <View style={styles.tabText}>
                   <SmallText style={activeStyled}>{item.text}</SmallText>
                 </View>
@@ -46,6 +46,6 @@ const styles = StyleSheet.create({
     ...themeLayout.flex('row', 'flex-end', 'flex-end'),
   },
   tabText: {
-    ...themeLayout.padding(scale(1)),
+    ...themeLayout.padding(1),
   },
 });

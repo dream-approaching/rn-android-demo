@@ -7,20 +7,44 @@ package com.lieying.comlib.bean;
  */
 public class OtherUserBean {
 
+
     /**
-     * mobilephone : 13000000000
-     * nick_name : bchIKL049184824
-     * head_image : 1234566.jpg
-     * cnt : 7
-     * profile : XXX开发者
-     * follow_type : true
+     * id : 10103
+     * mobilephone : 13213121312
+     * follow_type : 1
+     * cnt : 3
+     * nick_name : glqMSU268161926
+     * head_image : http://api.user.lynav.com/uploads_cms_images/1558663773187_994.png
+     * profile :
+     * status : 3
+     * is_big_v : 1
      */
 
+    private String id;
     private String mobilephone;
+    private String follow_type;
+    private String cnt;
     private String nick_name;
     private String head_image;
-    private String cnt;
     private String profile;
+    private int status;
+    private String is_big_v;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getMobilephone() {
+        return mobilephone;
+    }
+
+    public void setMobilephone(String mobilephone) {
+        this.mobilephone = mobilephone;
+    }
 
     public String getFollow_type() {
         return follow_type;
@@ -30,14 +54,12 @@ public class OtherUserBean {
         this.follow_type = follow_type;
     }
 
-    private String follow_type;
-
-    public String getMobilephone() {
-        return mobilephone;
+    public String getCnt() {
+        return cnt;
     }
 
-    public void setMobilephone(String mobilephone) {
-        this.mobilephone = mobilephone;
+    public void setCnt(String cnt) {
+        this.cnt = cnt;
     }
 
     public String getNick_name() {
@@ -56,14 +78,6 @@ public class OtherUserBean {
         this.head_image = head_image;
     }
 
-    public String getCnt() {
-        return cnt;
-    }
-
-    public void setCnt(String cnt) {
-        this.cnt = cnt;
-    }
-
     public String getProfile() {
         return profile;
     }
@@ -72,4 +86,19 @@ public class OtherUserBean {
         this.profile = profile;
     }
 
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public String getIs_big_v() {
+        return is_big_v;
+    }
+
+    public void setIs_big_v(String is_big_v) {
+        this.is_big_v = is_big_v;
+    }
 }

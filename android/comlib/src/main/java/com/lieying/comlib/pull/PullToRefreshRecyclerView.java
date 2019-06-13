@@ -573,6 +573,13 @@ public class PullToRefreshRecyclerView extends RecyclerView {
                 StaggeredGridLayoutManager.LayoutParams p = (StaggeredGridLayoutManager.LayoutParams) lp;
                 p.setFullSpan(true);
             }
+            if(holder instanceof DefaultNoMoreViewHolder){
+                if (lp != null && lp instanceof StaggeredGridLayoutManager.LayoutParams) {
+                    StaggeredGridLayoutManager.LayoutParams p =
+                            (StaggeredGridLayoutManager.LayoutParams) lp;
+                    p.setFullSpan(true);
+                }
+            }
             adapter.onViewAttachedToWindow(holder);
         }
 

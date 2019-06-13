@@ -1,11 +1,11 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { RefreshHeader } from 'react-native-spring-scrollview/RefreshHeader';
-import { scale } from '@/config';
+
 import ActivityIndicator from '@/components/ActivityIndicator';
 
 class SimpleHeader extends RefreshHeader {
-  static height = scale(40);
+  static height = 40;
 
   onStateChange(oldStatus, newStatus) {
     if (oldStatus === 'refreshing' || newStatus === 'refreshing') {

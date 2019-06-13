@@ -154,6 +154,11 @@ public class MediaSelectionFragment extends Fragment implements
         }
     }
 
+    @Override
+    public void onCheakClick(Album album, Item item, int adapterPosition, boolean cheack) {
+
+    }
+
     public interface SelectionProvider {
         SelectedItemCollection provideSelectedItemCollection();
     }

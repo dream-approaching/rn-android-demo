@@ -81,7 +81,7 @@ export default {
       try {
         const response = yield call(submitCommentReq, payload);
         if (response && response.code === 0) {
-          successFn && successFn();
+          successFn && successFn(response);
         } else {
           Toast.show(response.msg);
         }

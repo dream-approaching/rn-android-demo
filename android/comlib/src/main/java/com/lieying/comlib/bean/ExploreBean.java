@@ -17,6 +17,16 @@ public class ExploreBean {
     private String comment_num;
     private String type;
     private String id;
+
+    public String getUrl_content() {
+        return url_content;
+    }
+
+    public void setUrl_content(String url_content) {
+        this.url_content = url_content;
+    }
+
+    private String url_content;
     private boolean is_favorites;
 
     public String getTitle() {

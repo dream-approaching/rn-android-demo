@@ -6,22 +6,22 @@ import {
   // InteractionManager,
 } from 'react-native';
 import TouchableNativeFeedback from '@/components/Touchable/TouchableNativeFeedback';
-import { themeLayout, scale } from '@/config';
-import CommonText from '@/components/AppText/CommonText';
+import { themeLayout } from '@/config';
+import CommonText from '@/components/AppText/Cat/CommonText';
 import MyModal from '@/components/Modal';
 
 const deleteModalHoc = Component => {
   const styles = StyleSheet.create({
     modalCon: {
-      width: scale(242),
-      height: scale(107),
+      width: 242,
+      height: 107,
       ...themeLayout.flex('column'),
       alignSelf: 'center',
       backgroundColor: '#fff',
-      borderRadius: scale(10),
+      borderRadius: 10,
     },
     modelTip: {
-      height: scale(54),
+      height: 54,
       ...themeLayout.flex(),
     },
     modalBtnCon: {
@@ -33,13 +33,13 @@ const deleteModalHoc = Component => {
       const style = {
         flex: 1,
         ...themeLayout.flex(),
-        height: scale(54),
+        height: 54,
       };
       return showBorder ? { ...style, ...themeLayout.borderSide('Left') } : style;
     },
     modalBtnText: color => {
       return {
-        fontSize: scale(19),
+        fontSize: 19,
         color,
       };
     },

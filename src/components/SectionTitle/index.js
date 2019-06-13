@@ -1,11 +1,10 @@
 import React from 'react';
 import { View, StyleSheet, Image } from 'react-native';
-import { scale, themeLayout, themeColor } from '@/config';
+import { themeLayout, themeCatColor } from '@/config';
 import TouchableNativeFeedback from '@/components/Touchable/TouchableNativeFeedback';
 import myImages from '@/utils/myImages';
-import CommonText from '@/components/AppText/CommonText';
-import SecondaryText from '@/components/AppText/SecondaryText';
-import ActivityIndicator from '../ActivityIndicator';
+import CommonText from '@/components/AppText/Cat/CommonText';
+import SecondaryText from '@/components/AppText/Cat/SecondaryText';
 
 export default class extends React.PureComponent {
   render() {
@@ -13,15 +12,14 @@ export default class extends React.PureComponent {
       title,
       type,
       rightAction = () => {},
-      color = themeColor.font.secondary,
-      showLoading,
+      color = themeCatColor.font.black,
+      fontWeight = 'normal',
     } = this.props;
     return (
       <View style={styles.container}>
         <View style={styles.titleCon}>
-          <View style={styles.leftBlock} />
-          <CommonText style={[styles.titleText, { color }]}>{title}</CommonText>
-          {showLoading && <ActivityIndicator size={12} />}
+          {/* <View style={styles.leftBlock} /> */}
+          <CommonText style={[styles.titleText, { color, fontWeight }]}>{title}</CommonText>
         </View>
         {type === 'more' && (
           <TouchableNativeFeedback onPress={rightAction}>
@@ -49,24 +47,24 @@ const styles = StyleSheet.create({
     ...themeLayout.flex('row'),
   },
   leftBlock: {
-    backgroundColor: themeColor.primaryColor,
-    width: scale(3),
-    height: scale(15),
-    marginRight: scale(9),
+    backgroundColor: themeCatColor.primaryColor,
+    width: 3,
+    height: 15,
+    marginRight: 9,
   },
   moreCon: {
     ...themeLayout.flex('row'),
   },
   rightIcon: {
-    width: scale(13),
-    height: scale(13),
-    marginLeft: scale(4),
+    width: 13,
+    height: 13,
+    marginLeft: 4,
   },
   clearIcon: {
-    width: scale(22),
-    height: scale(22),
+    width: 22,
+    height: 22,
   },
   titleText: {
-    marginRight: scale(5),
+    marginRight: 5,
   },
 });

@@ -1,42 +1,59 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Text, TouchableWithoutFeedback } from 'react-native';
 import TouchableNativeFeedback from '@/components/Touchable/TouchableNativeFeedback';
-import { scale, themeLayout, themeColor } from '@/config';
-import SecondaryText from '@/components/AppText/SecondaryText';
-import CommonText from '@/components/AppText/CommonText';
-import SmallText from '@/components/AppText/SmallText';
-import LikeBtn from '@/components/Comment/likeBtn';
+import { themeLayout, themeCatColor } from '@/config';
+import SecondaryText from '@/components/AppText/Cat/SecondaryText';
+import SmallText from '@/components/AppText/Cat/SmallText';
+import LikeBtn from '@/components/Comment/Cat/likeBtn';
 import { OpenActivity } from '@/components/NativeModules';
 import { LIKE_TYPE } from '@/config/constants';
-import ImageWithDefault from '../ImageWithDefault';
+import ImageWithDefault from '@/components/ImageWithDefault';
 
 export default class ChildItem extends React.Component {
-  gotoPersonPage = () => {
-    const { itemData } = this.props;
-    OpenActivity.openUserIndex(itemData.mobilephone);
+  gotoPersonPage = mobilephone => {
+    OpenActivity.openUserIndex(mobilephone);
   };
 
   render() {
-    const { itemData, replyAction, type } = this.props;
+    const { itemData, replyAction = () => {}, type, origin } = this.props;
     const isMain = type === 'main';
+    const isXshare = origin === 'xshare';
+    const pathArr = itemData.path.split('-');
+    const showReplyBtn = pathArr.length >= (isXshare ? 2 : 3);
     return (
       <View style={[styles.mainComment, { backgroundColor: isMain ? '#fff' : 'transparent' }]}>
-        <TouchableNativeFeedback onPress={this.gotoPersonPage}>
+        <TouchableNativeFeedback onPress={() => this.gotoPersonPage(itemData.mobilephone)}>
           <ImageWithDefault style={styles.avatar(isMain)} source={{ uri: itemData.head_image }} />
         </TouchableNativeFeedback>
         <View style={styles.rightBody(isMain)}>
           <View style={styles.userBar}>
-            <SecondaryText style={{ color: isMain ? '#303030' : '#707070' }}>
+            <SecondaryText style={{ color: isMain ? '#707070' : '#707070' }}>
               {itemData.commit_user}
             </SecondaryText>
             <LikeBtn type={LIKE_TYPE.comment} itemData={itemData} size={isMain ? 15 : 13} />
           </View>
           <SmallText>{itemData.timestr}</SmallText>
-          <TouchableNativeFeedback onPress={() => replyAction(itemData)}>
-            <CommonText style={[styles.replyText, styles.textLineHeight(20)]}>
-              {itemData.content}
-            </CommonText>
-          </TouchableNativeFeedback>
+          <TouchableWithoutFeedback onPress={() => replyAction(itemData)}>
+            <Text style={[styles.replyText, styles.textLineHeight(20), { flexWrap: 'wrap' }]}>
+              <SecondaryText>
+                {showReplyBtn && (
+                  <SecondaryText style={styles.replayText}>
+                    回复
+                    <TouchableWithoutFeedback
+                      onPress={() => this.gotoPersonPage(itemData.pidinfo.mobilephone)}
+                    >
+                      <SecondaryText style={[styles.replyTitle]}>
+                        @{itemData.pidinfo.nick_name}：
+                      </SecondaryText>
+                    </TouchableWithoutFeedback>
+                  </SecondaryText>
+                )}
+              </SecondaryText>
+              <TouchableWithoutFeedback onPress={() => replyAction(itemData)}>
+                <SecondaryText style={styles.contentText}>{itemData.content}</SecondaryText>
+              </TouchableWithoutFeedback>
+            </Text>
+          </TouchableWithoutFeedback>
         </View>
       </View>
     );
@@ -45,33 +62,39 @@ export default class ChildItem extends React.Component {
 
 const styles = StyleSheet.create({
   mainComment: {
-    ...themeLayout.padding(scale(16), scale(16), 0),
+    ...themeLayout.padding(16, 16, 0),
     ...themeLayout.flex('row', 'center', 'flex-start'),
   },
   rightBody: isMain => {
     const style = {
       flex: 1,
-      marginLeft: scale(8),
-      paddingBottom: scale(13),
+      marginLeft: 8,
+      paddingBottom: 13,
     };
     return isMain ? style : { ...style, ...themeLayout.borderSide() };
   },
   avatar: isMain => {
-    const size = isMain ? 51 : 46;
+    const size = isMain ? 46 : 38;
     return {
-      width: scale(size),
-      height: scale(size),
-      borderRadius: scale(25),
-      backgroundColor: themeColor.bgF4,
+      width: size,
+      height: size,
+      borderRadius: 25,
+      backgroundColor: themeCatColor.bgF4,
     };
   },
   userBar: {
     ...themeLayout.flex('row', 'space-between'),
   },
   replyText: {
-    marginTop: scale(3),
+    marginTop: 3,
   },
   textLineHeight: num => ({
-    lineHeight: scale(num),
+    lineHeight: num,
   }),
+  replyTitle: {
+    color: '#6a83a2',
+  },
+  contentText: {
+    color: themeCatColor.font.black,
+  },
 });

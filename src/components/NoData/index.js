@@ -1,16 +1,16 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { themeLayout, themeColor, themeSize, scale } from '@/config';
-import SecondaryText from '../AppText/SecondaryText';
+import { themeLayout, themeCatColor, themeCatSize } from '@/config';
+import SecondaryText from '@/components/AppText/Cat/SecondaryText';
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: scale(50),
+    marginTop: 50,
     ...themeLayout.flex(),
   },
   textStyle: {
-    color: themeColor.font.small, // #707070
-    fontSize: themeSize.font.common, // 13
+    color: themeCatColor.font.small, // #707070
+    fontSize: themeCatSize.font.common, // 13
   },
 });
 

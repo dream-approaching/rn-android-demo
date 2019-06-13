@@ -64,5 +64,12 @@ export default {
         systemList: isFirstPage ? payload : [...state.systemList, ...payload],
       };
     },
+    clearNotice() {
+      return {
+        commentList: [],
+        likeList: [],
+        systemList: [],
+      };
+    },
   },
 };

@@ -4,7 +4,7 @@ import { name } from '../../../app.json';
 console.log('%cNativeModules:', 'color: #0e93e0;background: #aaefe5;', NativeModules);
 
 /**
- * 打开原生activity
+ * OpenActivity: 打开原生activity
  * OpenActivity.openAppDetails(id)              app内页
  * OpenActivity.openReportDialog(id)            举报对话框
  * OpenActivity.openUserData()                  编辑用户信息
@@ -15,7 +15,18 @@ console.log('%cNativeModules:', 'color: #0e93e0;background: #aaefe5;', NativeMod
  * OpenActivity.open(string)                    其他页面
  *                  com.lieying.content.social.ENTER —— 登录
  */
-export const { OpenActivity, GetUserInfo } = NativeModules;
+/**
+ * RnCallBack
+ * @param int position;
+ * @param int praiseNum;
+ * @param int joinNum;
+ * @param boolean praise;
+ * @param boolean collection
+ * @param String commentNum;
+ * @param String id;
+ * @returns json
+ */
+export const { OpenActivity, GetUserInfo, RnCallBack, UMAnalyticsModule } = NativeModules;
 
 // 打开RN界面
 export const OpenRnActivity = (route, json) => {

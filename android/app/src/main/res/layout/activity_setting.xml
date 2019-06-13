@@ -7,12 +7,12 @@
     android:fitsSystemWindows="true"
     android:orientation="vertical">
 
-    <com.lieying.socialappstore.widget.TitleView
+    <com.lieying.petcat.widget.TitleView
         android:id="@+id/title_setting_activity"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:focusableInTouchMode="true"
-        app:back_image="@drawable/icon_back"
+        app:back_image="@drawable/ic_input_back"
         app:line_bg_color="@color/color_eeeeee"
         app:right_spacing="12dp"
         app:right_text_size="@dimen/dimens_16sp"

@@ -1,5 +1,4 @@
 import { Dimensions, StyleSheet } from 'react-native';
-import { scale } from './scale';
 
 const windowPlatform = Dimensions.get('window');
 
@@ -8,11 +7,25 @@ export const themeSize = {
   screenHeight: windowPlatform.height,
   minBorder: StyleSheet.hairlineWidth,
   font: {
-    superLarge: scale(19),
-    larger: scale(17),
-    common: scale(15),
-    secondary: scale(13),
-    small: scale(12),
-    superSmall: scale(11),
+    superLarge: 19,
+    larger: 17,
+    common: 15,
+    secondary: 13,
+    small: 12,
+    superSmall: 11,
+  },
+};
+
+export const themeCatSize = {
+  screenWidth: windowPlatform.width,
+  screenHeight: windowPlatform.height,
+  minBorder: StyleSheet.hairlineWidth,
+  font: {
+    superLarge: 19,
+    larger: 14,
+    common: 12,
+    secondary: 12,
+    small: 10,
+    superSmall: 11,
   },
 };

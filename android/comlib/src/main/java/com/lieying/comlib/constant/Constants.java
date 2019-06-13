@@ -36,12 +36,52 @@ public class Constants {
     public static final String USER_TYPE_FOLLOWS = "1";//用户类型:我的关注
     public static final String USER_TYPE_FANS = "2";//用户类型:我的粉丝
 
+    public static boolean NEED_REFREASH_SENCOND_FG = false;//用户类型:我的粉丝
+
+
     //请求截图
     public static final int REQUEST_CROP_PHOTO = 102;
 
+    public static final int PRAISE_DELAY_MILES = 1000;
 
     /**----------广播flag-----------*/
     public static final String BROADCAST_FLAG_REFRESH_MAIN = "main_date_refresh";
 
+    public static final String KEY_FIRSTH_FG_JSON = "first_fragment_json";
+
     public static String KEY_WEB_URL = "key_web_url";
+    public static String KEY_WEB_SHOW_TITLE = "key_web_show_title";
+
+
+    /**----------广播flag-----------*/
+    public static final String BROADCAST_FLAG_FIRST_FG_FRESH_FIRST_ITEM = "first_fragment_refresh";
+
+    public static final String BROADCAST_FLAG_FIRST_FG_FRESH_BY_ID = "first_fragment_refresh_by_item";
+
+    public static final String BROADCAST_FLAG_TOPIC_FG_FRESH = "top_fragment_refresh";
+
+    /**------------发送事件给Rn---------------------*/
+    public static final String RN_EVENT_NAME_LOGIN = "UserLogin";
+
+    public static final String NATIVE_CALL_RN_PARAMS = "native_call_rn_params";
+
+
+    /**------------对用户操作---------------------*/
+
+    public static final String OPT_TO_USER_FOLLOW = "add";
+    public static final String OPT_TO_USER_CANCLE_FOLLOW = "del";
+
+    /**------------Navive call Rn 第一个参数，操作类型---------------------*/
+    public static final String OPTION_SET_FOLLOW = "set_follow";    //用户关注状态改变
+
+    public static final String OPTION_DELETE_X_SHARE = "delete_x_share";   //删除X友分享
+
+    public static final String OPTION_FABULOUS_X_SHARE = "set_fabulous_x_share";   //点赞X友分享
+
+    public static final String OPTION_LOGIN = "login";   //登陆
+
+    public static final String OPTION_UPDATA_USER_INFO= "UpdataUserInfo";   //更新个人信息
+
+    public static final String OPTION_USER_EXIT = "UserExit";   //退出登陆
+
 }

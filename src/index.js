@@ -8,12 +8,23 @@ import commentModel from '@/models/comment';
 import xshareModel from '@/models/xshare';
 import searchModel from '@/models/search';
 import noticeModel from '@/models/notice';
+import catHomeModel from '@/models/catHomeModel';
+import catPublishModel from '@/models/catPublishModel';
 // import createLogger from 'redux-logger';
 import Main from './main';
 
 const app = dva({
   initialState: {},
-  models: [globalModel, recommendModel, commentModel, xshareModel, searchModel, noticeModel],
+  models: [
+    globalModel,
+    recommendModel,
+    commentModel,
+    xshareModel,
+    searchModel,
+    noticeModel,
+    catHomeModel,
+    catPublishModel,
+  ],
   onError(e) {
     console.log('onError', e);
   },

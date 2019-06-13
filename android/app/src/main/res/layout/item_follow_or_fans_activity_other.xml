@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/selected_normal_click_bg">
+
+    <com.lieying.petcat.widget.NiceImageView
+        android:id="@+id/iv_item_fans_head_icon"
+        android:layout_width="@dimen/dimens_61dp"
+        android:layout_height="@dimen/dimens_61dp"
+        android:layout_marginLeft="@dimen/dimens_16dp"
+        android:layout_marginTop="@dimen/dimens_16dp"
+        android:src="@drawable/ic_default_header"
+        app:is_circle="true" />
+
+    <ImageView
+        android:id="@+id/iv_item_fans_vip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/iv_item_fans_head_icon"
+        android:layout_alignBottom="@+id/iv_item_fans_head_icon"
+        android:src="@drawable/ic_user_vip_small" />
+
+    <TextView
+        android:id="@+id/tv_item_fans_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dimens_20dp"
+        android:layout_marginTop="@dimen/dimens_18dp"
+        android:layout_toRightOf="@+id/iv_item_fans_head_icon"
+        android:textColor="@color/color_303030"
+        android:textSize="@dimen/dimens_16sp" />
+
+    <TextView
+        android:id="@+id/tv_item_fans_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_item_fans_title"
+        android:layout_marginLeft="@dimen/dimens_20dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="12dp"
+        android:layout_toLeftOf="@+id/ll_item_praise"
+        android:layout_toRightOf="@+id/iv_item_fans_head_icon"
+        android:ellipsize="end"
+        android:maxEms="12"
+        android:maxLines="1"
+        android:textColor="@color/color_707070"
+        android:textSize="@dimen/dimens_13sp" />
+
+    <TextView
+        android:id="@+id/tv_item_fans_fans"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_item_fans_content"
+        android:layout_marginLeft="@dimen/dimens_20dp"
+        android:layout_marginTop="5dp"
+        android:layout_toLeftOf="@+id/ll_item_praise"
+        android:layout_toRightOf="@+id/iv_item_fans_head_icon"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:textColor="@color/color_a7a7a7"
+        android:textSize="@dimen/dimens_11sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_below="@+id/iv_item_fans_head_icon"
+        android:layout_alignLeft="@+id/iv_item_fans_head_icon"
+        android:layout_marginTop="@dimen/dimens_16dp"
+        android:background="@color/color_eeeeee" />
+
+    <ImageView
+        android:id="@+id/tv_item_fans_follow_stutas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="37dp"
+        android:layout_marginRight="@dimen/dimens_16dp"
+        android:src="@drawable/ic_stutas_follow" />
+</RelativeLayout>
+

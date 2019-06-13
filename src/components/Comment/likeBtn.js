@@ -1,61 +1,86 @@
 import React from 'react';
 import { StyleSheet, Image, View } from 'react-native';
 import TouchableNativeFeedback from '@/components/Touchable/TouchableNativeFeedback';
-import { scale, themeLayout } from '@/config';
-import SmallText from '@/components/AppText/SmallText';
+import { themeLayout } from '@/config';
+import SmallText from '@/components/AppText/Cat/SmallText';
 import myImages from '@/utils/myImages';
 import { connect } from '@/utils/dva';
 import { actionBeforeCheckLogin } from '@/utils/utils';
-import { LIKE_TYPE } from '@/config/constants';
+import { LIKE_TYPE, immediateTimer } from '@/config/constants';
 
+const hadLikedArrCache = [];
 class LikeBtn extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      // hadLikedArr: '',
+      islike: !props.itemData.is_fabulous,
+      likenum: +props.itemData.fabulous,
+    };
+    this.isShare = +props.type === LIKE_TYPE.share;
+  }
+
   handleToggleLike = () => {
     const { dispatch, itemData, type } = this.props;
+    const { islike, likenum } = this.state;
     const isLike = !itemData.is_fabulous;
     const likeNum = +itemData.fabulous;
-    const data = {
-      type,
-      opt: isLike ? 'del' : 'add',
-      id: itemData.id,
-      real_name: itemData.commit_user,
-      head_image: itemData.head_image,
-    };
-    dispatch({
-      type: 'comment/toggleLikeEffect',
-      payload: data,
-      successFn: () => {
-        if (+type === LIKE_TYPE.share) {
-          const setXshareData = {
-            ...itemData,
-            fabulous: isLike ? likeNum - 1 : likeNum + 1,
-            is_fabulous: isLike,
-          };
-          dispatch({
-            type: 'global/saveXshareData',
-            payload: setXshareData,
-          });
-        }
-      },
-    });
+    hadLikedArrCache.push(itemData.id);
+    // this.setState({ hadLikedArr: hadLikedArrCache });
+
+    if (this.isShare) {
+      const setXshareData = {
+        ...itemData,
+        fabulous: isLike ? likeNum - 1 : likeNum + 1,
+        is_fabulous: isLike,
+      };
+      dispatch({
+        type: 'global/saveXshareData',
+        payload: setXshareData,
+      });
+    } else {
+      this.setState({
+        islike: !islike,
+        likenum: islike ? likenum - 1 : likenum + 1,
+      });
+    }
+    if (this[`timer_${itemData.id}`]) clearTimeout(this[`timer_${itemData.id}`]);
+    this[`timer_${itemData.id}`] = setTimeout(() => {
+      const data = {
+        type,
+        opt: ((this.isShare ? isLike : islike) && 'del') || 'add',
+        id: itemData.id,
+      };
+      dispatch({
+        type: 'comment/toggleLikeEffect',
+        payload: data,
+      });
+    }, immediateTimer);
   };
 
   render() {
     const { size = 14, textStyle, itemData } = this.props;
+    const { islike, likenum } = this.state;
+    const showNumber = this.isShare ? itemData.fabulous : likenum;
+    const showIslike = this.isShare ? !itemData.is_fabulous : islike;
     return (
-      <TouchableNativeFeedback onPress={() => actionBeforeCheckLogin(this.handleToggleLike)}>
+      <TouchableNativeFeedback
+        tapArea={this.isShare ? 10 : 30}
+        onPress={() => actionBeforeCheckLogin(this.handleToggleLike)}
+      >
         <View style={styles.likeCon}>
           <Image
             style={styles.likeIcon(size)}
-            source={{ uri: !itemData.is_fabulous ? myImages.thumbO : myImages.thumb }}
+            source={{ uri: showIslike ? myImages.thumbO : myImages.thumb }}
           />
-          <SmallText style={textStyle}>{+itemData.fabulous || ''}</SmallText>
+          <SmallText style={textStyle}>{showNumber || ''}</SmallText>
         </View>
       </TouchableNativeFeedback>
     );
   }
 }
 
-const mapStateToProps = ({ comment }) => ({ comment });
+const mapStateToProps = ({ comment, global }) => ({ comment, global });
 
 export default connect(mapStateToProps)(LikeBtn);
 
@@ -65,9 +90,9 @@ const styles = StyleSheet.create({
   },
   likeIcon: size => {
     return {
-      width: scale(size),
-      height: scale(size),
-      marginRight: scale(3),
+      width: size,
+      height: size,
+      marginRight: 3,
     };
   },
 });

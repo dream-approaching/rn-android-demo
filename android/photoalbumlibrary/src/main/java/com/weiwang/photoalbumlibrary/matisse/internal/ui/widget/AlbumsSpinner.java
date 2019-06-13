@@ -22,7 +22,9 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.ListPopupWindow;
+import android.util.DisplayMetrics;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
@@ -44,9 +46,13 @@ public class AlbumsSpinner {
         mListPopupWindow = new ListPopupWindow(context, null, R.attr.listPopupWindowStyle);
         mListPopupWindow.setModal(true);
         float density = context.getResources().getDisplayMetrics().density;
-        mListPopupWindow.setContentWidth((int) (216 * density));
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        DisplayMetrics dm = new DisplayMetrics();
+        wm.getDefaultDisplay().getMetrics(dm);
+        int width = dm.widthPixels;         // 屏幕宽度（像素）
+        mListPopupWindow.setContentWidth(width);
         mListPopupWindow.setHorizontalOffset((int) (16 * density));
-        mListPopupWindow.setVerticalOffset((int) (-48 * density));
+//        mListPopupWindow.setVerticalOffset((int) (-48 * density));
 
         mListPopupWindow.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -100,13 +106,13 @@ public class AlbumsSpinner {
     public void setSelectedTextView(TextView textView) {
         mSelected = textView;
         // tint dropdown arrow icon
-        Drawable[] drawables = mSelected.getCompoundDrawables();
-        Drawable right = drawables[2];
-        TypedArray ta = mSelected.getContext().getTheme().obtainStyledAttributes(
-                new int[]{R.attr.album_element_color});
-        int color = ta.getColor(0, 0);
-        ta.recycle();
-        right.setColorFilter(color, PorterDuff.Mode.SRC_IN);
+//        Drawable[] drawables = mSelected.getCompoundDrawables();
+//        Drawable right = drawables[2];
+//        TypedArray ta = mSelected.getContext().getTheme().obtainStyledAttributes(
+//                new int[]{R.attr.album_element_color});
+//        int color = ta.getColor(0, 0);
+//        ta.recycle();
+//        right.setColorFilter(color, PorterDuff.Mode.SRC_IN);
 
         mSelected.setVisibility(View.GONE);
         mSelected.setOnClickListener(new View.OnClickListener() {

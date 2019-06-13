@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,19 +7,30 @@
     android:fitsSystemWindows="true"
     android:orientation="vertical">
 
-    <com.lieying.socialappstore.widget.TitleView
+    <com.lieying.petcat.widget.TitleView
         android:id="@+id/view_title"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        app:back_image="@drawable/icon_back"
+        app:back_image="@drawable/ic_input_back"
         app:line_bg_color="@color/color_eeeeee"
-        app:right_spacing="12dp"
-        app:title="收藏APP应用"
+        app:right_spacing="@dimen/dimens_12dp"
         app:title_color="@color/color_303030"
         app:title_size="@dimen/dimens_19sp" />
 
     <com.lieying.comlib.pull.PullToRefreshRecyclerView
+        android:layout_below="@+id/view_title"
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-</LinearLayout>
+
+    <!--<com.lieying.socialappstore.widget.NoDataTipsLayout-->
+        <!--android:id="@+id/rl_no_data"-->
+        <!--android:visibility="gone"-->
+        <!--android:layout_below="@+id/view_title"-->
+        <!--app:tip_text = "还未收藏任何"-->
+        <!--app:tip_text_color = "@color/color_707070"-->
+        <!--app:tip_text_size = "@dimen/dimens_15sp"-->
+        <!--app:tip_text_margin_top = "151dp"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"></com.lieying.socialappstore.widget.NoDataTipsLayout>-->
+</RelativeLayout>

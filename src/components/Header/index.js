@@ -1,11 +1,11 @@
 import React from 'react';
 import { View, Image, StyleSheet, BackHandler } from 'react-native';
 import TouchableNativeFeedback from '@/components/Touchable/TouchableNativeFeedback';
-import { scale, themeLayout, themeSize } from '@/config';
-import LargerText from '@/components/AppText/LargerText';
+import { themeLayout, themeCatSize } from '@/config';
+import LargerText from '@/components/AppText/Cat/LargerText';
 import myImages from '@/utils/myImages';
 
-export default class CommentPage extends React.PureComponent {
+export default class Header extends React.PureComponent {
   static navigationOptions = {
     header: null,
   };
@@ -13,6 +13,8 @@ export default class CommentPage extends React.PureComponent {
   static defaultProps = {
     showLeftIcon: true,
     title: '',
+    backType: 'arrow',
+    showBorder: true,
   };
 
   handleBack = () => {
@@ -27,12 +29,24 @@ export default class CommentPage extends React.PureComponent {
   };
 
   render() {
-    const { showLeftIcon, title, centerComponent, rightComponent } = this.props;
+    const {
+      showLeftIcon,
+      title,
+      centerComponent,
+      rightComponent,
+      backType,
+      showBorder,
+    } = this.props;
     return (
-      <View style={styles.container}>
+      <View style={styles.container(showBorder)}>
         <TouchableNativeFeedback onPress={this.handleBack}>
           <View style={styles.leftIconCon}>
-            {showLeftIcon && <Image style={styles.leftIcon} source={{ uri: myImages.leftBack }} />}
+            {showLeftIcon && (
+              <Image
+                style={styles.leftIcon}
+                source={{ uri: backType === 'arrow' ? myImages.leftBack : myImages.delBack }}
+              />
+            )}
           </View>
         </TouchableNativeFeedback>
         <View style={styles.titleCon}>
@@ -45,32 +59,35 @@ export default class CommentPage extends React.PureComponent {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    height: scale(68),
-    ...themeLayout.borderSide('Bottom'),
-    ...themeLayout.flex('row'),
-    ...themeLayout.padding(0, scale(16), 0, scale(6)),
-    backgroundColor: '#fff',
-    paddingTop: scale(20),
+  container: showBorder => {
+    const obj = {
+      height: 68,
+      ...themeLayout.flex('row'),
+      ...themeLayout.padding(0, 16, 0, 6),
+      backgroundColor: '#fff',
+      paddingTop: 20,
+    };
+    return showBorder ? { ...obj, ...themeLayout.borderSide('Bottom') } : obj;
   },
   titleCon: {
     ...themeLayout.flex('row'),
     flex: 2,
-    marginLeft: -scale(20),
+    marginLeft: -20,
     flexWrap: 'nowrap',
   },
   title: {
-    fontSize: themeSize.font.superLarge,
+    fontSize: themeCatSize.font.superLarge,
   },
   leftIconCon: {
     flex: 1,
-    ...themeLayout.padding(scale(10)),
+    ...themeLayout.padding(10),
   },
   leftIcon: {
-    width: scale(16),
-    height: scale(16),
+    width: 14,
+    height: 14,
   },
   right: {
     flex: 1,
+    ...themeLayout.flex('row', 'flex-end'),
   },
 });

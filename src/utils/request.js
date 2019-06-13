@@ -1,6 +1,6 @@
 // import fetch from 'whatwg-fetch';
 import 'whatwg-fetch';
-import { store } from '../index';
+import config from '@/config';
 // import { stringify } from 'qs';
 
 const codeMessage = {
@@ -81,18 +81,14 @@ export default function request(url, options, time) {
 
   let fetchUrl;
 
-  if (newOptions.method === 'GET') {
-    const state = store.getState();
-    const { userInfo } = state.global;
+  if (newOptions.method === 'GET' || newOptions.method === 'POST') {
     const globalParams = {
-      // access_token: '6b3597f7e7adaa11646896cf41b68681',
-      // mobilephone: '18256478952',
-      access_token: userInfo ? userInfo.access_token : '',
-      mobilephone: userInfo ? userInfo.mobilephone : '',
-      app_ver: '1',
-      app_ver_code: '1',
-      ch: '1',
-      channel_id: '1',
+      access_token: config.getUserInfo().access_token,
+      mobilephone: config.getUserInfo().mobilephone,
+      app_ver: config.app_ver,
+      app_ver_code: config.app_ver_code,
+      ch: config.ch,
+      channel_id: config.channel_id,
     };
     const data = { ...globalParams, ...newOptions.data };
 

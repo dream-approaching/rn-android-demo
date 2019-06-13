@@ -4,6 +4,7 @@ import { name } from './app.json';
 
 YellowBox.ignoreWarnings([
   'Remote debugger is in a background tab which may cause apps to perform slowly',
+  'Require cycle:',
 ]);
 
 AppRegistry.registerComponent(name, () => App);

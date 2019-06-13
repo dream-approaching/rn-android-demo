@@ -9,14 +9,14 @@ export default class ErrorBoundary extends React.Component {
   //   return { error };
   // }
 
-  componentDidCatch(error, errorInfo) {
-    console.log('%cerror:', 'color: #0e93e0;background: #aaefe5;', error.message);
-    console.log('%cerrorInfo:', 'color: #0e93e0;background: #aaefe5;', errorInfo.componentStack);
-    this.setState({
-      error
-    });
-    // 告诉原生有异常
-  }
+  // componentDidCatch(error, errorInfo) {
+  //   console.log('%cerror:', 'color: #0e93e0;background: #aaefe5;', error.message);
+  //   console.log('%cerrorInfo:', 'color: #0e93e0;background: #aaefe5;', errorInfo.componentStack);
+  //   this.setState({
+  //     error,
+  //   });
+  //   // 告诉原生有异常
+  // }
 
   render() {
     const { error } = this.state;

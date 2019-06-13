@@ -9,7 +9,7 @@ public class UserIndexInfoBean {
 
 
     /**
-     * userinfo : {"id":"12","channel_id":"1","nick_name":"adxDIY139111944","refresh_token":"24819ee2c3997c3a6d607fa7373f1de4","access_token":"7825b36b298dfdfaff34af202d6ac18e","mobilephone":"18503068868","expires_in":"1560419686","head_image":"http://192.168.0.200:1530/uploads_cms_images/1557805777360_95854.png","sex":"","user_title":"","user_type":"0","career":"msg","location":"武汉市","profile":"","age":"0","is_big_v":"1","guan":"1","fen":"2","is_add_friends":true}
+     * userinfo : {"id":"3","channel_id":"1","nick_name":"rre","refresh_token":"82ac77abd1c1e19cb6cc161a1704f8ec","access_token":"ae4d8e598abb38657be0f1f1e015c0c6","mobilephone":"15864578953","expires_in":"1560913549","head_image":"http://192.168.0.200:8060/uploads_cms_images/1552617692930_2304.jpg","sex":"m","user_title":"","user_type":"0","career":"","location":"","profile":"","age":"0","is_big_v":"1","guan":"0","fen":"0","is_self":true,"is_add_friends":true}
      */
 
     private UserinfoBean userinfo;
@@ -24,24 +24,25 @@ public class UserIndexInfoBean {
 
     public static class UserinfoBean {
         /**
-         * id : 12
+         * id : 3
          * channel_id : 1
-         * nick_name : adxDIY139111944
-         * refresh_token : 24819ee2c3997c3a6d607fa7373f1de4
-         * access_token : 7825b36b298dfdfaff34af202d6ac18e
-         * mobilephone : 18503068868
-         * expires_in : 1560419686
-         * head_image : http://192.168.0.200:1530/uploads_cms_images/1557805777360_95854.png
-         * sex :
+         * nick_name : rre
+         * refresh_token : 82ac77abd1c1e19cb6cc161a1704f8ec
+         * access_token : ae4d8e598abb38657be0f1f1e015c0c6
+         * mobilephone : 15864578953
+         * expires_in : 1560913549
+         * head_image : http://192.168.0.200:8060/uploads_cms_images/1552617692930_2304.jpg
+         * sex : m
          * user_title :
          * user_type : 0
-         * career : msg
-         * location : 武汉市
+         * career :
+         * location :
          * profile :
          * age : 0
          * is_big_v : 1
-         * guan : 1
-         * fen : 2
+         * guan : 0
+         * fen : 0
+         * is_self : true
          * is_add_friends : true
          */
 
@@ -63,6 +64,7 @@ public class UserIndexInfoBean {
         private String is_big_v;
         private String guan;
         private String fen;
+        private boolean is_self;
         private boolean is_add_friends;
 
         public String getId() {
@@ -207,6 +209,14 @@ public class UserIndexInfoBean {
 
         public void setFen(String fen) {
             this.fen = fen;
+        }
+
+        public boolean isIs_self() {
+            return is_self;
+        }
+
+        public void setIs_self(boolean is_self) {
+            this.is_self = is_self;
         }
 
         public boolean isIs_add_friends() {

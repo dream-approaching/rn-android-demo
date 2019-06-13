@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tv_task_tag"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:textSize="13sp"
+    android:maxLines="2"
+    android:ellipsize="end"
+    android:textColor="@color/color_575757"
+    android:layout_marginTop="@dimen/dimens_15dp"
+    />

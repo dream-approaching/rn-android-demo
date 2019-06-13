@@ -1,7 +1,6 @@
 import React, { Fragment } from 'react';
 import { View, StyleSheet, Text, Animated } from 'react-native';
 import { RefreshHeader } from 'react-native-spring-scrollview/RefreshHeader';
-import { scale } from '@/config';
 
 const frameImg2 = {
   waiting: ['icon_rf_03'],
@@ -14,19 +13,13 @@ const frameImg2 = {
 
 let index = 0;
 class FrameHeader extends RefreshHeader {
-  static height = scale(40);
+  static height = 40;
 
   componentWillUnmount = () => {
     clearInterval(this.intervalTimer);
   };
 
   onStateChange = (oldStatus, newStatus) => {
-    console.log(
-      '%coldStatus, newStatus:',
-      'color: #0e93e0;background: #aaefe5;',
-      oldStatus,
-      newStatus
-    );
     if (
       oldStatus === 'refreshing' ||
       oldStatus === 'rebound' ||
@@ -70,8 +63,8 @@ class FrameHeader extends RefreshHeader {
               resizeMode='contain'
               ref={ref => (this[`refImg_${indexd}`] = ref)}
               style={{
-                width: scale(20),
-                height: scale(40),
+                width: 20,
+                height: 40,
                 position: 'absolute',
                 left: '48%',
                 transform: [

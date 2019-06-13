@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
+    android:background="@color/white"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
@@ -11,7 +12,7 @@
         android:id="@+id/rl_main_activity_top_bar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbar_height"
-        android:background="@drawable/bg_home_nav_bg">
+        android:background="@color/white">
 
         <TextView
             android:id="@+id/rl_main_activity_top_title"
@@ -19,32 +20,43 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dimens_25dp"
             android:layout_marginTop="@dimen/dimens_40dp"
-            android:text="@string/string_explore"
-            android:textColor="@color/white"
+            android:text="@string/string_first_fg_title"
+            android:textColor="@color/color_303030"
             android:textSize="@dimen/dimens_19sp" />
 
         <ImageView
             android:id="@+id/iv_main_search"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/dimens_35dp"
+            android:layout_height="@dimen/dimens_35dp"
+            android:layout_marginTop="@dimen/dimens_38dp"
+            android:padding="@dimen/dimens_5dp"
             android:layout_alignParentRight="true"
-            android:layout_marginTop="@dimen/dimens_40dp"
             android:layout_marginRight="@dimen/dimens_25dp"
             android:src="@drawable/ic_home_top_search" />
+        <View
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/color_eeeeee"
+            />
     </RelativeLayout>
 
-    <com.lieying.socialappstore.widget.CustomViewPager
+    <com.lieying.petcat.widget.CustomViewPager
         android:id="@+id/main_viewpager"
         android:layout_weight="1"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
          />
-
-    <android.support.design.widget.BottomNavigationView
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/color_eeeeee"
+        />
+    <com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx
         android:id="@+id/navigation"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:background="@color/colorPrimary"
+        android:background="@color/white"
         app:itemIconTint="@color/color_home_nav"
         app:labelVisibilityMode="unlabeled"
         app:menu="@menu/navigation" />

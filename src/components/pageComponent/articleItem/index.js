@@ -1,15 +1,26 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import TouchableNativeFeedback from '@/components/Touchable/TouchableNativeFeedback';
-import { themeLayout, scale, themeColor } from '@/config';
-import CommonText from '@/components/AppText/CommonText';
+import { themeLayout, themeCatColor } from '@/config';
+import CommonText from '@/components/AppText/Cat/CommonText';
+import { OpenRnActivity } from '@/components/NativeModules';
 import ImageWithDefault from '@/components/ImageWithDefault';
+import { SEARCH_TYPE } from '@/config/constants';
 
 export default class extends React.PureComponent {
+  gotoArticleDetail = () => {
+    const { itemData } = this.props;
+    if (+itemData.type === SEARCH_TYPE.chat) {
+      OpenRnActivity('detailChat', JSON.stringify({ contentId: itemData.id }));
+    } else {
+      OpenRnActivity('detailWebview', JSON.stringify({ webUrl: itemData.url_content }));
+    }
+  };
+
   render() {
     const { itemData, islastOne } = this.props;
     return (
-      <TouchableNativeFeedback>
+      <TouchableNativeFeedback onPress={this.gotoArticleDetail} notOut tapArea={1}>
         <View style={styles.container(islastOne)}>
           <ImageWithDefault style={styles.leftImg} source={{ uri: itemData.img }} />
           <View style={styles.itemRight}>
@@ -28,23 +39,22 @@ const styles = StyleSheet.create({
     const obj = {
       flex: 1,
       ...themeLayout.flex('row', 'space-between'),
-      ...themeLayout.margin(0, 0, 0, scale(8)),
-      ...themeLayout.padding(scale(16), 0),
+      ...themeLayout.padding(16, 0),
     };
     return isLastOne ? obj : { ...obj, ...themeLayout.borderSide() };
   },
   leftImg: {
-    width: scale(57),
-    height: scale(57),
-    backgroundColor: themeColor.bgF4,
+    width: 57,
+    height: 57,
+    backgroundColor: themeCatColor.bgF4,
   },
   itemRight: {
     flex: 1,
-    marginLeft: scale(18),
+    marginLeft: 18,
     ...themeLayout.flex('column', 'space-between', 'flex-start'),
   },
   articleTitle: {
-    fontSize: scale(15),
-    lineHeight: scale(24),
+    fontSize: 15,
+    lineHeight: 24,
   },
 });

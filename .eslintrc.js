@@ -74,6 +74,8 @@ module.exports = {
     'react/no-array-index-key': [0],
     'func-names': [0],
     'comma-dangle': [0],
+    'no-case-declarations': [0],
+    'no-new': [0],
   },
   parserOptions: {
     ecmaFeatures: {

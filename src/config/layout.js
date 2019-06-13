@@ -1,5 +1,5 @@
-import { themeSize } from './size';
-import { themeColor } from './color';
+import { themeCatSize } from './size';
+import { themeCatColor } from './color';
 
 function marginPadding(type, arg) {
   let typeObj = {};
@@ -59,8 +59,8 @@ export const themeLayout = {
   },
   borderSide(
     side = 'Bottom',
-    color = themeColor.borderColor,
-    width = themeSize.minBorder,
+    color = themeCatColor.borderColor,
+    width = themeCatSize.minBorder,
     borderStyle = 'solid'
   ) {
     return {
@@ -70,8 +70,8 @@ export const themeLayout = {
     };
   },
   border(
-    borderWidth = themeSize.minBorder,
-    borderColor = themeColor.borderColor,
+    borderWidth = themeCatSize.minBorder,
+    borderColor = themeCatColor.borderColor,
     borderStyle = 'solid'
   ) {
     return {

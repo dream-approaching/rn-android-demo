@@ -29,6 +29,7 @@ class MyModal extends React.Component {
         onModalWillShow={this.onModalWillShow}
         onModalWillHide={this.onModalWillHide}
         isVisible={modalVisible}
+        style={style}
         {...rest}
       >
         {children}

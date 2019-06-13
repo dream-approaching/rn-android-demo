@@ -1,10 +1,12 @@
 import React from 'react';
-import { ImageBackground, StyleSheet, Image, TextInput, Keyboard } from 'react-native';
+import { View, StyleSheet, Image, TextInput, Keyboard } from 'react-native';
 import TouchableNativeFeedback from '@/components/Touchable/TouchableNativeFeedback';
-import { scale, themeLayout, themeColor } from '@/config';
+import { themeLayout, themeCatColor } from '@/config';
 import myImages from '@/utils/myImages';
-import CommonText from '../AppText/CommonText';
+import CommonText from '@/components/AppText/Cat/CommonText';
 import { isLogin, actionBeforeCheckLogin, gotoLogin } from '@/utils/utils';
+import { immediateTimer } from '@/config/constants';
+import { RnCallBack } from '@/components/NativeModules';
 
 export default class CommentPage extends React.Component {
   static defaultProps = {
@@ -29,6 +31,7 @@ export default class CommentPage extends React.Component {
   componentWillUnmount() {
     this.keyboardDidShowListener.remove();
     this.keyboardDidHideListener.remove();
+    // this.timer && clearTimeout(this.timer);
   }
 
   keyboardDidShow = () => {
@@ -55,21 +58,28 @@ export default class CommentPage extends React.Component {
   };
 
   handleToggleCollect = () => {
-    const { dispatch, xshare } = this.props;
+    const { dispatch, xshare, nativePosition, commentNum } = this.props;
     const { isCollect } = this.state;
-    dispatch({
-      type: 'xshare/toggleArticleCollectEffect',
-      payload: {
-        type: xshare.articleDetail.type,
-        opt: !isCollect ? 'add' : 'del',
-        info_id: xshare.articleDetail.id,
-      },
-      successFn: () => {
-        this.setState({
-          isCollect: !isCollect,
-        });
-      },
+    this.setState({
+      isCollect: !isCollect,
     });
+    const callbackData = {
+      collection: !isCollect,
+      position: +nativePosition,
+      commentNum,
+    };
+    RnCallBack.callBackFirstFragment(JSON.stringify(callbackData));
+    if (this.timer) clearTimeout(this.timer);
+    this.timer = setTimeout(() => {
+      dispatch({
+        type: 'xshare/toggleArticleCollectEffect',
+        payload: {
+          type: xshare.articleDetail.type,
+          opt: this.state.isCollect ? 'add' : 'del',
+          info_id: xshare.articleDetail.id,
+        },
+      });
+    }, immediateTimer);
   };
 
   render() {
@@ -82,53 +92,59 @@ export default class CommentPage extends React.Component {
       handleSubmitComment,
       leftIconAction,
       showCollection,
+      onblur = () => {},
     } = this.props;
     const { keyboardShow, isCollect } = this.state;
     const disabled = textValue.length === 0;
     return (
-      <ImageBackground
-        resizeMode='stretch'
-        source={{ uri: myImages.bgInput }}
-        style={styles.inputCon}
-      >
+      <View style={styles.inputCon}>
         {showLeftIcon && (
           <TouchableNativeFeedback onPress={leftIconAction}>
-            <Image style={styles.leftIcon} source={{ uri: myImages.leftBack }} />
+            <View style={styles.iconCon(13)}>
+              <Image style={styles.leftIcon} source={{ uri: myImages.leftBack }} />
+            </View>
           </TouchableNativeFeedback>
         )}
         <TextInput
           ref={ref => (this.refInput = ref)}
-          style={styles.inputStyle}
+          style={styles.inputStyle(showLeftIcon)}
           onChangeText={handleChangeText}
           onFocus={this.onfocus}
+          onBlur={onblur}
           value={textValue}
           multiline
           placeholder={placeholder}
-          placeholderTextColor={themeColor.placeholderColor}
+          placeholderTextColor={themeCatColor.placeholderColor}
         />
         {showCollection && !keyboardShow && (
-          <TouchableNativeFeedback onPress={() => actionBeforeCheckLogin(this.handleToggleCollect)}>
-            {isCollect ? (
-              <Image style={styles.rightIcon} source={{ uri: myImages.commentCollectiono }} />
-            ) : (
-              <Image style={styles.rightIcon} source={{ uri: myImages.commentCollection }} />
-            )}
+          <TouchableNativeFeedback
+            tapArea={1}
+            onPress={() => actionBeforeCheckLogin(this.handleToggleCollect)}
+          >
+            <View style={styles.iconCon()}>
+              {isCollect ? (
+                <Image style={styles.rightIcon} source={{ uri: myImages.commentCollectiono }} />
+              ) : (
+                <Image style={styles.rightIcon} source={{ uri: myImages.commentCollection }} />
+              )}
+            </View>
           </TouchableNativeFeedback>
         )}
         {showShare && !keyboardShow && (
-          <TouchableNativeFeedback onPress={this.handleShare}>
-            <Image style={styles.rightIcon} source={{ uri: myImages.share }} />
+          <TouchableNativeFeedback tapArea={1} onPress={this.handleShare}>
+            <View style={styles.iconCon()}>
+              <Image style={styles.rightIcon} source={{ uri: myImages.detailShare }} />
+            </View>
           </TouchableNativeFeedback>
         )}
         {keyboardShow && (
-          <TouchableNativeFeedback
-            style={styles.submitBtn}
-            onPress={disabled ? () => {} : handleSubmitComment}
-          >
-            <CommonText style={styles.submitText(disabled)}>发送</CommonText>
+          <TouchableNativeFeedback tapArea={1} onPress={disabled ? () => {} : handleSubmitComment}>
+            <View style={styles.submitBtn}>
+              <CommonText style={styles.submitText(disabled)}>发送</CommonText>
+            </View>
           </TouchableNativeFeedback>
         )}
-      </ImageBackground>
+      </View>
     );
   }
 }
@@ -136,29 +152,36 @@ export default class CommentPage extends React.Component {
 const styles = StyleSheet.create({
   inputCon: {
     ...themeLayout.flex('row', 'space-between'),
-    ...themeLayout.padding(0, scale(13)),
-    width: scale(360),
-    height: scale(65),
+    ...themeLayout.padding(0, 13, 0, 0),
+    width: 375,
+    height: 65,
+    ...themeLayout.borderSide('Top', '#eee'),
+  },
+  iconCon: (hori = 8) => {
+    return {
+      ...themeLayout.padding(10, hori),
+    };
   },
   leftIcon: {
-    width: scale(19),
-    height: scale(19),
-    marginRight: scale(10),
+    width: 19,
+    height: 19,
   },
   rightIcon: {
-    width: scale(22),
-    height: scale(22),
-    ...themeLayout.margin(0, scale(8)),
+    width: 22,
+    height: 22,
   },
-  inputStyle: {
-    ...themeLayout.border(),
-    ...themeLayout.padding(scale(5), scale(10)),
-    flex: 1,
-    color: themeColor.font.secondary,
-    borderRadius: scale(5),
+  inputStyle: showLeftIcon => {
+    return {
+      ...themeLayout.border(),
+      ...themeLayout.padding(5, 10),
+      flex: 1,
+      color: themeCatColor.font.secondary,
+      borderRadius: 5,
+      marginLeft: showLeftIcon ? 0 : 13,
+    };
   },
   submitBtn: {
-    width: scale(60),
+    width: 60,
     justifyContent: 'center',
     alignItems: 'center',
   },
