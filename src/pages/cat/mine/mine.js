@@ -61,7 +61,7 @@ class Mine extends React.Component {
       {
         title: '图文',
         icon: myImages.chat,
-        onPressAction: () => OpenRnActivity('detailChat'),
+        onPressAction: () => OpenRnActivity('catDetailChat'),
         notNeedAuth: true,
       },
     ];

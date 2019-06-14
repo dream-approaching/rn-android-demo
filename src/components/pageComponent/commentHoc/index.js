@@ -17,9 +17,9 @@ const commentHoc = Component => {
       allLoaded: false,
     };
 
-    state = { ...this.initialState, activeTab: COMMENT_SORT.hot };
+    state = { ...this.initialState, activeTab: COMMENT_SORT.new };
 
-    queryCommentDispatch = (dispatchType, data) => {
+    queryCommentDispatch = (dispatchType, data, successFn) => {
       const { dispatch } = this.props;
       const payload = {
         ...data,
@@ -35,6 +35,7 @@ const commentHoc = Component => {
               allLoaded: true,
             });
           }
+          successFn && successFn();
         },
         finallyFn: () => {
           this.hocref.refScrollView && this.hocref.refScrollView.endLoading();
@@ -52,15 +53,8 @@ const commentHoc = Component => {
       });
     };
 
-    handleChangeSort = async item => {
-      await this.setState({
-        activeTab: item.type,
-        allLoaded: false,
-      });
-      this.hocref.queryCommentDispatch({ isFirst: true });
-    };
-
     replyAction = item => {
+      console.log('%citem:', 'color: #0e93e0;background: #aaefe5;', item);
       if (!isLogin()) return false;
       this.hocref.refInputCon.refInput.focus();
       this.setState({
@@ -88,16 +82,19 @@ const commentHoc = Component => {
       this.hocref.queryCommentDispatch({ id: queryId });
     };
 
-    handleSubmitComment = data => {
+    handleSubmitComment = (data, successFn) => {
       const { atSomeone, textValue } = this.state;
-      const { dispatch, global } = this.props;
       data.content = textValue;
       if (atSomeone) {
         data.parent_id = atSomeone.id;
       }
       this.submitCommentDispatch(data, response => {
         this.setState(this.initialState);
-        this.hocref.queryCommentDispatch({ isFirst: true });
+        if (successFn) {
+          successFn();
+        } else {
+          this.hocref.queryCommentDispatch({ isFirst: true });
+        }
         // 互动话题tab评论时回调参与人数给本地
         if (data.type === COMMENT_TYPE.chat && +data.position === 1) {
           const callbackData = {
@@ -105,18 +102,6 @@ const commentHoc = Component => {
             position: +data.position,
           };
           RnCallBack.callTopicFg(JSON.stringify(callbackData));
-        }
-        // 莓友分享
-        if (data.type === COMMENT_TYPE.share) {
-          const editItemId = data.content_id;
-          if (global.xshareData[editItemId]) {
-            const editItem = global.xshareData[editItemId];
-            editItem.comment_num = atSomeone ? data.commentNum : +data.commentNum + 1;
-            dispatch({
-              type: 'global/saveXshareData',
-              payload: editItem,
-            });
-          }
         }
         // 探索tab评论时回调
         if (data.position === '0') {
@@ -133,7 +118,7 @@ const commentHoc = Component => {
     submitCommentDispatch = (payload, successFn) => {
       const { dispatch } = this.props;
       dispatch({
-        type: 'comment/submitCommentEffect',
+        type: 'catComment/submitCommentEffect',
         payload,
         successFn: response => {
           Keyboard.dismiss();
@@ -149,7 +134,6 @@ const commentHoc = Component => {
           replyAction={this.replyAction}
           handleSubmitComment={this.handleSubmitComment}
           handleChangeText={this.handleChangeText}
-          handleChangeSort={this.handleChangeSort}
           handleQueryNextPage={this.handleQueryNextPage}
           queryCommentDispatch={this.queryCommentDispatch}
           onblur={this.onblur}

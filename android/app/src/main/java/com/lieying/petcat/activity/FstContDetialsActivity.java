@@ -49,6 +49,7 @@ public class FstContDetialsActivity extends BaseActivity {
     @Override
     public void initData() {
         path = getIntent().getStringExtra(KEY_FSTCONENT_PARAMS);
+        Log.e("test" , "视频地址 ----------  "+path);
 //        setContentView(rootView);
         player = new PlayerView(this)
                 .setTitle("什么")

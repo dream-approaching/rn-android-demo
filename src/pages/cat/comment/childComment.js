@@ -25,6 +25,9 @@ class CommentPage extends React.Component {
     this.contendId = navigation.getParam('contendId');
     this.parentIndex = navigation.getParam('index');
     this.total = navigation.getParam('total');
+    this.state = {
+      isFirstTime: true,
+    };
   }
 
   componentDidMount() {
@@ -38,7 +41,7 @@ class CommentPage extends React.Component {
 
   componentWillUnmount() {
     this.props.dispatch({
-      type: 'comment/saveChildCommentList',
+      type: 'catComment/saveChildCommentList',
       payload: [],
       isFirstPage: true,
     });
@@ -51,13 +54,16 @@ class CommentPage extends React.Component {
       parent_id: this.parentId,
       ...payload,
     };
-    this.props.queryCommentDispatch('comment/queryChildCommentEffect', data);
+    this.props.queryCommentDispatch('catComment/queryChildCommentEffect', data, () =>
+      this.setState({ isFirstTime: false })
+    );
   };
 
   handleSubmitComment = () => {
     const data = {
-      type: COMMENT_TYPE.chat,
+      type: COMMENT_TYPE.share,
       content_id: this.contendId,
+      parent_id: this.parentId,
     };
     this.props.handleSubmitComment(data);
   };
@@ -70,7 +76,7 @@ class CommentPage extends React.Component {
     const {
       textValue,
       placeholder,
-      comment,
+      catComment,
       navigation,
       handleQueryNextPage,
       handleChangeText,
@@ -78,26 +84,19 @@ class CommentPage extends React.Component {
       allLoaded,
       onblur,
     } = this.props;
+    const { isFirstTime } = this.state;
     return (
       <View style={styles.container}>
         <Header navigation={navigation} title={`${this.total}条评论`} />
-        <FirstLoading loading={commentLoading}>
+        <FirstLoading loading={commentLoading && isFirstTime}>
           <FlatList
-            keyExtractor={item => `${item.id}_${Math.random()}`}
+            keyExtractor={item => `${item.id}`}
             onEndReachedThreshold={0.1}
             ListHeaderComponent={
-              <ChildItem
-                type='main'
-                replyAction={this.replyAction}
-                itemData={comment.commentList[this.parentIndex]}
-              />
+              <ChildItem type='main' itemData={catComment.commentList[this.parentIndex]} />
             }
-            onEndReached={() => handleQueryNextPage(comment.childCommentList)}
-            data={[
-              ...comment.childCommentList,
-              ...comment.childCommentList,
-              ...comment.childCommentList,
-            ]}
+            onEndReached={() => handleQueryNextPage(catComment.childCommentList)}
+            data={catComment.childCommentList}
             ListFooterComponent={
               <FooterLoading bgColor={themeCatColor.bgF4} allLoaded={allLoaded} />
             }
@@ -117,10 +116,10 @@ class CommentPage extends React.Component {
   }
 }
 
-const mapStateToProps = ({ comment, loading }) => ({
-  comment,
-  loading: loading.effects['comment/submitCommentEffect'],
-  commentLoading: loading.effects['comment/queryChildCommentEffect'],
+const mapStateToProps = ({ catComment, loading }) => ({
+  catComment,
+  loading: loading.effects['catComment/submitCommentEffect'],
+  commentLoading: loading.effects['catComment/queryChildCommentEffect'],
 });
 
 export default connect(mapStateToProps)(commentHoc(CommentPage));

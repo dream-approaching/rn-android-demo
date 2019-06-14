@@ -19,7 +19,7 @@ export default class ChildItem extends React.Component {
     const { itemData, replyAction = () => {}, type, origin } = this.props;
     const isMain = type === 'main';
     const isXshare = origin === 'xshare';
-    const pathArr = itemData.path.split('-');
+    const pathArr = (itemData.path && itemData.path.split('-')) || [];
     const showReplyBtn = pathArr.length >= (isXshare ? 2 : 3);
     return (
       <View style={[styles.mainComment, { backgroundColor: isMain ? '#fff' : themeCatColor.bgF4 }]}>

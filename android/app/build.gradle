@@ -246,8 +246,7 @@ dependencies {
     implementation files('libs/umeng-sharetool-6.9.4.jar')
 
     implementation 'com.github.ittianyu:BottomNavigationViewEx:2.0.4'
-    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.16'
-
+    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.17'
 
     implementation 'com.dou361.ijkplayer:jjdxm-ijkplayer:1.0.6'
     implementation('com.dou361.ijkplayer:jjdxm-ijkplayer:1.0.5') {

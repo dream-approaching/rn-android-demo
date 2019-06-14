@@ -1,56 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/srf_first_fg_fresh"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/color_f2f2f2">
+    android:layout_height="wrap_content">
 
-    <android.support.v4.widget.SwipeRefreshLayout
+    <RelativeLayout
+
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:background="@color/color_f3f3f3">
 
 
         <com.lieying.comlib.pull.PullToRefreshRecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/color_f3f3f3"></com.lieying.comlib.pull.PullToRefreshRecyclerView>
+            ></com.lieying.comlib.pull.PullToRefreshRecyclerView>
 
-    </android.support.v4.widget.SwipeRefreshLayout>
 
-    <RelativeLayout
-        android:id="@+id/cv_nodate"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="@dimen/dimens_25dp"
-        android:visibility="gone">
-
-        <com.lieying.petcat.widget.NiceImageView
-            android:id="@+id/iv_item_card_background"
+        <RelativeLayout
+            android:id="@+id/cv_nodate"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scaleType="centerCrop"
-            app:corner_radius="@dimen/dimens_25dp" />
+            android:layout_margin="@dimen/dimens_25dp"
+            android:visibility="gone">
 
-        <TextView
-            android:id="@+id/tv_item_card_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:maxLines="1"
-            android:text="@string/string_no_datas"
-            android:textColor="@android:color/white"
-            android:textSize="15sp"
-            android:textStyle="bold" />
+            <com.lieying.petcat.widget.NiceImageView
+                android:id="@+id/iv_item_card_background"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                app:corner_radius="@dimen/dimens_25dp" />
 
-        <ImageView
-            android:id="@+id/iv_item_card_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="@dimen/dimens_28dp"
-            android:layout_weight="1"
-            android:src="@drawable/ic_card_index_back" />
+            <TextView
+                android:id="@+id/tv_item_card_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:maxLines="1"
+                android:text="@string/string_no_datas"
+                android:textColor="@android:color/white"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/iv_item_card_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="@dimen/dimens_28dp"
+                android:layout_weight="1"
+                android:src="@drawable/ic_card_index_back" />
+        </RelativeLayout>
     </RelativeLayout>
-</RelativeLayout>
+</android.support.v4.widget.SwipeRefreshLayout>

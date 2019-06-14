@@ -9,7 +9,7 @@ export default class FooterLoading extends React.PureComponent {
     const { allLoaded, bgColor = 'transparent' } = this.props;
     return (
       <View style={[styles.footerCon, { backgroundColor: bgColor }]}>
-        {!allLoaded && <ActivityIndicator />}
+        {!allLoaded && <ActivityIndicator style={{ marginRight: 20 }} />}
         <SecondaryText style={styles.footerText}>
           {(allLoaded && '没有更多内容了') || '努力加载中...'}
         </SecondaryText>
@@ -26,5 +26,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 10,
   },
-  footerText: { marginLeft: 20, fontSize: 12, color: '#666' },
+  footerText: { fontSize: 12, color: '#666' },
 });

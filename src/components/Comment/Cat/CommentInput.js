@@ -97,7 +97,6 @@ export default class CommentPage extends React.Component {
     } = this.props;
     const { keyboardShow, isCollect } = this.state;
     const disabled = textValue.length === 0;
-    console.log('%cshowCollection:', 'color: #0e93e0;background: #aaefe5;', showCollection);
     return (
       <View style={styles.inputCon}>
         {showLeftIcon && (
@@ -155,7 +154,7 @@ const styles = StyleSheet.create({
     ...themeLayout.flex('row', 'space-between'),
     width: themeCatSize.screenWidth,
     height: 44,
-    ...themeLayout.borderSide('Top', '#eee'),
+    ...themeLayout.borderSide('Top'),
   },
   iconCon: (hori = 8) => {
     return {
@@ -174,7 +173,7 @@ const styles = StyleSheet.create({
     return {
       flex: 1,
       marginLeft: showLeftIcon ? 0 : 13,
-      ...themeLayout.border(),
+      ...themeLayout.border(themeCatSize.minBorder, '#bbb'),
       borderRadius: 15,
     };
   },
@@ -192,6 +191,7 @@ const styles = StyleSheet.create({
   submitText: disabled => {
     return {
       color: disabled ? '#999' : '#333',
+      fontSize: 16,
     };
   },
 });

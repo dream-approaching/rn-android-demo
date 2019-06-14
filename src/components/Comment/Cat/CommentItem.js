@@ -84,8 +84,9 @@ export default class extends React.PureComponent {
                 onPress={() => seeAllChildAction(itemData, index)}
               >
                 <View style={{ marginTop: 5 }}>
-                  <SecondaryText style={[styles.replyTitle]}>
-                    {`查看${itemData.count}条回复＞`}
+                  <SecondaryText style={[styles.replyTitle, styles.textLineHeight(18)]}>
+                    {`查看${itemData.count}条评论`}
+                    <Text style={{ letterSpacing: -5 }}>＞＞</Text>
                   </SecondaryText>
                 </View>
               </TouchableNativeFeedback>

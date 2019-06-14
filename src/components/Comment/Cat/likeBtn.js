@@ -6,7 +6,7 @@ import SmallText from '@/components/AppText/Cat/SmallText';
 import myImages from '@/utils/myImages';
 import { connect } from '@/utils/dva';
 import { actionBeforeCheckLogin } from '@/utils/utils';
-import { LIKE_TYPE, immediateTimer } from '@/config/constants';
+import { immediateTimer } from '@/config/constants';
 
 const hadLikedArrCache = [];
 class LikeBtn extends React.Component {
@@ -17,62 +17,45 @@ class LikeBtn extends React.Component {
       islike: !props.itemData.is_fabulous,
       likenum: +props.itemData.fabulous,
     };
-    this.isShare = +props.type === LIKE_TYPE.share;
   }
 
   handleToggleLike = () => {
     const { dispatch, itemData, type } = this.props;
     const { islike, likenum } = this.state;
-    const isLike = !itemData.is_fabulous;
-    const likeNum = +itemData.fabulous;
     hadLikedArrCache.push(itemData.id);
     // this.setState({ hadLikedArr: hadLikedArrCache });
 
-    if (this.isShare) {
-      const setXshareData = {
-        ...itemData,
-        fabulous: isLike ? likeNum - 1 : likeNum + 1,
-        is_fabulous: isLike,
-      };
-      dispatch({
-        type: 'global/saveXshareData',
-        payload: setXshareData,
-      });
-    } else {
-      this.setState({
-        islike: !islike,
-        likenum: islike ? likenum - 1 : likenum + 1,
-      });
-    }
+    this.setState({
+      islike: !islike,
+      likenum: islike ? likenum - 1 : likenum + 1,
+    });
     if (this[`timer_${itemData.id}`]) clearTimeout(this[`timer_${itemData.id}`]);
     this[`timer_${itemData.id}`] = setTimeout(() => {
       const data = {
         type,
-        opt: ((this.isShare ? isLike : islike) && 'del') || 'add',
+        opt: (islike && 'del') || 'add',
         id: itemData.id,
       };
       dispatch({
-        type: 'comment/toggleLikeEffect',
+        type: 'catNormal/toggleLikeEffect',
         payload: data,
       });
     }, immediateTimer);
   };
 
   render() {
-    const { size = 16, textStyle, itemData } = this.props;
+    const { size = 16, textStyle } = this.props;
     const { islike, likenum } = this.state;
-    const showNumber = this.isShare ? itemData.fabulous : likenum;
-    const showIslike = this.isShare ? !itemData.is_fabulous : islike;
     return (
       <TouchableNativeFeedback
-        tapArea={this.isShare ? 10 : 30}
+        tapArea={30}
         onPress={() => actionBeforeCheckLogin(this.handleToggleLike)}
       >
         <View style={styles.likeCon}>
-          <SmallText style={[styles.textStyle, textStyle]}>{showNumber || '10'}</SmallText>
+          <SmallText style={[styles.textStyle, textStyle]}>{likenum || ''}</SmallText>
           <Image
             style={styles.likeIcon(size)}
-            source={{ uri: showIslike ? myImages.thumbO : myImages.commentLike }}
+            source={{ uri: islike ? myImages.catLikeActive : myImages.catLike }}
           />
         </View>
       </TouchableNativeFeedback>

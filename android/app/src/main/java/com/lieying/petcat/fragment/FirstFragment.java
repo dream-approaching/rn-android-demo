@@ -8,51 +8,36 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.content.LocalBroadcastManager;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-import com.lieying.comlib.bean.ExploreBean;
 import com.lieying.comlib.bean.FstFgRcmdBean;
-import com.lieying.comlib.bean.RnCallNativeBean;
 import com.lieying.comlib.constant.Constants;
 import com.lieying.comlib.pull.PullToRefreshListener;
 import com.lieying.comlib.pull.PullToRefreshRecyclerView;
 import com.lieying.petcat.MainApplication;
 import com.lieying.petcat.adapter.FirstFgFallsAdapter;
-import com.lieying.petcat.bean.ReactParamsJson;
-import com.lieying.comlib.utils.ScreenUtils;
 import com.lieying.petcat.R;
-import com.lieying.petcat.activity.CommonReactActivity;
-import com.lieying.petcat.adapter.ExploreAdapter;
 import com.lieying.petcat.base.BaseV4Fragment;
 import com.lieying.petcat.manager.UserManager;
 import com.lieying.petcat.network.BaseObserver;
 import com.lieying.petcat.network.ReqBody;
 import com.lieying.petcat.network.ResponseData;
 import com.lieying.petcat.network.RetrofitUtils;
-import com.lieying.petcat.utils.GlideUtils;
-import com.lieying.petcat.utils.GsonUtil;
 import com.lieying.petcat.utils.ToastUtil;
-import com.lieying.petcat.widget.cardlayout.CardLayoutHelper;
-import com.lieying.petcat.widget.cardlayout.OnCardLayoutListener;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 
 import io.reactivex.ObservableSource;
 import io.reactivex.functions.Function;
-
-import static com.lieying.petcat.widget.cardlayout.CardLayoutHelper.State.IDLE;
 
 
 /**
@@ -67,15 +52,16 @@ public class FirstFragment extends BaseV4Fragment implements PullToRefreshListen
     private RelativeLayout mCvNodataLayout;
     private MyHandler myHandler;
     private FirstFragment.MainReceiver mMainReceiver;
+    private SwipeRefreshLayout mSrf;
 
     @Override
     public void onRefresh() {
-        getCardData(true);
+        getData(true);
     }
 
     @Override
     public void onLoadMore() {
-        getCardData(false);
+        getData(false);
     }
 
     private class MainReceiver extends BroadcastReceiver {
@@ -101,7 +87,7 @@ public class FirstFragment extends BaseV4Fragment implements PullToRefreshListen
     @Override
     public void findView() {
         recyclerView =  (PullToRefreshRecyclerView) findViewById(R.id.recyclerView);
-
+        mSrf = (SwipeRefreshLayout) findViewById(R.id.srf_first_fg_fresh);
         mCvNodataLayout = (RelativeLayout) findViewById(R.id.cv_nodate);
         mCvNodataLayout.setVisibility(View.GONE);
         initReceiver();
@@ -136,9 +122,16 @@ public class FirstFragment extends BaseV4Fragment implements PullToRefreshListen
                 .build(firstAdatper);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
+            public void onScrollStateChanged(RecyclerView recyclerView1, int newState) {
+                super.onScrollStateChanged(recyclerView1, newState);
                 manager.invalidateSpanAssignments(); //防止第一行到顶部有空白区域
+//                mSrf.setEnabled(recyclerView.isOnTop());
+            }
+        });
+        mSrf.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getData(true);
             }
         });
 //        recyclerView.setLayoutManager(manager);
@@ -148,11 +141,12 @@ public class FirstFragment extends BaseV4Fragment implements PullToRefreshListen
     @Override
     public void initData() {
         myHandler = new MyHandler(this);
-        getCardData(true);
+        getData(true);
     }
 
     @Override
     public void initListener() {
+
         findViewById(R.id.iv_item_card_back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -165,9 +159,12 @@ public class FirstFragment extends BaseV4Fragment implements PullToRefreshListen
      * @Description: 获取首页卡片数据
      * @Author: liyi
      */
-    private void getCardData(boolean isFresh) {
+    private void getData(boolean isFresh) {
         HashMap<String, String> map = new HashMap<>();
-        map.put("id", isFresh || list.size() == 0 ? "" : list.get(list.size() - 1).getId());
+        if(!isFresh){
+            map.put("sharemintime", list.get(list.size() - 1).getSharemintime());
+            map.put("videomintime", list.get(list.size() - 1).getVideomintime());
+        }
         map.put("mobilephone", UserManager.getCurrentUser().getPhone());
         map.put("pagesize" , Constants.DEFAULT_PAGE_SIZE+"");
         map.put("access_token", UserManager.getCurrentUser().getAccessToken());
@@ -179,6 +176,7 @@ public class FirstFragment extends BaseV4Fragment implements PullToRefreshListen
         }, new BaseObserver<ResponseData<List<FstFgRcmdBean>>>() {
             @Override
             protected void onSuccees(ResponseData<List<FstFgRcmdBean>> objectResponseData) {
+                mSrf.setRefreshing(false);
                 if (recyclerView.isRefresh()) {
                     recyclerView.onPullComplete();
                 }
@@ -203,6 +201,7 @@ public class FirstFragment extends BaseV4Fragment implements PullToRefreshListen
 
             @Override
             protected void onFailure(Throwable e, boolean isNetWorkError) {
+                mSrf.setRefreshing(false);
                 if (recyclerView.isRefresh()) {
                     recyclerView.onPullFail();
                 }

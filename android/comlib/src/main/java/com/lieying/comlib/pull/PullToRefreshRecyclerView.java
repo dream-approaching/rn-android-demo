@@ -299,7 +299,7 @@ public class PullToRefreshRecyclerView extends RecyclerView {
     /**
      * 判断列表是否滑到顶部
      */
-    private boolean isOnTop() {
+    public boolean isOnTop() {
         return isExistRefreshView() && mHeadRefreshView.getParent() != null;
     }
 

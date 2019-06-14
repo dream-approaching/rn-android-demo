@@ -10,6 +10,7 @@ import com.lieying.comlib.bean.FollowOrFansBean;
 import com.lieying.comlib.bean.FstFgRcmdBean;
 import com.lieying.comlib.bean.NoticeBean;
 import com.lieying.comlib.bean.RegisterBean;
+import com.lieying.comlib.bean.SecondFgBean;
 import com.lieying.comlib.bean.TopicBean;
 import com.lieying.comlib.bean.UpgradeBean;
 import com.lieying.comlib.bean.UserIndexInfoBean;
@@ -258,8 +259,17 @@ public interface RequestApiService {
     /**
      * @author liyi
      * date 2019/3/7 0007 11:38
-     * @function:点赞
+     * @function:第一个fragment请求数据
      */
     @GET("http://192.168.0.200:1230/interface/v1/app/content/get_video_recommend")
     Observable<ResponseData<List<FstFgRcmdBean>>> getFirstFgRcmdData(@Query("params") String route);
+
+
+    /**
+     * @author liyi
+     * date 2019/3/7 0007 11:38
+     * @function:第二个fragment数据
+     */
+    @GET("http://192.168.0.200:1230/interface/v1/app/content/get_follow_recommend")
+    Observable<ResponseData<SecondFgBean>> getSecondFgRData(@Query("params") String route);
 }

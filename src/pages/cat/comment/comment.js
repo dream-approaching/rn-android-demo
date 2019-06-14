@@ -7,7 +7,6 @@ import { FlatList } from 'react-native-gesture-handler';
 import { connect } from '@/utils/dva';
 import Header from '@/components/Header';
 import commentHoc from '@/components/pageComponent/commentHoc';
-import NoData from '@/components/NoData';
 import FooterLoading from '@/components/Loading/FooterLoading';
 import FirstLoading from '@/components/Loading/FirstLoading';
 
@@ -16,11 +15,21 @@ class CommentPage extends React.Component {
     header: null,
   };
 
+  state = {
+    isFirstTime: true,
+  };
+
   componentDidMount() {
     StatusBar.setBarStyle('dark-content', true);
-    const { screenProps } = this.props;
-    this.type = 1 || JSON.parse(screenProps.nativeProps.params).contentType;
-    this.contendId = 19 || JSON.parse(screenProps.nativeProps.params).contentId;
+    const { navigation } = this.props;
+    this.type = navigation.getParam('type');
+    this.contendId = navigation.getParam('contendId');
+    console.log(
+      '%cthis.contendId:',
+      'color: #0e93e0;background: #aaefe5;',
+      this.type,
+      this.contendId
+    );
     const data = {
       id: 0, // 上一页数据最小的  fabulous或者时间戳
       isFirst: true,
@@ -30,7 +39,7 @@ class CommentPage extends React.Component {
 
   componentWillUnmount() {
     this.props.dispatch({
-      type: 'comment/saveCommentList',
+      type: 'catComment/saveCommentList',
       payload: [],
       isFirstPage: true,
     });
@@ -42,7 +51,9 @@ class CommentPage extends React.Component {
       content_id: this.contendId,
       ...payload,
     };
-    this.props.queryCommentDispatch('comment/queryCommentEffect', data);
+    this.props.queryCommentDispatch('catComment/queryCommentEffect', data, () =>
+      this.setState({ isFirstTime: false })
+    );
   };
 
   handleSubmitComment = () => {
@@ -64,7 +75,7 @@ class CommentPage extends React.Component {
 
   handleSeeAllChild = (item, index) => {
     const { navigation } = this.props;
-    navigation.navigate('ChildComment', {
+    navigation.navigate('CatChildComment', {
       total: item.count,
       id: item.id,
       index,
@@ -78,28 +89,27 @@ class CommentPage extends React.Component {
       textValue,
       allLoaded,
       placeholder,
-      comment,
+      catComment,
       loading,
       handleQueryNextPage,
       handleChangeText,
       onblur,
     } = this.props;
-    const showNoData = !comment.commentList.length && !loading;
+    const { isFirstTime } = this.state;
     return (
       <View style={styles.container}>
-        <Header title={`${comment.commentListTotal}条评论`} />
-        <FirstLoading loading={loading}>
-          {(!showNoData && (
-            <FlatList
-              keyExtractor={item => `${item.id}`}
-              onEndReachedThreshold={0.1}
-              onEndReached={() => handleQueryNextPage(comment.commentList)}
-              data={comment.commentList}
-              ListFooterComponent={<FooterLoading allLoaded={allLoaded} />}
-              renderItem={this.renderCommentItem}
-              // keyboardShouldPersistTaps='handled'
-            />
-          )) || <NoData text='暂无评论' />}
+        <Header
+          title={`${+catComment.commentListTotal ? `${catComment.commentListTotal}条` : ''}评论`}
+        />
+        <FirstLoading loading={loading && isFirstTime}>
+          <FlatList
+            keyExtractor={item => `${item.id}`}
+            onEndReachedThreshold={0.1}
+            onEndReached={() => handleQueryNextPage(catComment.commentList)}
+            data={catComment.commentList}
+            ListFooterComponent={<FooterLoading allLoaded={allLoaded} />}
+            renderItem={this.renderCommentItem}
+          />
           <CommentInput
             ref={ref => (this.refInputCon = ref)}
             handleChangeText={handleChangeText}
@@ -114,10 +124,10 @@ class CommentPage extends React.Component {
   }
 }
 
-const mapStateToProps = ({ comment, loading }) => ({
-  comment,
-  loading: loading.effects['comment/queryCommentEffect'],
-  submitLoading: loading.effects['comment/submitCommentEffect'],
+const mapStateToProps = ({ catComment, loading }) => ({
+  catComment,
+  loading: loading.effects['catComment/queryCommentEffect'],
+  submitLoading: loading.effects['catComment/submitCommentEffect'],
 });
 
 export default connect(mapStateToProps)(commentHoc(CommentPage));

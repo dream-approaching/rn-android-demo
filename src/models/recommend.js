@@ -33,6 +33,7 @@ export default {
     *queryHotClassifyEffect({ payload }, { call, put }) {
       try {
         const response = yield call(queryHotClassifyReq, payload);
+        console.log('%cresponse:', 'color: #0e93e0;background: #aaefe5;', response);
         if (response && response.code === 0) {
           if (payload.search) {
             yield put({

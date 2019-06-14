@@ -19,3 +19,8 @@ export async function queryCatArticleDetailReq(params) {
 export async function submitPublishReq(params) {
   return request(`${config.baseUrl}/interface/v1/app/share/commit_share`, { data: params });
 }
+
+// 打赏接口
+export async function setRewardReq(params) {
+  return request(`${config.baseUrl}/interface/v1/app/reward/set_reward`, { data: params });
+}

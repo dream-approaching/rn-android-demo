@@ -28,8 +28,8 @@ export default {
     const { userInfo } = state.global;
     console.log(userInfo);
     return {
-      access_token: 'e5f693b29571352cb86aa8c0dc1f070d',
-      mobilephone: '17605041621',
+      access_token: '56e7db181bb33b22c5aa56bdc415845c',
+      mobilephone: '15864578953',
       // access_token: userInfo ? userInfo.access_token : '',
       // mobilephone: userInfo ? userInfo.mobilephone : '',
     };

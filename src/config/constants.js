@@ -24,7 +24,7 @@ export const COMMENT_TYPE = {
   article: 2, // 数字生活研究所
   recommend: 3, // 应用推荐
   app: 4, // App
-  share: 5, // 莓友分享
+  share: 5, // 莓友分享，图文
 };
 
 export const ARTICLE_TYPE = {

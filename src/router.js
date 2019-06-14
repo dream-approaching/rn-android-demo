@@ -12,8 +12,10 @@ import AddLabel from '@/pages/shumei/recommend/addLabel';
 import XFriend from '@/pages/shumei/xfriend/xfriend';
 import XFriendDetail from '@/pages/shumei/xfriend/xfriendDetail';
 import CatComment from '@/pages/cat/comment/comment';
-import ChildComment from '@/pages/cat/comment/childComment';
-import DetailChat from '@/pages/cat/detailChat/detailChat';
+import CatChildComment from '@/pages/cat/comment/childComment';
+import ChildComment from '@/pages/shumei/comment/childComment';
+import CatDetailChat from '@/pages/cat/detailChat/detailChat';
+import DetailChat from '@/pages/shumei/detailChat/detailChat';
 import DetailWebview from '@/pages/shumei/detailWebview/detailWebview';
 import EditUser from '@/pages/shumei/editUser/editUser';
 import CollectArticle from '@/pages/shumei/myCollect/collectArticle';
@@ -25,7 +27,7 @@ import ReplyNotice from '@/pages/shumei/myNotice/replyNotice';
 import MyFeedback from '@/pages/shumei/myFeedback/myFeedback';
 import MyShare from '@/pages/shumei/myshare/myshare';
 import PersonPage from '@/pages/shumei/personPage/personPage';
-import Search from '@/pages/shumei/search/search';
+import Search from '@/pages/cat/search/search';
 import MoreSearch from '@/pages/shumei/search/moreSearch';
 import CatPublish from '@/pages/cat/catPublish/catPublish';
 import ChooseLocation from '@/pages/cat/catPublish/chooseLocation';
@@ -35,9 +37,37 @@ import config from '@/config/index';
 import Loading from '@/components/Loading/loading';
 // import fundebug from 'fundebug-reactnative';
 
+const transitionConfig = () => ({
+  screenInterpolator: sceneProps => {
+    const { layout, position, scene } = sceneProps;
+    const { index, route } = scene;
+
+    const height =
+      route.routeName === 'CatPublish' || route.routeName === 'ChooseLocation'
+        ? 0
+        : layout.initHeight;
+    const translateY = position.interpolate({
+      inputRange: [index - 1, index, index + 1],
+      outputRange: [height, 0, 0],
+    });
+
+    const opacity = position.interpolate({
+      inputRange: [index - 1, index - 0.99, index],
+      outputRange: [0, 1, 1],
+    });
+
+    return { opacity, transform: [{ translateY }] };
+  },
+});
+
+console.log('transitionConfig', transitionConfig);
+
 const CatPublishNav = createStackNavigator(
   { CatPublish, ChooseLocation },
-  { initialRouteName: 'CatPublish' }
+  {
+    initialRouteName: 'CatPublish',
+    // transitionConfig,
+  }
 );
 const HomeNav = createStackNavigator({ Home }, { initialRouteName: 'Home' });
 const RecommendNav = createStackNavigator(
@@ -51,8 +81,12 @@ const XFriendDetailNav = createStackNavigator(
 );
 const MineNav = createStackNavigator({ Mine }, { initialRouteName: 'Mine' });
 const CatCommentNav = createStackNavigator(
-  { CatComment, ChildComment },
+  { CatComment, CatChildComment },
   { initialRouteName: 'CatComment' }
+);
+const CatDetailChatNav = createStackNavigator(
+  { CatDetailChat, CatChildComment, CatComment },
+  { initialRouteName: 'CatDetailChat' }
 );
 const DetailChatNav = createStackNavigator(
   { DetailChat, ChildComment },
@@ -84,6 +118,7 @@ const XFriendContainer = createAppContainer(XFriendNav);
 const XFriendDetailContainer = createAppContainer(XFriendDetailNav);
 const MineContainer = createAppContainer(MineNav);
 const CatCommentContainer = createAppContainer(CatCommentNav);
+const CatDetailChatContainer = createAppContainer(CatDetailChatNav);
 const DetailChatContainer = createAppContainer(DetailChatNav);
 const DetailWebviewContainer = createAppContainer(DetailWebviewNav);
 const EditUserContainer = createAppContainer(EditUserNav);
@@ -178,9 +213,13 @@ class Router extends React.PureComponent {
       recommend: RecommendContainer,
       search: SearchContainer,
       catPublish: CatPublishContainer,
+      catComment: CatCommentContainer,
+      catDetailChat: CatDetailChatContainer,
       home: HomeContainer,
     };
     const App = app[viewName];
+    console.log('%cviewName:', 'color: #0e93e0;background: #aaefe5;', this.props.screenProps);
+    // console.log('%cApp:', 'color: #0e93e0;background: #aaefe5;', App);
     return (
       <ErrorBoundary>
         <Fragment>

@@ -94,6 +94,7 @@ export default function request(url, options, time) {
 
     const query = data ? `?params=${JSON.stringify(data)}` : '';
     fetchUrl = `${url}${query}`;
+    console.log('%cfetchUrl:', 'color: #0e93e0;background: #aaefe5;', fetchUrl);
     newOptions = null;
   } else {
     fetchUrl = url;

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/white">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="110dp"
+        android:layout_height="179dp"
+        android:layout_margin="@dimen/dimens_5dp"
+        app:cardCornerRadius="@dimen/dimens_8dp"
+        app:cardElevation="0dp">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.lieying.petcat.widget.NiceImageView
+                android:id="@+id/iv_second_fg_top_item_head"
+                app:is_circle="true"
+                android:layout_marginTop="@dimen/dimens_10dp"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:adjustViewBounds="true" />
+
+            <TextView
+                android:id="@+id/tv_second_fg_top_item_nick"
+                android:layout_marginTop="@dimen/dimens_10dp"
+                android:lines="1"
+                android:maxEms="7"
+                android:textColor="@color/color_222222"
+                android:textSize="@dimen/dimens_12sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/iv_first_fg_bg" />
+
+            <TextView
+                android:id="@+id/tv_second_fg_top_item_brief"
+                android:layout_marginTop="@dimen/dimens_10dp"
+                android:textColor="@color/color999999"
+                android:maxEms="18"
+                android:lines="2"
+                android:gravity="center"
+                android:ellipsize="end"
+                android:textSize="@dimen/dimens_12sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/iv_first_fg_bg" />
+
+            <TextView
+                android:id="@+id/tv_second_fg_top_item_follow"
+                android:layout_marginTop="@dimen/dimens_10dp"
+                android:text="关注"
+                android:gravity="center"
+                android:background="@drawable/bg_bnt_main_color"
+                android:textColor="@color/white"
+                android:maxEms="18"
+                android:ellipsize="end"
+                android:textSize="@dimen/dimens_12sp"
+                android:layout_width="90dp"
+                android:layout_height="22dp"
+                android:layout_below="@+id/iv_first_fg_bg" />
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+</RelativeLayout>

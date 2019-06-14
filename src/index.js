@@ -10,6 +10,8 @@ import searchModel from '@/models/search';
 import noticeModel from '@/models/notice';
 import catHomeModel from '@/models/catHomeModel';
 import catPublishModel from '@/models/catPublishModel';
+import catCommentModel from '@/models/catCommentModel';
+import catNormalModel from '@/models/catNormalModel';
 // import createLogger from 'redux-logger';
 import Main from './main';
 
@@ -24,6 +26,8 @@ const app = dva({
     noticeModel,
     catHomeModel,
     catPublishModel,
+    catCommentModel,
+    catNormalModel,
   ],
   onError(e) {
     console.log('onError', e);

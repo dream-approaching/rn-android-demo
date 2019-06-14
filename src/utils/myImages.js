@@ -41,5 +41,12 @@ export default {
   btnEtc: 'btn_etc',
 
   commentLike: 'comment_btn_good',
-  inputRight: 'input_right',
+
+  catComment: 'cat_comment',
+  catLikeActive: 'cat_like_active',
+  catLike: 'cat_like',
+  catGoldActive: 'cat_gold_active',
+  catGold: 'cat_gold',
+  catShare: 'cat_share',
+  catLocation: 'cat_location',
 };
