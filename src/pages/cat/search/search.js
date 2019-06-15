@@ -110,7 +110,8 @@ class Search extends React.Component {
   render() {
     const { searchKey, isSearching } = this.state;
     const { search, recommend } = this.props;
-    const data = [{ content: '123' }, { content: '456' }];
+    const data = [{ content: '123' }, { content: '4566' }];
+    const data2 = [{ id: '123', label: '123' }, { id: '4566', label: '1234' }];
     return (
       <View style={styles.container}>
         <SearchBar
@@ -118,7 +119,7 @@ class Search extends React.Component {
           changeSearchKeyAction={this.handleChangeSearchKey}
           cancelSearchAction={this.handleQuitActivity}
           cleanTextAction={this.handleCleanText}
-          title='搜索'
+          title="搜索"
         />
         <SpringScrollView
           onLoading={() => {}}
@@ -127,28 +128,28 @@ class Search extends React.Component {
           allLoaded
         >
           <Fragment>
-            <View style={[styles.hotCon, styles.sectionCon]}>
-              <SectionTitle title='大家都在搜' />
+            <View style={[styles.sectionCon, styles.hotCon]}>
+              <SectionTitle fontWeight="bold" title="大家都在搜" />
               <View style={styles.hotList}>
-                {recommend.hotClassify.map(item => {
+                {/* {recommend.hotClassify.map(item => { */}
+                {data2.map(item => {
                   return (
                     <TouchableNativeFeedback
                       onPress={() => this.handleSelectClassify(item.label)}
                       key={item.id}
                     >
                       <View style={styles.hotItem}>
-                        <CommonText style={{ color: themeColor.font.secondary }}>
-                          {item.label}
-                        </CommonText>
+                        <CommonText>{item.label}</CommonText>
                       </View>
                     </TouchableNativeFeedback>
                   );
                 })}
               </View>
             </View>
-            <View style={[styles.historyCon, styles.sectionCon]}>
+            <View style={[styles.sectionCon, styles.historyCon]}>
               <SectionTitle
-                title='搜索历史'
+                title="搜索历史"
+                fontWeight="bold"
                 rightAction={this.handleClearHistory}
                 type={search.historySearchList.length > 0 ? 'del' : null}
               />
@@ -196,18 +197,16 @@ const styles = StyleSheet.create({
   },
   historyCon: {
     marginTop: scale(14),
+    ...themeLayout.borderSide('Top', '#f3f3f3', 5),
+    paddingTop: scale(10),
   },
   historyList: {
-    ...themeLayout.flex('row', 'flex-start'),
     flexWrap: 'wrap',
-    marginTop: scale(2),
   },
   historyItem: {
-    backgroundColor: themeColor.bgColor,
-    ...themeLayout.borderSide(),
-    ...themeLayout.flex(),
-    ...themeLayout.margin(scale(12), scale(10), scale(0)),
-    ...themeLayout.padding(scale(0), scale(10)),
+    ...themeLayout.borderSide('Bottom'),
+    ...themeLayout.flex('row', 'flex-start'),
+    height: 48,
   },
   hotCon: {
     marginTop: scale(18),
@@ -215,16 +214,15 @@ const styles = StyleSheet.create({
   hotList: {
     ...themeLayout.flex('row', 'flex-start'),
     flexWrap: 'wrap',
-    marginTop: scale(5),
   },
   hotItem: {
-    ...themeLayout.border(themeSize.minBorder, '#dfdfdf'),
+    ...themeLayout.border(themeSize.minBorder, '#dadada'),
     ...themeLayout.flex(),
-    ...themeLayout.margin(scale(15), scale(10), scale(0)),
+    ...themeLayout.margin(scale(12), scale(11), scale(0), 0),
     ...themeLayout.padding(scale(0), scale(10)),
     borderRadius: scale(12),
-    height: scale(32),
-    minWidth: scale(85),
+    height: scale(24),
+    minWidth: scale(45),
   },
   searchSectionCon: {
     ...themeLayout.borderSide('Bottom', themeColor.bgF4, scale(4)),

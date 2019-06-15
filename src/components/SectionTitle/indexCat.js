@@ -31,7 +31,9 @@ export default class extends React.PureComponent {
         )}
         {type === 'del' && (
           <TouchableNativeFeedback onPress={rightAction}>
-            <Image style={styles.clearIcon} source={{ uri: myImages.btnClear }} />
+            <View style={styles.clearIconCon}>
+              <Image style={styles.clearIcon} source={{ uri: myImages.btnClear }} />
+            </View>
           </TouchableNativeFeedback>
         )}
       </View>
@@ -60,9 +62,12 @@ const styles = StyleSheet.create({
     height: 13,
     marginLeft: 4,
   },
+  clearIconCon: {
+    ...themeLayout.padding(5, 0, 0, 5),
+  },
   clearIcon: {
-    width: 22,
-    height: 22,
+    width: 15,
+    height: 15,
   },
   titleText: {
     marginRight: 5,
