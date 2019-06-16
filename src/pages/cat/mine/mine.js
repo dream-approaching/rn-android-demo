@@ -65,6 +65,32 @@ class Mine extends React.Component {
         notNeedAuth: true,
       },
     ];
+    const cardMenu3 = [
+      {
+        title: '点赞',
+        icon: myImages.article,
+        onPressAction: () => OpenRnActivity('catNotice', JSON.stringify({ type: '1' })),
+        notNeedAuth: true,
+      },
+      {
+        title: '评论',
+        icon: myImages.application,
+        onPressAction: () => OpenRnActivity('catNotice', JSON.stringify({ type: '2' })),
+        notNeedAuth: true,
+      },
+      {
+        title: '任务',
+        icon: myImages.chat,
+        onPressAction: () => OpenRnActivity('catTask'),
+        notNeedAuth: true,
+      },
+      {
+        title: '明细',
+        icon: myImages.chat,
+        onPressAction: () => OpenRnActivity('catGoldDetail'),
+        notNeedAuth: true,
+      },
+    ];
     const listMenu = [
       // {
       //   title: '我要认领应用',
@@ -109,11 +135,12 @@ class Mine extends React.Component {
     return (
       <View style={styles.container}>
         <SpringScrollView>
-          <ImageBackground resizeMode='cover' source={{ uri: myImages.bg }} style={styles.imgbg}>
+          <ImageBackground resizeMode="cover" source={{ uri: myImages.bg }} style={styles.imgbg}>
             <Avatar userInfo={userInfo} style={[styles.cardUser]} data={userData} />
           </ImageBackground>
           <MenuCard style={[styles.cardCon, styles.cardMenu]} menu={cardMenu} />
           <MenuCard style={[styles.cardCon, styles.cardMenu]} menu={cardMenu2} />
+          <MenuCard style={[styles.cardCon, styles.cardMenu]} menu={cardMenu3} />
           <MenuList style={[styles.cardCon, styles.listMenu]} menu={listMenu} />
         </SpringScrollView>
       </View>

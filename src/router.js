@@ -15,6 +15,9 @@ import CatComment from '@/pages/cat/comment/comment';
 import CatChildComment from '@/pages/cat/comment/childComment';
 import ChildComment from '@/pages/shumei/comment/childComment';
 import CatDetailChat from '@/pages/cat/detailChat/detailChat';
+import CatNotice from '@/pages/cat/myNotice/myNotice';
+import CatTask from '@/pages/cat/task/task';
+import CatGoldDetail from '@/pages/cat/goldDetail/goldDetail';
 import DetailChat from '@/pages/shumei/detailChat/detailChat';
 import DetailWebview from '@/pages/shumei/detailWebview/detailWebview';
 import EditUser from '@/pages/shumei/editUser/editUser';
@@ -88,6 +91,12 @@ const CatDetailChatNav = createStackNavigator(
   { CatDetailChat, CatChildComment, CatComment },
   { initialRouteName: 'CatDetailChat' }
 );
+const CatNoticeNav = createStackNavigator({ CatNotice }, { initialRouteName: 'CatNotice' });
+const CatTaskNav = createStackNavigator({ CatTask }, { initialRouteName: 'CatTask' });
+const CatGoldDetailNav = createStackNavigator(
+  { CatGoldDetail },
+  { initialRouteName: 'CatGoldDetail' }
+);
 const DetailChatNav = createStackNavigator(
   { DetailChat, ChildComment },
   { initialRouteName: 'DetailChat' }
@@ -119,6 +128,9 @@ const XFriendDetailContainer = createAppContainer(XFriendDetailNav);
 const MineContainer = createAppContainer(MineNav);
 const CatCommentContainer = createAppContainer(CatCommentNav);
 const CatDetailChatContainer = createAppContainer(CatDetailChatNav);
+const CatNoticeContainer = createAppContainer(CatNoticeNav);
+const CatTaskContainer = createAppContainer(CatTaskNav);
+const CatGoldDetailContainer = createAppContainer(CatGoldDetailNav);
 const DetailChatContainer = createAppContainer(DetailChatNav);
 const DetailWebviewContainer = createAppContainer(DetailWebviewNav);
 const EditUserContainer = createAppContainer(EditUserNav);
@@ -215,6 +227,9 @@ class Router extends React.PureComponent {
       catPublish: CatPublishContainer,
       catComment: CatCommentContainer,
       catDetailChat: CatDetailChatContainer,
+      catNotice: CatNoticeContainer,
+      catTask: CatTaskContainer,
+      catGoldDetail: CatGoldDetailContainer,
       home: HomeContainer,
     };
     const App = app[viewName];
