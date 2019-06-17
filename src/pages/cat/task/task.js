@@ -4,7 +4,8 @@ import { connect } from '@/utils/dva';
 import commentHoc from '@/components/pageComponent/commentHoc';
 import FirstLoading from '@/components/Loading/FirstLoading';
 import Header from '@/components/Header/index';
-import SmallText from '@/components/AppText/Cat/SmallText';
+import { themeLayout, scale } from '@/config';
+import CommonText from '@/components/AppText/CommonText';
 
 class Task extends React.Component {
   static navigationOptions = {
@@ -33,7 +34,13 @@ class Task extends React.Component {
       <View style={styles.container}>
         <FirstLoading loading={isFirstTime}>
           <Header title="今日任务" />
-          <SmallText style={styles.actionText2}>已打赏</SmallText>
+          <View style={styles.itemCon}>
+            <View style={styles.leftCon}>
+              <CommonText style={styles.itemTitle}>登录App</CommonText>
+              <CommonText style={styles.itemTime}>昨天</CommonText>
+            </View>
+            <CommonText style={styles.itemValue}>+6000</CommonText>
+          </View>
         </FirstLoading>
       </View>
     );
@@ -50,5 +57,24 @@ export default connect(mapStateToProps)(commentHoc(Task));
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  itemCon: {
+    ...themeLayout.padding(0, 16),
+    ...themeLayout.borderSide(),
+    height: scale(78),
+    ...themeLayout.flex('row', 'space-between'),
+  },
+  leftCon: {
+    ...themeLayout.flex('column', 'center', 'flex-start'),
+  },
+  itemTitle: {
+    fontSize: 15,
+  },
+  itemTime: {
+    color: '#999',
+    marginTop: 5,
+  },
+  itemValue: {
+    fontSize: 17,
   },
 });
